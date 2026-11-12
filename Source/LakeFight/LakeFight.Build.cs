@@ -19,7 +19,8 @@ public class LakeFight : ModuleRules
 			"GameplayStateTreeModule",
 			"UMG",
 			"Slate",
-			"ProceduralMeshComponent"
+			"ProceduralMeshComponent",
+			"PhysicsCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

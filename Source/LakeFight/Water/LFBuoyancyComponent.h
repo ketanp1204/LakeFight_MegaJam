@@ -36,19 +36,19 @@ public:
 	float MaxBuoyancyG = 4.f;
 
 	/** Drag along the hull's forward axis (1/s). 1/ForwardDrag = coast time constant. Low = long coast. */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Drag", meta=(ClampMin="0"))
+	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0"))
 	float ForwardDrag = 0.45f;
 
-	/** Drag along the hull's right axis (1/s). High = no sideways sliding. */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Drag", meta=(ClampMin="0"))
-	float LateralDrag = 3.0f;
+	/** Drag along the hull's right axis (1/s). Allows a short skid in hard turns; keep well above ForwardDrag. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0"))
+	float LateralDrag = 2.0f;
 
-	/** Yaw angular drag (1/s). */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Drag", meta=(ClampMin="0"))
-	float AngularDrag = 1.8f;
+	/** Yaw angular drag (1/s). 1/AngularDrag ~= how long a turn carries on after releasing steer. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0"))
+	float AngularDrag = 1.0f;
 
 	/** Pitch/roll angular drag (1/s), on top of pontoon damping. */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Drag", meta=(ClampMin="0"))
+	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0"))
 	float TiltDrag = 1.0f;
 
 	/** Fraction of pontoons currently in the water (0..1). */

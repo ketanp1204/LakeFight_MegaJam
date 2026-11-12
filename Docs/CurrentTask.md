@@ -81,3 +81,49 @@ lean in turns; ramming the target at full speed (shove + roll + cyan debug spher
 - No camera kick / sound on hits yet (`OnSplash` is the hook).
 - `git add -A` (as instructed) also committed pre-existing untracked files: `Tools/__pycache__/`, `Art/BlenderScripts/__pycache__`, `prompts/`, `submission/`,
   `templates/`, `Tools/init-jam-repo.ps1`, and Codex's B01 files (`Art/BlenderScripts/SM_LF_Rowboat.py`, `Art/Export/`).
+
+## T01.1 - boat handling + cleanup (Claude Code, 12 Nov ~11:50-12:05 IST)
+
+**Files changed**
+- `Source/LakeFight/Boat/LFBoat.h/.cpp`: rudder = lateral force at `RudderPoint` scaled by speed-based authority (the direct yaw torque is removed);
+  throttle spool; reverse 40%; squat; camera yaw lag separate from pitch lag (manual arm rotation); hull fitted to 300x135x50 cm at the waterline origin;
+  SM_LF_Rowboat as the default VisualMesh (scale 1, NoCollision); `HullPhysMaterial` (+ runtime fallback); clamped hit shove/roll.
+- `Source/LakeFight/Water/LFBuoyancyComponent.h/.cpp`: drag moved to `LF|Handling`; LateralDrag 3.0->2.0, yaw AngularDrag 1.8->1.0; pontoons at the hull corners (+-140, +-60).
+- `LakeFight.Build.cs`: + PhysicsCore. `Config/DefaultEngine.ini`: GameDefaultMap / EditorStartupMap = L_Lake01, GlobalDefaultGameMode = BP_LF_GameMode.
+- `.gitignore`: `__pycache__/`, `*.pyc`; untracked 3 pycache folders (`Tools/`, `Art/BlenderScripts/`, `templates/Art/BlenderScripts/`).
+- Assets: `M_LF_Lake` (WPO node untouched; opaque; base colour lerps deep teal 0.02,0.10,0.12 -> crest 0.05,0.20,0.22 by wave height; Metallic 0,
+  Specular 0.5, Roughness 0.3; faceted normal `normalize(cross(ddx(P), ddy(P)))` with Tangent Space Normal OFF; **Two Sided ON** - see below),
+  `PM_LF_Hull` (created by the director; I set Friction 0.15 Min, Restitution 0.35 Max), `BP_LF_Boat` (HullPhysMaterial = PM_LF_Hull),
+  `L_Lake01` (SkyLight Real Time Capture ON). Also `Content/LakeFight/Meshes/*` (SM_LF_Rowboat + Blue + materials, imported by the director).
+
+**Incident:** following the spec, I turned Two Sided OFF and the water vanished (the director caught it): the procedural grid's triangles face
+down, so the surface was back-face culled. Fixed by setting Two Sided back ON. The proper fix is to flip the winding in `LFLakeSurface.cpp` (follow-up).
+
+**Commands / results**
+- `Tools/ue.ps1 -Action build ... -EngineDir D:\UE_EpicGames\UE_5.8` -> Succeeded on the first try.
+- PIE run 1 (water culled): `[settle] player t=3.0s Z=-2.9 water=-0.7 (diff -2.1 cm) pitch=-0.81 roll=1.07 -> level`; target diff -0.6 cm, pitch 0.20, roll -0.90.
+- PIE run 2 (after the fix), 06:30:12-06:31:26 UTC (>60 s), no warnings/errors of any category:
+  `[settle] BP_LF_Boat_C_1 (player) t=3.0s Z=-2.9 water=-0.7 (diff -2.2 cm) pitch=-0.81 roll=1.07 -> level`
+  `[settle] BP_LF_Boat_C_0 (target) t=3.0s Z=4.5 water=5.1 (diff -0.6 cm) pitch=0.20 roll=-0.90 -> level`
+  (I can't confirm from logs that the waterline is just below the red stripe - check by eye.)
+
+**New / changed tunables (defaults)** - ALFBoat `LF|Handling`: ThrustAccel 330, ReverseThrustScale 0.4, ThrottleRiseTime 0.6 s, ThrottleFallTime 0.4 s,
+ThrustPoint (-140,0,-20), ThrustMaxAirGap 10, SquatAccelDeg 60, RudderPoint (-130,0,-20), RudderForceAccel 85 cm/s^2, RudderFullSpeed 400 cm/s,
+MinTurnAuthority 0.15, ReverseRudderScale 0.5, LeanAccelDeg 120. Buoyancy `LF|Handling`: ForwardDrag 0.45, LateralDrag 2.0, AngularDrag (yaw) 1.0, TiltDrag 1.0.
+`LF|Camera`: CameraPitch -16, CameraYawLagSpeed 2.0, CameraPitchLagSpeed 8.0, CameraPitchFollow 0.25. `LF|Hull`: HullPhysMaterial PM_LF_Hull,
+HullFriction 0.15, HullRestitution 0.35. `LF|Hit`: HitShoveScale 0.35, HitPopScale 0.06, MaxHitImpulse 250 cm/s, HitRollScale 0.3, MaxHitRoll 1.2 rad/s.
+Removed: TurnAccelDeg, StationaryTurnScale, FullEffectSpeed.
+
+**If it still feels like a car, try first**
+1. `RudderFullSpeed` 400 -> 550 (the rudder needs more speed before it bites; slow turns get lazier).
+2. `Buoyancy.AngularDrag` 1.0 -> 0.7 (the turn carries on longer, so you have to counter-steer).
+3. `ThrottleRiseTime` 0.6 -> 1.0 (heavier pull-away).
+
+**Check by hand:** stern swing / bow pivot in turns, counter-steer feel, reverse steering, squat + bow lift, the camera swinging in turns,
+the full-speed ram (rocks, never flips or launches), the waterline sitting just below the red stripe, and the lake look (it reads lighter than "deep teal" in
+the editor viewport - probably auto-exposure).
+
+**Follow-ups:** **water shows inside the rowboat** (director spotted it): the waterline (origin) is above the hull's inner floor and nothing occludes
+the lake inside an open hull. Proposed fix: a custom-stencil water mask (an invisible cap mesh in BP_LF_Boat writes custom depth/stencil; M_LF_Lake becomes Masked
+and clips water pixels behind it; needs r.CustomDepth=3). Flip the LFLakeSurface triangle winding, then Two Sided can go OFF; exposure/post-process for the lake colour; MCP still has no Python exec
+(the import step needs the human).

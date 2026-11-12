@@ -14,6 +14,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 #include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -22,8 +23,9 @@ ALFBoat::ALFBoat()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
 
+	// Physics hull fitted to SM_LF_Rowboat: 3.0 x 1.35 x 0.5 m, centred on the waterline origin (keel at -25 cm).
 	Hull = CreateDefaultSubobject<UBoxComponent>(TEXT("Hull"));
-	Hull->SetBoxExtent(FVector(150.f, 55.f, 30.f));
+	Hull->SetBoxExtent(FVector(150.f, 67.5f, 25.f));
 	Hull->SetCollisionProfileName(UCollisionProfile::PhysicsActor_ProfileName);
 	Hull->SetSimulatePhysics(true);
 	Hull->SetNotifyRigidBodyCollision(true);
@@ -32,31 +34,28 @@ ALFBoat::ALFBoat()
 	Hull->SetHiddenInGame(true);
 	RootComponent = Hull;
 
-	// Placeholder visual: engine cube scaled to the hull. BP_LF_Boat swaps in SM_LF_Rowboat when it exists.
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualMesh"));
 	VisualMesh->SetupAttachment(Hull);
 	VisualMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeMesh(TEXT("/Engine/BasicShapes/Cube.Cube"));
-	if (CubeMesh.Succeeded())
+	VisualMesh->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
+	VisualMesh->SetRelativeScale3D(FVector::OneVector);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> RowboatMesh(TEXT("/Game/LakeFight/Meshes/SM_LF_Rowboat.SM_LF_Rowboat"));
+	if (RowboatMesh.Succeeded())
 	{
-		VisualMesh->SetStaticMesh(CubeMesh.Object);
-		VisualMesh->SetRelativeScale3D(FVector(3.0f, 1.1f, 0.6f));
+		VisualMesh->SetStaticMesh(RowboatMesh.Object);
 	}
 
 	Buoyancy = CreateDefaultSubobject<ULFBuoyancyComponent>(TEXT("Buoyancy"));
 
+	// Camera rotation is driven manually (UpdateCamera) so yaw can lag more than pitch.
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
 	CameraArm->SetupAttachment(Hull);
+	CameraArm->SetUsingAbsoluteRotation(true);
 	CameraArm->TargetArmLength = 850.f;
 	CameraArm->SocketOffset = FVector(0.f, 0.f, 120.f);
-	CameraArm->SetRelativeRotation(FRotator(-18.f, 0.f, 0.f));
-	CameraArm->bInheritPitch = false; // don't seasick the player: follow yaw only
-	CameraArm->bInheritRoll = false;
-	CameraArm->bInheritYaw = true;
 	CameraArm->bEnableCameraLag = true;
-	CameraArm->CameraLagSpeed = 4.f;
-	CameraArm->bEnableCameraRotationLag = true;
-	CameraArm->CameraRotationLagSpeed = 3.5f;
+	CameraArm->CameraLagSpeed = 5.f;
+	CameraArm->bEnableCameraRotationLag = false;
 	CameraArm->bDoCollisionTest = false;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -70,9 +69,25 @@ void ALFBoat::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UPhysicalMaterial* PhysMat = HullPhysMaterial;
+	if (!PhysMat)
+	{
+		PhysMat = NewObject<UPhysicalMaterial>(this, TEXT("PM_LF_Hull_Runtime"));
+		PhysMat->Friction = HullFriction;
+		PhysMat->Restitution = HullRestitution;
+		PhysMat->bOverrideFrictionCombineMode = true;
+		PhysMat->FrictionCombineMode = EFrictionCombineMode::Min;
+		PhysMat->bOverrideRestitutionCombineMode = true;
+		PhysMat->RestitutionCombineMode = EFrictionCombineMode::Max;
+	}
+	Hull->SetPhysMaterialOverride(PhysMat);
+
 	Hull->SetMassOverrideInKg(NAME_None, HullMassKg, true);
 	Hull->SetCenterOfMass(CenterOfMassOffset);
 	Hull->OnComponentHit.AddDynamic(this, &ALFBoat::OnHullHit);
+
+	CameraRot = FRotator(CameraPitch, GetActorRotation().Yaw, 0.f);
+	CameraArm->SetWorldRotation(CameraRot);
 
 	if (SettleLogDelay > 0.f)
 	{
@@ -86,10 +101,24 @@ float ALFBoat::GetForwardSpeed() const
 	return float(FVector::DotProduct(Hull->GetPhysicsLinearVelocity(), GetActorForwardVector().GetSafeNormal2D()));
 }
 
+float ALFBoat::GetTurnAuthority() const
+{
+	const float V = GetForwardSpeed();
+	const float Authority = FMath::Clamp(FMath::Abs(V) / RudderFullSpeed, MinTurnAuthority, 1.f);
+	return V < 0.f ? Authority * ReverseRudderScale : Authority;
+}
+
 void ALFBoat::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	PreStepVelocity = Hull->GetPhysicsLinearVelocity();
+
+	// Throttle spool: rise toward a larger demand, fall toward a smaller one / reversal.
+	const bool bRising = FMath::Abs(ThrottleInput) > FMath::Abs(SpooledThrottle) && ThrottleInput * SpooledThrottle >= 0.f;
+	const float SpoolRate = 1.f / (bRising ? ThrottleRiseTime : ThrottleFallTime);
+	SpooledThrottle = FMath::FInterpConstantTo(SpooledThrottle, ThrottleInput, DeltaSeconds, SpoolRate);
+
+	UpdateCamera(DeltaSeconds);
 
 	if (!Hull->IsSimulatingPhysics() || Buoyancy->GetSubmergedFraction() <= 0.f)
 	{
@@ -98,33 +127,56 @@ void ALFBoat::Tick(float DeltaSeconds)
 
 	const FTransform& Xf = Hull->GetComponentTransform();
 	const FVector Fwd = Xf.GetUnitAxis(EAxis::X).GetSafeNormal2D();
-	const float SpeedAlpha = FMath::Clamp(FMath::Abs(GetForwardSpeed()) / FullEffectSpeed, 0.f, 1.f);
+	const FVector Right = Xf.GetUnitAxis(EAxis::Y).GetSafeNormal2D();
+	const float Mass = Hull->GetMass();
+	const float FwdSpeed = GetForwardSpeed();
+	const float Authority = GetTurnAuthority();
 
-	// Thrust at the stern, below the waterline.
-	if (!FMath::IsNearlyZero(ThrottleInput))
+	// Thrust at the stern, below the waterline (bow lifts because it acts below the centre of mass).
+	if (!FMath::IsNearlyZero(SpooledThrottle))
 	{
 		const FVector P = Xf.TransformPosition(ThrustPoint);
-		const float AirGap = float(P.Z) - Buoyancy->GetWaterHeightAt(P);
-		if (AirGap <= ThrustMaxAirGap)
+		if (float(P.Z) - Buoyancy->GetWaterHeightAt(P) <= ThrustMaxAirGap)
 		{
-			const float Scale = ThrottleInput > 0.f ? ThrottleInput : ThrottleInput * ReverseThrustScale;
-			Hull->AddForceAtLocation(Fwd * (Scale * ThrustAccel * Hull->GetMass()), P);
+			const float Scale = SpooledThrottle > 0.f ? SpooledThrottle : SpooledThrottle * ReverseThrustScale;
+			Hull->AddForceAtLocation(Fwd * (Scale * ThrustAccel * Mass), P);
 		}
+
+		// Squat: stern dips while accelerating from low speed (nose-up torque about -Right).
+		const float SpeedAlpha = FMath::Clamp(FMath::Abs(FwdSpeed) / RudderFullSpeed, 0.f, 1.f);
+		const float Squat = FMath::DegreesToRadians(SquatAccelDeg) * FMath::Max(SpooledThrottle, 0.f) * (1.f - SpeedAlpha);
+		Hull->AddTorqueInRadians(-Right * Squat, NAME_None, /*bAccelChange*/ true);
 	}
 
-	// Turn (yaw torque) + outward lean (roll torque) when turning at speed.
+	// Rudder: lateral force at the stern. Steer > 0 (right) pushes the stern left so the bow swings right.
+	// Moving backwards, the water hits the rudder from behind, so the force flips (steering inverts naturally).
 	if (!FMath::IsNearlyZero(SteerInput))
 	{
-		const float TurnScale = FMath::Lerp(StationaryTurnScale, 1.f, SpeedAlpha);
-		const float YawAccel = FMath::DegreesToRadians(TurnAccelDeg) * SteerInput * TurnScale;
-		Hull->AddTorqueInRadians(FVector(0.f, 0.f, YawAccel), NAME_None, /*bAccelChange*/ true);
+		const FVector P = Xf.TransformPosition(RudderPoint);
+		if (float(P.Z) - Buoyancy->GetWaterHeightAt(P) <= ThrustMaxAirGap)
+		{
+			const float FlowSign = FwdSpeed < 0.f ? -1.f : 1.f;
+			const float Lateral = -SteerInput * FlowSign * Authority * RudderForceAccel * Mass;
+			Hull->AddForceAtLocation(Right * Lateral, P);
+		}
 
-		// Steer > 0 turns right, so "outward" is the boat's left. Torque axis Up x Dir tips the deck top toward Dir.
-		const FVector Outward = -Xf.GetUnitAxis(EAxis::Y).GetSafeNormal2D() * FMath::Sign(SteerInput);
+		// Outward lean: steer right -> deck tips toward the boat's left. Torque axis Up x Dir tips the deck top toward Dir.
+		const FVector Outward = -Right * FMath::Sign(SteerInput);
 		const FVector LeanAxis = FVector::CrossProduct(FVector::UpVector, Outward);
-		const float LeanAccel = FMath::DegreesToRadians(LeanAccelDeg) * FMath::Abs(SteerInput) * SpeedAlpha;
+		const float LeanAccel = FMath::DegreesToRadians(LeanAccelDeg) * FMath::Abs(SteerInput) * Authority;
 		Hull->AddTorqueInRadians(LeanAxis * LeanAccel, NAME_None, /*bAccelChange*/ true);
 	}
+}
+
+void ALFBoat::UpdateCamera(float DeltaSeconds)
+{
+	const FRotator BoatRot = GetActorRotation();
+	const float YawAlpha = FMath::Clamp(DeltaSeconds * CameraYawLagSpeed, 0.f, 1.f);
+	const float PitchAlpha = FMath::Clamp(DeltaSeconds * CameraPitchLagSpeed, 0.f, 1.f);
+	CameraRot.Yaw = CameraRot.Yaw + FMath::FindDeltaAngleDegrees(CameraRot.Yaw, BoatRot.Yaw) * YawAlpha;
+	CameraRot.Pitch = FMath::Lerp(CameraRot.Pitch, CameraPitch + BoatRot.Pitch * CameraPitchFollow, PitchAlpha);
+	CameraRot.Roll = 0.f;
+	CameraArm->SetWorldRotation(CameraRot);
 }
 
 void ALFBoat::OnHullHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -154,9 +206,12 @@ void ALFBoat::OnHullHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	LastHitTime = Now;
 
 	const float S = FMath::Min(Closing, MaxHitSpeed);
-	Hull->AddImpulse(Away * (S * HitShoveScale) + FVector::UpVector * (S * HitPopScale), NAME_None, /*bVelChange*/ true);
+	const FVector Shove = (Away * (S * HitShoveScale) + FVector::UpVector * (S * HitPopScale)).GetClampedToMaxSize(MaxHitImpulse);
+	Hull->AddImpulse(Shove, NAME_None, /*bVelChange*/ true);
+
 	const FVector RollAxis = FVector::CrossProduct(FVector::UpVector, Away); // tips my deck away from the hit
-	Hull->AddAngularImpulseInRadians(RollAxis * (HitRollScale * S / 100.f), NAME_None, /*bVelChange*/ true);
+	const float Roll = FMath::Min(HitRollScale * S / 100.f, MaxHitRoll);
+	Hull->AddAngularImpulseInRadians(RollAxis * Roll, NAME_None, /*bVelChange*/ true);
 
 	const FVector SplashAt = Hit.ImpactPoint.IsNearlyZero() ? (GetActorLocation() + OtherActor->GetActorLocation()) * 0.5 : FVector(Hit.ImpactPoint);
 	OnSplash(SplashAt, S / MaxHitSpeed);

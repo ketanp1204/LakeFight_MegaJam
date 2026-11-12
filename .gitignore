@@ -17,3 +17,6 @@ Plugins/*/Intermediate/
 Recordings/
 *.mp4
 *.mkv
+# Python caches
+__pycache__/
+*.pyc

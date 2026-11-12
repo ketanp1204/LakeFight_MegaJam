@@ -1,0 +1,32 @@
+{
+  "asset": "SM_LF_Paddle",
+  "tris": 156,
+  "limit_exclusive": 300,
+  "objects": [
+    "SM_LF_Paddle"
+  ],
+  "bounds_min_m": [
+    0.0,
+    -0.145,
+    -0.034
+  ],
+  "bounds_max_m": [
+    1.6,
+    0.145,
+    0.034
+  ],
+  "size_m": [
+    1.6,
+    0.29,
+    0.068
+  ],
+  "origin": "grip; blade +X",
+  "palette": [
+    "M_LF_WoodDark",
+    "M_LF_Wood"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "30ba45e0b15340287f7f182be3f0934c9ec8dab938be7c6f01e1275a1a837662",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+  "notes": "Length exactly 1.6 m from grip end to blade tip."
+}

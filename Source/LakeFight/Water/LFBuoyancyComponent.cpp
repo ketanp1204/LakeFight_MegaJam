@@ -10,12 +10,12 @@ ULFBuoyancyComponent::ULFBuoyancyComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.TickGroup = TG_PrePhysics;
 
-	// Rowboat-sized default: 4 corners of a ~3 m x 1.2 m hull.
+	// Corners of the 3.0 x 1.35 m rowboat hull (ALFBoat::Hull), at the waterline.
 	Pontoons = {
-		FVector( 120.f,  45.f, 0.f),
-		FVector( 120.f, -45.f, 0.f),
-		FVector(-120.f,  45.f, 0.f),
-		FVector(-120.f, -45.f, 0.f),
+		FVector( 140.f,  60.f, 0.f),
+		FVector( 140.f, -60.f, 0.f),
+		FVector(-140.f,  60.f, 0.f),
+		FVector(-140.f, -60.f, 0.f),
 	};
 }
 
