@@ -1,0 +1,19 @@
+# Unreal
+Binaries/
+Intermediate/
+DerivedDataCache/
+Saved/
+Build/
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+.vs/
+.idea/
+*.sln
+*.suo
+*.VC.db
+*.opensdf
+*.sdf
+# Recordings and exports stay out of git
+Recordings/
+*.mp4
+*.mkv

@@ -1,0 +1,11 @@
+# Project-scoped Codex MCP config. Unreal editor must be open for unreal-mcp; Blender (with the
+# blender-mcp add-on server started) for blender. Only ONE client may hold the Blender connection.
+# If Codex rejects the HTTP entry, run in the Unreal console:
+#   ModelContextProtocol.GenerateClientConfig All
+# and merge the file it writes.
+[mcp_servers.unreal-mcp]
+url = "http://127.0.0.1:8000/mcp"
+
+[mcp_servers.blender]
+command = "uvx"
+args = ["blender-mcp"]
