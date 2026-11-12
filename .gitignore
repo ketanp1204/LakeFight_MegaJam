@@ -20,3 +20,6 @@ Recordings/
 # Python caches
 __pycache__/
 *.pyc
+
+# Playtest evidence folder
+Playtest/

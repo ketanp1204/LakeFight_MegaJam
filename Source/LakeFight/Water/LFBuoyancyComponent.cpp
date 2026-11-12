@@ -10,12 +10,12 @@ ULFBuoyancyComponent::ULFBuoyancyComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.TickGroup = TG_PrePhysics;
 
-	// Corners of the 3.0 x 1.35 m rowboat hull (ALFBoat::Hull), at the waterline.
+	// SM_LF_Rowboat hull corners at the waterline (stern is wide, bow tapers). Symmetric in X so the boat trims level.
 	Pontoons = {
-		FVector( 140.f,  60.f, 0.f),
-		FVector( 140.f, -60.f, 0.f),
-		FVector(-140.f,  60.f, 0.f),
-		FVector(-140.f, -60.f, 0.f),
+		FVector( 135.f,  35.f, 0.f),  // bow pontoons pulled inward to match the taper
+		FVector( 135.f, -35.f, 0.f),
+		FVector(-135.f,  55.f, 0.f),
+		FVector(-135.f, -55.f, 0.f),
 	};
 }
 

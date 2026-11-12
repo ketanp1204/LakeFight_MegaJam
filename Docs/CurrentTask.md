@@ -127,3 +127,61 @@ the editor viewport - probably auto-exposure).
 the lake inside an open hull. Proposed fix: a custom-stencil water mask (an invisible cap mesh in BP_LF_Boat writes custom depth/stencil; M_LF_Lake becomes Masked
 and clips water pixels behind it; needs r.CustomDepth=3). Flip the LFLakeSurface triangle winding, then Two Sided can go OFF; exposure/post-process for the lake colour; MCP still has no Python exec
 (the import step needs the human).
+
+## T01.2 - UCX collision, bump vs ram, ram juice, hull water mask (Claude Code, 12 Nov ~12:05-12:45 IST)
+
+**Files changed**
+- `Source/LakeFight/Boat/LFBoat.h/.cpp`: box hull + VisualMesh removed; new root `HullMesh` = SM_LF_Rowboat simulating with its own 6 UCX convexes;
+  mass override 180 kg; COM placed at (0,0,-15) cm (the shape's own COM was (-4.4, 0, -2.0), so the nudge is computed at BeginPlay, `[hull]` log);
+  `WaterMask` procedural cap (gunwale outline from `Art/BlenderScripts/SM_LF_Rowboat.py` PLAN/sheer, custom depth + stencil 1 only, built in
+  OnConstruction so it also works in the editor); bump/ram tiers + `[hit]` log; ram: target shove/heave/roll/pitch kick, rammer recoil + speed loss,
+  real-time hitstop, player-only camera shake + FOV punch + rumble, Niagara splash, `OnRamImpact` BlueprintImplementableEvent; `SpawnCollisionHandlingMethod = AlwaysSpawn`.
+- `Source/LakeFight/Water/LFBuoyancyComponent.cpp`: pontoons (135, +-35) bow / (-135, +-55) stern, symmetric in X.
+- `Source/LakeFight/Water/LFLakeSurface.cpp`: triangle winding flipped (now faces up).
+- `Source/LakeFight/LakeFight.Build.cs`: + Niagara. `Config/DefaultEngine.ini`: `r.CustomDepth=3`.
+- Assets: `M_LF_Lake` (Two Sided OFF; **Translucent** - see deviation; Opacity = hull water mask), `PM_LF_Hull` (Restitution 0.15),
+  `BP_LF_Boat` (SplashSystem = NS_LF_Splash, AlwaysSpawn), new `FX/NS_LF_Splash` (3 emitters from engine templates: DirectionalBurst spray,
+  OmnidirectionalBurst droplets, SimpleSpriteBurst "FoamRing" - **template defaults, not tuned**), `L_Lake01` (target boat re-placed, same transform).
+
+**Deviation (needs your OK):** spec said "M_LF_Lake masked". UE refuses SceneTexture (custom depth/stencil) reads in opaque/masked materials
+("except Single Layer Water", and this project uses Substrate). So the lake is **Translucent with opacity 1** (0 only where the mask clips). It looks opaque;
+the trade-offs are no depth write (fine for now; matters if we add translucent FX under water or DOF) and translucency lighting instead of the deferred path.
+
+**Mask check (screenshots, editor):** the cockpit shows the floorboards, not water, at roll 0 and at roll 15 deg (target boat temporarily rolled toward
+the camera, then restored and saved). Screenshots: scratchpad `mask1.png`, `mask_roll15.png`.
+
+**Collision check:** the physics body IS the UCX set of SM_LF_Rowboat (no box any more), so the outline matches the hull by construction. I could NOT
+produce a collision-view screenshot or a rail-to-rail contact test through MCP (no console `show collision`, no way to drive or teleport PIE actors).
+**Check by hand:** `show collision` in PIE, then push the two boats rail to rail.
+
+**Commands / results**
+- 2 builds (`Tools/ue.ps1 -Action build ... -EngineDir D:\UE_EpicGames\UE_5.8`), both Succeeded first try. I closed/reopened the editor myself
+  (graceful CloseMainWindow after saving all; relaunched UnrealEditor.exe with the uproject).
+- PIE #1 found 2 real bugs: the player pawn failed to spawn ("collision at spawn location") and the placed target boat had buoyancy disabled
+  (LF warning). Fixed: AlwaysSpawn (BP + C++) and re-placed the target instance. Final PIE 07:07:01-07:08:11 UTC (70 s), **no warnings or errors of any category**:
+  `[hull] BP_LF_Boat_C_0/1 mass=180 kg shapeCOM=(-4.39, 0, -1.99) -> COM=(0, 0, -15)`
+  `[settle] BP_LF_Boat_C_0 (player) t=3.0s Z=-2.8 water=-0.7 (diff -2.1 cm) pitch=-0.81 roll=1.30 -> level`
+  `[settle] BP_LF_Boat_C_1 (target) t=3.0s Z=4.6 water=5.1 (diff -0.5 cm) pitch=0.20 roll=-1.12 -> level`
+
+**[hit] logging:** `LogLF: [hit] <rammer> -> <target> tier=bump|RAM closing=<cm/s> strength=<0..1>` for every boat contact with closing >= 30 cm/s
+(once per pair per 0.3 s). **No contacts happened in my PIE runs** (I can't drive), so the tiers are unverified - ram the target a few times and grep the log for `[hit]`.
+
+**New / changed tunables (defaults)**
+- `LF|Hull`: HullMassKg 180, CenterOfMassLocal (0,0,-15), WaterMaskStencil 1, HullRestitution 0.15 (PM_LF_Hull 0.15).
+- `LF|Hit`: MinContactSpeed 30, RamMinSpeed 150, RamFullSpeed 600, RamShove 250, TargetShoveShare 0.7, RammerRecoilShare 0.3, RammerKeepSpeed 0.25,
+  RamHeave 120, RamRollKick 1.0 rad/s, RamPitchKick 0.5 rad/s, MaxHitImpulse 250, MaxHitRoll 1.2, HitCooldown 0.3, HitstopDilation 0.05,
+  HitstopMinTime 0.06, HitstopMaxTime 0.10 (real s), ShakeDuration 0.25, ShakeAmplitude 14 cm, ShakeFrequency 22 Hz, FovPunchDeg 5, FovPunchTime 0.3,
+  RumbleIntensity 0.8, RumbleDuration 0.2, SplashSystem NS_LF_Splash, bDebugSplash true (only used if SplashSystem is unset).
+- Removed: MinHitSpeed, MaxHitSpeed, HitShoveScale, HitPopScale, HitRollScale, VisualMesh/Hull box, CenterOfMassOffset.
+
+**Knobs for "bump too strong / ram too weak"**
+1. Bump too strong -> it is pure physics now: lower `PM_LF_Hull` Restitution (0.15 -> 0.05) and/or raise `RamMinSpeed` (150 -> 200) so fewer contacts count as rams.
+2. Ram too weak -> lower `RamFullSpeed` (600 -> 450) so typical rams reach full strength.
+3. Ram too weak -> raise `RamShove` (250 -> 350) together with `MaxHitImpulse` (250 -> 350); `RamHeave` 120 -> 180 for more lift.
+
+**Design notes:** the rammer = the boat moving faster into the contact; it resolves the pair once. The target shove is applied at the contact point's XY
+but at the target's COM height (so off-centre hits spin it; roll comes only from the clamped RamRollKick, which keeps "never flips" enforceable).
+Hitstop restores on FTSTicker (real time). Shake/FOV are applied in UpdateCamera, so they freeze during hitstop (reads as a freeze-frame).
+
+**Follow-ups:** tune NS_LF_Splash (shape the foam ring, water colours, scale by `Strength` user param - not added yet); collision-view verification
+by hand; the target boat placed in L_Lake01 had to be re-placed after the root-component change - future root changes need the same.

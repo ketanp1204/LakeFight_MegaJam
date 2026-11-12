@@ -4,7 +4,8 @@
 #include "GameFramework/Pawn.h"
 #include "LFBoat.generated.h"
 
-class UBoxComponent;
+class UProceduralMeshComponent;
+class UNiagaraSystem;
 class UStaticMeshComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -15,8 +16,7 @@ class UPhysicalMaterial;
 struct FInputActionValue;
 
 /**
- * Physics-simulated rowboat pawn. Box hull = physics body (root, fitted to SM_LF_Rowboat, origin at the waterline);
- * VisualMesh is cosmetic only (no collision).
+ * Physics-simulated rowboat pawn. Root = SM_LF_Rowboat simulating with its own UCX convexes (origin at the waterline).
  * Handling: spooled thrust at the stern below the waterline (bow lift + squat), steering as a LATERAL rudder force
  * at the stern whose authority scales with speed through the water (stern swings out, boat pivots near the bow,
  * yaw carries on after release), outward lean in turns. Boat-vs-boat hits add a clamped shove + roll for comedy.
@@ -30,11 +30,13 @@ public:
 	ALFBoat();
 
 	// --- Components ---
+	/** Root + physics body: SM_LF_Rowboat simulating with its own 6 UCX convexes (what you see is what collides). */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="LF|Boat")
-	TObjectPtr<UBoxComponent> Hull;
+	TObjectPtr<UStaticMeshComponent> HullMesh;
 
+	/** Invisible cap over the open cockpit at gunwale height. Custom depth/stencil only; M_LF_Lake clips water behind it. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="LF|Boat")
-	TObjectPtr<UStaticMeshComponent> VisualMesh;
+	TObjectPtr<UProceduralMeshComponent> WaterMask;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="LF|Boat")
 	TObjectPtr<ULFBuoyancyComponent> Buoyancy;
@@ -47,11 +49,15 @@ public:
 
 	// --- Hull ---
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hull", meta=(ClampMin="10"))
-	float HullMassKg = 250.f;
+	float HullMassKg = 180.f;
 
-	/** Centre of mass offset (cm, local). Lower = more stable against rolling. */
+	/** Centre of mass in hull-local space (cm; origin = waterline centre). Low = stable. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hull")
-	FVector CenterOfMassOffset = FVector(0.f, 0.f, -10.f);
+	FVector CenterOfMassLocal = FVector(0.f, 0.f, -15.f);
+
+	/** Custom stencil value written by WaterMask (M_LF_Lake clips water where stencil == this and the water is behind the cap). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hull", meta=(ClampMin="1", ClampMax="255"))
+	int32 WaterMaskStencil = 1;
 
 	/** PM_LF_Hull. If unset, a runtime material is built from HullFriction / HullRestitution. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hull")
@@ -61,7 +67,7 @@ public:
 	float HullFriction = 0.15f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hull", meta=(ClampMin="0", ClampMax="1"))
-	float HullRestitution = 0.35f;
+	float HullRestitution = 0.15f;
 
 	// --- Handling: thrust ---
 	/** Forward thrust as acceleration (cm/s^2). Top speed ~= ThrustAccel / Buoyancy.ForwardDrag. */
@@ -134,40 +140,99 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0", ClampMax="1"))
 	float CameraPitchFollow = 0.25f;
 
-	// --- Hits ---
-	/** Minimum closing speed (cm/s) for a boat-vs-boat hit to trigger the comedy response. */
+	// --- Hits: bump vs ram ---
+	/** Contacts slower than this (cm/s along the contact normal) are resting/scraping: ignored, not logged. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float MinHitSpeed = 120.f;
+	float MinContactSpeed = 30.f;
 
-	/** Closing speed is clamped to this (cm/s) before scaling. */
+	/** Closing speed (cm/s, along the contact normal) where a Bump becomes a Ram. Bumps: physics only, no extras. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float RamMinSpeed = 150.f;
+
+	/** Closing speed (cm/s) at which ram strength reaches 1 (linear from 0 at RamMinSpeed). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="1"))
-	float MaxHitSpeed = 900.f;
+	float RamFullSpeed = 600.f;
 
-	/** Extra shove away from the other boat, as velocity change per unit of closing speed. */
+	/** Total extra shove at full strength (cm/s velocity change), split between target and rammer. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float HitShoveScale = 0.35f;
+	float RamShove = 250.f;
 
-	/** Small upward pop, as velocity change per unit of closing speed. */
+	/** Share of RamShove given to the target (along the contact normal, at the contact point). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0", ClampMax="1"))
+	float TargetShoveShare = 0.7f;
+
+	/** Share of RamShove given back to the rammer as recoil. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0", ClampMax="1"))
+	float RammerRecoilShare = 0.3f;
+
+	/** Fraction of its speed toward the target the rammer keeps after a full-strength ram. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0", ClampMax="1"))
+	float RammerKeepSpeed = 0.25f;
+
+	/** Upward kick on the target at full strength (cm/s): it lifts and slaps down. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float HitPopScale = 0.06f;
+	float RamHeave = 120.f;
 
-	/** Cap on the comedic shove+pop velocity change (cm/s). Keeps full-speed rams from launching boats. */
+	/** Roll kick on the target at full strength (rad/s), tipping its deck away from the hit. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float RamRollKick = 1.0f;
+
+	/** Nose-up pitch kick on the target at full strength (rad/s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float RamPitchKick = 0.5f;
+
+	/** Cap on any comedic linear velocity change (cm/s). Rams rock but never launch. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
 	float MaxHitImpulse = 250.f;
 
-	/** Extra roll away from the hit (rad/s angular velocity change per 100 cm/s closing speed). */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float HitRollScale = 0.3f;
-
-	/** Cap on the comedic roll (rad/s angular velocity change). Rocks hard but never flips. */
+	/** Cap on any comedic angular velocity change (rad/s). Rams rock but never flip. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
 	float MaxHitRoll = 1.2f;
 
-	/** Seconds before the same boat can register another hit. */
+	/** Seconds before the same boats can register another contact. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float HitCooldown = 0.35f;
+	float HitCooldown = 0.3f;
 
-	/** Draw a debug sphere at splash points (placeholder until the Niagara splash lands). */
+	/** Hitstop: global time dilation during the freeze frame. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0.01", ClampMax="1"))
+	float HitstopDilation = 0.05f;
+
+	/** Hitstop length in REAL seconds at strength 0 and 1. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float HitstopMinTime = 0.06f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float HitstopMaxTime = 0.10f;
+
+	/** Player camera shake: duration (s), vertical amplitude at full strength (cm), frequency (Hz). Horizontal = 40% of vertical. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float ShakeDuration = 0.25f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float ShakeAmplitude = 14.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float ShakeFrequency = 22.f;
+
+	/** FOV punch at full strength (deg), easing back over FovPunchTime (s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float FovPunchDeg = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0.01"))
+	float FovPunchTime = 0.3f;
+
+	/** Gamepad rumble at full strength (0..1) and duration (s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0", ClampMax="1"))
+	float RumbleIntensity = 0.8f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
+	float RumbleDuration = 0.2f;
+
+	/** NS_LF_Splash, spawned at the contact point with user float "Strength". If unset, a debug sphere is drawn instead. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit")
+	TObjectPtr<UNiagaraSystem> SplashSystem;
+
+	/** Draw a debug sphere at splash points when SplashSystem is unset. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit")
 	bool bDebugSplash = true;
 
@@ -188,9 +253,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Debug", meta=(ClampMin="0"))
 	float SettleLogDelay = 3.f;
 
-	/** Splash hook: called on boat hits (and later paddles/falls). Default draws a debug sphere. */
+	/** Splash hook: called on rams (later paddles/falls). Default spawns SplashSystem (or a debug sphere). */
 	UFUNCTION(BlueprintNativeEvent, Category="LF|Boat")
 	void OnSplash(FVector Location, float Strength);
+
+	/** Called on BOTH boats of a ram (Ram tier only). Empty - for audio later. */
+	UFUNCTION(BlueprintImplementableEvent, Category="LF|Boat")
+	void OnRamImpact(float Strength);
 
 	/** Velocity before this frame's physics step (hit events fire after the solver has already separated the bodies). */
 	FVector GetPreStepVelocity() const { return PreStepVelocity; }
@@ -209,6 +278,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 
 private:
 	void OnThrottle(const FInputActionValue& Value);
@@ -217,6 +287,10 @@ private:
 	void OnSteerReleased();
 
 	void UpdateCamera(float DeltaSeconds);
+	void BuildWaterMask();
+	void ApplyRamTo(ALFBoat* Target, const FVector& TargetDir, const FVector& Contact, float Strength);
+	void PlayRamFeedback(float Strength);
+	void StartHitstop(float Strength);
 
 	UFUNCTION()
 	void OnHullHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
@@ -229,4 +303,9 @@ private:
 	float LastHitTime = -1000.f;
 	FVector PreStepVelocity = FVector::ZeroVector;
 	FRotator CameraRot = FRotator::ZeroRotator;
+	float BaseFov = 80.f;
+	float ShakeRemaining = 0.f;
+	float ShakeStrength = 0.f;
+	float FovPunchRemaining = 0.f;
+	float FovPunchStrength = 0.f;
 };

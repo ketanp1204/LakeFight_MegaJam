@@ -20,7 +20,8 @@ public class LakeFight : ModuleRules
 			"UMG",
 			"Slate",
 			"ProceduralMeshComponent",
-			"PhysicsCore"
+			"PhysicsCore",
+			"Niagara"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

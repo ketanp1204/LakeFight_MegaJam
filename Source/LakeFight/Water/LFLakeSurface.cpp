@@ -65,8 +65,8 @@ void ALFLakeSurface::BuildGrid()
 			const int32 B = A + 1;
 			const int32 C = A + (NX + 1);
 			const int32 D = C + 1;
-			// Clockwise seen from above (UE front face, X up / Y right in top view).
-			Tris.Append({ A, B, C, B, D, C });
+			// Flipped in T01.2: the previous order faced down and was back-face culled from above.
+			Tris.Append({ A, C, B, B, C, D });
 		}
 	}
 

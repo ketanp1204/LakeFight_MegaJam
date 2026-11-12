@@ -3,8 +3,8 @@
 #include "Water/LFWater.h"
 #include "Water/LFBuoyancyComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Containers/Ticker.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/StaticMesh.h"
@@ -14,42 +14,65 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
+#include "Kismet/GameplayStatics.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraSystem.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
+#include "ProceduralMeshComponent.h"
 #include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h"
+
+namespace
+{
+	// Gunwale outline of SM_LF_Rowboat (B01.1). Mirrors PLAN / sheer() in Art/BlenderScripts/SM_LF_Rowboat.py,
+	// inner top edge = (x*0.958, y*0.91, sheer(x) - 0.014). Metres, +X = bow. If the boat script changes, update this.
+	const FVector2D RowboatPlan[] = {
+		{-1.58, -.38}, {-1.27, -.57}, {-.75, -.65}, {-.15, -.67}, {.48, -.63}, {.98, -.45}, {1.35, -.20},
+		{1.58, 0.}, {1.35, .20}, {.98, .45}, {.48, .63}, {-.15, .67}, {-.75, .65}, {-1.27, .57}, {-1.58, .38}};
+
+	double RowboatSheer(double X)
+	{
+		const double Bow = FMath::Max(X / 1.58, 0.);
+		const double Stern = FMath::Max(-X / 1.58, 0.);
+		return .25 + .28 * Bow * Bow + .105 * Stern * Stern;
+	}
+}
 
 ALFBoat::ALFBoat()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
 
-	// Physics hull fitted to SM_LF_Rowboat: 3.0 x 1.35 x 0.5 m, centred on the waterline origin (keel at -25 cm).
-	Hull = CreateDefaultSubobject<UBoxComponent>(TEXT("Hull"));
-	Hull->SetBoxExtent(FVector(150.f, 67.5f, 25.f));
-	Hull->SetCollisionProfileName(UCollisionProfile::PhysicsActor_ProfileName);
-	Hull->SetSimulatePhysics(true);
-	Hull->SetNotifyRigidBodyCollision(true);
-	Hull->SetLinearDamping(0.f);   // drag comes from ULFBuoyancyComponent
-	Hull->SetAngularDamping(0.f);
-	Hull->SetHiddenInGame(true);
-	RootComponent = Hull;
-
-	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualMesh"));
-	VisualMesh->SetupAttachment(Hull);
-	VisualMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	VisualMesh->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
-	VisualMesh->SetRelativeScale3D(FVector::OneVector);
+	// Root = the rowboat mesh itself, simulating with its own UCX convex collision.
+	HullMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HullMesh"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> RowboatMesh(TEXT("/Game/LakeFight/Meshes/SM_LF_Rowboat.SM_LF_Rowboat"));
 	if (RowboatMesh.Succeeded())
 	{
-		VisualMesh->SetStaticMesh(RowboatMesh.Object);
+		HullMesh->SetStaticMesh(RowboatMesh.Object);
 	}
+	HullMesh->SetCollisionProfileName(UCollisionProfile::PhysicsActor_ProfileName);
+	HullMesh->SetSimulatePhysics(true);
+	HullMesh->SetNotifyRigidBodyCollision(true);
+	HullMesh->SetLinearDamping(0.f);   // drag comes from ULFBuoyancyComponent
+	HullMesh->SetAngularDamping(0.f);
+	RootComponent = HullMesh;
+
+	WaterMask = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("WaterMask"));
+	WaterMask->SetupAttachment(HullMesh);
+	WaterMask->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WaterMask->SetCastShadow(false);
+	WaterMask->SetRenderInMainPass(false);
+	WaterMask->SetRenderInDepthPass(false);
+	WaterMask->SetRenderCustomDepth(true);
+	WaterMask->bVisibleInReflectionCaptures = false;
+	WaterMask->bVisibleInRayTracing = false;
 
 	Buoyancy = CreateDefaultSubobject<ULFBuoyancyComponent>(TEXT("Buoyancy"));
 
 	// Camera rotation is driven manually (UpdateCamera) so yaw can lag more than pitch.
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
-	CameraArm->SetupAttachment(Hull);
+	CameraArm->SetupAttachment(HullMesh);
 	CameraArm->SetUsingAbsoluteRotation(true);
 	CameraArm->TargetArmLength = 850.f;
 	CameraArm->SocketOffset = FVector(0.f, 0.f, 120.f);
@@ -63,11 +86,48 @@ ALFBoat::ALFBoat()
 	Camera->SetFieldOfView(80.f);
 
 	AutoPossessAI = EAutoPossessAI::Disabled;
+	// Never refuse to spawn a boat (PIE spawn failed with the UCX hull at the PlayerStart); buoyancy settles it.
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+}
+
+void ALFBoat::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	BuildWaterMask(); // also in the editor, so the hull water mask is visible/checkable outside PIE
+}
+
+void ALFBoat::BuildWaterMask()
+{
+	// Fan of the gunwale outline (cm), both windings so it renders into custom depth from above and below.
+	TArray<FVector> Verts;
+	FVector Centre = FVector::ZeroVector;
+	for (const FVector2D& P : RowboatPlan)
+	{
+		const FVector V(P.X * .958 * 100., P.Y * .91 * 100., (RowboatSheer(P.X) - .014) * 100.);
+		Verts.Add(V);
+		Centre += V;
+	}
+	const int32 N = Verts.Num();
+	Centre /= N;
+	Verts.Add(Centre);
+	TArray<int32> Tris;
+	for (int32 i = 0; i < N; ++i)
+	{
+		const int32 j = (i + 1) % N;
+		Tris.Append({ N, i, j, N, j, i });
+	}
+	WaterMask->CreateMeshSection(0, Verts, Tris, {}, {}, {}, {}, /*bCreateCollision*/ false);
+	WaterMask->SetCustomDepthStencilValue(WaterMaskStencil);
 }
 
 void ALFBoat::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!HullMesh->GetStaticMesh())
+	{
+		UE_LOG(LogLF, Warning, TEXT("ALFBoat %s: HullMesh has no static mesh (SM_LF_Rowboat missing?) - no collision/physics body."), *GetName());
+	}
 
 	UPhysicalMaterial* PhysMat = HullPhysMaterial;
 	if (!PhysMat)
@@ -80,12 +140,24 @@ void ALFBoat::BeginPlay()
 		PhysMat->bOverrideRestitutionCombineMode = true;
 		PhysMat->RestitutionCombineMode = EFrictionCombineMode::Max;
 	}
-	Hull->SetPhysMaterialOverride(PhysMat);
+	HullMesh->SetPhysMaterialOverride(PhysMat);
 
-	Hull->SetMassOverrideInKg(NAME_None, HullMassKg, true);
-	Hull->SetCenterOfMass(CenterOfMassOffset);
-	Hull->OnComponentHit.AddDynamic(this, &ALFBoat::OnHullHit);
+	// Explicit mass, and centre of mass placed at CenterOfMassLocal (the nudge is relative to the shape's own COM).
+	HullMesh->SetMassOverrideInKg(NAME_None, HullMassKg, true);
+	const FTransform& Xf = HullMesh->GetComponentTransform();
+	const FVector ShapeCom = Xf.InverseTransformPosition(HullMesh->GetCenterOfMass());
+	HullMesh->SetCenterOfMass(CenterOfMassLocal - ShapeCom);
+	UE_LOG(LogLF, Display, TEXT("[hull] %s mass=%.0f kg shapeCOM=%s -> COM=%s"), *GetName(), HullMesh->GetMass(),
+		*ShapeCom.ToCompactString(), *Xf.InverseTransformPosition(HullMesh->GetCenterOfMass()).ToCompactString());
 
+	HullMesh->OnComponentHit.AddDynamic(this, &ALFBoat::OnHullHit);
+
+	if (WaterMask->GetNumSections() == 0)
+	{
+		BuildWaterMask();
+	}
+
+	BaseFov = Camera->FieldOfView;
 	CameraRot = FRotator(CameraPitch, GetActorRotation().Yaw, 0.f);
 	CameraArm->SetWorldRotation(CameraRot);
 
@@ -98,7 +170,7 @@ void ALFBoat::BeginPlay()
 
 float ALFBoat::GetForwardSpeed() const
 {
-	return float(FVector::DotProduct(Hull->GetPhysicsLinearVelocity(), GetActorForwardVector().GetSafeNormal2D()));
+	return float(FVector::DotProduct(HullMesh->GetPhysicsLinearVelocity(), GetActorForwardVector().GetSafeNormal2D()));
 }
 
 float ALFBoat::GetTurnAuthority() const
@@ -111,7 +183,7 @@ float ALFBoat::GetTurnAuthority() const
 void ALFBoat::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	PreStepVelocity = Hull->GetPhysicsLinearVelocity();
+	PreStepVelocity = HullMesh->GetPhysicsLinearVelocity();
 
 	// Throttle spool: rise toward a larger demand, fall toward a smaller one / reversal.
 	const bool bRising = FMath::Abs(ThrottleInput) > FMath::Abs(SpooledThrottle) && ThrottleInput * SpooledThrottle >= 0.f;
@@ -120,15 +192,15 @@ void ALFBoat::Tick(float DeltaSeconds)
 
 	UpdateCamera(DeltaSeconds);
 
-	if (!Hull->IsSimulatingPhysics() || Buoyancy->GetSubmergedFraction() <= 0.f)
+	if (!HullMesh->IsSimulatingPhysics() || Buoyancy->GetSubmergedFraction() <= 0.f)
 	{
 		return; // no grip in the air
 	}
 
-	const FTransform& Xf = Hull->GetComponentTransform();
+	const FTransform& Xf = HullMesh->GetComponentTransform();
 	const FVector Fwd = Xf.GetUnitAxis(EAxis::X).GetSafeNormal2D();
 	const FVector Right = Xf.GetUnitAxis(EAxis::Y).GetSafeNormal2D();
-	const float Mass = Hull->GetMass();
+	const float Mass = HullMesh->GetMass();
 	const float FwdSpeed = GetForwardSpeed();
 	const float Authority = GetTurnAuthority();
 
@@ -139,13 +211,13 @@ void ALFBoat::Tick(float DeltaSeconds)
 		if (float(P.Z) - Buoyancy->GetWaterHeightAt(P) <= ThrustMaxAirGap)
 		{
 			const float Scale = SpooledThrottle > 0.f ? SpooledThrottle : SpooledThrottle * ReverseThrustScale;
-			Hull->AddForceAtLocation(Fwd * (Scale * ThrustAccel * Mass), P);
+			HullMesh->AddForceAtLocation(Fwd * (Scale * ThrustAccel * Mass), P);
 		}
 
 		// Squat: stern dips while accelerating from low speed (nose-up torque about -Right).
 		const float SpeedAlpha = FMath::Clamp(FMath::Abs(FwdSpeed) / RudderFullSpeed, 0.f, 1.f);
 		const float Squat = FMath::DegreesToRadians(SquatAccelDeg) * FMath::Max(SpooledThrottle, 0.f) * (1.f - SpeedAlpha);
-		Hull->AddTorqueInRadians(-Right * Squat, NAME_None, /*bAccelChange*/ true);
+		HullMesh->AddTorqueInRadians(-Right * Squat, NAME_None, /*bAccelChange*/ true);
 	}
 
 	// Rudder: lateral force at the stern. Steer > 0 (right) pushes the stern left so the bow swings right.
@@ -157,14 +229,14 @@ void ALFBoat::Tick(float DeltaSeconds)
 		{
 			const float FlowSign = FwdSpeed < 0.f ? -1.f : 1.f;
 			const float Lateral = -SteerInput * FlowSign * Authority * RudderForceAccel * Mass;
-			Hull->AddForceAtLocation(Right * Lateral, P);
+			HullMesh->AddForceAtLocation(Right * Lateral, P);
 		}
 
 		// Outward lean: steer right -> deck tips toward the boat's left. Torque axis Up x Dir tips the deck top toward Dir.
 		const FVector Outward = -Right * FMath::Sign(SteerInput);
 		const FVector LeanAxis = FVector::CrossProduct(FVector::UpVector, Outward);
 		const float LeanAccel = FMath::DegreesToRadians(LeanAccelDeg) * FMath::Abs(SteerInput) * Authority;
-		Hull->AddTorqueInRadians(LeanAxis * LeanAccel, NAME_None, /*bAccelChange*/ true);
+		HullMesh->AddTorqueInRadians(LeanAxis * LeanAccel, NAME_None, /*bAccelChange*/ true);
 	}
 }
 
@@ -177,49 +249,172 @@ void ALFBoat::UpdateCamera(float DeltaSeconds)
 	CameraRot.Pitch = FMath::Lerp(CameraRot.Pitch, CameraPitch + BoatRot.Pitch * CameraPitchFollow, PitchAlpha);
 	CameraRot.Roll = 0.f;
 	CameraArm->SetWorldRotation(CameraRot);
+
+	// Ram feedback (player only): mostly-vertical shake + FOV punch easing back.
+	FVector ShakeOffset = FVector::ZeroVector;
+	if (ShakeRemaining > 0.f)
+	{
+		ShakeRemaining = FMath::Max(ShakeRemaining - DeltaSeconds, 0.f);
+		const float Fade = ShakeDuration > 0.f ? ShakeRemaining / ShakeDuration : 0.f;
+		const float T = (ShakeDuration - ShakeRemaining) * ShakeFrequency * UE_TWO_PI;
+		const float Amp = ShakeAmplitude * ShakeStrength * Fade;
+		ShakeOffset = FVector(0.f, FMath::Sin(T * 1.37f) * Amp * 0.4f, FMath::Sin(T) * Amp);
+	}
+	Camera->SetRelativeLocation(ShakeOffset);
+
+	float Fov = BaseFov;
+	if (FovPunchRemaining > 0.f)
+	{
+		FovPunchRemaining = FMath::Max(FovPunchRemaining - DeltaSeconds, 0.f);
+		const float A = FovPunchRemaining / FovPunchTime;
+		Fov += FovPunchDeg * FovPunchStrength * A * A; // ease out
+	}
+	Camera->SetFieldOfView(Fov);
 }
+
+// ---------------------------------------------------------------- Hits
 
 void ALFBoat::OnHullHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	const ALFBoat* OtherBoat = Cast<ALFBoat>(OtherActor);
-	if (!OtherBoat)
+	ALFBoat* Other = Cast<ALFBoat>(OtherActor);
+	if (!Other)
 	{
 		return;
 	}
 	const float Now = GetWorld()->GetTimeSeconds();
-	if (Now - LastHitTime < HitCooldown)
+	if (Now - LastHitTime < HitCooldown || Now - Other->LastHitTime < HitCooldown)
 	{
 		return;
 	}
 
-	// Direction from the other boat to me, flat. Closing speed uses pre-solve velocities.
-	FVector Away = (GetActorLocation() - OtherActor->GetActorLocation()).GetSafeNormal2D();
-	if (Away.IsNearlyZero())
+	// Flat contact normal, pointing from the other boat toward me.
+	FVector N = FVector(Hit.ImpactNormal.X, Hit.ImpactNormal.Y, 0.f).GetSafeNormal();
+	const FVector OtherToMe = (GetActorLocation() - Other->GetActorLocation()).GetSafeNormal2D();
+	if (N.IsNearlyZero())
 	{
-		Away = FVector(Hit.ImpactNormal.X, Hit.ImpactNormal.Y, 0.f).GetSafeNormal();
+		N = OtherToMe;
 	}
-	const float Closing = float(FVector::DotProduct(OtherBoat->GetPreStepVelocity() - PreStepVelocity, Away));
-	if (Closing < MinHitSpeed)
+	if (FVector::DotProduct(N, OtherToMe) < 0.f)
+	{
+		N = -N;
+	}
+
+	// Closing speed along the normal, from pre-solve velocities (both boats see the same value).
+	const FVector MyV = PreStepVelocity;
+	const FVector OtherV = Other->GetPreStepVelocity();
+	const float Closing = float(FVector::DotProduct(OtherV - MyV, N));
+	if (Closing < MinContactSpeed)
+	{
+		return;
+	}
+
+	// The boat moving faster into the contact is the rammer; it resolves the pair once.
+	const float MyApproach = float(FVector::DotProduct(MyV, -N));
+	const float OtherApproach = float(FVector::DotProduct(OtherV, N));
+	const bool bIAmRammer = MyApproach > OtherApproach || (MyApproach == OtherApproach && GetUniqueID() < Other->GetUniqueID());
+	if (!bIAmRammer)
 	{
 		return;
 	}
 	LastHitTime = Now;
+	Other->LastHitTime = Now;
 
-	const float S = FMath::Min(Closing, MaxHitSpeed);
-	const FVector Shove = (Away * (S * HitShoveScale) + FVector::UpVector * (S * HitPopScale)).GetClampedToMaxSize(MaxHitImpulse);
-	Hull->AddImpulse(Shove, NAME_None, /*bVelChange*/ true);
+	const bool bRam = Closing >= RamMinSpeed;
+	const float Strength = bRam ? FMath::Clamp((Closing - RamMinSpeed) / FMath::Max(RamFullSpeed - RamMinSpeed, 1.f), 0.f, 1.f) : 0.f;
+	const FVector Contact = Hit.ImpactPoint.IsNearlyZero() ? (GetActorLocation() + Other->GetActorLocation()) * 0.5 : FVector(Hit.ImpactPoint);
 
-	const FVector RollAxis = FVector::CrossProduct(FVector::UpVector, Away); // tips my deck away from the hit
-	const float Roll = FMath::Min(HitRollScale * S / 100.f, MaxHitRoll);
-	Hull->AddAngularImpulseInRadians(RollAxis * Roll, NAME_None, /*bVelChange*/ true);
+	UE_LOG(LogLF, Display, TEXT("[hit] %s -> %s tier=%s closing=%.0f cm/s strength=%.2f"),
+		*GetName(), *Other->GetName(), bRam ? TEXT("RAM") : TEXT("bump"), Closing, Strength);
 
-	const FVector SplashAt = Hit.ImpactPoint.IsNearlyZero() ? (GetActorLocation() + OtherActor->GetActorLocation()) * 0.5 : FVector(Hit.ImpactPoint);
-	OnSplash(SplashAt, S / MaxHitSpeed);
+	if (!bRam)
+	{
+		return; // bump: physics only
+	}
+
+	ApplyRamTo(Other, -N, Contact, Strength);
+
+	OnSplash(Contact, Strength);
+	OnRamImpact(Strength);
+	Other->OnRamImpact(Strength);
+	PlayRamFeedback(Strength);
+	Other->PlayRamFeedback(Strength);
+	StartHitstop(Strength);
+}
+
+void ALFBoat::ApplyRamTo(ALFBoat* Target, const FVector& TargetDir, const FVector& Contact, float Strength)
+{
+	UPrimitiveComponent* TBody = Target->HullMesh;
+	const float Shove = RamShove * Strength;
+
+	// Target: shove along the contact normal + heave, applied at the contact point's horizontal position but at the
+	// target's centre-of-mass height (so it yaws from off-centre hits, while roll stays within the explicit clamp).
+	FVector At = Contact;
+	At.Z = TBody->GetCenterOfMass().Z;
+	const FVector TargetDv = (TargetDir * (Shove * TargetShoveShare) + FVector::UpVector * (RamHeave * Strength)).GetClampedToMaxSize(MaxHitImpulse);
+	TBody->AddImpulseAtLocation(TargetDv * TBody->GetMass(), At);
+
+	// Target roll away from the hit + nose-up pitch kick: lifts and slaps down.
+	const FVector RollAxis = FVector::CrossProduct(FVector::UpVector, TargetDir);
+	const FVector PitchAxis = -Target->GetActorRightVector();
+	const FVector Kick = (RollAxis * (RamRollKick * Strength) + PitchAxis * (RamPitchKick * Strength)).GetClampedToMaxSize(MaxHitRoll);
+	TBody->AddAngularImpulseInRadians(Kick, NAME_None, /*bVelChange*/ true);
+
+	// Rammer: recoil + loses most of its remaining speed toward the target.
+	const FVector Back = -TargetDir;
+	FVector MyDv = (Back * (Shove * RammerRecoilShare)).GetClampedToMaxSize(MaxHitImpulse);
+	const float Toward = float(FVector::DotProduct(HullMesh->GetPhysicsLinearVelocity(), TargetDir));
+	if (Toward > 0.f)
+	{
+		MyDv += Back * (Toward * (1.f - RammerKeepSpeed) * Strength);
+	}
+	HullMesh->AddImpulse(MyDv, NAME_None, /*bVelChange*/ true);
+}
+
+void ALFBoat::PlayRamFeedback(float Strength)
+{
+	APlayerController* PC = Cast<APlayerController>(Controller);
+	if (!PC || !PC->IsLocalController())
+	{
+		return;
+	}
+	ShakeRemaining = ShakeDuration;
+	ShakeStrength = FMath::Max(Strength, 0.25f);
+	FovPunchRemaining = FovPunchTime;
+	FovPunchStrength = FMath::Max(Strength, 0.25f);
+	PC->PlayDynamicForceFeedback(RumbleIntensity * FMath::Max(Strength, 0.3f), RumbleDuration, true, true, true, true);
+}
+
+void ALFBoat::StartHitstop(float Strength)
+{
+	UWorld* World = GetWorld();
+	if (!World || HitstopDilation >= 1.f)
+	{
+		return;
+	}
+	const float RealSeconds = FMath::Lerp(HitstopMinTime, HitstopMaxTime, Strength);
+	UGameplayStatics::SetGlobalTimeDilation(World, HitstopDilation);
+	// Restore on a REAL-time ticker (game timers would be slowed by the dilation itself).
+	TWeakObjectPtr<UWorld> WeakWorld(World);
+	FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([WeakWorld](float) -> bool
+	{
+		if (UWorld* W = WeakWorld.Get())
+		{
+			UGameplayStatics::SetGlobalTimeDilation(W, 1.f);
+		}
+		return false; // one-shot
+	}), RealSeconds);
 }
 
 void ALFBoat::OnSplash_Implementation(FVector Location, float Strength)
 {
-	if (bDebugSplash)
+	if (SplashSystem)
+	{
+		if (UNiagaraComponent* NC = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SplashSystem, Location))
+		{
+			NC->SetVariableFloat(TEXT("Strength"), Strength);
+		}
+	}
+	else if (bDebugSplash)
 	{
 		DrawDebugSphere(GetWorld(), Location, 40.f + 120.f * Strength, 12, FColor::Cyan, false, 0.6f, 0, 3.f);
 	}
