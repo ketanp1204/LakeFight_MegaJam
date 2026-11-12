@@ -1,0 +1,38 @@
+{
+  "asset": "SM_LF_Crate",
+  "bounds_max_m": [
+    0.3,
+    0.2,
+    0.3
+  ],
+  "bounds_min_m": [
+    -0.3,
+    -0.2,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Crate.fbx",
+  "geometry_sha256": "c912f3ac663744c904be2e44f8460578a79c5efe418eb274f7b1ee4c43a70608",
+  "limit_exclusive": 300,
+  "nonmanifold_edges": 0,
+  "notes": "Open top and genuine slat gaps; no lid or hidden solid fill.",
+  "objects": [
+    "SM_LF_Crate"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "size_m": [
+    0.6,
+    0.4,
+    0.3
+  ],
+  "tris": 288,
+  "status": "PASS",
+  "script": "SM_LF_Crate.py",
+  "consecutive_runs_verified": 2,
+  "failures": 0,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Crate.png",
+  "fbx_bytes": 18844
+}

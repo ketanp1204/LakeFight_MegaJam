@@ -1,0 +1,37 @@
+{
+  "asset": "SM_LF_Rock_02",
+  "bounds_max_m": [
+    1.05,
+    0.7,
+    1.2
+  ],
+  "bounds_min_m": [
+    -1.05,
+    -0.7,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rock_02.fbx",
+  "geometry_sha256": "9f94f385aa2dfd9196706a422010a1767009d0f1f731bf903ff49431b275ba2a",
+  "limit_exclusive": 300,
+  "nonmanifold_edges": 0,
+  "notes": "Medium leaning boulder with broad lower shoulder; fixed seed 1102.",
+  "objects": [
+    "SM_LF_Rock_02"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Rock"
+  ],
+  "size_m": [
+    2.1,
+    1.4,
+    1.2
+  ],
+  "tris": 60,
+  "status": "PASS",
+  "script": "SM_LF_Rock_02.py",
+  "consecutive_runs_verified": 2,
+  "failures": 0,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rock_02.png",
+  "fbx_bytes": 16556
+}

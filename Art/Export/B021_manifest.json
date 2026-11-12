@@ -1,0 +1,756 @@
+{
+  "task": "B02.1",
+  "started_utc": "2026-11-12T06:54:21+00:00",
+  "completed_utc": "2026-11-12T07:05:51.324616+00:00",
+  "blender": "5.1.0",
+  "status": "complete",
+  "assets": [
+    {
+      "asset": "SM_LF_Rowboat",
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "bounds_min_m": [
+        -1.598960041999817,
+        -0.7095000147819519,
+        -0.25
+      ],
+      "broadside_flare_degrees": 11,
+      "geometry_sha256": "c2c4df5a3d978ba98a4eae8f59f74f73cb33ddd65988d281570b57a67901612d",
+      "gunwale_bow_rise_added_m": 0.2,
+      "gunwale_stern_rise_added_m": 0.08,
+      "nonmanifold_edges": {},
+      "objects": [
+        "SM_LF_Rowboat",
+        "UCX_SM_LF_Rowboat_00",
+        "UCX_SM_LF_Rowboat_01",
+        "UCX_SM_LF_Rowboat_02",
+        "UCX_SM_LF_Rowboat_03",
+        "UCX_SM_LF_Rowboat_04",
+        "UCX_SM_LF_Rowboat_05"
+      ],
+      "origin_above_lowest_m": 0.25,
+      "render_tris": 1214,
+      "size_m": [
+        3.19792,
+        1.419,
+        0.802
+      ],
+      "total_tris": 1286,
+      "ucx_tris": 72,
+      "status": "PASS",
+      "script": "SM_LF_Rowboat.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rowboat.png",
+      "fbx_bytes": 45724,
+      "failures": 0,
+      "tris": 1286
+    },
+    {
+      "asset": "SM_LF_Rowboat_Blue",
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "bounds_min_m": [
+        -1.598960041999817,
+        -0.7095000147819519,
+        -0.25
+      ],
+      "broadside_flare_degrees": 11,
+      "geometry_sha256": "fbe97b81552c3a3fbcb8b92024cb485f3906dcd01d9a341696b55711d1caa5e2",
+      "gunwale_bow_rise_added_m": 0.2,
+      "gunwale_stern_rise_added_m": 0.08,
+      "nonmanifold_edges": {},
+      "objects": [
+        "SM_LF_Rowboat_Blue",
+        "UCX_SM_LF_Rowboat_Blue_00",
+        "UCX_SM_LF_Rowboat_Blue_01",
+        "UCX_SM_LF_Rowboat_Blue_02",
+        "UCX_SM_LF_Rowboat_Blue_03",
+        "UCX_SM_LF_Rowboat_Blue_04",
+        "UCX_SM_LF_Rowboat_Blue_05"
+      ],
+      "origin_above_lowest_m": 0.25,
+      "render_tris": 1214,
+      "size_m": [
+        3.19792,
+        1.419,
+        0.802
+      ],
+      "total_tris": 1286,
+      "ucx_tris": 72,
+      "status": "PASS",
+      "script": "SM_LF_Rowboat.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rowboat_Blue.png",
+      "fbx_bytes": 45788,
+      "failures": 0,
+      "tris": 1286
+    },
+    {
+      "asset": "SM_LF_Rowboat_Green",
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "bounds_min_m": [
+        -1.598960041999817,
+        -0.7095000147819519,
+        -0.25
+      ],
+      "broadside_flare_degrees": 11,
+      "geometry_sha256": "657eea3f03553abd14c36109a0bc581477725d790e001ab3b3d8615e814ba0d7",
+      "gunwale_bow_rise_added_m": 0.2,
+      "gunwale_stern_rise_added_m": 0.08,
+      "nonmanifold_edges": {},
+      "objects": [
+        "SM_LF_Rowboat_Green",
+        "UCX_SM_LF_Rowboat_Green_00",
+        "UCX_SM_LF_Rowboat_Green_01",
+        "UCX_SM_LF_Rowboat_Green_02",
+        "UCX_SM_LF_Rowboat_Green_03",
+        "UCX_SM_LF_Rowboat_Green_04",
+        "UCX_SM_LF_Rowboat_Green_05"
+      ],
+      "origin_above_lowest_m": 0.25,
+      "render_tris": 1214,
+      "size_m": [
+        3.19792,
+        1.419,
+        0.802
+      ],
+      "total_tris": 1286,
+      "ucx_tris": 72,
+      "status": "PASS",
+      "script": "SM_LF_Rowboat.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rowboat_Green.png",
+      "fbx_bytes": 45804,
+      "failures": 0,
+      "tris": 1286
+    },
+    {
+      "asset": "SM_LF_Rowboat_Yellow",
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "bounds_min_m": [
+        -1.598960041999817,
+        -0.7095000147819519,
+        -0.25
+      ],
+      "broadside_flare_degrees": 11,
+      "geometry_sha256": "3372df7e318d6c76bdb3341eda16ec97413168d66201979516705fc77d96c1b0",
+      "gunwale_bow_rise_added_m": 0.2,
+      "gunwale_stern_rise_added_m": 0.08,
+      "nonmanifold_edges": {},
+      "objects": [
+        "SM_LF_Rowboat_Yellow",
+        "UCX_SM_LF_Rowboat_Yellow_00",
+        "UCX_SM_LF_Rowboat_Yellow_01",
+        "UCX_SM_LF_Rowboat_Yellow_02",
+        "UCX_SM_LF_Rowboat_Yellow_03",
+        "UCX_SM_LF_Rowboat_Yellow_04",
+        "UCX_SM_LF_Rowboat_Yellow_05"
+      ],
+      "origin_above_lowest_m": 0.25,
+      "render_tris": 1214,
+      "size_m": [
+        3.19792,
+        1.419,
+        0.802
+      ],
+      "total_tris": 1286,
+      "ucx_tris": 72,
+      "status": "PASS",
+      "script": "SM_LF_Rowboat.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rowboat_Yellow.png",
+      "fbx_bytes": 45820,
+      "failures": 0,
+      "tris": 1286
+    },
+    {
+      "asset": "SM_LF_Shack",
+      "bounds_max_m": [
+        2.25,
+        1.723529,
+        3.3025
+      ],
+      "bounds_min_m": [
+        -2.25,
+        -1.723529,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shack.fbx",
+      "geometry_sha256": "85bd684795b3d302ce6ba8787f7ea67ff335d67a98011bb8c6192054b98eaf9f",
+      "limit_exclusive": 1500,
+      "nonmanifold_edges": 0,
+      "notes": "4 x 3 m walls, overhanging Moss pitched roof, 0.95 x 2.05 m clear doorway and 0.9 x 0.8 m window. Both openings ray-tested; no glass or door panel.",
+      "objects": [
+        "SM_LF_Shack"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Moss",
+        "M_LF_PaintCream",
+        "M_LF_Wood",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        4.5,
+        3.447059,
+        3.3025
+      ],
+      "tris": 1188,
+      "status": "PASS",
+      "script": "SM_LF_Shack.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Shack.png",
+      "fbx_bytes": 31052,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_Buoy",
+      "bounds_max_m": [
+        0.34,
+        0.275806,
+        1.12
+      ],
+      "bounds_min_m": [
+        -0.29,
+        -0.275806,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Buoy.fbx",
+      "geometry_sha256": "0de5943ae226f3e6448bb86978e8331569bd5ad2a6b0bd415dc6631974a2ae5d",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Round 0.58 m body, cream equatorial band, orange/cream swallowtail flag, metal mooring eye. Base origin, overall height 1.12 m.",
+      "objects": [
+        "SM_LF_Buoy"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Metal",
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange"
+      ],
+      "size_m": [
+        0.63,
+        0.551613,
+        1.12
+      ],
+      "tris": 236,
+      "status": "PASS",
+      "script": "SM_LF_Buoy.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Buoy.png",
+      "fbx_bytes": 21388,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_Fish_A",
+      "bounds_max_m": [
+        0.2,
+        0.045,
+        0.219
+      ],
+      "bounds_min_m": [
+        -0.2,
+        -0.045,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Fish_A.fbx",
+      "geometry_sha256": "6335e764e822a60bf73169b18a2dd8980ca1ad7ea56872b56e24a1663b2f6b0a",
+      "limit_exclusive": 200,
+      "nonmanifold_edges": 0,
+      "notes": "0.4 m nose-to-tail; eight-sided black domed eyes with thin cream rings; shared geometry. Gold is the director-approved PaintYellow bonus-fish exception.",
+      "objects": [
+        "SM_LF_Fish_A"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Black",
+        "M_LF_PaintCream",
+        "M_LF_Reed",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        0.4,
+        0.09,
+        0.219
+      ],
+      "tris": 180,
+      "status": "PASS",
+      "script": "SM_LF_Fish.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Fish_A.png",
+      "fbx_bytes": 21660,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_Fish_B",
+      "bounds_max_m": [
+        0.2,
+        0.045,
+        0.219
+      ],
+      "bounds_min_m": [
+        -0.2,
+        -0.045,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Fish_B.fbx",
+      "geometry_sha256": "c13e536ad284ceceaee092f9e0e4c0023954fa8548fcc78486df1f0294d45232",
+      "limit_exclusive": 200,
+      "nonmanifold_edges": 0,
+      "notes": "0.4 m nose-to-tail; eight-sided black domed eyes with thin cream rings; shared geometry. Gold is the director-approved PaintYellow bonus-fish exception.",
+      "objects": [
+        "SM_LF_Fish_B"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Black",
+        "M_LF_Metal",
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange"
+      ],
+      "size_m": [
+        0.4,
+        0.09,
+        0.219
+      ],
+      "tris": 180,
+      "status": "PASS",
+      "script": "SM_LF_Fish.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Fish_B.png",
+      "fbx_bytes": 21676,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_Fish_Gold",
+      "bounds_max_m": [
+        0.2,
+        0.045,
+        0.219
+      ],
+      "bounds_min_m": [
+        -0.2,
+        -0.045,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Fish_Gold.fbx",
+      "geometry_sha256": "22f14bc8ca17996a06e989b5502f972c2e663359ce2a249df91a4617983684ad",
+      "limit_exclusive": 200,
+      "nonmanifold_edges": 0,
+      "notes": "0.4 m nose-to-tail; eight-sided black domed eyes with thin cream rings; shared geometry. Gold is the director-approved PaintYellow bonus-fish exception.",
+      "objects": [
+        "SM_LF_Fish_Gold"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Black",
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange",
+        "M_LF_PaintYellow"
+      ],
+      "size_m": [
+        0.4,
+        0.09,
+        0.219
+      ],
+      "tris": 180,
+      "status": "PASS",
+      "script": "SM_LF_Fish.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Fish_Gold.png",
+      "fbx_bytes": 21676,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_Paddle",
+      "bounds_max_m": [
+        1.6,
+        0.1885,
+        0.0325
+      ],
+      "bounds_min_m": [
+        0.0,
+        -0.1885,
+        -0.0325
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+      "geometry_sha256": "4ae60ad2c14f88e3552827ee55c18f0f9453bf25ecfa4d19257f584890d1daf1",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "1.6 m grip-to-tip; 4.0-4.2 cm shaft diameter; 0.377 m blade beam (1.3x), blade thickness tapers 2.8 to 2.2 cm.",
+      "objects": [
+        "SM_LF_Paddle"
+      ],
+      "origin": "grip; blade +X",
+      "palette": [
+        "M_LF_Wood",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        1.6,
+        0.377,
+        0.065
+      ],
+      "tris": 156,
+      "status": "PASS",
+      "script": "SM_LF_Paddle.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Paddle.png",
+      "fbx_bytes": 18412,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_Reeds",
+      "bounds_max_m": [
+        0.451184,
+        0.43625,
+        1.2
+      ],
+      "bounds_min_m": [
+        -0.451184,
+        -0.43625,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Reeds.fbx",
+      "geometry_sha256": "e1db248323fe71b02e2a107ab6e35f2fbd45cb2d2fb94bfe5968d24ca89a5165",
+      "limit_exclusive": 400,
+      "nonmanifold_edges": 0,
+      "notes": "Ten deterministic stems, six seed heads, ten solid 1 cm leaves; exactly 1.2 m tall; no alpha cards.",
+      "objects": [
+        "SM_LF_Reeds"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Reed",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        0.902369,
+        0.872499,
+        1.2
+      ],
+      "tris": 356,
+      "status": "PASS",
+      "script": "SM_LF_Reeds.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Reeds.png",
+      "fbx_bytes": 25372,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_ReedBed",
+      "bounds_max_m": [
+        2.0,
+        1.5,
+        1.8
+      ],
+      "bounds_min_m": [
+        -2.0,
+        -1.5,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx",
+      "geometry_sha256": "89146d32c84d536005b0a4538ebf1d63cb675a21688ea43b124a388bb4db76b4",
+      "limit_exclusive": 3000,
+      "nonmanifold_edges": 0,
+      "notes": "4 x 3 m envelope; 30 reeds, 18 cattail heads, 180 broad solid ~1 cm leaves; 1.2-1.8 m stem-top heights; no alpha cards.",
+      "objects": [
+        "SM_LF_ReedBed"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Reed",
+        "M_LF_WoodDark"
+      ],
+      "reed_count": 30,
+      "side_screen_probe": {
+        "hits": 637,
+        "occlusion_fraction": 0.9493,
+        "samples": 671,
+        "window": "3 m wide x Z=0.10..0.55 m; rays from -Y through bed"
+      },
+      "size_m": [
+        4.0,
+        3.0,
+        1.8
+      ],
+      "tris": 2988,
+      "status": "PASS",
+      "script": "SM_LF_ReedBed.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_ReedBed.png",
+      "fbx_bytes": 100684,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_Rock_03",
+      "bounds_max_m": [
+        1.5,
+        1.05,
+        1.1
+      ],
+      "bounds_min_m": [
+        -1.5,
+        -1.05,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rock_03.fbx",
+      "geometry_sha256": "48de38644ff72d9f46e843c67b94a732be1969953c34d9a5dc9ea3a50f1f9efa",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Large single slab with a planar top at 1.1 m; no dish; fixed seed 1103.",
+      "objects": [
+        "SM_LF_Rock_03"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Rock"
+      ],
+      "size_m": [
+        3.0,
+        2.1,
+        1.1
+      ],
+      "tris": 68,
+      "status": "PASS",
+      "script": "SM_LF_Rock_03.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rock_03.png",
+      "fbx_bytes": 16700,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_TeamFlag_Red",
+      "bounds_max_m": [
+        1.145,
+        0.11,
+        2.58
+      ],
+      "bounds_min_m": [
+        -0.11,
+        -0.11,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Red.fbx",
+      "geometry_sha256": "8432c5c3b75bcd7a73b69d5e5030bfb056bf87183904efc1eb2b9bdfbd8dd539",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.",
+      "objects": [
+        "SM_LF_TeamFlag_Red",
+        "SM_LF_TeamFlag_Red_Flag"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Metal",
+        "M_LF_PaintCream",
+        "M_LF_PaintRed",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        1.255,
+        0.22,
+        2.58
+      ],
+      "tris": 216,
+      "status": "PASS",
+      "script": "SM_LF_TeamFlag.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_TeamFlag_Red.png",
+      "fbx_bytes": 23948,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_TeamFlag_Blue",
+      "bounds_max_m": [
+        1.145,
+        0.11,
+        2.58
+      ],
+      "bounds_min_m": [
+        -0.11,
+        -0.11,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Blue.fbx",
+      "geometry_sha256": "b2b346b690190481abdcaaad233bab64d9d37ac3ae02e2d8b153baa1418e6be8",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.",
+      "objects": [
+        "SM_LF_TeamFlag_Blue",
+        "SM_LF_TeamFlag_Blue_Flag"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Metal",
+        "M_LF_PaintBlue",
+        "M_LF_PaintCream",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        1.255,
+        0.22,
+        2.58
+      ],
+      "tris": 216,
+      "status": "PASS",
+      "script": "SM_LF_TeamFlag.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_TeamFlag_Blue.png",
+      "fbx_bytes": 23948,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_TeamFlag_Green",
+      "bounds_max_m": [
+        1.145,
+        0.11,
+        2.58
+      ],
+      "bounds_min_m": [
+        -0.11,
+        -0.11,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Green.fbx",
+      "geometry_sha256": "d1441a7a1e2b249075c26a40a4aa76b37a7b46b48ced42d9b5e69ccfc9d5b2b9",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.",
+      "objects": [
+        "SM_LF_TeamFlag_Green",
+        "SM_LF_TeamFlag_Green_Flag"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Metal",
+        "M_LF_PaintCream",
+        "M_LF_PaintGreen",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        1.255,
+        0.22,
+        2.58
+      ],
+      "tris": 216,
+      "status": "PASS",
+      "script": "SM_LF_TeamFlag.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_TeamFlag_Green.png",
+      "fbx_bytes": 23964,
+      "failures": 0
+    },
+    {
+      "asset": "SM_LF_TeamFlag_Yellow",
+      "bounds_max_m": [
+        1.145,
+        0.11,
+        2.58
+      ],
+      "bounds_min_m": [
+        -0.11,
+        -0.11,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx",
+      "geometry_sha256": "3f976289a09c4047b9f3980ed9558b4f71cd835c84a31264ba4cf6f9b66cf289",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.",
+      "objects": [
+        "SM_LF_TeamFlag_Yellow",
+        "SM_LF_TeamFlag_Yellow_Flag"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Metal",
+        "M_LF_PaintCream",
+        "M_LF_PaintYellow",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        1.255,
+        0.22,
+        2.58
+      ],
+      "tris": 216,
+      "status": "PASS",
+      "script": "SM_LF_TeamFlag.py",
+      "consecutive_runs_verified": 2,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_TeamFlag_Yellow.png",
+      "fbx_bytes": 23964,
+      "failures": 0
+    }
+  ],
+  "skipped": [],
+  "asset_count": 17,
+  "palette_file_modified": "Art/BlenderScripts/lf_common.py",
+  "palette_added": {
+    "PaintGreen": [
+      0.2,
+      0.55,
+      0.25
+    ],
+    "PaintYellow": [
+      0.9,
+      0.72,
+      0.15
+    ],
+    "Black": [
+      0.03,
+      0.03,
+      0.03
+    ],
+    "PaintOrange": [
+      0.95,
+      0.45,
+      0.1
+    ],
+    "Moss": [
+      0.33,
+      0.42,
+      0.22
+    ]
+  },
+  "palette_removed": {},
+  "palette_existing_values_changed": {},
+  "team_colour_rule": "Red/Blue/Green/Yellow reserved for boats/stripes/team flags; Fish_Gold may use Yellow.",
+  "palette_audit": "PASS: all SM_LF collections, including unchanged B02 props; UCX materials empty; flag colour confined to separate flag object.",
+  "source_sha256": {
+    "lf_common.py": "8fa656acb5441eb9fa303ee2151ff9b40accfd585ce262f424c1a9719b235120",
+    "lf_b02.py": "a3b7f98e881be89ade35fdd43be2c4a1d915d6a9144e27e8ae64cae9a3d6fc38",
+    "SM_LF_Rowboat.py": "e886fff0912c18498a16419031cd55c7595495fc865e58ccd7f954fc63a47955",
+    "SM_LF_Shack.py": "4c1b6cf8636f17380dff7ff811a1c1f8864981dd4bbaac5f99ac57d02ae79f68",
+    "SM_LF_Buoy.py": "cadbb8d9b58d519ad0247bbe56e8113730c99f894ac877a1ed5e1636963584c1",
+    "SM_LF_Fish.py": "9a707c3379c50b60e3985fbed76d21def64edd5f887632f804e7004f00caa96a",
+    "SM_LF_Paddle.py": "140bffdf66dc269321ed40163e53e069820560e4493c95d139f83ed2ea974bdb",
+    "SM_LF_Reeds.py": "362df0c5789b892fefbfb9b88822383608ff65694aad6198f2111f1581338dca",
+    "SM_LF_ReedBed.py": "6a1c6ecaa974f0bbf1aed027ae3f4e2cc41593999ea4b87690cd9fe3cf08ad41",
+    "SM_LF_Rock_03.py": "f5c638ec27a34e5ace148149c02c8ca54beab7dd7b6af726eb807f6c9ec063d3",
+    "SM_LF_TeamFlag.py": "fd56d75cf50e9b42fc952aeb6df7f6ba0c1ec12b77ce84c0ce187d248c1f1cda"
+  },
+  "validation": "Nine asset scripts each executed from file twice; complete reports and geometry/material SHA256 matched; flat shading, closed edges, face area, palette, budget, file presence, UCX names and separate flag objects checked.",
+  "manual_review": [
+    "Approve fish eyes, widened paddle and reed-bed silhouette.",
+    "Reed bed: 30 reeds, 4 x 3 x 1.8 m envelope, 637/671 ray samples blocked in a 3 m wide, Z=0.10..0.55 m window. This is a geometry probe; gameplay concealment remains a human check.",
+    "HidingBoat screenshot is a Blender preview with a red boat behind the bed, waterline 0.25 m above bed base. Boat transforms were restored.",
+    "Unreal import, simple collision and gameplay remain with the director/Unreal agent."
+  ]
+}

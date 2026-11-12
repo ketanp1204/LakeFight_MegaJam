@@ -1,32 +1,38 @@
 {
   "asset": "SM_LF_Paddle",
-  "tris": 156,
-  "limit_exclusive": 300,
-  "objects": [
-    "SM_LF_Paddle"
+  "bounds_max_m": [
+    1.6,
+    0.1885,
+    0.0325
   ],
   "bounds_min_m": [
     0.0,
-    -0.145,
-    -0.034
+    -0.1885,
+    -0.0325
   ],
-  "bounds_max_m": [
-    1.6,
-    0.145,
-    0.034
-  ],
-  "size_m": [
-    1.6,
-    0.29,
-    0.068
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+  "geometry_sha256": "4ae60ad2c14f88e3552827ee55c18f0f9453bf25ecfa4d19257f584890d1daf1",
+  "limit_exclusive": 300,
+  "nonmanifold_edges": 0,
+  "notes": "1.6 m grip-to-tip; 4.0-4.2 cm shaft diameter; 0.377 m blade beam (1.3x), blade thickness tapers 2.8 to 2.2 cm.",
+  "objects": [
+    "SM_LF_Paddle"
   ],
   "origin": "grip; blade +X",
   "palette": [
-    "M_LF_WoodDark",
-    "M_LF_Wood"
+    "M_LF_Wood",
+    "M_LF_WoodDark"
   ],
-  "nonmanifold_edges": 0,
-  "geometry_sha256": "30ba45e0b15340287f7f182be3f0934c9ec8dab938be7c6f01e1275a1a837662",
-  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
-  "notes": "Length exactly 1.6 m from grip end to blade tip."
+  "size_m": [
+    1.6,
+    0.377,
+    0.065
+  ],
+  "tris": 156,
+  "status": "PASS",
+  "script": "SM_LF_Paddle.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Paddle.png",
+  "fbx_bytes": 18412,
+  "failures": 0
 }

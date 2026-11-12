@@ -1,0 +1,43 @@
+{
+  "asset": "SM_LF_Rowboat_Green",
+  "bounds_max_m": [
+    1.598960041999817,
+    0.7095000147819519,
+    0.5519999861717224
+  ],
+  "bounds_min_m": [
+    -1.598960041999817,
+    -0.7095000147819519,
+    -0.25
+  ],
+  "broadside_flare_degrees": 11,
+  "geometry_sha256": "657eea3f03553abd14c36109a0bc581477725d790e001ab3b3d8615e814ba0d7",
+  "gunwale_bow_rise_added_m": 0.2,
+  "gunwale_stern_rise_added_m": 0.08,
+  "nonmanifold_edges": {},
+  "objects": [
+    "SM_LF_Rowboat_Green",
+    "UCX_SM_LF_Rowboat_Green_00",
+    "UCX_SM_LF_Rowboat_Green_01",
+    "UCX_SM_LF_Rowboat_Green_02",
+    "UCX_SM_LF_Rowboat_Green_03",
+    "UCX_SM_LF_Rowboat_Green_04",
+    "UCX_SM_LF_Rowboat_Green_05"
+  ],
+  "origin_above_lowest_m": 0.25,
+  "render_tris": 1214,
+  "size_m": [
+    3.19792,
+    1.419,
+    0.802
+  ],
+  "total_tris": 1286,
+  "ucx_tris": 72,
+  "status": "PASS",
+  "script": "SM_LF_Rowboat.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rowboat_Green.png",
+  "fbx_bytes": 45804,
+  "failures": 0,
+  "tris": 1286
+}

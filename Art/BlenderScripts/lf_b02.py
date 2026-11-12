@@ -121,8 +121,8 @@ class Geometry:
                           (v[2] - (lo[2] if base else 0)) * scale[2]) for v in self.vertices]
 
 
-def finish(geometry, name, budget, origin="base centre", notes=""):
-    col = lf.fresh_collection(name)
+def make_object(geometry, name, col):
+    """Build one closed flat mesh, preserving per-face palette assignments."""
     data_name = name + "_Mesh"
     old = bpy.data.meshes.get(data_name)
     if old is not None and old.users == 0:
@@ -150,28 +150,46 @@ def finish(geometry, name, budget, origin="base centre", notes=""):
     ob = bpy.data.objects.new(name, data)
     col.objects.link(ob)
     lf.flat_shade(ob)
+    return ob
+
+
+def finish(geometry, name, budget, origin="base centre", notes=""):
+    return finish_parts([(name, geometry)], name, budget, origin, notes)
+
+
+def finish_parts(parts, name, budget, origin="base centre", notes=""):
+    """Export one asset with one or several deliberately separate render parts."""
+    col = lf.fresh_collection(name)
+    objects = [make_object(geometry, object_name, col) for object_name, geometry in parts]
     scene = bpy.context.scene
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 1.0
     bpy.context.view_layer.update()
     tris = lf.tri_count(col)
     assert tris < budget, (name, tris, budget)
-    assert len(col.objects) == 1 and ob.name == name
-    assert ob.location.length == 0 and not ob.modifiers
-    lo = [min(v.co[i] for v in data.vertices) for i in range(3)]
-    hi = [max(v.co[i] for v in data.vertices) for i in range(3)]
+    assert sorted(ob.name for ob in col.objects) == sorted(part[0] for part in parts)
+    assert all(ob.location.length == 0 and not ob.modifiers for ob in objects)
+    palette = sorted({m.name for ob in objects for m in ob.data.materials})
+    team = {"M_LF_" + colour for colour in lf.TEAM_COLOURS} & set(palette)
+    if not name.startswith(("SM_LF_Rowboat", "SM_LF_TeamFlag")):
+        allowed = {"M_LF_PaintYellow"} if name == "SM_LF_Fish_Gold" else set()
+        assert team <= allowed, (name, "reserved team colour", team)
+    coords = [v.co for ob in objects for v in ob.data.vertices]
+    lo = [min(v[i] for v in coords) for i in range(3)]
+    hi = [max(v[i] for v in coords) for i in range(3)]
     if origin == "base centre":
         assert abs(lo[2]) < 1e-6, (name, "base origin", lo)
     fingerprint = hashlib.sha256(json.dumps([
-        [tuple(v.co) for v in data.vertices],
-        [(tuple(p.vertices), p.material_index, p.use_smooth) for p in data.polygons],
-        [m.name for m in data.materials]], sort_keys=True).encode()).hexdigest()
+        (ob.name, [tuple(v.co) for v in ob.data.vertices],
+         [(tuple(p.vertices), p.material_index, p.use_smooth) for p in ob.data.polygons],
+         [m.name for m in ob.data.materials]) for ob in sorted(objects, key=lambda o: o.name)],
+        sort_keys=True).encode()).hexdigest()
     path = lf.export_fbx(col, name)
     assert os.path.isfile(path) and os.path.getsize(path) > 0
-    report = dict(asset=name, tris=tris, limit_exclusive=budget, objects=[ob.name],
+    report = dict(asset=name, tris=tris, limit_exclusive=budget, objects=sorted(ob.name for ob in objects),
                   bounds_min_m=[round(v, 6) for v in lo], bounds_max_m=[round(v, 6) for v in hi],
                   size_m=[round(hi[i] - lo[i], 6) for i in range(3)], origin=origin,
-                  palette=[m.name for m in data.materials], nonmanifold_edges=bad_edges,
+                  palette=palette, nonmanifold_edges=0,
                   geometry_sha256=fingerprint, fbx=path, notes=notes)
     os.makedirs(os.path.join(ROOT, "_reports"), exist_ok=True)
     with open(os.path.join(ROOT, "_reports", name + ".json"), "w") as f:
@@ -189,10 +207,12 @@ def enum_set(owner, prop, desired):
 def capture(name, direction=(4, -6, 4)):
     """Solid material-colour viewport, about 70% frame, no non-asset geometry."""
     scene = bpy.context.scene
+    col = bpy.data.collections.get(name)
+    objects = [ob for ob in col.objects if not ob.name.startswith("UCX_")] if col else [bpy.data.objects[name]]
+    names = {ob.name for ob in objects}
     for ob in scene.objects:
-        ob.hide_set(ob.name != name)
+        ob.hide_set(ob.name not in names)
     bpy.ops.object.select_all(action="DESELECT")
-    ob = bpy.data.objects[name]
     area = next(a for a in bpy.context.screen.areas if a.type == "VIEW_3D")
     region = next(r for r in area.regions if r.type == "WINDOW")
     space = area.spaces.active
@@ -206,7 +226,7 @@ def capture(name, direction=(4, -6, 4)):
     space.overlay.show_overlays = False
     enum_set(space.region_3d, "view_perspective", "ORTHO")
     q = Vector(direction).to_track_quat("Z", "Y")
-    coords = [ob.matrix_world @ v.co for v in ob.data.vertices]
+    coords = [ob.matrix_world @ v.co for ob in objects for v in ob.data.vertices]
     right, up = q @ Vector((1, 0, 0)), q @ Vector((0, 1, 0))
     extents = []
     for axis in [right, up]:

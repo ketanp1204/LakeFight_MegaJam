@@ -1,0 +1,40 @@
+{
+  "asset": "SM_LF_Shack",
+  "bounds_max_m": [
+    2.25,
+    1.723529,
+    3.3025
+  ],
+  "bounds_min_m": [
+    -2.25,
+    -1.723529,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shack.fbx",
+  "geometry_sha256": "85bd684795b3d302ce6ba8787f7ea67ff335d67a98011bb8c6192054b98eaf9f",
+  "limit_exclusive": 1500,
+  "nonmanifold_edges": 0,
+  "notes": "4 x 3 m walls, overhanging Moss pitched roof, 0.95 x 2.05 m clear doorway and 0.9 x 0.8 m window. Both openings ray-tested; no glass or door panel.",
+  "objects": [
+    "SM_LF_Shack"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Moss",
+    "M_LF_PaintCream",
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "size_m": [
+    4.5,
+    3.447059,
+    3.3025
+  ],
+  "tris": 1188,
+  "status": "PASS",
+  "script": "SM_LF_Shack.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Shack.png",
+  "fbx_bytes": 31052,
+  "failures": 0
+}

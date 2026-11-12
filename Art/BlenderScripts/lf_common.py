@@ -17,6 +17,11 @@ PALETTE = {
     "WoodDark":  (0.28, 0.17, 0.09),
     "PaintRed":  (0.75, 0.18, 0.14),
     "PaintBlue": (0.16, 0.36, 0.70),
+    "PaintGreen": (0.20, 0.55, 0.25),
+    "PaintYellow": (0.90, 0.72, 0.15),
+    "Black":     (0.03, 0.03, 0.03),
+    "PaintOrange": (0.95, 0.45, 0.10),
+    "Moss":      (0.33, 0.42, 0.22),
     "PaintCream": (0.92, 0.86, 0.70),
     "Rope":      (0.70, 0.60, 0.40),
     "Metal":     (0.55, 0.57, 0.60),
@@ -25,6 +30,10 @@ PALETTE = {
     "Skin":      (0.86, 0.66, 0.52),
     "Cloth":     (0.30, 0.42, 0.30),
 }
+
+# B02.1: reserved for boats/stripes and team flags. The director explicitly
+# permits PaintYellow on SM_LF_Fish_Gold as the bonus-fish exception.
+TEAM_COLOURS = frozenset({"PaintRed", "PaintBlue", "PaintGreen", "PaintYellow"})
 
 EXPORT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Export")
 
@@ -48,7 +57,7 @@ def mat(name):
     if m is None:
         m = bpy.data.materials.new(full)
         m.use_nodes = True
-        bsdf = m.node_tree.nodes.get("Principled BSDF")
+        bsdf = next((n for n in m.node_tree.nodes if n.type == "BSDF_PRINCIPLED"), None)
         r, g, b = PALETTE[name]
         if bsdf:
             bsdf.inputs["Base Color"].default_value = (r, g, b, 1.0)

@@ -106,7 +106,7 @@ def tube(col, name, centre, radius, thickness, material, start=0,
 
 def build(name, paint):
     col = lf.fresh_collection(name)
-    prefix = "" if paint == "PaintRed" else "Blue_"
+    prefix = "" if paint == "PaintRed" else paint.removeprefix("Paint") + "_"
     nm = lambda part: prefix + part
     # Near-upright narrow stem, rather than pulling its keel far back.
     bottom = [(x * (.95 if x > 0 else .86), y * .61, -.25 + rise(x)) for x, y in PLAN]
@@ -248,5 +248,7 @@ if bpy.context.object and bpy.context.object.mode != "OBJECT":
     bpy.ops.object.mode_set(mode="OBJECT")
 bpy.context.scene.unit_settings.system = "METRIC"
 bpy.context.scene.unit_settings.scale_length = 1.0
-B01_REPORT = [build("SM_LF_Rowboat", "PaintRed"), build("SM_LF_Rowboat_Blue", "PaintBlue")]
-print("[B01] complete: both variants exported; bow +X, waterline Z=0, keel Z=-0.25 m")
+B01_REPORT = [build("SM_LF_Rowboat", "PaintRed"), build("SM_LF_Rowboat_Blue", "PaintBlue"),
+              build("SM_LF_Rowboat_Green", "PaintGreen"), build("SM_LF_Rowboat_Yellow", "PaintYellow")]
+REPORTS = B01_REPORT
+print("[B02.1] complete: four team boats exported; bow +X, waterline Z=0, keel Z=-0.25 m")

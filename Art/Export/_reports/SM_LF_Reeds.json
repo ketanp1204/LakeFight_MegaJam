@@ -1,0 +1,38 @@
+{
+  "asset": "SM_LF_Reeds",
+  "bounds_max_m": [
+    0.451184,
+    0.43625,
+    1.2
+  ],
+  "bounds_min_m": [
+    -0.451184,
+    -0.43625,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Reeds.fbx",
+  "geometry_sha256": "e1db248323fe71b02e2a107ab6e35f2fbd45cb2d2fb94bfe5968d24ca89a5165",
+  "limit_exclusive": 400,
+  "nonmanifold_edges": 0,
+  "notes": "Ten deterministic stems, six seed heads, ten solid 1 cm leaves; exactly 1.2 m tall; no alpha cards.",
+  "objects": [
+    "SM_LF_Reeds"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Reed",
+    "M_LF_WoodDark"
+  ],
+  "size_m": [
+    0.902369,
+    0.872499,
+    1.2
+  ],
+  "tris": 356,
+  "status": "PASS",
+  "script": "SM_LF_Reeds.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Reeds.png",
+  "fbx_bytes": 25372,
+  "failures": 0
+}

@@ -1,0 +1,37 @@
+{
+  "asset": "SM_LF_Rock_01",
+  "bounds_max_m": [
+    0.575,
+    0.45,
+    0.72
+  ],
+  "bounds_min_m": [
+    -0.575,
+    -0.45,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rock_01.fbx",
+  "geometry_sha256": "102f043ec65da1a6e294adfd9f4fd0d99739891338083c2561bdf3138632b932",
+  "limit_exclusive": 300,
+  "nonmanifold_edges": 0,
+  "notes": "Small rounded faceted shoreline cobble; fixed seed 1101.",
+  "objects": [
+    "SM_LF_Rock_01"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Rock"
+  ],
+  "size_m": [
+    1.15,
+    0.9,
+    0.72
+  ],
+  "tris": 38,
+  "status": "PASS",
+  "script": "SM_LF_Rock_01.py",
+  "consecutive_runs_verified": 2,
+  "failures": 0,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rock_01.png",
+  "fbx_bytes": 15900
+}

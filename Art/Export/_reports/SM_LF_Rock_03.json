@@ -1,0 +1,37 @@
+{
+  "asset": "SM_LF_Rock_03",
+  "bounds_max_m": [
+    1.5,
+    1.05,
+    1.1
+  ],
+  "bounds_min_m": [
+    -1.5,
+    -1.05,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rock_03.fbx",
+  "geometry_sha256": "48de38644ff72d9f46e843c67b94a732be1969953c34d9a5dc9ea3a50f1f9efa",
+  "limit_exclusive": 300,
+  "nonmanifold_edges": 0,
+  "notes": "Large single slab with a planar top at 1.1 m; no dish; fixed seed 1103.",
+  "objects": [
+    "SM_LF_Rock_03"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Rock"
+  ],
+  "size_m": [
+    3.0,
+    2.1,
+    1.1
+  ],
+  "tris": 68,
+  "status": "PASS",
+  "script": "SM_LF_Rock_03.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rock_03.png",
+  "fbx_bytes": 16700,
+  "failures": 0
+}

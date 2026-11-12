@@ -1,0 +1,40 @@
+{
+  "asset": "SM_LF_Fish_Gold",
+  "bounds_max_m": [
+    0.2,
+    0.045,
+    0.219
+  ],
+  "bounds_min_m": [
+    -0.2,
+    -0.045,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Fish_Gold.fbx",
+  "geometry_sha256": "22f14bc8ca17996a06e989b5502f972c2e663359ce2a249df91a4617983684ad",
+  "limit_exclusive": 200,
+  "nonmanifold_edges": 0,
+  "notes": "0.4 m nose-to-tail; eight-sided black domed eyes with thin cream rings; shared geometry. Gold is the director-approved PaintYellow bonus-fish exception.",
+  "objects": [
+    "SM_LF_Fish_Gold"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Black",
+    "M_LF_PaintCream",
+    "M_LF_PaintOrange",
+    "M_LF_PaintYellow"
+  ],
+  "size_m": [
+    0.4,
+    0.09,
+    0.219
+  ],
+  "tris": 180,
+  "status": "PASS",
+  "script": "SM_LF_Fish.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Fish_Gold.png",
+  "fbx_bytes": 21676,
+  "failures": 0
+}

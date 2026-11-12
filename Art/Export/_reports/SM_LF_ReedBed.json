@@ -1,0 +1,45 @@
+{
+  "asset": "SM_LF_ReedBed",
+  "bounds_max_m": [
+    2.0,
+    1.5,
+    1.8
+  ],
+  "bounds_min_m": [
+    -2.0,
+    -1.5,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx",
+  "geometry_sha256": "89146d32c84d536005b0a4538ebf1d63cb675a21688ea43b124a388bb4db76b4",
+  "limit_exclusive": 3000,
+  "nonmanifold_edges": 0,
+  "notes": "4 x 3 m envelope; 30 reeds, 18 cattail heads, 180 broad solid ~1 cm leaves; 1.2-1.8 m stem-top heights; no alpha cards.",
+  "objects": [
+    "SM_LF_ReedBed"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Reed",
+    "M_LF_WoodDark"
+  ],
+  "reed_count": 30,
+  "side_screen_probe": {
+    "hits": 637,
+    "occlusion_fraction": 0.9493,
+    "samples": 671,
+    "window": "3 m wide x Z=0.10..0.55 m; rays from -Y through bed"
+  },
+  "size_m": [
+    4.0,
+    3.0,
+    1.8
+  ],
+  "tris": 2988,
+  "status": "PASS",
+  "script": "SM_LF_ReedBed.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_ReedBed.png",
+  "fbx_bytes": 100684,
+  "failures": 0
+}

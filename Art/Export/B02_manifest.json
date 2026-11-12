@@ -1,0 +1,440 @@
+{
+  "task": "B02",
+  "complete_utc": "2026-11-12T06:38:20.600778+00:00",
+  "started_utc": "2026-11-12T06:25:02+00:00",
+  "blender": "5.1.0",
+  "asset_count": 11,
+  "skipped": [],
+  "total_tris": 3514,
+  "lf_common_modified": false,
+  "assets": [
+    {
+      "asset": "SM_LF_Paddle",
+      "bounds_max_m": [
+        1.6,
+        0.145,
+        0.034
+      ],
+      "bounds_min_m": [
+        0.0,
+        -0.145,
+        -0.034
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+      "geometry_sha256": "30ba45e0b15340287f7f182be3f0934c9ec8dab938be7c6f01e1275a1a837662",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Length exactly 1.6 m from grip end to blade tip.",
+      "objects": [
+        "SM_LF_Paddle"
+      ],
+      "origin": "grip; blade +X",
+      "palette": [
+        "M_LF_WoodDark",
+        "M_LF_Wood"
+      ],
+      "size_m": [
+        1.6,
+        0.29,
+        0.068
+      ],
+      "tris": 156,
+      "status": "PASS",
+      "script": "SM_LF_Paddle.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Paddle.png",
+      "fbx_bytes": 18444
+    },
+    {
+      "asset": "SM_LF_Dock",
+      "bounds_max_m": [
+        2.0,
+        1.0,
+        0.65
+      ],
+      "bounds_min_m": [
+        -2.0,
+        -1.0,
+        -1.5
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dock.fbx",
+      "geometry_sha256": "5f88bfab7194ea48ad4ba46c81906f470af5a937821c5598a005de751887989b",
+      "limit_exclusive": 800,
+      "nonmanifold_edges": 0,
+      "notes": "4 x 2 m deck; 12 planks, four posts, three bearers, four diagonal braces. Posts extend -1.5 to +0.65 m.",
+      "objects": [
+        "SM_LF_Dock"
+      ],
+      "origin": "top surface centre; deck Z=0",
+      "palette": [
+        "M_LF_Wood",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        4.0,
+        2.0,
+        2.15
+      ],
+      "tris": 788,
+      "status": "PASS",
+      "script": "SM_LF_Dock.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Dock.png",
+      "fbx_bytes": 26092
+    },
+    {
+      "asset": "SM_LF_Crate",
+      "bounds_max_m": [
+        0.3,
+        0.2,
+        0.3
+      ],
+      "bounds_min_m": [
+        -0.3,
+        -0.2,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Crate.fbx",
+      "geometry_sha256": "c912f3ac663744c904be2e44f8460578a79c5efe418eb274f7b1ee4c43a70608",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Open top and genuine slat gaps; no lid or hidden solid fill.",
+      "objects": [
+        "SM_LF_Crate"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Wood",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        0.6,
+        0.4,
+        0.3
+      ],
+      "tris": 288,
+      "status": "PASS",
+      "script": "SM_LF_Crate.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Crate.png",
+      "fbx_bytes": 18844
+    },
+    {
+      "asset": "SM_LF_Fish_A",
+      "bounds_max_m": [
+        0.2,
+        0.045,
+        0.219
+      ],
+      "bounds_min_m": [
+        -0.2,
+        -0.045,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Fish_A.fbx",
+      "geometry_sha256": "c2ec156621fed0f83d3f60fc9320d98a3d1fa5da1bcd6b4ebb584461f7d9f442",
+      "limit_exclusive": 200,
+      "nonmanifold_edges": 0,
+      "notes": "0.4 m nose-to-tail; forked tail, dorsal/ventral fins, both eyes. Variants share geometry.",
+      "objects": [
+        "SM_LF_Fish_A"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Reed",
+        "M_LF_PaintCream",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        0.4,
+        0.09,
+        0.219
+      ],
+      "tris": 168,
+      "status": "PASS",
+      "script": "SM_LF_Fish.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Fish_A.png",
+      "fbx_bytes": 19964
+    },
+    {
+      "asset": "SM_LF_Fish_B",
+      "bounds_max_m": [
+        0.2,
+        0.045,
+        0.219
+      ],
+      "bounds_min_m": [
+        -0.2,
+        -0.045,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Fish_B.fbx",
+      "geometry_sha256": "04dc51cd3180c496ea2989e1dde74a750f6123a22231359416b101ea13c56097",
+      "limit_exclusive": 200,
+      "nonmanifold_edges": 0,
+      "notes": "0.4 m nose-to-tail; forked tail, dorsal/ventral fins, both eyes. Variants share geometry.",
+      "objects": [
+        "SM_LF_Fish_B"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_PaintBlue",
+        "M_LF_PaintCream",
+        "M_LF_PaintRed",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        0.4,
+        0.09,
+        0.219
+      ],
+      "tris": 168,
+      "status": "PASS",
+      "script": "SM_LF_Fish.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Fish_B.png",
+      "fbx_bytes": 21068
+    },
+    {
+      "asset": "SM_LF_Reeds",
+      "bounds_max_m": [
+        0.450529,
+        0.435852,
+        1.2
+      ],
+      "bounds_min_m": [
+        -0.450529,
+        -0.435852,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Reeds.fbx",
+      "geometry_sha256": "b63a847ac9e10179e0df8b0d051accca416475b560b66915e7dc4ce339aa7939",
+      "limit_exclusive": 400,
+      "nonmanifold_edges": 0,
+      "notes": "Ten deterministic stems, six seed heads, ten thick leaves; exactly 1.2 m tall; no alpha cards.",
+      "objects": [
+        "SM_LF_Reeds"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Reed",
+        "M_LF_WoodDark"
+      ],
+      "size_m": [
+        0.901059,
+        0.871704,
+        1.2
+      ],
+      "tris": 356,
+      "status": "PASS",
+      "script": "SM_LF_Reeds.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Reeds.png",
+      "fbx_bytes": 25436
+    },
+    {
+      "asset": "SM_LF_Rock_01",
+      "bounds_max_m": [
+        0.575,
+        0.45,
+        0.72
+      ],
+      "bounds_min_m": [
+        -0.575,
+        -0.45,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rock_01.fbx",
+      "geometry_sha256": "102f043ec65da1a6e294adfd9f4fd0d99739891338083c2561bdf3138632b932",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Small rounded faceted shoreline cobble; fixed seed 1101.",
+      "objects": [
+        "SM_LF_Rock_01"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Rock"
+      ],
+      "size_m": [
+        1.15,
+        0.9,
+        0.72
+      ],
+      "tris": 38,
+      "status": "PASS",
+      "script": "SM_LF_Rock_01.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rock_01.png",
+      "fbx_bytes": 15900
+    },
+    {
+      "asset": "SM_LF_Rock_02",
+      "bounds_max_m": [
+        1.05,
+        0.7,
+        1.2
+      ],
+      "bounds_min_m": [
+        -1.05,
+        -0.7,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rock_02.fbx",
+      "geometry_sha256": "9f94f385aa2dfd9196706a422010a1767009d0f1f731bf903ff49431b275ba2a",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Medium leaning boulder with broad lower shoulder; fixed seed 1102.",
+      "objects": [
+        "SM_LF_Rock_02"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Rock"
+      ],
+      "size_m": [
+        2.1,
+        1.4,
+        1.2
+      ],
+      "tris": 60,
+      "status": "PASS",
+      "script": "SM_LF_Rock_02.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rock_02.png",
+      "fbx_bytes": 16556
+    },
+    {
+      "asset": "SM_LF_Rock_03",
+      "bounds_max_m": [
+        1.5,
+        1.05,
+        1.1
+      ],
+      "bounds_min_m": [
+        -1.5,
+        -1.05,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rock_03.fbx",
+      "geometry_sha256": "5086974120213853e5d532d8678bca400d13bfcaa0a0c83dfb1d2f17957c6e31",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Large low slab with a broad, uneven top; fixed seed 1103.",
+      "objects": [
+        "SM_LF_Rock_03"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Rock"
+      ],
+      "size_m": [
+        3.0,
+        2.1,
+        1.1
+      ],
+      "tris": 68,
+      "status": "PASS",
+      "script": "SM_LF_Rock_03.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Rock_03.png",
+      "fbx_bytes": 16796
+    },
+    {
+      "asset": "SM_LF_Buoy",
+      "bounds_max_m": [
+        0.34,
+        0.275806,
+        1.12
+      ],
+      "bounds_min_m": [
+        -0.29,
+        -0.275806,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Buoy.fbx",
+      "geometry_sha256": "0cc5e7f1603af2650ccfce68b9b0147e584a5c38ee52b225926fc43be5b0f20c",
+      "limit_exclusive": 300,
+      "nonmanifold_edges": 0,
+      "notes": "Round 0.58 m body, cream equatorial band, red/cream swallowtail flag, metal mooring eye. Base origin, overall height 1.12 m.",
+      "objects": [
+        "SM_LF_Buoy"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_PaintRed",
+        "M_LF_PaintCream",
+        "M_LF_Metal"
+      ],
+      "size_m": [
+        0.63,
+        0.551613,
+        1.12
+      ],
+      "tris": 236,
+      "status": "PASS",
+      "script": "SM_LF_Buoy.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Buoy.png",
+      "fbx_bytes": 21372
+    },
+    {
+      "asset": "SM_LF_Shack",
+      "bounds_max_m": [
+        2.25,
+        1.723529,
+        3.3025
+      ],
+      "bounds_min_m": [
+        -2.25,
+        -1.723529,
+        0.0
+      ],
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shack.fbx",
+      "geometry_sha256": "43657a877dcf4bfa2878c319e8c87010fc57bfa861303948b613c477f55a5669",
+      "limit_exclusive": 1500,
+      "nonmanifold_edges": 0,
+      "notes": "4 x 3 m walls, overhanging red pitched roof, 0.95 x 2.05 m clear doorway and 0.9 x 0.8 m window. Both openings ray-tested; no glass or door panel.",
+      "objects": [
+        "SM_LF_Shack"
+      ],
+      "origin": "base centre",
+      "palette": [
+        "M_LF_Wood",
+        "M_LF_WoodDark",
+        "M_LF_PaintCream",
+        "M_LF_PaintRed"
+      ],
+      "size_m": [
+        4.5,
+        3.447059,
+        3.3025
+      ],
+      "tris": 1188,
+      "status": "PASS",
+      "script": "SM_LF_Shack.py",
+      "consecutive_runs_verified": 2,
+      "failures": 0,
+      "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Shack.png",
+      "fbx_bytes": 31052
+    }
+  ],
+  "validation": "Each asset file executed twice with matching complete reports and geometry/material SHA256; closed-edge, degenerate-face, palette, flat shading and triangle-budget assertions passed. Shack doorway/window clear-ray tests and adjacent wall control passed.",
+  "manual_checks": [
+    "Approve silhouettes and palette in the screenshots.",
+    "Shack walls are 4 x 3 m; roof/fascia overall is 4.5 x 3.447 m.",
+    "Dock deck is Z=0; posts extend down 1.5 m and up 0.65 m.",
+    "Unreal import, collision and gameplay checks remain with the director/Unreal agent."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "asset": "SM_LF_Buoy",
+  "bounds_max_m": [
+    0.34,
+    0.275806,
+    1.12
+  ],
+  "bounds_min_m": [
+    -0.29,
+    -0.275806,
+    0.0
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Buoy.fbx",
+  "geometry_sha256": "0de5943ae226f3e6448bb86978e8331569bd5ad2a6b0bd415dc6631974a2ae5d",
+  "limit_exclusive": 300,
+  "nonmanifold_edges": 0,
+  "notes": "Round 0.58 m body, cream equatorial band, orange/cream swallowtail flag, metal mooring eye. Base origin, overall height 1.12 m.",
+  "objects": [
+    "SM_LF_Buoy"
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Metal",
+    "M_LF_PaintCream",
+    "M_LF_PaintOrange"
+  ],
+  "size_m": [
+    0.63,
+    0.551613,
+    1.12
+  ],
+  "tris": 236,
+  "status": "PASS",
+  "script": "SM_LF_Buoy.py",
+  "consecutive_runs_verified": 2,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Buoy.png",
+  "fbx_bytes": 21388,
+  "failures": 0
+}

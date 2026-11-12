@@ -1,0 +1,38 @@
+{
+  "asset": "SM_LF_Dock",
+  "bounds_max_m": [
+    2.0,
+    1.0,
+    0.65
+  ],
+  "bounds_min_m": [
+    -2.0,
+    -1.0,
+    -1.5
+  ],
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dock.fbx",
+  "geometry_sha256": "5f88bfab7194ea48ad4ba46c81906f470af5a937821c5598a005de751887989b",
+  "limit_exclusive": 800,
+  "nonmanifold_edges": 0,
+  "notes": "4 x 2 m deck; 12 planks, four posts, three bearers, four diagonal braces. Posts extend -1.5 to +0.65 m.",
+  "objects": [
+    "SM_LF_Dock"
+  ],
+  "origin": "top surface centre; deck Z=0",
+  "palette": [
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "size_m": [
+    4.0,
+    2.0,
+    2.15
+  ],
+  "tris": 788,
+  "status": "PASS",
+  "script": "SM_LF_Dock.py",
+  "consecutive_runs_verified": 2,
+  "failures": 0,
+  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Dock.png",
+  "fbx_bytes": 26092
+}
