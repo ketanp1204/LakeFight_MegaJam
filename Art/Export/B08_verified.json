@@ -1,0 +1,189 @@
+{
+  "blender": "5.3.0",
+  "asset_scripts_run_twice": true,
+  "fbx": [
+    {
+      "asset": "SM_LF_FishSpot",
+      "fbx_triangles": 200,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "SM_LF_BankZone",
+      "fbx_triangles": 240,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_Fish",
+      "fbx_triangles": 388,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_FishGold",
+      "fbx_triangles": 388,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_Clock",
+      "fbx_triangles": 404,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_Paddle",
+      "fbx_triangles": 60,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Red",
+      "fbx_triangles": 448,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Blue",
+      "fbx_triangles": 612,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Green",
+      "fbx_triangles": 488,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Yellow",
+      "fbx_triangles": 448,
+      "dimensions_match": true,
+      "origin_zero": true,
+      "materials_match": true,
+      "geometry_match_0.1mm": true,
+      "no_ucx": true
+    }
+  ],
+  "png": [
+    {
+      "asset": "ICON_LF_Fish",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    },
+    {
+      "asset": "ICON_LF_FishGold",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    },
+    {
+      "asset": "ICON_LF_Clock",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    },
+    {
+      "asset": "ICON_LF_Paddle",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Red",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Blue",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Green",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    },
+    {
+      "asset": "ICON_LF_Crew_Yellow",
+      "size": [
+        256,
+        256
+      ],
+      "channels": 4,
+      "transparent": true,
+      "unclipped": true
+    }
+  ],
+  "sheet_order": [
+    "ICON_LF_Fish",
+    "ICON_LF_FishGold",
+    "ICON_LF_Clock",
+    "ICON_LF_Paddle",
+    "ICON_LF_Crew_Red",
+    "ICON_LF_Crew_Blue",
+    "ICON_LF_Crew_Green",
+    "ICON_LF_Crew_Yellow"
+  ],
+  "note": "FBX bytes include export timestamps; determinism checked on full mesh vertices/faces/material assignments plus identical PNG SHA256."
+}

@@ -1,0 +1,628 @@
+{
+  "SM_LF_FishSpot": {
+    "runs": [
+      {
+        "name": "SM_LF_FishSpot",
+        "triangles": 200,
+        "dimensions_m": [
+          2.46965,
+          2.23138,
+          0.116
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.029,
+          0.087
+        ],
+        "materials": [
+          "M_LF_PaintCream"
+        ],
+        "geometry_sha256": "72b7b99bd390686456bac1821876896a6de5577274d4bd7cb2ac04ae7caab35b",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\_shots\\SM_LF_FishSpot_B08.png",
+        "png_sha256": "af2debfabef2259974a18aabf7f2ba871369c6bda8c0245aa9ec138aa13d3117"
+      },
+      {
+        "name": "SM_LF_FishSpot",
+        "triangles": 200,
+        "dimensions_m": [
+          2.46965,
+          2.23138,
+          0.116
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.029,
+          0.087
+        ],
+        "materials": [
+          "M_LF_PaintCream"
+        ],
+        "geometry_sha256": "72b7b99bd390686456bac1821876896a6de5577274d4bd7cb2ac04ae7caab35b",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\_shots\\SM_LF_FishSpot_B08.png",
+        "png_sha256": "af2debfabef2259974a18aabf7f2ba871369c6bda8c0245aa9ec138aa13d3117"
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_BankZone": {
+    "runs": [
+      {
+        "name": "SM_LF_BankZone",
+        "triangles": 240,
+        "dimensions_m": [
+          4.97466,
+          2.96415,
+          0.15
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          0.0,
+          0.15
+        ],
+        "materials": [
+          "M_LF_Rope",
+          "M_LF_PaintOrange"
+        ],
+        "geometry_sha256": "1bace4e7c176d8ac7e006252fb387b778faeaa1914290986dfd182d51b14d5cf",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\_shots\\SM_LF_BankZone_B08.png",
+        "png_sha256": "be96d38b7e4c6aaf2e903d0d834adfdf250c733d3332602e9025c521e30bcbbc"
+      },
+      {
+        "name": "SM_LF_BankZone",
+        "triangles": 240,
+        "dimensions_m": [
+          4.97466,
+          2.96415,
+          0.15
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          0.0,
+          0.15
+        ],
+        "materials": [
+          "M_LF_Rope",
+          "M_LF_PaintOrange"
+        ],
+        "geometry_sha256": "1bace4e7c176d8ac7e006252fb387b778faeaa1914290986dfd182d51b14d5cf",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\_shots\\SM_LF_BankZone_B08.png",
+        "png_sha256": "be96d38b7e4c6aaf2e903d0d834adfdf250c733d3332602e9025c521e30bcbbc"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Fish": {
+    "runs": [
+      {
+        "name": "ICON_LF_Fish",
+        "triangles": 388,
+        "dimensions_m": [
+          1.76,
+          0.396,
+          1.04
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.47,
+          0.57
+        ],
+        "materials": [
+          "M_LF_Reed",
+          "M_LF_WoodDark",
+          "M_LF_PaintCream",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "aaa092fc954c6d0e254616cdd31b7eea9a19e9648c61bed069fb947c68620ae6",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Fish.png",
+        "png_sha256": "752c603dd6a640993c8e7042781ea8122e14047e6cfcce3790cf29274ca599da"
+      },
+      {
+        "name": "ICON_LF_Fish",
+        "triangles": 388,
+        "dimensions_m": [
+          1.76,
+          0.396,
+          1.04
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.47,
+          0.57
+        ],
+        "materials": [
+          "M_LF_Reed",
+          "M_LF_WoodDark",
+          "M_LF_PaintCream",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "aaa092fc954c6d0e254616cdd31b7eea9a19e9648c61bed069fb947c68620ae6",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Fish.png",
+        "png_sha256": "752c603dd6a640993c8e7042781ea8122e14047e6cfcce3790cf29274ca599da"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_FishGold": {
+    "runs": [
+      {
+        "name": "ICON_LF_FishGold",
+        "triangles": 388,
+        "dimensions_m": [
+          1.76,
+          0.396,
+          1.04
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.47,
+          0.57
+        ],
+        "materials": [
+          "M_LF_PaintYellow",
+          "M_LF_PaintOrange",
+          "M_LF_PaintCream",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "5e9fd5dfb08aec86c5899c2bf34f4b6bca4906ef3f4694bf82b5b7e02ea4a02f",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_FishGold.png",
+        "png_sha256": "7c4240d6cd86b95b4caa161b8f1919c1e2da009e6fc6a8b3a8065a1a0150e145"
+      },
+      {
+        "name": "ICON_LF_FishGold",
+        "triangles": 388,
+        "dimensions_m": [
+          1.76,
+          0.396,
+          1.04
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.47,
+          0.57
+        ],
+        "materials": [
+          "M_LF_PaintYellow",
+          "M_LF_PaintOrange",
+          "M_LF_PaintCream",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "5e9fd5dfb08aec86c5899c2bf34f4b6bca4906ef3f4694bf82b5b7e02ea4a02f",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_FishGold.png",
+        "png_sha256": "7c4240d6cd86b95b4caa161b8f1919c1e2da009e6fc6a8b3a8065a1a0150e145"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Clock": {
+    "runs": [
+      {
+        "name": "ICON_LF_Clock",
+        "triangles": 404,
+        "dimensions_m": [
+          1.54,
+          0.325,
+          1.665
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.77,
+          0.895
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_PaintCream",
+          "M_LF_Black",
+          "M_LF_PaintOrange"
+        ],
+        "geometry_sha256": "3648f6771b8e7f2c8975269795f0a0e39762ec7b09f3e6e56f49f51c6261e117",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Clock.png",
+        "png_sha256": "ec3bfd807a5137156396da3472aeebddab2daea70494e9d4419d0a48f856e3b0"
+      },
+      {
+        "name": "ICON_LF_Clock",
+        "triangles": 404,
+        "dimensions_m": [
+          1.54,
+          0.325,
+          1.665
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.77,
+          0.895
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_PaintCream",
+          "M_LF_Black",
+          "M_LF_PaintOrange"
+        ],
+        "geometry_sha256": "3648f6771b8e7f2c8975269795f0a0e39762ec7b09f3e6e56f49f51c6261e117",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Clock.png",
+        "png_sha256": "ec3bfd807a5137156396da3472aeebddab2daea70494e9d4419d0a48f856e3b0"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Paddle": {
+    "runs": [
+      {
+        "name": "ICON_LF_Paddle",
+        "triangles": 60,
+        "dimensions_m": [
+          1.43328,
+          0.10392,
+          1.83992
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.94,
+          0.89992
+        ],
+        "materials": [
+          "M_LF_Wood",
+          "M_LF_WoodDark"
+        ],
+        "geometry_sha256": "54badf605887b91e4b127b4955b577dd321d1281af63db2fa456c0f6a43ca9cf",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Paddle.png",
+        "png_sha256": "f9ed7016f3f0ad4eae67ce98ba16f49eeb26722f5304f1fd3f0a25fb454daf6d"
+      },
+      {
+        "name": "ICON_LF_Paddle",
+        "triangles": 60,
+        "dimensions_m": [
+          1.43328,
+          0.10392,
+          1.83992
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.94,
+          0.89992
+        ],
+        "materials": [
+          "M_LF_Wood",
+          "M_LF_WoodDark"
+        ],
+        "geometry_sha256": "54badf605887b91e4b127b4955b577dd321d1281af63db2fa456c0f6a43ca9cf",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Paddle.png",
+        "png_sha256": "f9ed7016f3f0ad4eae67ce98ba16f49eeb26722f5304f1fd3f0a25fb454daf6d"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Crew_Red": {
+    "runs": [
+      {
+        "name": "ICON_LF_Crew_Red",
+        "triangles": 448,
+        "dimensions_m": [
+          1.5,
+          0.86,
+          1.64
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.83
+        ],
+        "materials": [
+          "M_LF_PaintRed",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "f4f0dd97e6ed305d73a570a8df851b98b3cb65fe430ddd85d08d5a92f8012edd",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Red.png",
+        "png_sha256": "9541e9172fcdbed4e6615830dd3cae285b4b29b3be5622aa4a1bceede07a4578"
+      },
+      {
+        "name": "ICON_LF_Crew_Red",
+        "triangles": 448,
+        "dimensions_m": [
+          1.5,
+          0.86,
+          1.64
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.83
+        ],
+        "materials": [
+          "M_LF_PaintRed",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "f4f0dd97e6ed305d73a570a8df851b98b3cb65fe430ddd85d08d5a92f8012edd",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Red.png",
+        "png_sha256": "9541e9172fcdbed4e6615830dd3cae285b4b29b3be5622aa4a1bceede07a4578"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Crew_Blue": {
+    "runs": [
+      {
+        "name": "ICON_LF_Crew_Blue",
+        "triangles": 612,
+        "dimensions_m": [
+          1.5,
+          0.863,
+          1.66
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.85
+        ],
+        "materials": [
+          "M_LF_PaintBlue",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black",
+          "M_LF_PaintYellow"
+        ],
+        "geometry_sha256": "9938893f255358bafccf85b3aafa9f7c7f1a1b0cc33a5912c2777067e7452ef1",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Blue.png",
+        "png_sha256": "ff0b7c14bd0309f883e08328adba790123a18c9527c6de4b29294a1fbd789c21"
+      },
+      {
+        "name": "ICON_LF_Crew_Blue",
+        "triangles": 612,
+        "dimensions_m": [
+          1.5,
+          0.863,
+          1.66
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.85
+        ],
+        "materials": [
+          "M_LF_PaintBlue",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black",
+          "M_LF_PaintYellow"
+        ],
+        "geometry_sha256": "9938893f255358bafccf85b3aafa9f7c7f1a1b0cc33a5912c2777067e7452ef1",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Blue.png",
+        "png_sha256": "ff0b7c14bd0309f883e08328adba790123a18c9527c6de4b29294a1fbd789c21"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Crew_Green": {
+    "runs": [
+      {
+        "name": "ICON_LF_Crew_Green",
+        "triangles": 488,
+        "dimensions_m": [
+          1.5,
+          0.86,
+          1.64
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.83
+        ],
+        "materials": [
+          "M_LF_PaintGreen",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "46729a17921448d542d27d72cd4f93b11eec21717f5edd9dce1913c9c373be00",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Green.png",
+        "png_sha256": "e7d8b702cd89feb3e4d68d017d49c7cb3b5e90177ddd65bafb044f5c14af829b"
+      },
+      {
+        "name": "ICON_LF_Crew_Green",
+        "triangles": 488,
+        "dimensions_m": [
+          1.5,
+          0.86,
+          1.64
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.83
+        ],
+        "materials": [
+          "M_LF_PaintGreen",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "46729a17921448d542d27d72cd4f93b11eec21717f5edd9dce1913c9c373be00",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Green.png",
+        "png_sha256": "e7d8b702cd89feb3e4d68d017d49c7cb3b5e90177ddd65bafb044f5c14af829b"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Crew_Yellow": {
+    "runs": [
+      {
+        "name": "ICON_LF_Crew_Yellow",
+        "triangles": 448,
+        "dimensions_m": [
+          1.5,
+          0.86,
+          1.64
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.83
+        ],
+        "materials": [
+          "M_LF_PaintYellow",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "d2dacdfe4aedbac42e689cac8963c6b81d913357f5ac3061a753384d72fc3a46",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Yellow.png",
+        "png_sha256": "b4196d62620b925bd7540eb78975ad0d65653ce55ca937afda498a820b95a8b0"
+      },
+      {
+        "name": "ICON_LF_Crew_Yellow",
+        "triangles": 448,
+        "dimensions_m": [
+          1.5,
+          0.86,
+          1.64
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "z_range": [
+          -0.81,
+          0.83
+        ],
+        "materials": [
+          "M_LF_PaintYellow",
+          "M_LF_PaintCream",
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Black"
+        ],
+        "geometry_sha256": "d2dacdfe4aedbac42e689cac8963c6b81d913357f5ac3061a753384d72fc3a46",
+        "objects": 1,
+        "ucx": false,
+        "image": "C:\\Unreal\\Projects\\LakeFight_MegaJam\\Art\\Export\\UI\\ICON_LF_Crew_Yellow.png",
+        "png_sha256": "b4196d62620b925bd7540eb78975ad0d65653ce55ca937afda498a820b95a8b0"
+      }
+    ],
+    "identical": true
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "blender": "5.3.0",
+  "scene": "Scene",
+  "objects": [
+    {
+      "name": "Cube",
+      "type": "MESH"
+    },
+    {
+      "name": "Light",
+      "type": "LIGHT"
+    },
+    {
+      "name": "Camera",
+      "type": "CAMERA"
+    }
+  ],
+  "target_files": {
+    "SM_LF_FishSpot": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "SM_LF_BankZone": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_Fish": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_FishGold": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_Clock": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_Paddle": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_Crew_Red": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_Crew_Blue": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_Crew_Green": {
+      "fbx_exists": false,
+      "png_exists": false
+    },
+    "ICON_LF_Crew_Yellow": {
+      "fbx_exists": false,
+      "png_exists": false
+    }
+  }
+}
