@@ -157,3 +157,41 @@ Build: 1 compile error (missing `PhysicsEngine/BodySetup.h`) fixed -> Succeeded.
 
 **Please test:** whether the topple over the rail reads, the limp float (face-down-ish is not forced - it depends on how he lands), and the
 blend to upright. If he flies too far/near: `OverboardHorizSpeedMin/Max`; too high: `OverboardUpSpeed*`; not tipping: `OverboardToppleSpeed`.
+
+**Director: step 2.1 accepted. Step 4 (boat-to-boat jump) deferred to Saturday. Next: step 3, then step 5 only.**
+
+## Step 3 - swim, climb, steal (Claude Code, 13 Nov ~16:16-16:30 IST)
+
+**Files:** `Source/LakeFight/Brawler/LFBrawler.h/.cpp`, `Source/LakeFight/Boat/LFBoat.h/.cpp` (`GunwaleDistance`). No asset changes.
+
+- **Swimming** (`LF|Swim`): the ragdoll recovery (2.1) now ends in Swimming - the 2.5 s reset placeholder is removed. CMC in Flying mode,
+  `SwimSpeed` 120 cm/s, move input camera-relative; every tick the capsule is pinned to `GetHeightAt` (centre `SwimSubmerge` 0.5 x half-height
+  under the surface: head and shoulders out, bobbing). Placeholder swim pose: the mesh leans forward up to `SwimLeanDeg` 45 with speed.
+  Camera stays third-person, framing just the brawler while not in a boat. No stamina.
+- **Grab**: `ALFBoat::GunwaleDistance` = signed distance to the real gunwale outline (RowboatPlan, through the hull transform). Within
+  `GrabRange` 150 cm of ANY hull an on-screen prompt shows "[E / Y] climb aboard <boat>" (dev-build debug text until there is UI);
+  Interact = grab the nearest.
+- **Climbing** (`ClimbTime` 0.8 s): kinematic, in hull space (a moving/rocking boat carries the climb): rise at the side above the rail
+  (`ClimbOverHeight` 35 cm), then a small hop over and down onto the floor just inside the side nearest you. Any paddle hit while
+  climbing or swimming -> ragdoll overboard again (0.6x strength; logs `[climb] ... knocked off`).
+- **Steal**: Interact drives only within `DriveReach` 80 cm of the driver seat and only if the seat is empty (prompt "[E / Y] drive" /
+  "[E / Y] STEAL this boat"). Driving a boat that isn't your home boat logs `[steal]`. A driver must be paddled out of the seat first (2.x).
+- **AI-ready** (BlueprintCallable): `StartSwimTo(Target)`, `StopSwim()`, `TryGrabNearestHull()`, `TryGrabHull(Boat)`, `TryDriveBoat()`,
+  `Swing(Strength)`, `FindGrabbableHull()`, `GetHomeBoat()`. Player input calls the same paths.
+- **Dummy** (no controller, `bAutoReturnHome`): after `AutoReturnDelay` 0.6 s of swimming it swims to its home boat (the first boat it
+  stood in) and grabs/climbs in, ready to be hit again.
+- Debug console: `LFOverboard [side]` (throw yourself overboard, +1 right / -1 left), plus `LFSwing`, `LFDrive` (= Interact: grab when swimming).
+
+**Verification (PIE, logs):**
+- Dummy: `LFSwing 1` -> ragdoll, splash 143 cm outside -> floated 1.30 s -> `[swim] swimming` -> `[climb] grabs BP_LF_Boat_C_1 (119 cm from
+  the gunwale, starboard side)` -> `aboard BP_LF_Boat_C_1 (home)`.
+- Player heist: `LFOverboard -1` -> apex 54 cm, landed 105 cm out, floated 1.31 s -> swimming -> (target boat moved next to the swimmer via
+  MCP) `LFDrive` -> `grabs BP_LF_Boat_C_1 (64 cm from the gunwale, starboard side)` -> `aboard BP_LF_Boat_C_1 (seat empty: steal it!)` ->
+  `LFDrive` -> `[steal] BP_LF_Brawler_C_1 steals BP_LF_Boat_C_1` -> `Driving BP_LF_Boat_C_1`. Screenshot: player driving the stolen boat.
+- PIE 10:53:34-10:54:43 UTC (69 s), no LF warnings (only my MCP teleport's "Editor is in play mode" errors). 2 builds Succeeded (one retry
+  after the editor took >60 s to close).
+- **Not exercised by me:** hitting someone mid-climb (timing via console wasn't practical), swimming with real WASD input, and the on-screen
+  prompts (the shot was taken while driving).
+
+**Please test:** swim feel (speed, bob height), the climb look, the heist time (target < 10 s), knocking a climber back off.
+**Known:** a stealer and a non-driving owner can stand on top of each other at the seat; climb/swim are placeholder poses (no anims).

@@ -15,6 +15,8 @@
 #include "Engine/SkeletalMesh.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
+#include "EngineUtils.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -258,10 +260,12 @@ bool ALFBrawler::IsStunned() const
 
 void ALFBrawler::OnMove(const FInputActionValue& Value)
 {
-	if (State != ELFBrawlerState::Standing || !Controller || IsStunned())
+	const bool bCanMove = State == ELFBrawlerState::Standing || State == ELFBrawlerState::Swimming;
+	if (!bCanMove || !Controller || IsStunned())
 	{
 		return;
 	}
+	bHasSwimTarget = false; // player input overrides an AI swim target
 	const FVector2D V = Value.Get<FVector2D>();
 	const FRotator Yaw(0.f, Controller->GetControlRotation().Yaw, 0.f);
 	AddMovementInput(FRotationMatrix(Yaw).GetUnitAxis(EAxis::X), V.Y);
@@ -277,9 +281,17 @@ void ALFBrawler::OnLook(const FInputActionValue& Value)
 
 void ALFBrawler::OnInteract()
 {
-	if (State == ELFBrawlerState::Standing && !IsStunned())
+	if (IsStunned())
+	{
+		return;
+	}
+	if (State == ELFBrawlerState::Standing)
 	{
 		TryDrive();
+	}
+	else if (State == ELFBrawlerState::Swimming)
+	{
+		TryGrabNearestHull();
 	}
 }
 
@@ -295,18 +307,31 @@ void ALFBrawler::SetBoatMovementRules(bool bInBoat)
 
 void ALFBrawler::StandInBoat(ALFBoat* InBoat)
 {
+	if (InBoat)
+	{
+		StandInBoatAt(InBoat, InBoat->DriverSeatLocal);
+	}
+}
+
+void ALFBrawler::StandInBoatAt(ALFBoat* InBoat, const FVector& LocalSpot)
+{
 	if (!InBoat)
 	{
 		return;
 	}
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	Boat = InBoat;
+	if (!HomeBoat.IsValid())
+	{
+		HomeBoat = InBoat; // the first boat you stand in is home
+	}
 	State = ELFBrawlerState::Standing;
 	bInWater = false;
+	bHasSwimTarget = false;
 	SetBoatMovementRules(true);
 
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-	const FVector Spot = InBoat->GetDriverSeatWorld() + FVector(0.f, 0.f, HalfHeight + 3.f);
+	const FVector Spot = InBoat->GetHull()->GetComponentTransform().TransformPosition(LocalSpot) + FVector(0.f, 0.f, HalfHeight + 3.f);
 	SetActorLocationAndRotation(Spot, FRotator(0.f, InBoat->GetActorRotation().Yaw, 0.f), false, nullptr, ETeleportType::TeleportPhysics);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	UCharacterMovementComponent* Move = GetCharacterMovement();
@@ -323,6 +348,17 @@ bool ALFBrawler::TryDrive()
 	if (State != ELFBrawlerState::Standing || !B || B->HasDriver())
 	{
 		return false;
+	}
+	// Interact AT the seat.
+	if (FVector::Dist2D(GetActorLocation(), B->GetDriverSeatWorld()) > DriveReach)
+	{
+		UE_LOG(LogLF, Display, TEXT("[brawler] %s too far from %s's driver seat (%.0f cm > %.0f)"), *GetName(), *B->GetName(),
+			FVector::Dist2D(GetActorLocation(), B->GetDriverSeatWorld()), DriveReach);
+		return false;
+	}
+	if (B != HomeBoat.Get())
+	{
+		UE_LOG(LogLF, Display, TEXT("[steal] %s steals %s"), *GetName(), *B->GetName());
 	}
 	State = ELFBrawlerState::Driving;
 	SwingPhase = ELFSwingPhase::Idle;
@@ -378,12 +414,21 @@ void ALFBrawler::Tick(float DeltaSeconds)
 	{
 		UpdateRagdoll(DeltaSeconds);
 	}
+	else if (State == ELFBrawlerState::Swimming)
+	{
+		UpdateSwim(DeltaSeconds);
+	}
+	else if (State == ELFBrawlerState::Climbing)
+	{
+		UpdateClimb(DeltaSeconds);
+	}
 	UpdateFakeWeight(DeltaSeconds);
 	UpdatePaddle(DeltaSeconds);
 	if (IsLocallyControlled())
 	{
 		const UWorld* World = GetWorld();
 		UpdateCamera(FMath::Min(World ? World->DeltaRealTimeSeconds : DeltaSeconds, 0.1f));
+		UpdatePrompt();
 	}
 }
 
@@ -492,6 +537,11 @@ void ALFBrawler::OnSwingReleased()
 
 void ALFBrawler::LFSwing(float Strength)
 {
+	Swing(Strength);
+}
+
+void ALFBrawler::Swing(float Strength)
+{
 	if (State != ELFBrawlerState::Standing || IsStunned() || SwingPhase != ELFSwingPhase::Idle)
 	{
 		UE_LOG(LogLF, Display, TEXT("[paddle] LFSwing ignored (state/stun/busy)"));
@@ -503,6 +553,18 @@ void ALFBrawler::LFSwing(float Strength)
 		/ FMath::Max(1.f - ChargedMinStrength, 0.01f) * (ChargeFullTime - ChargeMinTime);
 	ChargeStartTime = GetWorld()->GetTimeSeconds() - Held;
 	OnSwingReleased();
+}
+
+void ALFBrawler::LFOverboard(float Side)
+{
+	if (State == ELFBrawlerState::Driving)
+	{
+		LeaveDriving();
+	}
+	if (State == ELFBrawlerState::Standing)
+	{
+		StartRagdoll(GetActorRightVector().GetSafeNormal2D() * (Side >= 0.f ? 1.f : -1.f), 0.3f);
+	}
 }
 
 void ALFBrawler::LFDrive()
@@ -619,6 +681,27 @@ void ALFBrawler::SweepPaddle()
 
 bool ALFBrawler::ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, float Strength)
 {
+	if (State == ELFBrawlerState::Ragdoll)
+	{
+		return false;
+	}
+	if (State == ELFBrawlerState::Swimming || State == ELFBrawlerState::Climbing)
+	{
+		// Knocked off the side / back into the water.
+		if (State == ELFBrawlerState::Climbing)
+		{
+			UE_LOG(LogLF, Display, TEXT("[climb] %s knocked off %s"), *GetName(), ClimbBoat.IsValid() ? *ClimbBoat->GetName() : TEXT("?"));
+		}
+		DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		ClimbBoat = nullptr;
+		Boat = nullptr;
+		StartRagdoll(Dir, Strength * 0.6f);
+		if (IsLocallyControlled())
+		{
+			PlayHitFeedback(Strength);
+		}
+		return true;
+	}
 	if (State == ELFBrawlerState::Driving)
 	{
 		LeaveDriving(); // knocked out of the seat (hands control back if a player was driving)
@@ -812,23 +895,13 @@ void ALFBrawler::UpdateRagdoll(float DeltaSeconds)
 		{
 			EndRagdoll();
 			RagdollPhase = ERagdollPhase::Upright;
-			RagdollStart = Now;
+			EnterSwimming();
 		}
 		break;
 	}
 
 	case ERagdollPhase::Upright:
-	{
-		// Upright in the water, bobbing (temporary until step 3 swimming), then back into the boat.
-		const FVector L = GetActorLocation();
-		SetActorLocation(FVector(L.X, L.Y, LF::Water::GetHeightAt(L, float(Now)) - HalfHeight * 0.4f));
-		if (Now - RagdollStart >= OverboardResetDelay && Boat.IsValid())
-		{
-			UE_LOG(LogLF, Display, TEXT("[overboard] %s reset into %s (placeholder until swimming)"), *GetName(), *Boat->GetName());
-			StandInBoat(Boat.Get());
-		}
 		break;
-	}
 	}
 }
 
@@ -847,6 +920,219 @@ void ALFBrawler::EndRagdoll()
 	Paddle->SetRelativeLocationAndRotation(FVector(-10.f, 0.f, 0.f), FRotator::ZeroRotator);
 	SwayQuat = FQuat::Identity;
 	UE_LOG(LogLF, Display, TEXT("[overboard] %s upright in the water"), *GetName());
+}
+
+// ---------------------------------------------------------------- Swim / climb / steal (step 3)
+
+void ALFBrawler::EnterSwimming()
+{
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	State = ELFBrawlerState::Swimming;
+	Boat = nullptr; // not in a boat: no fake weight, the camera frames just us
+	bInWater = true;
+	bHasSwimTarget = false;
+	SwimStartTime = GetWorld()->GetTimeSeconds();
+	SwingPhase = ELFSwingPhase::Idle;
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	UCharacterMovementComponent* Move = GetCharacterMovement();
+	Move->SetMovementMode(MOVE_Flying);
+	Move->MaxFlySpeed = SwimSpeed;
+	Move->BrakingDecelerationFlying = 300.f;
+	Move->Velocity = FVector::ZeroVector;
+	UE_LOG(LogLF, Display, TEXT("[swim] %s swimming"), *GetName());
+}
+
+void ALFBrawler::StartSwimTo(FVector Target)
+{
+	SwimTarget = Target;
+	bHasSwimTarget = true;
+}
+
+void ALFBrawler::StopSwim()
+{
+	bHasSwimTarget = false;
+}
+
+float ALFBrawler::GrabDistanceTo(const ALFBoat* B, FVector2D* OutLocal) const
+{
+	if (!B)
+	{
+		return TNumericLimits<float>::Max();
+	}
+	FVector2D Local;
+	const float D = B->GunwaleDistance(GetActorLocation(), Local);
+	if (OutLocal)
+	{
+		*OutLocal = Local;
+	}
+	return D;
+}
+
+ALFBoat* ALFBrawler::FindGrabbableHull() const
+{
+	ALFBoat* Best = nullptr;
+	float BestD = GrabRange;
+	for (TActorIterator<ALFBoat> It(GetWorld()); It; ++It)
+	{
+		const float D = GrabDistanceTo(*It);
+		if (D <= BestD)
+		{
+			BestD = D;
+			Best = *It;
+		}
+	}
+	return Best;
+}
+
+bool ALFBrawler::TryGrabNearestHull()
+{
+	return TryGrabHull(FindGrabbableHull());
+}
+
+bool ALFBrawler::TryGrabHull(ALFBoat* Hull)
+{
+	if (State != ELFBrawlerState::Swimming || !Hull || IsStunned())
+	{
+		return false;
+	}
+	FVector2D Nearest;
+	const float D = GrabDistanceTo(Hull, &Nearest);
+	if (D > GrabRange)
+	{
+		return false;
+	}
+	// Climb onto the side nearest you: land on the floor just inside that side (floor is ~36 cm each side of the centreline).
+	const FTransform& HT = Hull->GetHull()->GetComponentTransform();
+	const float Side = Nearest.Y >= 0.f ? 1.f : -1.f;
+	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	ClimbTargetLocal = FVector(FMath::Clamp(float(Nearest.X), -100.f, 75.f), Side * 14.f, Hull->DriverSeatLocal.Z + HalfHeight + 3.f);
+	ClimbStartLocal = HT.InverseTransformPosition(GetActorLocation());
+	ClimbBoat = Hull;
+	ClimbAge = 0.f;
+	State = ELFBrawlerState::Climbing;
+	bHasSwimTarget = false;
+	UCharacterMovementComponent* Move = GetCharacterMovement();
+	Move->StopMovementImmediately();
+	Move->DisableMovement();
+	UE_LOG(LogLF, Display, TEXT("[climb] %s grabs %s (%.0f cm from the gunwale, %s side)"), *GetName(), *Hull->GetName(), D,
+		Side > 0.f ? TEXT("starboard") : TEXT("port"));
+	return true;
+}
+
+void ALFBrawler::UpdateSwim(float DeltaSeconds)
+{
+	UWorld* World = GetWorld();
+	const float Now = World->GetTimeSeconds();
+	FVector L = GetActorLocation();
+
+	// AI / dummy: swim home and climb in.
+	if (!IsPlayerControlled() && bAutoReturnHome && HomeBoat.IsValid() && Now - SwimStartTime >= AutoReturnDelay)
+	{
+		if (GrabDistanceTo(HomeBoat.Get()) <= GrabRange * 0.8f)
+		{
+			TryGrabHull(HomeBoat.Get());
+			return;
+		}
+		StartSwimTo(HomeBoat->GetActorLocation());
+	}
+	if (bHasSwimTarget)
+	{
+		const FVector To = (SwimTarget - L) * FVector(1.f, 1.f, 0.f);
+		if (To.Size() < 30.f)
+		{
+			bHasSwimTarget = false;
+		}
+		else
+		{
+			AddMovementInput(To.GetSafeNormal(), 1.f);
+		}
+	}
+
+	// Bob on the water: capsule centre a fixed fraction of the half-height under the surface.
+	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	const float Water = LF::Water::GetHeightAt(L, Now);
+	L.Z = Water - HalfHeight * SwimSubmerge;
+	SetActorLocation(L);
+	GetCharacterMovement()->Velocity.Z = 0.f;
+
+	// Placeholder swim pose: lean forward with speed.
+	const float Speed01 = FMath::Clamp(float(GetVelocity().Size2D()) / FMath::Max(SwimSpeed, 1.f), 0.f, 1.f);
+	const FQuat Lean(GetActorRightVector(), FMath::DegreesToRadians(SwimLeanDeg * Speed01));
+	SwayQuat = FQuat::Slerp(SwayQuat, Lean, 1.f - FMath::Exp(-6.f * DeltaSeconds));
+	GetMesh()->SetWorldRotation(SwayQuat * (GetActorQuat() * MeshBaseRotation.Quaternion()));
+}
+
+void ALFBrawler::UpdateClimb(float DeltaSeconds)
+{
+	ALFBoat* B = ClimbBoat.Get();
+	if (!B)
+	{
+		EnterSwimming();
+		return;
+	}
+	ClimbAge += DeltaSeconds;
+	const float T = FMath::Clamp(ClimbAge / ClimbTime, 0.f, 1.f);
+	// In hull space so a moving/rocking boat carries the climb. Phase 1 (60 %): rise at the side to above the rail,
+	// moving a little toward it. Phase 2: hop over and drop onto the floor.
+	const FVector Over = FVector(ClimbTargetLocal.X, FMath::Lerp(ClimbStartLocal.Y, ClimbTargetLocal.Y, 0.35f), ClimbTargetLocal.Z + ClimbOverHeight);
+	FVector Local;
+	if (T < 0.6f)
+	{
+		const float A = FMath::SmoothStep(0.f, 1.f, T / 0.6f);
+		Local = FMath::Lerp(ClimbStartLocal, Over, A);
+	}
+	else
+	{
+		const float A = (T - 0.6f) / 0.4f;
+		Local = FMath::Lerp(Over, ClimbTargetLocal, FMath::SmoothStep(0.f, 1.f, A));
+		Local.Z += FMath::Sin(A * UE_PI) * 12.f; // small hop
+	}
+	const FTransform& HT = B->GetHull()->GetComponentTransform();
+	SetActorLocationAndRotation(HT.TransformPosition(Local), FRotator(0.f, (HT.TransformVector(ClimbTargetLocal - ClimbStartLocal) * FVector(1, 1, 0)).Rotation().Yaw, 0.f));
+	// Lean into the climb, then straighten.
+	const FQuat Lean(GetActorRightVector(), FMath::DegreesToRadians(35.f * FMath::Sin(T * UE_PI)));
+	GetMesh()->SetWorldRotation(Lean * (GetActorQuat() * MeshBaseRotation.Quaternion()));
+	if (T >= 1.f)
+	{
+		FinishClimb();
+	}
+}
+
+void ALFBrawler::FinishClimb()
+{
+	ALFBoat* B = ClimbBoat.Get();
+	ClimbBoat = nullptr;
+	if (!B)
+	{
+		EnterSwimming();
+		return;
+	}
+	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	StandInBoatAt(B, ClimbTargetLocal - FVector(0.f, 0.f, HalfHeight + 3.f));
+	UE_LOG(LogLF, Display, TEXT("[climb] %s aboard %s%s"), *GetName(), *B->GetName(),
+		B == HomeBoat.Get() ? TEXT(" (home)") : (B->HasDriver() ? TEXT(" (someone is driving - knock them out)") : TEXT(" (seat empty: steal it!)")));
+}
+
+void ALFBrawler::UpdatePrompt()
+{
+	// Placeholder on-screen prompts (dev builds) until there is UI.
+	if (!GEngine)
+	{
+		return;
+	}
+	const uint64 Key = 0x4C460000ull + GetUniqueID();
+	if (State == ELFBrawlerState::Swimming)
+	{
+		if (const ALFBoat* B = FindGrabbableHull())
+		{
+			GEngine->AddOnScreenDebugMessage(Key, 0.f, FColor::White, FString::Printf(TEXT("[E / Y]  climb aboard %s"), *B->GetName()));
+		}
+	}
+	else if (State == ELFBrawlerState::Standing && Boat.IsValid() && !Boat->HasDriver()
+		&& FVector::Dist2D(GetActorLocation(), Boat->GetDriverSeatWorld()) <= DriveReach)
+	{
+		GEngine->AddOnScreenDebugMessage(Key, 0.f, FColor::White, Boat.Get() == HomeBoat.Get() ? FString(TEXT("[E / Y]  drive")) : FString(TEXT("[E / Y]  STEAL this boat")));
+	}
 }
 
 // ---------------------------------------------------------------- Feedback / camera (real time)

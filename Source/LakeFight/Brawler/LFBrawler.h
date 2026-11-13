@@ -141,6 +141,42 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
 	float HullHitImpulse = 120.f;
 
+	// --- Swim / climb / steal (step 3) ---
+	/** Swim speed (cm/s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float SwimSpeed = 120.f;
+
+	/** Capsule centre this far (fraction of half-height) below the water surface: head and shoulders out. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0", ClampMax="1"))
+	float SwimSubmerge = 0.5f;
+
+	/** Forward lean of the mesh at full swim speed (deg) - placeholder swim pose. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0", ClampMax="90"))
+	float SwimLeanDeg = 45.f;
+
+	/** Can grab a hull when within this distance (cm) of its gunwale outline. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float GrabRange = 150.f;
+
+	/** Climb duration (s): rise at the side, hop over the rail, land inside. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0.1"))
+	float ClimbTime = 0.8f;
+
+	/** How far above the landing spot (cm, capsule centre) the climb goes before dropping in - clears the rail. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float ClimbOverHeight = 35.f;
+
+	/** Interact drives/steals only within this distance (cm, horizontal) of the driver seat. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float DriveReach = 80.f;
+
+	/** AI-less dummies (no controller) swim back to their home boat and climb in after this delay (s). */
+	UPROPERTY(EditAnywhere, Category="LF|Swim")
+	bool bAutoReturnHome = true;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float AutoReturnDelay = 0.6f;
+
 	// --- Overboard ragdoll (step 2.1) ---
 	/** Horizontal launch speed (cm/s) away from the hitter for the weakest (light/near-gunwale) and strongest (full charge) hits. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
@@ -194,9 +230,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
 	float OverboardSplashScale = 1.8f;
 
-	/** Temporary until swimming (step 3): after recovering upright in the water, back into the boat after this (s). */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
-	float OverboardResetDelay = 2.5f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
 	TObjectPtr<UNiagaraSystem> SplashSystem;
@@ -280,9 +313,44 @@ public:
 	UFUNCTION(Exec)
 	void LFSwing(float Strength = -1.f);
 
+	/** Debug console: throw yourself overboard to the right (Side 1) or left (-1) - for testing swim/climb/steal. */
+	UFUNCTION(Exec)
+	void LFOverboard(float Side = 1.f);
+
 	/** Debug console: toggle drive/stand (same as Interact). */
 	UFUNCTION(Exec)
 	void LFDrive();
+
+	// --- AI-ready actions (T03 AI drives brawlers through these; the player input maps onto the same functions) ---
+	/** While swimming, swim toward this world point until StopSwim / arrival (30 cm). */
+	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
+	void StartSwimTo(FVector Target);
+
+	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
+	void StopSwim();
+
+	/** Swimming: grab the nearest hull within GrabRange and climb in (side nearest you). */
+	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
+	bool TryGrabNearestHull();
+
+	/** Swimming: grab this specific hull if within GrabRange. */
+	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
+	bool TryGrabHull(ALFBoat* Hull);
+
+	/** Standing near an empty driver seat: drive (stealing if it isn't your home boat). */
+	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
+	bool TryDriveBoat() { return TryDrive(); }
+
+	/** Swing the paddle now: Strength < 0 = light, else charged strength 0..1. */
+	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
+	void Swing(float Strength = -1.f);
+
+	/** Nearest grabbable hull within GrabRange (null if none). */
+	UFUNCTION(BlueprintPure, Category="LF|Brawler")
+	ALFBoat* FindGrabbableHull() const;
+
+	UFUNCTION(BlueprintPure, Category="LF|Brawler")
+	ALFBoat* GetHomeBoat() const { return HomeBoat.Get(); }
 
 	/** Paddle hit received. Dir = horizontal direction from the attacker. Returns true if it knocked us overboard. */
 	bool ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, float Strength);
@@ -367,6 +435,22 @@ private:
 	double LaunchTime = 0.0;
 
 	void StartRagdoll(const FVector& Out, float Strength);
+	void EnterSwimming();
+	void UpdateSwim(float DeltaSeconds);
+	void UpdateClimb(float DeltaSeconds);
+	void FinishClimb();
+	void StandInBoatAt(ALFBoat* InBoat, const FVector& LocalSpot);
+	void UpdatePrompt();
+	float GrabDistanceTo(const ALFBoat* B, FVector2D* OutLocal = nullptr) const;
+
+	TWeakObjectPtr<ALFBoat> HomeBoat;
+	FVector SwimTarget = FVector::ZeroVector;
+	bool bHasSwimTarget = false;
+	double SwimStartTime = 0.0;
+	TWeakObjectPtr<ALFBoat> ClimbBoat;
+	FVector ClimbStartLocal = FVector::ZeroVector;
+	FVector ClimbTargetLocal = FVector::ZeroVector;
+	float ClimbAge = 0.f;
 	void UpdateWaterForces(float DeltaSeconds);
 	void EndRagdoll();
 

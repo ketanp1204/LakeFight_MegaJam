@@ -305,6 +305,10 @@ public:
 	/** World position of the driver seat on the floor. */
 	FVector GetDriverSeatWorld() const;
 
+	/** Signed horizontal distance (cm) from WorldPos to the hull's outer gunwale outline (RowboatPlan, boat yaw/pitch/roll
+	 *  via the hull transform); negative = inside the outline. OutLocalNearest = nearest outline point in hull-local cm. */
+	float GunwaleDistance(const FVector& WorldPos, FVector2D& OutLocalNearest) const;
+
 	UStaticMeshComponent* GetHull() const { return HullMesh; }
 
 	virtual void Tick(float DeltaSeconds) override;

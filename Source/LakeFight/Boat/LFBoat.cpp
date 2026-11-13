@@ -535,6 +535,34 @@ void ALFBoat::UnPossessed()
 	Super::UnPossessed();
 }
 
+float ALFBoat::GunwaleDistance(const FVector& WorldPos, FVector2D& OutLocalNearest) const
+{
+	const FVector L = HullMesh->GetComponentTransform().InverseTransformPosition(WorldPos);
+	const FVector2D P(L.X, L.Y);
+	constexpr int32 N = UE_ARRAY_COUNT(RowboatPlan);
+	float Best = TNumericLimits<float>::Max();
+	bool bInside = false;
+	for (int32 i = 0, j = N - 1; i < N; j = i++)
+	{
+		const FVector2D A = RowboatPlan[j] * 100.;
+		const FVector2D B = RowboatPlan[i] * 100.;
+		const FVector2D E = B - A;
+		const float T = FMath::Clamp(float(FVector2D::DotProduct(P - A, E) / E.SizeSquared()), 0.f, 1.f);
+		const FVector2D Q = A + E * T;
+		const float D = float(FVector2D::Distance(P, Q));
+		if (D < Best)
+		{
+			Best = D;
+			OutLocalNearest = Q;
+		}
+		if (((B.Y > P.Y) != (A.Y > P.Y)) && (P.X < (A.X - B.X) * (P.Y - B.Y) / (A.Y - B.Y) + B.X))
+		{
+			bInside = !bInside;
+		}
+	}
+	return bInside ? -Best : Best;
+}
+
 FVector ALFBoat::GetDriverSeatWorld() const
 {
 	return HullMesh->GetComponentTransform().TransformPosition(DriverSeatLocal);
