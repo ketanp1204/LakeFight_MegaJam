@@ -1,0 +1,480 @@
+{
+  "schema_version": 1,
+  "task": "A01",
+  "source_root": "Audio/Source/Sonniss_GDC2026",
+  "output_root": "Audio/Processed",
+  "work_root": "Tools/audio/.work",
+  "source_license": "Director-confirmed licensed royalty-free Sonniss GDC2026. Sources read-only; no substitutions.",
+  "format": {
+    "codec": "pcm_s16le",
+    "sample_rate": 48000,
+    "bits_per_sample": 16
+  },
+  "normalization": {
+    "target_true_peak_dbtp": -1.0,
+    "working_true_peak_dbtp": -1.1,
+    "tolerance_lu": 0.2,
+    "method": "FFmpeg loudnorm two-pass or calibrated single-pass oversampled limiting; every trial starts from original prepared signal",
+    "maximum_passes": 20,
+    "residual_limiter": {
+      "oversample_factor": 4,
+      "ceiling_dbtp": -1.2,
+      "attack_ms": 5,
+      "release_ms": 50
+    },
+    "short_event_meter": {
+      "below_seconds": 0.4,
+      "minimum_analysis_seconds": 1.2,
+      "mode": "repeat whole cycles only in metering/render-analysis copy; keep delivered trimmed length"
+    }
+  },
+  "slicing": {
+    "threshold_dbfs": -40,
+    "min_gap_ms": 120,
+    "analysis_block_ms": 5,
+    "pre_roll_ms": 10,
+    "post_roll_ms": 40,
+    "minimum_slice_ms": 80,
+    "maximum_per_event": 6,
+    "selection": "strongest seed then farthest-point standardized log centroid and peak; chronological output order"
+  },
+  "loops": {
+    "crossfade_seconds": 2,
+    "curve": "equal-power",
+    "boundary_guard_samples": 64,
+    "zero_crossings": "shared stereo-mid crossing with minimum joint L/R energy; digital-zero guards"
+  },
+  "dither_seed": 20261113,
+  "environment": {
+    "ffmpeg": "ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "numpy": "2.5.4",
+    "soundfile": "0.14.0"
+  },
+  "source_inventory": {
+    "Accept Boing Crunch.wav": {
+      "sha256": "b20fb6f6c79c86276f163890e68412fdeb707eb7346b1784d50154e33a900035",
+      "bytes": 559868
+    },
+    "AMBSubn_Ambience, Forest Crickets, Birds, Connecticut 02_344 Audio_East Coast America.wav": {
+      "sha256": "d227b21d2df0f329acd490ad1c4ecaddfef4e19f295880a40116a60112da147f",
+      "bytes": 30287980
+    },
+    "AMBSwmp_Meadow Pipits calling many Insects humming Wind blowing through Grass_JSE_HoN_Stereo.wav": {
+      "sha256": "b47ac8ae869b52760bfd41e195e37a319c822ad04a734aec0c869bc4a5eee280",
+      "bytes": 50565614
+    },
+    "Cartoon Airy Impact Creaks.wav": {
+      "sha256": "c51db1ade191879b04e9fc7d6b1341ae48c222636b2739d626896726282aabc4",
+      "bytes": 1442992
+    },
+    "Cartoon Bubbles Short.wav": {
+      "sha256": "13bfc9f9b66dbe1208810fca8963fc154058063657079559980ce05c986c41fc",
+      "bytes": 506006
+    },
+    "Cartoon Confused Dizzy.wav": {
+      "sha256": "1330229a593e0759e7d4100698511d257c957effe740a26baac22d31c9228db7",
+      "bytes": 866310
+    },
+    "CLOCKTick_You're Running Late _344 Audio_Antique Clocks.wav": {
+      "sha256": "88cc8430cffdfdf9ed0c77d873cfa5040487aa1c837738fd59d7c39ae246f169",
+      "bytes": 34745080
+    },
+    "Cofetti Whoosh Pluck Spill.wav": {
+      "sha256": "7a496c7a985d28e28a031d78d900f4120e311d93f7e90193a0823ef19c95fbe5",
+      "bytes": 1463808
+    },
+    "CRWDCheer_Small Club, 50 People, Crowd, Spanish, Cheering and Applause-Surround_KSL_KS015.wav": {
+      "sha256": "f5b953ab3e8b005ceea0548696eb99df2b23878baee70e61bda321838c3343d8",
+      "bytes": 23471060
+    },
+    "Deny Muted.wav": {
+      "sha256": "619233bd4af5cc3d329a0e69e50836923175d986f8a4742c1f36f9bd5f174e5f",
+      "bytes": 461708
+    },
+    "DSGNBass_Bass Drop & Downer Fast 16_344 Audio_Bass Drops & Downers.wav": {
+      "sha256": "cb393ea3e0482ee339c072e1f16b9fddd74b0dead254fde4ac39b9521723aeb0",
+      "bytes": 2489510
+    },
+    "DSGNStngr_Power Up Bright Positive Successful Light Saturation Crash Shimmer 05_ESM_AG.wav": {
+      "sha256": "3bf090678bb55da7d38f2bf76ac6a8d826f5245452a36d54666d2597c0be0299",
+      "bytes": 1428656
+    },
+    "FGHTImpt_Combat Punch Impact Light Hit Delay Crunchy Vintage Quick Smack 05_ESM_AG.wav": {
+      "sha256": "55cb8102db4d8728c2607279b4e381f27336db35bb966e5f4993c9ace2cd9ecd",
+      "bytes": 1159288
+    },
+    "Foley Coin Flip Single Fast.wav": {
+      "sha256": "f6f56101e8711c22dfbb81583f4dfc78fa9c7a1b6003f82e0d3881e93774ad85",
+      "bytes": 541916
+    },
+    "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav": {
+      "sha256": "b56a255f662913e4adc10376dcea36a347384b72ad80c3ae4344b1005104dc63",
+      "bytes": 2591042
+    },
+    "Game Entry Happy Short.wav": {
+      "sha256": "8ccca44905900169d322f1a0cb4afac4be4afa372c4242bf6484cb081b42f94b",
+      "bytes": 505876
+    },
+    "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav": {
+      "sha256": "b85b6871d76567d93004ff3ff7274564ff8f0b81928f99a92ec62790bceed487",
+      "bytes": 2611058
+    },
+    "Interface Plucks Happy.wav": {
+      "sha256": "a6866b6e04580d6f4007c59514a5530c7699f785beb27b2eda6a2b4579478ded",
+      "bytes": 493094
+    },
+    "MAGMisc_Magic Christmas Bells 2_344 Audio_Christmas.wav": {
+      "sha256": "b4fa1d7e9ca431e1211bbc36528edcae39fb75eebe1abf9f7ff96af50b428c89",
+      "bytes": 5151498
+    },
+    "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav": {
+      "sha256": "d75988b9eab8e10dfbef9dc8f6297eec5c57b91e50fb09bc8b72273356a2e681",
+      "bytes": 39908232
+    },
+    "Ting Coins.wav": {
+      "sha256": "7467e2687c5b9bf3cedebd0fcb3af58f7eaeffdd7201a97790daf3c87c42f1a1",
+      "bytes": 637214
+    },
+    "UIMisc_Kalimba 3 Up_CB Sounddesign_APPlicable Sounds.wav": {
+      "sha256": "0298f3405836720e064d1ff486f58fa032b03009d6f9e55e668b84e759dca360",
+      "bytes": 160420
+    },
+    "VOXLaff_Laughing Female 02 06_SNDBTS_VH.wav": {
+      "sha256": "b39f117f8222df48730a04d4425da33ec7a6635f4ae6c237be9a3921cb1a26cc",
+      "bytes": 205692
+    },
+    "VOXLaff_Police Officer Laugh Vocal Male 1.wav": {
+      "sha256": "eabd5c2c52a90e26ad82f98db7b520c37ed234d01d0dccfd3c51294f956d9fe0",
+      "bytes": 1169080
+    },
+    "VOXMale_Male Adventurer, Active Yell 19_344 Audio_Anime Fight Voices.wav": {
+      "sha256": "6a8dd187f0541b1c2433a5992278cdc1b6b2157e4937a0a94ee53c2203afeacd",
+      "bytes": 259292
+    },
+    "VOXMale_Warrior Opponent Attack, 'Ai yah' 2_344 Audio_Anime Fight Voices.wav": {
+      "sha256": "b99aa97f2f9bab5f98d2c959bac32a78184f127fa61bc14054ae7cb0fe6dcb82",
+      "bytes": 534478
+    },
+    "WATRImpt_Impact Water Deep Submerge Bubble Drown Ship Hit 05_ESM_EMWI.wav": {
+      "sha256": "c1e1a20e310e259427889692846b2d561cd12d61ab4cf255fb8be6cfc5f82dae",
+      "bytes": 1638358
+    },
+    "WATRLap_Small Waves sloshing onto Rock Slabs at huge Glacial Lake _JSE_HoN_Quad.wav": {
+      "sha256": "e3dcabb59adca22f2dbf8f281e66c681e5e96003f9f850e1c5b8218ab2b7d016",
+      "bytes": 106675740
+    },
+    "WATRLap_Summer Tennessee Lake Dock Water Ripples Wake Wave Gentle 05 Distant_ESM_CPS.wav": {
+      "sha256": "b9b8e2401a6a66825d97abefff1d89321eba67799a549db66ca4fef14d9749de",
+      "bytes": 59457730
+    },
+    "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav": {
+      "sha256": "ab2cd18aaac93afa77b48b74edf82257815ee16817bb2bb9bd5ba134e4cc1466",
+      "bytes": 13081382
+    },
+    "WHSTHmn_Whistle Male 06 09_SNDBTS_VH.wav": {
+      "sha256": "7e1b640323e5f304c8bcfa6bbf2e6e15ae1d82fcff0d15842476926f0a353b85",
+      "bytes": 704382
+    },
+    "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav": {
+      "sha256": "68abe94b88d988052668926e98cb8a314cc40e880f6e031aa2c6ff51a7d3ebbf",
+      "bytes": 208667700
+    }
+  },
+  "events": [
+    {
+      "id": "amb_lake",
+      "group": "AMBIENCE",
+      "source_keyword": "Summer Tennessee Lake Dock Water Ripples",
+      "source": "WATRLap_Summer Tennessee Lake Dock Water Ripples Wake Wave Gentle 05 Distant_ESM_CPS.wav",
+      "channels": 2,
+      "target_lufs": -28,
+      "output": "AMB_LF_Lake_Loop",
+      "loop": true
+    },
+    {
+      "id": "amb_shore",
+      "group": "AMBIENCE",
+      "source_keyword": "Small Waves sloshing onto Rock Slabs",
+      "source": "WATRLap_Small Waves sloshing onto Rock Slabs at huge Glacial Lake _JSE_HoN_Quad.wav",
+      "channels": 2,
+      "target_lufs": -28,
+      "output": "AMB_LF_Shore_Loop",
+      "loop": true
+    },
+    {
+      "id": "amb_meadow",
+      "group": "AMBIENCE",
+      "source_keyword": "Meadow Pipits calling",
+      "source": "AMBSwmp_Meadow Pipits calling many Insects humming Wind blowing through Grass_JSE_HoN_Stereo.wav",
+      "channels": 2,
+      "target_lufs": -28,
+      "output": "AMB_LF_Meadow_Loop",
+      "loop": true
+    },
+    {
+      "id": "amb_birds",
+      "group": "AMBIENCE",
+      "source_keyword": "Forest Crickets, Birds, Connecticut 02",
+      "source": "AMBSubn_Ambience, Forest Crickets, Birds, Connecticut 02_344 Audio_East Coast America.wav",
+      "channels": 2,
+      "target_lufs": -28,
+      "output": "AMB_LF_Birds_Loop",
+      "loop": true
+    },
+    {
+      "id": "overboard",
+      "group": "SPLASH",
+      "source_keyword": "WATRImpt_Impact Water Deep Submerge",
+      "source": "WATRImpt_Impact Water Deep Submerge Bubble Drown Ship Hit 05_ESM_EMWI.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "output": "SFX_LF_Overboard_01"
+    },
+    {
+      "id": "surface",
+      "group": "SPLASH",
+      "source_keyword": "Cartoon Bubbles Short",
+      "source": "Cartoon Bubbles Short.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "output": "SFX_LF_Surface_01"
+    },
+    {
+      "id": "paddle_hit",
+      "group": "PADDLE",
+      "source_keyword": "Combat Punch Impact Light Hit",
+      "source": "FGHTImpt_Combat Punch Impact Light Hit Delay Crunchy Vintage Quick Smack 05_ESM_AG.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "output": "SFX_LF_PaddleHit_01"
+    },
+    {
+      "id": "paddle_wood",
+      "group": "PADDLE",
+      "source_keyword": "Spear And Stick Impact, Wooden",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "slice": true,
+      "output_prefix": "SFX_LF_PaddleWood"
+    },
+    {
+      "id": "paddle_charged",
+      "group": "PADDLE",
+      "source_keyword": "SWING IMPACTS Quick Heavy Weapon Swing To Thud",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "slice": true,
+      "output_prefix": "SFX_LF_PaddleCharged"
+    },
+    {
+      "id": "stun",
+      "group": "PADDLE",
+      "source_keyword": "Cartoon Confused Dizzy",
+      "source": "Cartoon Confused Dizzy.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "output": "SFX_LF_Stun_01"
+    },
+    {
+      "id": "hit_creak",
+      "group": "PADDLE",
+      "source_keyword": "Cartoon Airy Impact Creaks",
+      "source": "Cartoon Airy Impact Creaks.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "output": "SFX_LF_HitCreak_01"
+    },
+    {
+      "id": "ram_wood",
+      "group": "RAM",
+      "source_keyword": "Wooden Hit, Dark, Heavy Hit",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "slice": true,
+      "output_prefix": "SFX_LF_RamWood",
+      "pitch_semitones": 3,
+      "pitch_mode": "natural resampling; no duration-restoring stretch"
+    },
+    {
+      "id": "ram_bass",
+      "group": "RAM",
+      "source_keyword": "Bass Drop & Downer Fast 16",
+      "source": "DSGNBass_Bass Drop & Downer Fast 16_344 Audio_Bass Drops & Downers.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "output": "SFX_LF_RamBass_01"
+    },
+    {
+      "id": "boat_creak",
+      "group": "RAM",
+      "source_keyword": "Sitting Down, Creaky Seat, Squeaks 3",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "channels": 1,
+      "target_lufs": -16,
+      "slice": true,
+      "output_prefix": "SFX_LF_BoatCreak"
+    },
+    {
+      "id": "voice_attack",
+      "group": "VOICE",
+      "source_keyword": "Warrior Opponent Attack, 'Ai yah' 2",
+      "source": "VOXMale_Warrior Opponent Attack, 'Ai yah' 2_344 Audio_Anime Fight Voices.wav",
+      "channels": 1,
+      "target_lufs": -18,
+      "output": "VO_LF_Attack_01"
+    },
+    {
+      "id": "voice_yell",
+      "group": "VOICE",
+      "source_keyword": "Male Adventurer, Active Yell 19",
+      "source": "VOXMale_Male Adventurer, Active Yell 19_344 Audio_Anime Fight Voices.wav",
+      "channels": 1,
+      "target_lufs": -18,
+      "output": "VO_LF_Yell_01"
+    },
+    {
+      "id": "voice_pant",
+      "group": "VOICE",
+      "source_keyword": "Panting Male",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "channels": 1,
+      "target_lufs": -18,
+      "slice": true,
+      "output_prefix": "VO_LF_Pant"
+    },
+    {
+      "id": "voice_whistle",
+      "group": "VOICE",
+      "source_keyword": "Whistle Male",
+      "source": "WHSTHmn_Whistle Male 06 09_SNDBTS_VH.wav",
+      "channels": 1,
+      "target_lufs": -18,
+      "output": "VO_LF_Whistle_01"
+    },
+    {
+      "id": "voice_taunt",
+      "group": "VOICE",
+      "source_keyword": "Police Officer Laugh Vocal Male 1",
+      "source": "VOXLaff_Police Officer Laugh Vocal Male 1.wav",
+      "channels": 1,
+      "target_lufs": -18,
+      "output": "VO_LF_Taunt_01"
+    },
+    {
+      "id": "fish_banked",
+      "group": "UI / SCORE",
+      "source_keyword": "Ting Coins",
+      "source": "Ting Coins.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_FishBanked"
+    },
+    {
+      "id": "accept",
+      "group": "UI / SCORE",
+      "source_keyword": "Accept Boing Crunch",
+      "source": "Accept Boing Crunch.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_Accept"
+    },
+    {
+      "id": "deny",
+      "group": "UI / SCORE",
+      "source_keyword": "Deny Muted",
+      "source": "Deny Muted.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_Deny"
+    },
+    {
+      "id": "win",
+      "group": "UI / SCORE",
+      "source_keyword": "Cofetti Whoosh Pluck Spill",
+      "source": "Cofetti Whoosh Pluck Spill.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_Win"
+    },
+    {
+      "id": "round_start",
+      "group": "UI / SCORE",
+      "source_keyword": "Game Entry Happy Short",
+      "source": "Game Entry Happy Short.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_RoundStart"
+    },
+    {
+      "id": "fish_caught",
+      "group": "UI / SCORE",
+      "source_keyword": "Foley Coin Flip",
+      "source": "Foley Coin Flip Single Fast.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_FishCaught"
+    },
+    {
+      "id": "goldfish",
+      "group": "UI / SCORE",
+      "source_keyword": "Power Up Bright Positive",
+      "source": "DSGNStngr_Power Up Bright Positive Successful Light Saturation Crash Shimmer 05_ESM_AG.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_GoldFish"
+    },
+    {
+      "id": "goldfish_sparkle",
+      "group": "UI / SCORE",
+      "source_keyword": "Magic Christmas Bells 2",
+      "source": "MAGMisc_Magic Christmas Bells 2_344 Audio_Christmas.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_GoldFishSparkle"
+    },
+    {
+      "id": "final_30",
+      "group": "UI / SCORE",
+      "source_keyword": "You're Running Late",
+      "source": "CLOCKTick_You're Running Late _344 Audio_Antique Clocks.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_Final30_Loop",
+      "loop": true
+    },
+    {
+      "id": "menu_select",
+      "group": "UI / SCORE",
+      "source_keyword": "Kalimba 3 Up",
+      "source": "UIMisc_Kalimba 3 Up_CB Sounddesign_APPlicable Sounds.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_MenuSelect"
+    },
+    {
+      "id": "menu_move",
+      "group": "UI / SCORE",
+      "source_keyword": "Interface Plucks Happy",
+      "source": "Interface Plucks Happy.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_MenuMove"
+    },
+    {
+      "id": "end_cheer",
+      "group": "UI / SCORE",
+      "source_keyword": "Small Club, 50 People",
+      "source": "CRWDCheer_Small Club, 50 People, Crowd, Spanish, Cheering and Applause-Surround_KSL_KS015.wav",
+      "channels": 2,
+      "target_lufs": -20,
+      "output": "UI_LF_EndCheer",
+      "max_duration_seconds": 4,
+      "fade_in_ms": 50,
+      "fade_out_ms": 700,
+      "window_selection": "maximum four-second RMS energy"
+    }
+  ]
+}

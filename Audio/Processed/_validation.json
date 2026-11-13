@@ -1,0 +1,51 @@
+{
+  "outputs": 56,
+  "mono": 40,
+  "stereo": 16,
+  "loop_count": 5,
+  "loops": [
+    {
+      "output": "AMB_LF_Lake_Loop.wav",
+      "duration_seconds": 100.976,
+      "start": 0,
+      "end_inclusive": 4846847
+    },
+    {
+      "output": "AMB_LF_Shore_Loop.wav",
+      "duration_seconds": 89.95529166666667,
+      "start": 0,
+      "end_inclusive": 4317853
+    },
+    {
+      "output": "AMB_LF_Meadow_Loop.wav",
+      "duration_seconds": 84.496,
+      "start": 0,
+      "end_inclusive": 4055807
+    },
+    {
+      "output": "AMB_LF_Birds_Loop.wav",
+      "duration_seconds": 50.30225,
+      "start": 0,
+      "end_inclusive": 2414507
+    },
+    {
+      "output": "UI_LF_Final30_Loop.wav",
+      "duration_seconds": 58.0,
+      "start": 0,
+      "end_inclusive": 2783999
+    }
+  ],
+  "maximum_loudness_error_lu": 0.1999999999999993,
+  "highest_true_peak_dbtp": -1.1,
+  "source_files_unchanged": true,
+  "source_hashes_checked": 32,
+  "all_player_links_valid": true,
+  "full_processing_passes": 2,
+  "all_wav_hashes_identical": true,
+  "taunt_input_lufs": -14.34,
+  "taunt_output_lufs": -18.0,
+  "format": "PCM16 / 48000 Hz",
+  "clipped_samples": 0,
+  "manifest_sha256": "6fd92210f051348422540ab2f587ffa82db9b7c9480bc7206631f8bb3b8e207a",
+  "processing_script_sha256": "31809be797045903344eb7516b7f73acc68c8b5388909884f83bcbf2fbd667cc"
+}

@@ -1,0 +1,4243 @@
+{
+  "manifest_sha256": "6fd92210f051348422540ab2f587ffa82db9b7c9480bc7206631f8bb3b8e207a",
+  "environment": {
+    "backend": "ffmpeg",
+    "ffmpeg": "ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "numpy": "2.5.4",
+    "soundfile": "0.14.0",
+    "python": "3.12.10"
+  },
+  "source_inventory_unchanged": true,
+  "source_inventory": {
+    "AMBSubn_Ambience, Forest Crickets, Birds, Connecticut 02_344 Audio_East Coast America.wav": {
+      "sha256": "d227b21d2df0f329acd490ad1c4ecaddfef4e19f295880a40116a60112da147f",
+      "bytes": 30287980
+    },
+    "AMBSwmp_Meadow Pipits calling many Insects humming Wind blowing through Grass_JSE_HoN_Stereo.wav": {
+      "sha256": "b47ac8ae869b52760bfd41e195e37a319c822ad04a734aec0c869bc4a5eee280",
+      "bytes": 50565614
+    },
+    "Accept Boing Crunch.wav": {
+      "sha256": "b20fb6f6c79c86276f163890e68412fdeb707eb7346b1784d50154e33a900035",
+      "bytes": 559868
+    },
+    "CLOCKTick_You're Running Late _344 Audio_Antique Clocks.wav": {
+      "sha256": "88cc8430cffdfdf9ed0c77d873cfa5040487aa1c837738fd59d7c39ae246f169",
+      "bytes": 34745080
+    },
+    "CRWDCheer_Small Club, 50 People, Crowd, Spanish, Cheering and Applause-Surround_KSL_KS015.wav": {
+      "sha256": "f5b953ab3e8b005ceea0548696eb99df2b23878baee70e61bda321838c3343d8",
+      "bytes": 23471060
+    },
+    "Cartoon Airy Impact Creaks.wav": {
+      "sha256": "c51db1ade191879b04e9fc7d6b1341ae48c222636b2739d626896726282aabc4",
+      "bytes": 1442992
+    },
+    "Cartoon Bubbles Short.wav": {
+      "sha256": "13bfc9f9b66dbe1208810fca8963fc154058063657079559980ce05c986c41fc",
+      "bytes": 506006
+    },
+    "Cartoon Confused Dizzy.wav": {
+      "sha256": "1330229a593e0759e7d4100698511d257c957effe740a26baac22d31c9228db7",
+      "bytes": 866310
+    },
+    "Cofetti Whoosh Pluck Spill.wav": {
+      "sha256": "7a496c7a985d28e28a031d78d900f4120e311d93f7e90193a0823ef19c95fbe5",
+      "bytes": 1463808
+    },
+    "DSGNBass_Bass Drop & Downer Fast 16_344 Audio_Bass Drops & Downers.wav": {
+      "sha256": "cb393ea3e0482ee339c072e1f16b9fddd74b0dead254fde4ac39b9521723aeb0",
+      "bytes": 2489510
+    },
+    "DSGNStngr_Power Up Bright Positive Successful Light Saturation Crash Shimmer 05_ESM_AG.wav": {
+      "sha256": "3bf090678bb55da7d38f2bf76ac6a8d826f5245452a36d54666d2597c0be0299",
+      "bytes": 1428656
+    },
+    "Deny Muted.wav": {
+      "sha256": "619233bd4af5cc3d329a0e69e50836923175d986f8a4742c1f36f9bd5f174e5f",
+      "bytes": 461708
+    },
+    "FGHTImpt_Combat Punch Impact Light Hit Delay Crunchy Vintage Quick Smack 05_ESM_AG.wav": {
+      "sha256": "55cb8102db4d8728c2607279b4e381f27336db35bb966e5f4993c9ace2cd9ecd",
+      "bytes": 1159288
+    },
+    "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav": {
+      "sha256": "b56a255f662913e4adc10376dcea36a347384b72ad80c3ae4344b1005104dc63",
+      "bytes": 2591042
+    },
+    "Foley Coin Flip Single Fast.wav": {
+      "sha256": "f6f56101e8711c22dfbb81583f4dfc78fa9c7a1b6003f82e0d3881e93774ad85",
+      "bytes": 541916
+    },
+    "Game Entry Happy Short.wav": {
+      "sha256": "8ccca44905900169d322f1a0cb4afac4be4afa372c4242bf6484cb081b42f94b",
+      "bytes": 505876
+    },
+    "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav": {
+      "sha256": "b85b6871d76567d93004ff3ff7274564ff8f0b81928f99a92ec62790bceed487",
+      "bytes": 2611058
+    },
+    "Interface Plucks Happy.wav": {
+      "sha256": "a6866b6e04580d6f4007c59514a5530c7699f785beb27b2eda6a2b4579478ded",
+      "bytes": 493094
+    },
+    "MAGMisc_Magic Christmas Bells 2_344 Audio_Christmas.wav": {
+      "sha256": "b4fa1d7e9ca431e1211bbc36528edcae39fb75eebe1abf9f7ff96af50b428c89",
+      "bytes": 5151498
+    },
+    "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav": {
+      "sha256": "d75988b9eab8e10dfbef9dc8f6297eec5c57b91e50fb09bc8b72273356a2e681",
+      "bytes": 39908232
+    },
+    "Ting Coins.wav": {
+      "sha256": "7467e2687c5b9bf3cedebd0fcb3af58f7eaeffdd7201a97790daf3c87c42f1a1",
+      "bytes": 637214
+    },
+    "UIMisc_Kalimba 3 Up_CB Sounddesign_APPlicable Sounds.wav": {
+      "sha256": "0298f3405836720e064d1ff486f58fa032b03009d6f9e55e668b84e759dca360",
+      "bytes": 160420
+    },
+    "VOXLaff_Laughing Female 02 06_SNDBTS_VH.wav": {
+      "sha256": "b39f117f8222df48730a04d4425da33ec7a6635f4ae6c237be9a3921cb1a26cc",
+      "bytes": 205692
+    },
+    "VOXLaff_Police Officer Laugh Vocal Male 1.wav": {
+      "sha256": "eabd5c2c52a90e26ad82f98db7b520c37ed234d01d0dccfd3c51294f956d9fe0",
+      "bytes": 1169080
+    },
+    "VOXMale_Male Adventurer, Active Yell 19_344 Audio_Anime Fight Voices.wav": {
+      "sha256": "6a8dd187f0541b1c2433a5992278cdc1b6b2157e4937a0a94ee53c2203afeacd",
+      "bytes": 259292
+    },
+    "VOXMale_Warrior Opponent Attack, 'Ai yah' 2_344 Audio_Anime Fight Voices.wav": {
+      "sha256": "b99aa97f2f9bab5f98d2c959bac32a78184f127fa61bc14054ae7cb0fe6dcb82",
+      "bytes": 534478
+    },
+    "WATRImpt_Impact Water Deep Submerge Bubble Drown Ship Hit 05_ESM_EMWI.wav": {
+      "sha256": "c1e1a20e310e259427889692846b2d561cd12d61ab4cf255fb8be6cfc5f82dae",
+      "bytes": 1638358
+    },
+    "WATRLap_Small Waves sloshing onto Rock Slabs at huge Glacial Lake _JSE_HoN_Quad.wav": {
+      "sha256": "e3dcabb59adca22f2dbf8f281e66c681e5e96003f9f850e1c5b8218ab2b7d016",
+      "bytes": 106675740
+    },
+    "WATRLap_Summer Tennessee Lake Dock Water Ripples Wake Wave Gentle 05 Distant_ESM_CPS.wav": {
+      "sha256": "b9b8e2401a6a66825d97abefff1d89321eba67799a549db66ca4fef14d9749de",
+      "bytes": 59457730
+    },
+    "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav": {
+      "sha256": "ab2cd18aaac93afa77b48b74edf82257815ee16817bb2bb9bd5ba134e4cc1466",
+      "bytes": 13081382
+    },
+    "WHSTHmn_Whistle Male 06 09_SNDBTS_VH.wav": {
+      "sha256": "7e1b640323e5f304c8bcfa6bbf2e6e15ae1d82fcff0d15842476926f0a353b85",
+      "bytes": 704382
+    },
+    "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav": {
+      "sha256": "68abe94b88d988052668926e98cb8a314cc40e880f6e031aa2c6ff51a7d3ebbf",
+      "bytes": 208667700
+    }
+  },
+  "events": [
+    {
+      "id": "amb_lake",
+      "source": "WATRLap_Summer Tennessee Lake Dock Water Ripples Wake Wave Gentle 05 Distant_ESM_CPS.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "102.976000"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          102.976
+        ]
+      ]
+    },
+    {
+      "id": "amb_shore",
+      "source": "WATRLap_Small Waves sloshing onto Rock Slabs at huge Glacial Lake _JSE_HoN_Quad.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 4,
+            "channel_layout": "quad",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "91.955292"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          91.95529166666667
+        ]
+      ]
+    },
+    {
+      "id": "amb_meadow",
+      "source": "AMBSwmp_Meadow Pipits calling many Insects humming Wind blowing through Grass_JSE_HoN_Stereo.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "86.496000"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          86.496
+        ]
+      ]
+    },
+    {
+      "id": "amb_birds",
+      "source": "AMBSubn_Ambience, Forest Crickets, Birds, Connecticut 02_344 Audio_East Coast America.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "52.302250"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          52.30225
+        ]
+      ]
+    },
+    {
+      "id": "overboard",
+      "source": "WATRImpt_Impact Water Deep Submerge Bubble Drown Ship Hit 05_ESM_EMWI.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "2.169938"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.02,
+          1.79
+        ]
+      ]
+    },
+    {
+      "id": "surface",
+      "source": "Cartoon Bubbles Short.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.875000"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.5
+        ]
+      ]
+    },
+    {
+      "id": "paddle_hit",
+      "source": "FGHTImpt_Combat Punch Impact Light Hit Delay Crunchy Vintage Quick Smack 05_ESM_AG.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "1.057365"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.025,
+          0.8
+        ]
+      ]
+    },
+    {
+      "id": "paddle_wood",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "192000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "11.293594"
+        }
+      },
+      "candidate_count": 16,
+      "short_candidates_dropped": 0,
+      "kept_count": 6,
+      "selected_source_ranges_seconds": [
+        [
+          0.025,
+          0.24
+        ],
+        [
+          1.295,
+          1.59
+        ],
+        [
+          5.795,
+          6.125
+        ],
+        [
+          6.455,
+          6.71
+        ],
+        [
+          7.89,
+          8.11
+        ],
+        [
+          10.235,
+          10.61
+        ]
+      ]
+    },
+    {
+      "id": "paddle_charged",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "61.817813"
+        }
+      },
+      "candidate_count": 22,
+      "short_candidates_dropped": 6,
+      "kept_count": 6,
+      "selected_source_ranges_seconds": [
+        [
+          0.02,
+          0.755
+        ],
+        [
+          9.865,
+          10.0
+        ],
+        [
+          15.04,
+          15.695
+        ],
+        [
+          18.035,
+          18.675
+        ],
+        [
+          42.06,
+          42.915
+        ],
+        [
+          57.04,
+          57.71
+        ]
+      ]
+    },
+    {
+      "id": "stun",
+      "source": "Cartoon Confused Dizzy.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "1.500000"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.795
+        ]
+      ]
+    },
+    {
+      "id": "hit_creak",
+      "source": "Cartoon Airy Impact Creaks.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "2.500000"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.195,
+          1.815
+        ]
+      ]
+    },
+    {
+      "id": "ram_wood",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "192000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "180.180000"
+        }
+      },
+      "candidate_count": 32,
+      "short_candidates_dropped": 37,
+      "kept_count": 6,
+      "selected_source_ranges_seconds": [
+        [
+          27.27,
+          28.21
+        ],
+        [
+          80.355,
+          81.215
+        ],
+        [
+          97.315,
+          98.365
+        ],
+        [
+          115.32,
+          115.5
+        ],
+        [
+          115.6,
+          117.025
+        ],
+        [
+          140.63,
+          140.78
+        ]
+      ]
+    },
+    {
+      "id": "ram_bass",
+      "source": "DSGNBass_Bass Drop & Downer Fast 16_344 Audio_Bass Drops & Downers.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "192000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "2.125000"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.04,
+          2.025
+        ]
+      ]
+    },
+    {
+      "id": "boat_creak",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "4.470542"
+        }
+      },
+      "candidate_count": 7,
+      "short_candidates_dropped": 1,
+      "kept_count": 6,
+      "selected_source_ranges_seconds": [
+        [
+          0.22,
+          0.325
+        ],
+        [
+          0.5,
+          0.665
+        ],
+        [
+          0.835,
+          1.06
+        ],
+        [
+          2.33,
+          2.535
+        ],
+        [
+          2.815,
+          2.915
+        ],
+        [
+          3.095,
+          3.235
+        ]
+      ]
+    },
+    {
+      "id": "voice_attack",
+      "source": "VOXMale_Warrior Opponent Attack, 'Ai yah' 2_344 Audio_Anime Fight Voices.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.919010"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.01,
+          0.815
+        ]
+      ]
+    },
+    {
+      "id": "voice_yell",
+      "source": "VOXMale_Male Adventurer, Active Yell 19_344 Audio_Anime Fight Voices.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.443771"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.035,
+          0.37
+        ]
+      ]
+    },
+    {
+      "id": "voice_pant",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 1,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "9.061969"
+        }
+      },
+      "candidate_count": 12,
+      "short_candidates_dropped": 0,
+      "kept_count": 6,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.455
+        ],
+        [
+          0.55,
+          0.95
+        ],
+        [
+          3.135,
+          3.53
+        ],
+        [
+          4.6,
+          5.04
+        ],
+        [
+          6.805,
+          7.32
+        ],
+        [
+          7.485,
+          7.875
+        ]
+      ]
+    },
+    {
+      "id": "voice_whistle",
+      "source": "WHSTHmn_Whistle Male 06 09_SNDBTS_VH.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 1,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "2.441625"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          2.325
+        ]
+      ]
+    },
+    {
+      "id": "voice_taunt",
+      "source": "VOXLaff_Police Officer Laugh Vocal Male 1.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "1.730771"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.055,
+          1.64
+        ]
+      ]
+    },
+    {
+      "id": "fish_banked",
+      "source": "Ting Coins.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "1.104177"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.06,
+          0.635
+        ]
+      ]
+    },
+    {
+      "id": "accept",
+      "source": "Accept Boing Crunch.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.969896"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.005,
+          0.8
+        ]
+      ]
+    },
+    {
+      "id": "deny",
+      "source": "Deny Muted.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.799479"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.46
+        ]
+      ]
+    },
+    {
+      "id": "win",
+      "source": "Cofetti Whoosh Pluck Spill.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "2.535938"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.02,
+          1.825
+        ]
+      ]
+    },
+    {
+      "id": "round_start",
+      "source": "Game Entry Happy Short.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.875021"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.355
+        ]
+      ]
+    },
+    {
+      "id": "fish_caught",
+      "source": "Foley Coin Flip Single Fast.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.937510"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.515
+        ]
+      ]
+    },
+    {
+      "id": "goldfish",
+      "source": "DSGNStngr_Power Up Bright Positive Successful Light Saturation Crash Shimmer 05_ESM_AG.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "1.524760"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.04,
+          1.245
+        ]
+      ]
+    },
+    {
+      "id": "goldfish_sparkle",
+      "source": "MAGMisc_Magic Christmas Bells 2_344 Audio_Christmas.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 1,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "17.786010"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.815,
+          16.96
+        ]
+      ]
+    },
+    {
+      "id": "final_30",
+      "source": "CLOCKTick_You're Running Late _344 Audio_Antique Clocks.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "60.000000"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          60.0
+        ]
+      ]
+    },
+    {
+      "id": "menu_select",
+      "source": "UIMisc_Kalimba 3 Up_CB Sounddesign_APPlicable Sounds.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "48000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.552979"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.36
+        ]
+      ]
+    },
+    {
+      "id": "menu_move",
+      "source": "Interface Plucks Happy.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "96000",
+            "channels": 2,
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "0.853125"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.0,
+          0.65
+        ]
+      ]
+    },
+    {
+      "id": "end_cheer",
+      "source": "CRWDCheer_Small Club, 50 People, Crowd, Spanish, Cheering and Applause-Surround_KSL_KS015.wav",
+      "source_info": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "sample_rate": "48000",
+            "channels": 6,
+            "channel_layout": "5.1",
+            "bits_per_sample": 24
+          }
+        ],
+        "format": {
+          "duration": "26.901667"
+        }
+      },
+      "candidate_count": 1,
+      "short_candidates_dropped": 0,
+      "kept_count": 1,
+      "selected_source_ranges_seconds": [
+        [
+          0.205,
+          4.205
+        ]
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "output": "AMB_LF_Lake_Loop.wav",
+      "source": "WATRLap_Summer Tennessee Lake Dock Water Ripples Wake Wave Gentle 05 Distant_ESM_CPS.wav",
+      "event": "amb_lake",
+      "group": "AMBIENCE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 100.976,
+      "target_lufs": -28,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 102.976,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 4942848,
+        "centroid_hz": 2061.1002135672134,
+        "peak_dbfs": -1.044738752680846,
+        "rms_dbfs": -33.674849868122735
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": {
+        "crossfade_seconds": 2.0,
+        "crossfade_curve": "equal-power cosine/sine tail into head",
+        "rotation_samples": 57495,
+        "zero_crossing_channel": "stereo mid, minimum joint L/R energy",
+        "boundary_guard_samples": 64,
+        "start_sample": 0,
+        "end_sample_inclusive": 4846847,
+        "wav_smpl_chunk": true,
+        "endpoint_pcm_frames_zero": true
+      },
+      "downmix": "unchanged",
+      "source_prepared_lufs": -29.09,
+      "source_prepared_true_peak_dbtp": -0.99,
+      "lufs": -28.04,
+      "true_peak_dbtp": -1.1,
+      "sample_peak_dbfs": -2.0503845286024522,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -28.04,
+          "true_peak_dbtp": -1.1
+        }
+      ],
+      "frames": 4846848,
+      "sha256": "7e23019402dd4c1cd91b0b1628280c9348702d05f274beb0308c38e9131b437f"
+    },
+    {
+      "output": "AMB_LF_Shore_Loop.wav",
+      "source": "WATRLap_Small Waves sloshing onto Rock Slabs at huge Glacial Lake _JSE_HoN_Quad.wav",
+      "event": "amb_shore",
+      "group": "AMBIENCE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 89.95529166666667,
+      "target_lufs": -28,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 91.95529166666667,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 4413854,
+        "centroid_hz": 903.8183776265315,
+        "peak_dbfs": -16.600312720112647,
+        "rms_dbfs": -46.52389217241576
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": {
+        "crossfade_seconds": 2.0,
+        "crossfade_curve": "equal-power cosine/sine tail into head",
+        "rotation_samples": 32862,
+        "zero_crossing_channel": "stereo mid, minimum joint L/R energy",
+        "boundary_guard_samples": 64,
+        "start_sample": 0,
+        "end_sample_inclusive": 4317853,
+        "wav_smpl_chunk": true,
+        "endpoint_pcm_frames_zero": true
+      },
+      "downmix": "pan=stereo|c0=0.5*c0+0.5*c2|c1=0.5*c1+0.5*c3",
+      "source_prepared_lufs": -41.83,
+      "source_prepared_true_peak_dbtp": -16.6,
+      "lufs": -28.0,
+      "true_peak_dbtp": -2.77,
+      "sample_peak_dbfs": -2.7701635562591846,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -28.0,
+          "true_peak_dbtp": -2.77
+        }
+      ],
+      "frames": 4317854,
+      "sha256": "4dae2f56f02b5c67d9e1a67d587b9afb7250895002e110c07eb8420f23bae414"
+    },
+    {
+      "output": "AMB_LF_Meadow_Loop.wav",
+      "source": "AMBSwmp_Meadow Pipits calling many Insects humming Wind blowing through Grass_JSE_HoN_Stereo.wav",
+      "event": "amb_meadow",
+      "group": "AMBIENCE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 84.496,
+      "target_lufs": -28,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 86.496,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 4151808,
+        "centroid_hz": 513.75598866074,
+        "peak_dbfs": -26.072774673802233,
+        "rms_dbfs": -46.113124400395805
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": {
+        "crossfade_seconds": 2.0,
+        "crossfade_curve": "equal-power cosine/sine tail into head",
+        "rotation_samples": 386,
+        "zero_crossing_channel": "stereo mid, minimum joint L/R energy",
+        "boundary_guard_samples": 64,
+        "start_sample": 0,
+        "end_sample_inclusive": 4055807,
+        "wav_smpl_chunk": true,
+        "endpoint_pcm_frames_zero": true
+      },
+      "downmix": "unchanged",
+      "source_prepared_lufs": -43.57,
+      "source_prepared_true_peak_dbtp": -26.07,
+      "lufs": -28.0,
+      "true_peak_dbtp": -10.5,
+      "sample_peak_dbfs": -10.503109776625584,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -28.0,
+          "true_peak_dbtp": -10.5
+        }
+      ],
+      "frames": 4055808,
+      "sha256": "7c6a4b43a165b133e5f89366e7696a8835fd379178be826c7dcf3751df8f6e7c"
+    },
+    {
+      "output": "AMB_LF_Birds_Loop.wav",
+      "source": "AMBSubn_Ambience, Forest Crickets, Birds, Connecticut 02_344 Audio_East Coast America.wav",
+      "event": "amb_birds",
+      "group": "AMBIENCE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 50.30225,
+      "target_lufs": -28,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 52.30225,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 2510508,
+        "centroid_hz": 6294.730844395893,
+        "peak_dbfs": -23.638051928591715,
+        "rms_dbfs": -45.354353068188225
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": {
+        "crossfade_seconds": 2.0,
+        "crossfade_curve": "equal-power cosine/sine tail into head",
+        "rotation_samples": 57235,
+        "zero_crossing_channel": "stereo mid, minimum joint L/R energy",
+        "boundary_guard_samples": 64,
+        "start_sample": 0,
+        "end_sample_inclusive": 2414507,
+        "wav_smpl_chunk": true,
+        "endpoint_pcm_frames_zero": true
+      },
+      "downmix": "unchanged",
+      "source_prepared_lufs": -39.15,
+      "source_prepared_true_peak_dbtp": -23.64,
+      "lufs": -28.0,
+      "true_peak_dbtp": -12.49,
+      "sample_peak_dbfs": -12.488290392888143,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -28.0,
+          "true_peak_dbtp": -12.49
+        }
+      ],
+      "frames": 2414508,
+      "sha256": "92158e65e6dc99c713f22e47824fcb039c7da7f94b98b08e9805df1fdcc39d9d"
+    },
+    {
+      "output": "SFX_LF_Overboard_01.wav",
+      "source": "WATRImpt_Impact Water Deep Submerge Bubble Drown Ship Hit 05_ESM_EMWI.wav",
+      "event": "overboard",
+      "group": "SPLASH",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.77,
+      "target_lufs": -16,
+      "source_start_seconds": 0.02,
+      "source_end_seconds": 1.79,
+      "selection_features": {
+        "start_frame": 960,
+        "end_frame": 85920,
+        "centroid_hz": 612.0083888834679,
+        "peak_dbfs": -1.4913801051037499,
+        "rms_dbfs": -18.07286007340607
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -17.1,
+      "source_prepared_true_peak_dbtp": -1.49,
+      "lufs": -16.03,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.1999193236217955,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.7,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 1.1000000000000014,
+          "measured_lufs": -16.03,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 84960,
+      "sha256": "50a967d54bb43f9d2d5c87e2aae19c23b13af405095d98a52c4f48ab7c6095cc"
+    },
+    {
+      "output": "SFX_LF_Surface_01.wav",
+      "source": "Cartoon Bubbles Short.wav",
+      "event": "surface",
+      "group": "SPLASH",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.5,
+      "target_lufs": -16,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.5,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 24000,
+        "centroid_hz": 390.76420127789413,
+        "peak_dbfs": -5.669177518768635,
+        "rms_dbfs": -19.583804409902385
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -20.44,
+      "source_prepared_true_peak_dbtp": -5.67,
+      "lufs": -16.04,
+      "true_peak_dbtp": -1.23,
+      "sample_peak_dbfs": -1.2334615053855158,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.04,
+          "true_peak_dbtp": -1.23
+        }
+      ],
+      "frames": 24000,
+      "sha256": "e56c116dc467cc0ce4183218c1ce64b4187702cbd08b6cabece65f4b4af20743"
+    },
+    {
+      "output": "SFX_LF_PaddleHit_01.wav",
+      "source": "FGHTImpt_Combat Punch Impact Light Hit Delay Crunchy Vintage Quick Smack 05_ESM_AG.wav",
+      "event": "paddle_hit",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.775,
+      "target_lufs": -16,
+      "source_start_seconds": 0.025,
+      "source_end_seconds": 0.8,
+      "selection_features": {
+        "start_frame": 1200,
+        "end_frame": 38400,
+        "centroid_hz": 2356.412896637562,
+        "peak_dbfs": -2.0095969885930725,
+        "rms_dbfs": -19.06492038930733
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -17.35,
+      "source_prepared_true_peak_dbtp": -2.01,
+      "lufs": -16.04,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.2041811417752506,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.45,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 1.3500000000000014,
+          "measured_lufs": -16.04,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 37200,
+      "sha256": "1dd695c9fe6c620fb8cf3044963cf6bc277becc5fa4dd99a5b003beda9278655"
+    },
+    {
+      "output": "SFX_LF_PaddleWood_01.wav",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "event": "paddle_wood",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.215,
+      "target_lufs": -16,
+      "source_start_seconds": 0.025,
+      "source_end_seconds": 0.24,
+      "selection_features": {
+        "start_frame": 1200,
+        "end_frame": 11520,
+        "centroid_hz": 2238.068091331263,
+        "peak_dbfs": -4.0167719404978195,
+        "rms_dbfs": -27.00763179315056
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 16,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -25.04,
+      "source_prepared_true_peak_dbtp": -4.02,
+      "lufs": -16.04,
+      "true_peak_dbtp": -1.16,
+      "sample_peak_dbfs": -1.1640811323794846,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 6 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -22.14,
+          "true_peak_dbtp": -1.09
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 9.04,
+          "measured_lufs": -21.36,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 18.688,
+          "measured_lufs": -17.82,
+          "true_peak_dbtp": -1.17
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 21.964,
+          "measured_lufs": -15.74,
+          "true_peak_dbtp": -1.16
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 20.326,
+          "measured_lufs": -16.83,
+          "true_peak_dbtp": -1.17
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 21.145,
+          "measured_lufs": -16.33,
+          "true_peak_dbtp": -1.17
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 21.554499999999997,
+          "measured_lufs": -16.04,
+          "true_peak_dbtp": -1.16
+        }
+      ],
+      "frames": 10320,
+      "sha256": "fa0b6a4270d3e5169c9d342a0cffed511e95d3a55973fa0fca417e81bb8a1c4f"
+    },
+    {
+      "output": "SFX_LF_PaddleWood_02.wav",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "event": "paddle_wood",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.295,
+      "target_lufs": -16,
+      "source_start_seconds": 1.295,
+      "source_end_seconds": 1.59,
+      "selection_features": {
+        "start_frame": 62160,
+        "end_frame": 76320,
+        "centroid_hz": 144.07715306809476,
+        "peak_dbfs": -7.907639198980277,
+        "rms_dbfs": -27.57837733681384
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 16,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -29.91,
+      "source_prepared_true_peak_dbtp": -7.91,
+      "lufs": -16.2,
+      "true_peak_dbtp": -1.19,
+      "sample_peak_dbfs": -1.1910979181986612,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 5 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -23.11,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 13.91,
+          "measured_lufs": -21.93,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 24.584,
+          "measured_lufs": -18.33,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 28.778,
+          "measured_lufs": -17.49,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 31.459999999999997,
+          "measured_lufs": -17.1,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 33.44,
+          "measured_lufs": -16.88,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 35.023999999999994,
+          "measured_lufs": -16.67,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 36.23,
+          "measured_lufs": -16.52,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 37.166,
+          "measured_lufs": -16.39,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 37.867999999999995,
+          "measured_lufs": -16.31,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 38.425999999999995,
+          "measured_lufs": -16.29,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 38.94799999999999,
+          "measured_lufs": -16.24,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 39.44799999999999,
+          "measured_lufs": -16.2,
+          "true_peak_dbtp": -1.19
+        }
+      ],
+      "frames": 14160,
+      "sha256": "89bd97ed9c6f37f85fa77b5c583e26ebff3657d2a8c978da4bdc9ec52016d585"
+    },
+    {
+      "output": "SFX_LF_PaddleWood_03.wav",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "event": "paddle_wood",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.33,
+      "target_lufs": -16,
+      "source_start_seconds": 5.795,
+      "source_end_seconds": 6.125,
+      "selection_features": {
+        "start_frame": 278160,
+        "end_frame": 294000,
+        "centroid_hz": 1846.376913730359,
+        "peak_dbfs": -6.0204125008908544,
+        "rms_dbfs": -31.13267081335103
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 16,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -29.54,
+      "source_prepared_true_peak_dbtp": -5.92,
+      "lufs": -16.16,
+      "true_peak_dbtp": -1.18,
+      "sample_peak_dbfs": -1.18775421009533,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 4 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -24.68,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 13.54,
+          "measured_lufs": -23.09,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 26.302,
+          "measured_lufs": -17.89,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 29.704,
+          "measured_lufs": -16.63,
+          "true_peak_dbtp": -1.18
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 30.837999999999997,
+          "measured_lufs": -16.37,
+          "true_peak_dbtp": -1.18
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 31.503999999999998,
+          "measured_lufs": -16.16,
+          "true_peak_dbtp": -1.18
+        }
+      ],
+      "frames": 15840,
+      "sha256": "61f94a62fbc75f76bba8861c41426341d75d135401cc7d3f3bacf250a1869686"
+    },
+    {
+      "output": "SFX_LF_PaddleWood_04.wav",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "event": "paddle_wood",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.255,
+      "target_lufs": -16,
+      "source_start_seconds": 6.455,
+      "source_end_seconds": 6.71,
+      "selection_features": {
+        "start_frame": 309840,
+        "end_frame": 322080,
+        "centroid_hz": 1578.1477846254475,
+        "peak_dbfs": -4.074502432580342,
+        "rms_dbfs": -27.059211650001345
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 16,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -26.02,
+      "source_prepared_true_peak_dbtp": -4.04,
+      "lufs": -16.12,
+      "true_peak_dbtp": -1.18,
+      "sample_peak_dbfs": -1.177427242844144,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 5 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -23.03,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 10.02,
+          "measured_lufs": -22.32,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 21.396,
+          "measured_lufs": -18.57,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 26.022000000000002,
+          "measured_lufs": -16.54,
+          "true_peak_dbtp": -1.18
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 26.994,
+          "measured_lufs": -16.39,
+          "true_peak_dbtp": -1.18
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 27.696,
+          "measured_lufs": -16.12,
+          "true_peak_dbtp": -1.18
+        }
+      ],
+      "frames": 12240,
+      "sha256": "fe1376a1889a59860da116c99c59fba85ba03b5cf8ef605a59239aeddefc20ef"
+    },
+    {
+      "output": "SFX_LF_PaddleWood_05.wav",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "event": "paddle_wood",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.22,
+      "target_lufs": -16,
+      "source_start_seconds": 7.89,
+      "source_end_seconds": 8.11,
+      "selection_features": {
+        "start_frame": 378720,
+        "end_frame": 389280,
+        "centroid_hz": 1142.9325925873497,
+        "peak_dbfs": -12.142112601936667,
+        "rms_dbfs": -31.4031450734051
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 16,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -31.39,
+      "source_prepared_true_peak_dbtp": -12.09,
+      "lufs": -16.17,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.200223669866087,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 6 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.39,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 15.39,
+          "measured_lufs": -19.79,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 22.212,
+          "measured_lufs": -17.75,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 25.362,
+          "measured_lufs": -16.17,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 10560,
+      "sha256": "2039cdc5ea19cc1476176578265c4f7184b73193b89943e6fd6f669c9ed5427b"
+    },
+    {
+      "output": "SFX_LF_PaddleWood_06.wav",
+      "source": "WEAPBlnt_Spear And Stick Impact, Wooden MKH 2_344 Audio_Medieval Weapons Vol 2.wav",
+      "event": "paddle_wood",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.375,
+      "target_lufs": -16,
+      "source_start_seconds": 10.235,
+      "source_end_seconds": 10.61,
+      "selection_features": {
+        "start_frame": 491280,
+        "end_frame": 509280,
+        "centroid_hz": 1421.028971274276,
+        "peak_dbfs": -5.879975273730841,
+        "rms_dbfs": -29.66214032154126
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 16,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -27.92,
+      "source_prepared_true_peak_dbtp": -5.86,
+      "lufs": -16.17,
+      "true_peak_dbtp": -1.19,
+      "sample_peak_dbfs": -1.198093470066798,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 4 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -23.2,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 11.920000000000002,
+          "measured_lufs": -21.6,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 22.000000000000007,
+          "measured_lufs": -18.22,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 25.996000000000006,
+          "measured_lufs": -16.94,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 27.68800000000001,
+          "measured_lufs": -16.65,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 28.858000000000008,
+          "measured_lufs": -16.45,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 29.668000000000006,
+          "measured_lufs": -16.27,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 30.168000000000006,
+          "measured_lufs": -16.17,
+          "true_peak_dbtp": -1.19
+        }
+      ],
+      "frames": 18000,
+      "sha256": "7bc9547f5cbb3f49f2b1dbe84149981d3d1293f623af55bb44a6c7dbad9fc6c7"
+    },
+    {
+      "output": "SFX_LF_PaddleCharged_01.wav",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "event": "paddle_charged",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.735,
+      "target_lufs": -16,
+      "source_start_seconds": 0.02,
+      "source_end_seconds": 0.755,
+      "selection_features": {
+        "start_frame": 960,
+        "end_frame": 36240,
+        "centroid_hz": 288.87686724399794,
+        "peak_dbfs": -1.8084671571225912,
+        "rms_dbfs": -18.6556808836863
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 22,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -18.67,
+      "source_prepared_true_peak_dbtp": -1.81,
+      "lufs": -16.03,
+      "true_peak_dbtp": -1.18,
+      "sample_peak_dbfs": -1.1977891984524511,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -17.95,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 2.6700000000000017,
+          "measured_lufs": -16.73,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 3.9840000000000027,
+          "measured_lufs": -16.03,
+          "true_peak_dbtp": -1.18
+        }
+      ],
+      "frames": 35280,
+      "sha256": "802c22f5181903a404a2c30f94ae02fc1f9d55a3415ccac6ac52aeb3ad43aba2"
+    },
+    {
+      "output": "SFX_LF_PaddleCharged_02.wav",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "event": "paddle_charged",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.135,
+      "target_lufs": -16,
+      "source_start_seconds": 9.865,
+      "source_end_seconds": 10.0,
+      "selection_features": {
+        "start_frame": 473520,
+        "end_frame": 480000,
+        "centroid_hz": 693.2950051929224,
+        "peak_dbfs": -36.79604327646458,
+        "rms_dbfs": -50.68130265099906
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 22,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -51.37,
+      "source_prepared_true_peak_dbtp": -36.8,
+      "lufs": -16.01,
+      "true_peak_dbtp": -1.44,
+      "sample_peak_dbfs": -1.4384194936931247,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 9 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.01,
+          "true_peak_dbtp": -1.44
+        }
+      ],
+      "frames": 6480,
+      "sha256": "3dff42b736d70c1aaa05bcc4243cfcd694c05909ee5305da36e37fca7d710b58"
+    },
+    {
+      "output": "SFX_LF_PaddleCharged_03.wav",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "event": "paddle_charged",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.655,
+      "target_lufs": -16,
+      "source_start_seconds": 15.04,
+      "source_end_seconds": 15.695,
+      "selection_features": {
+        "start_frame": 721920,
+        "end_frame": 753360,
+        "centroid_hz": 141.46666738097136,
+        "peak_dbfs": -1.2146757419369205,
+        "rms_dbfs": -18.864706574500932
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 22,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -19.5,
+      "source_prepared_true_peak_dbtp": -1.21,
+      "lufs": -16.14,
+      "true_peak_dbtp": -1.18,
+      "sample_peak_dbfs": -1.2108825123351754,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -19.4,
+          "true_peak_dbtp": -1.11
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 3.5,
+          "measured_lufs": -17.21,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 5.678000000000002,
+          "measured_lufs": -15.72,
+          "true_peak_dbtp": -1.18
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 4.589,
+          "measured_lufs": -16.51,
+          "true_peak_dbtp": -1.18
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 5.1335000000000015,
+          "measured_lufs": -16.14,
+          "true_peak_dbtp": -1.18
+        }
+      ],
+      "frames": 31440,
+      "sha256": "dfd87109408958bbdd14daba309472315e788a011a0802c6a4b09f17a0b3156f"
+    },
+    {
+      "output": "SFX_LF_PaddleCharged_04.wav",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "event": "paddle_charged",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.64,
+      "target_lufs": -16,
+      "source_start_seconds": 18.035,
+      "source_end_seconds": 18.675,
+      "selection_features": {
+        "start_frame": 865680,
+        "end_frame": 896400,
+        "centroid_hz": 428.8544379045965,
+        "peak_dbfs": -1.6947060276129622,
+        "rms_dbfs": -19.085762694672006
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 22,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -19.66,
+      "source_prepared_true_peak_dbtp": -1.67,
+      "lufs": -16.12,
+      "true_peak_dbtp": -1.19,
+      "sample_peak_dbfs": -1.2072265783753162,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -19.06,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 3.66,
+          "measured_lufs": -17.16,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 5.748000000000001,
+          "measured_lufs": -15.73,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 4.704000000000001,
+          "measured_lufs": -16.46,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 5.226000000000001,
+          "measured_lufs": -16.12,
+          "true_peak_dbtp": -1.19
+        }
+      ],
+      "frames": 30720,
+      "sha256": "6d63914839d29164691f31d4ad808bf87cc5154a2b0391c0b85795e0862206a2"
+    },
+    {
+      "output": "SFX_LF_PaddleCharged_05.wav",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "event": "paddle_charged",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.855,
+      "target_lufs": -16,
+      "source_start_seconds": 42.06,
+      "source_end_seconds": 42.915,
+      "selection_features": {
+        "start_frame": 2018880,
+        "end_frame": 2059920,
+        "centroid_hz": 204.3895392522251,
+        "peak_dbfs": -1.3872228424494248,
+        "rms_dbfs": -21.420718149220733
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 22,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -20.59,
+      "source_prepared_true_peak_dbtp": -1.39,
+      "lufs": -15.89,
+      "true_peak_dbtp": -1.16,
+      "sample_peak_dbfs": -1.1892739178479717,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.29,
+          "true_peak_dbtp": -1.09
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 4.59,
+          "measured_lufs": -17.98,
+          "true_peak_dbtp": -1.16
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 8.154,
+          "measured_lufs": -15.89,
+          "true_peak_dbtp": -1.16
+        }
+      ],
+      "frames": 41040,
+      "sha256": "e44d0bef85d321c9270e14b42c931408959dff1e24a191d0c830e5af80341e31"
+    },
+    {
+      "output": "SFX_LF_PaddleCharged_06.wav",
+      "source": "SWSH_SWING IMPACTS Quick Heavy Weapon Swing To Thud Impact Var 01_DDUMAIS_MWP2.wav",
+      "event": "paddle_charged",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.67,
+      "target_lufs": -16,
+      "source_start_seconds": 57.04,
+      "source_end_seconds": 57.71,
+      "selection_features": {
+        "start_frame": 2737920,
+        "end_frame": 2770080,
+        "centroid_hz": 592.4577735835182,
+        "peak_dbfs": -1.4701025200891542,
+        "rms_dbfs": -18.15982564315855
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 22,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -18.39,
+      "source_prepared_true_peak_dbtp": -1.44,
+      "lufs": -16.15,
+      "true_peak_dbtp": -1.19,
+      "sample_peak_dbfs": -1.208749697189268,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.09,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 2.3900000000000006,
+          "measured_lufs": -16.87,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 3.956000000000002,
+          "measured_lufs": -16.15,
+          "true_peak_dbtp": -1.19
+        }
+      ],
+      "frames": 32160,
+      "sha256": "2e472ef99e7f2087058437bfb9e944b906dfe935467ee8a6bec7ea68676a2f1b"
+    },
+    {
+      "output": "SFX_LF_Stun_01.wav",
+      "source": "Cartoon Confused Dizzy.wav",
+      "event": "stun",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.795,
+      "target_lufs": -16,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.795,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 38160,
+        "centroid_hz": 2025.3603976910367,
+        "peak_dbfs": -4.7258998708858115,
+        "rms_dbfs": -15.999729560071373
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -14.06,
+      "source_prepared_true_peak_dbtp": -4.72,
+      "lufs": -16.01,
+      "true_peak_dbtp": -6.65,
+      "sample_peak_dbfs": -6.665843372498731,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.01,
+          "true_peak_dbtp": -6.65
+        }
+      ],
+      "frames": 38160,
+      "sha256": "5cd6060f3c12685a5511cbe0414acb1b3336b4a6ed220648bffeb3180fe839b8"
+    },
+    {
+      "output": "SFX_LF_HitCreak_01.wav",
+      "source": "Cartoon Airy Impact Creaks.wav",
+      "event": "hit_creak",
+      "group": "PADDLE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.62,
+      "target_lufs": -16,
+      "source_start_seconds": 0.195,
+      "source_end_seconds": 1.815,
+      "selection_features": {
+        "start_frame": 9360,
+        "end_frame": 87120,
+        "centroid_hz": 114.20019872041918,
+        "peak_dbfs": -0.0014906419580258726,
+        "rms_dbfs": -16.088852331350914
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -15.54,
+      "source_prepared_true_peak_dbtp": 0.0,
+      "lufs": -16.13,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.1993106631234516,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.64,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": -0.46000000000000085,
+          "measured_lufs": -16.42,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 0.29600000000000226,
+          "measured_lufs": -17.15,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 2.3659999999999997,
+          "measured_lufs": -16.36,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 3.0139999999999985,
+          "measured_lufs": -16.13,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 77760,
+      "sha256": "8a4772dea332c5abd6f3b3f5a6427b41b8be403342e394577f121b0aa30fdebe"
+    },
+    {
+      "output": "SFX_LF_RamWood_01.wav",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "event": "ram_wood",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.7904583333333334,
+      "target_lufs": -16,
+      "source_start_seconds": 27.27,
+      "source_end_seconds": 28.21,
+      "selection_features": {
+        "start_frame": 1308960,
+        "end_frame": 1354080,
+        "centroid_hz": 172.76662887665583,
+        "peak_dbfs": -3.1751248988667014,
+        "rms_dbfs": -18.386551644655846
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 32,
+      "pitch_semitones": 3,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -19.94,
+      "source_prepared_true_peak_dbtp": -3.17,
+      "lufs": -15.95,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.1990063488679044,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -17.87,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 3.9400000000000013,
+          "measured_lufs": -16.44,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 4.732000000000004,
+          "measured_lufs": -15.95,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 37942,
+      "sha256": "73506b19d5a2c032a3531da2834b33672ecb87fa0d9769af001121d45f69d8a0"
+    },
+    {
+      "output": "SFX_LF_RamWood_02.wav",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "event": "ram_wood",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.7231875,
+      "target_lufs": -16,
+      "source_start_seconds": 80.355,
+      "source_end_seconds": 81.215,
+      "selection_features": {
+        "start_frame": 3857040,
+        "end_frame": 3898320,
+        "centroid_hz": 152.31030790215206,
+        "peak_dbfs": -20.360108803419262,
+        "rms_dbfs": -38.09587091108788
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 32,
+      "pitch_semitones": 3,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -43.9,
+      "source_prepared_true_peak_dbtp": -20.36,
+      "lufs": -16.14,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.1977891984524511,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -24.62,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 27.9,
+          "measured_lufs": -19.86,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 34.848,
+          "measured_lufs": -16.14,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 34713,
+      "sha256": "44ac54005a14168ff46e66f2e3804f4f14c7d6dda5d847716bff007a70bcf6a7"
+    },
+    {
+      "output": "SFX_LF_RamWood_03.wav",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "event": "ram_wood",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.8829583333333333,
+      "target_lufs": -16,
+      "source_start_seconds": 97.315,
+      "source_end_seconds": 98.365,
+      "selection_features": {
+        "start_frame": 4671120,
+        "end_frame": 4721520,
+        "centroid_hz": 186.37808643721797,
+        "peak_dbfs": -0.5101200946314332,
+        "rms_dbfs": -18.354205547450416
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 32,
+      "pitch_semitones": 3,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -19.63,
+      "source_prepared_true_peak_dbtp": -0.51,
+      "lufs": -15.95,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.1990063488679044,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.23,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 3.629999999999999,
+          "measured_lufs": -16.75,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 4.979999999999999,
+          "measured_lufs": -15.95,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 42382,
+      "sha256": "f01913ce4d7a226f7aefe4120b8a83cf4f88f31b122d344f82616727b2557b84"
+    },
+    {
+      "output": "SFX_LF_RamWood_04.wav",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "event": "ram_wood",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.151375,
+      "target_lufs": -16,
+      "source_start_seconds": 115.32,
+      "source_end_seconds": 115.5,
+      "selection_features": {
+        "start_frame": 5535360,
+        "end_frame": 5544000,
+        "centroid_hz": 11.789237155024948,
+        "peak_dbfs": -37.303703981955884,
+        "rms_dbfs": -43.89492866999181
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 32,
+      "pitch_semitones": 3,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -58.76,
+      "source_prepared_true_peak_dbtp": -37.3,
+      "lufs": -16.17,
+      "true_peak_dbtp": -1.19,
+      "sample_peak_dbfs": -1.1917060034438036,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 8 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -22.57,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 42.76,
+          "measured_lufs": -19.49,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 49.041999999999994,
+          "measured_lufs": -17.26,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 51.309999999999995,
+          "measured_lufs": -16.62,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 52.425999999999995,
+          "measured_lufs": -16.47,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 53.27199999999999,
+          "measured_lufs": -16.31,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 53.82999999999999,
+          "measured_lufs": -16.24,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 54.32999999999999,
+          "measured_lufs": -16.17,
+          "true_peak_dbtp": -1.19
+        }
+      ],
+      "frames": 7266,
+      "sha256": "d873fbd5f0d99b496ddba761c5613e0971a93ad501e451a2d89f9a98bae9ca9f"
+    },
+    {
+      "output": "SFX_LF_RamWood_05.wav",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "event": "ram_wood",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.1982916666666668,
+      "target_lufs": -16,
+      "source_start_seconds": 115.6,
+      "source_end_seconds": 117.025,
+      "selection_features": {
+        "start_frame": 5548800,
+        "end_frame": 5617200,
+        "centroid_hz": 17.946812610630477,
+        "peak_dbfs": -20.943131200659153,
+        "rms_dbfs": -39.072480023627854
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 32,
+      "pitch_semitones": 3,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -46.81,
+      "source_prepared_true_peak_dbtp": -20.94,
+      "lufs": -16.14,
+      "true_peak_dbtp": -1.19,
+      "sample_peak_dbfs": -1.1974849374965373,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -26.98,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 30.810000000000002,
+          "measured_lufs": -19.79,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 37.632,
+          "measured_lufs": -16.46,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 38.46,
+          "measured_lufs": -16.28,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 38.964000000000006,
+          "measured_lufs": -16.14,
+          "true_peak_dbtp": -1.19
+        }
+      ],
+      "frames": 57518,
+      "sha256": "ed586dbc7b3ad579663dae75c1fcbb412f25829f810a0de255163ab844a5066d"
+    },
+    {
+      "output": "SFX_LF_RamWood_06.wav",
+      "source": "WOODImpt_Wooden Hit, Dark, Heavy Hit, Vampire's Prison_344 Audio_Haunting Ambiences Vol 3.wav",
+      "event": "ram_wood",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.12614583333333335,
+      "target_lufs": -16,
+      "source_start_seconds": 140.63,
+      "source_end_seconds": 140.78,
+      "selection_features": {
+        "start_frame": 6750240,
+        "end_frame": 6757440,
+        "centroid_hz": 8.042992536338312,
+        "peak_dbfs": -38.71850908118117,
+        "rms_dbfs": -43.44034846115377
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 32,
+      "pitch_semitones": 3,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -60.74,
+      "source_prepared_true_peak_dbtp": -38.73,
+      "lufs": -16.16,
+      "true_peak_dbtp": -1.19,
+      "sample_peak_dbfs": -1.1947470683996162,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 10 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -23.09,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 44.74,
+          "measured_lufs": -20.5,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 52.84,
+          "measured_lufs": -18.29,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 56.962,
+          "measured_lufs": -17.19,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 59.104000000000006,
+          "measured_lufs": -16.52,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 60.040000000000006,
+          "measured_lufs": -16.16,
+          "true_peak_dbtp": -1.19
+        }
+      ],
+      "frames": 6055,
+      "sha256": "5d390fbf9a16d1bc670ec7765af2709d554ac0eb652036fb858b63e3719bd688"
+    },
+    {
+      "output": "SFX_LF_RamBass_01.wav",
+      "source": "DSGNBass_Bass Drop & Downer Fast 16_344 Audio_Bass Drops & Downers.wav",
+      "event": "ram_bass",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.985,
+      "target_lufs": -16,
+      "source_start_seconds": 0.04,
+      "source_end_seconds": 2.025,
+      "selection_features": {
+        "start_frame": 1920,
+        "end_frame": 97200,
+        "centroid_hz": 42.80662391543399,
+        "peak_dbfs": -5.064277528957382,
+        "rms_dbfs": -11.357775241540429
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -16.21,
+      "source_prepared_true_peak_dbtp": -5.06,
+      "lufs": -16.01,
+      "true_peak_dbtp": -4.86,
+      "sample_peak_dbfs": -4.857779421963222,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.01,
+          "true_peak_dbtp": -4.86
+        }
+      ],
+      "frames": 95280,
+      "sha256": "bd640d6282faae050d93ce93c3417afe5869e1d86dc7ea983393074c979f064f"
+    },
+    {
+      "output": "SFX_LF_BoatCreak_01.wav",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "event": "boat_creak",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.105,
+      "target_lufs": -16,
+      "source_start_seconds": 0.22,
+      "source_end_seconds": 0.325,
+      "selection_features": {
+        "start_frame": 10560,
+        "end_frame": 15600,
+        "centroid_hz": 1243.7874353315153,
+        "peak_dbfs": -23.458124105059795,
+        "rms_dbfs": -42.73691842487723
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 7,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -42.06,
+      "source_prepared_true_peak_dbtp": -23.46,
+      "lufs": -15.97,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.1974849374965373,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 12 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -19.67,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 26.060000000000002,
+          "measured_lufs": -18.07,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 29.786,
+          "measured_lufs": -15.97,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 5040,
+      "sha256": "b742a3c48206b3c94bcfa123153c676af09c0482b6078f1c43fbaa7a02039324"
+    },
+    {
+      "output": "SFX_LF_BoatCreak_02.wav",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "event": "boat_creak",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.165,
+      "target_lufs": -16,
+      "source_start_seconds": 0.5,
+      "source_end_seconds": 0.665,
+      "selection_features": {
+        "start_frame": 24000,
+        "end_frame": 31920,
+        "centroid_hz": 989.2985462077588,
+        "peak_dbfs": -36.21399505190865,
+        "rms_dbfs": -51.81499547360383
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 7,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -52.05,
+      "source_prepared_true_peak_dbtp": -36.21,
+      "lufs": -15.88,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.2014411614948197,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 8 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -16.92,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 36.05,
+          "measured_lufs": -16.3,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 36.589999999999996,
+          "measured_lufs": -15.88,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 7920,
+      "sha256": "d680383523eaa3f14c9f77c41def5ecb14cadfb44f387a183c8c0d5a0def79b8"
+    },
+    {
+      "output": "SFX_LF_BoatCreak_03.wav",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "event": "boat_creak",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.225,
+      "target_lufs": -16,
+      "source_start_seconds": 0.835,
+      "source_end_seconds": 1.06,
+      "selection_features": {
+        "start_frame": 40080,
+        "end_frame": 50880,
+        "centroid_hz": 844.2761210138731,
+        "peak_dbfs": -31.378215609954985,
+        "rms_dbfs": -47.89347558317078
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 7,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -48.15,
+      "source_prepared_true_peak_dbtp": -31.37,
+      "lufs": -15.82,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.205094660642828,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 6 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -17.88,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 32.15,
+          "measured_lufs": -16.61,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 33.248,
+          "measured_lufs": -15.82,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 10800,
+      "sha256": "b812c65e91c6ada4fc51ef224c29f198aa294b460cfa7b4a7642674d280b9c30"
+    },
+    {
+      "output": "SFX_LF_BoatCreak_04.wav",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "event": "boat_creak",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.205,
+      "target_lufs": -16,
+      "source_start_seconds": 2.33,
+      "source_end_seconds": 2.535,
+      "selection_features": {
+        "start_frame": 111840,
+        "end_frame": 121680,
+        "centroid_hz": 1805.0358035662127,
+        "peak_dbfs": -33.31629535313128,
+        "rms_dbfs": -51.410408967312115
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 7,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -50.25,
+      "source_prepared_true_peak_dbtp": -33.23,
+      "lufs": -15.98,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.2014411614948197,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 6 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.08,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 34.25,
+          "measured_lufs": -16.98,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 36.014,
+          "measured_lufs": -15.98,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 9840,
+      "sha256": "1654bd1e769c62886cb812774b1815cae4d0327a03a7b03b5f2d4af9a24c5ee1"
+    },
+    {
+      "output": "SFX_LF_BoatCreak_05.wav",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "event": "boat_creak",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.1,
+      "target_lufs": -16,
+      "source_start_seconds": 2.815,
+      "source_end_seconds": 2.915,
+      "selection_features": {
+        "start_frame": 135120,
+        "end_frame": 139920,
+        "centroid_hz": 1855.1830247825133,
+        "peak_dbfs": -30.155365997634213,
+        "rms_dbfs": -48.494391386550305
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 7,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -46.65,
+      "source_prepared_true_peak_dbtp": -30.16,
+      "lufs": -16.05,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.198093470066798,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 12 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -17.65,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 30.65,
+          "measured_lufs": -17.25,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 32.9,
+          "measured_lufs": -16.35,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 33.53,
+          "measured_lufs": -16.05,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 4800,
+      "sha256": "8d5306b2f39b40df89f9d2add02c5da795e866861b6c22a3cbaf35fdb2f2e3ce"
+    },
+    {
+      "output": "SFX_LF_BoatCreak_06.wav",
+      "source": "FOLYProp_Sitting Down, Creaky Seat, Squeaks 3_344 Audio_CInema Experience.wav",
+      "event": "boat_creak",
+      "group": "RAM",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.14,
+      "target_lufs": -16,
+      "source_start_seconds": 3.095,
+      "source_end_seconds": 3.235,
+      "selection_features": {
+        "start_frame": 148560,
+        "end_frame": 155280,
+        "centroid_hz": 925.6308657383231,
+        "peak_dbfs": -21.549089823077562,
+        "rms_dbfs": -38.93247312564051
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 7,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -38.34,
+      "source_prepared_true_peak_dbtp": -21.55,
+      "lufs": -16.02,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.2026588238019433,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 9 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -17.9,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 22.340000000000003,
+          "measured_lufs": -17.03,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 24.194000000000006,
+          "measured_lufs": -16.02,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 6720,
+      "sha256": "81a17b3fcdcd31f07bd951b0448e7ebaeab0777c183f6bce70c2e6a3df443199"
+    },
+    {
+      "output": "VO_LF_Attack_01.wav",
+      "source": "VOXMale_Warrior Opponent Attack, 'Ai yah' 2_344 Audio_Anime Fight Voices.wav",
+      "event": "voice_attack",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.805,
+      "target_lufs": -18,
+      "source_start_seconds": 0.01,
+      "source_end_seconds": 0.815,
+      "selection_features": {
+        "start_frame": 480,
+        "end_frame": 39120,
+        "centroid_hz": 1308.1570510957201,
+        "peak_dbfs": -0.5026059519195569,
+        "rms_dbfs": -17.293474549825277
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -16.12,
+      "source_prepared_true_peak_dbtp": -0.5,
+      "lufs": -18.02,
+      "true_peak_dbtp": -2.38,
+      "sample_peak_dbfs": -2.382570284078404,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.02,
+          "true_peak_dbtp": -2.38
+        }
+      ],
+      "frames": 38640,
+      "sha256": "9fc48e79a1b07864770a37ce8a57a57c4945015a802ad829e0a3bc540ebd0476"
+    },
+    {
+      "output": "VO_LF_Yell_01.wav",
+      "source": "VOXMale_Male Adventurer, Active Yell 19_344 Audio_Anime Fight Voices.wav",
+      "event": "voice_yell",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.335,
+      "target_lufs": -18,
+      "source_start_seconds": 0.035,
+      "source_end_seconds": 0.37,
+      "selection_features": {
+        "start_frame": 1680,
+        "end_frame": 17760,
+        "centroid_hz": 934.4633831022148,
+        "peak_dbfs": -6.420856281800478,
+        "rms_dbfs": -20.87197747150052
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -20.83,
+      "source_prepared_true_peak_dbtp": -6.42,
+      "lufs": -18.0,
+      "true_peak_dbtp": -3.59,
+      "sample_peak_dbfs": -3.5898165762294005,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 4 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.0,
+          "true_peak_dbtp": -3.59
+        }
+      ],
+      "frames": 16080,
+      "sha256": "4c7f74d2791adb9ebd7dae17d0c5d7ae021f60b2a9f7777fe18525ca79ec6263"
+    },
+    {
+      "output": "VO_LF_Pant_01.wav",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "event": "voice_pant",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.455,
+      "target_lufs": -18,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.455,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 21840,
+        "centroid_hz": 1638.6567732269302,
+        "peak_dbfs": -6.300986358262135,
+        "rms_dbfs": -20.638513719024356
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 12,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -18.75,
+      "source_prepared_true_peak_dbtp": -6.24,
+      "lufs": -18.05,
+      "true_peak_dbtp": -5.49,
+      "sample_peak_dbfs": -5.551089606402283,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.05,
+          "true_peak_dbtp": -5.49
+        }
+      ],
+      "frames": 21840,
+      "sha256": "eb8359faa96b507b8f0b2c5dbc099453ed2df732a37f5f5bff6965f8b802a210"
+    },
+    {
+      "output": "VO_LF_Pant_02.wav",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "event": "voice_pant",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.4,
+      "target_lufs": -18,
+      "source_start_seconds": 0.55,
+      "source_end_seconds": 0.95,
+      "selection_features": {
+        "start_frame": 26400,
+        "end_frame": 45600,
+        "centroid_hz": 2517.9456888293003,
+        "peak_dbfs": -17.762003661181936,
+        "rms_dbfs": -32.609550280346006
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 12,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -30.55,
+      "source_prepared_true_peak_dbtp": -17.73,
+      "lufs": -18.05,
+      "true_peak_dbtp": -5.18,
+      "sample_peak_dbfs": -5.212238832608591,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.05,
+          "true_peak_dbtp": -5.18
+        }
+      ],
+      "frames": 19200,
+      "sha256": "ef0126461eec081cb211fdc37eeb00f8932af69d16611f3f698677fcb40f9a42"
+    },
+    {
+      "output": "VO_LF_Pant_03.wav",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "event": "voice_pant",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.395,
+      "target_lufs": -18,
+      "source_start_seconds": 3.135,
+      "source_end_seconds": 3.53,
+      "selection_features": {
+        "start_frame": 150480,
+        "end_frame": 169440,
+        "centroid_hz": 2741.3389142639444,
+        "peak_dbfs": -14.732397054187965,
+        "rms_dbfs": -29.871456717268543
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 12,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -27.28,
+      "source_prepared_true_peak_dbtp": -14.5,
+      "lufs": -18.01,
+      "true_peak_dbtp": -5.22,
+      "sample_peak_dbfs": -5.449726862764697,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 4 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.01,
+          "true_peak_dbtp": -5.22
+        }
+      ],
+      "frames": 18960,
+      "sha256": "d3c6d803096b1ef616ac1197307e2184e20f71d9273a2c44c92277a8482a8488"
+    },
+    {
+      "output": "VO_LF_Pant_04.wav",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "event": "voice_pant",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.44,
+      "target_lufs": -18,
+      "source_start_seconds": 4.6,
+      "source_end_seconds": 5.04,
+      "selection_features": {
+        "start_frame": 220800,
+        "end_frame": 241920,
+        "centroid_hz": 3041.2103538339893,
+        "peak_dbfs": -17.074660650349607,
+        "rms_dbfs": -32.33239599685625
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 12,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -29.15,
+      "source_prepared_true_peak_dbtp": -16.98,
+      "lufs": -18.05,
+      "true_peak_dbtp": -5.83,
+      "sample_peak_dbfs": -5.925169894834783,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.05,
+          "true_peak_dbtp": -5.83
+        }
+      ],
+      "frames": 21120,
+      "sha256": "e32ecb6286317d791b4bcb21841c079d292bff2319241150dd3c81d91ebb0961"
+    },
+    {
+      "output": "VO_LF_Pant_05.wav",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "event": "voice_pant",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.515,
+      "target_lufs": -18,
+      "source_start_seconds": 6.805,
+      "source_end_seconds": 7.32,
+      "selection_features": {
+        "start_frame": 326640,
+        "end_frame": 351360,
+        "centroid_hz": 2059.0784146657743,
+        "peak_dbfs": -3.222690332523086,
+        "rms_dbfs": -20.33465914191243
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 12,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -17.85,
+      "source_prepared_true_peak_dbtp": -3.22,
+      "lufs": -18.01,
+      "true_peak_dbtp": -3.37,
+      "sample_peak_dbfs": -3.370600182281936,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.01,
+          "true_peak_dbtp": -3.37
+        }
+      ],
+      "frames": 24720,
+      "sha256": "96b6128c459aee8da6b4bf848918ae53a6829c822d1f03f506a27eff5849c168"
+    },
+    {
+      "output": "VO_LF_Pant_06.wav",
+      "source": "HMNBrth_Panting Male 02 04_SNDBTS_VH.wav",
+      "event": "voice_pant",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.39,
+      "target_lufs": -18,
+      "source_start_seconds": 7.485,
+      "source_end_seconds": 7.875,
+      "selection_features": {
+        "start_frame": 359280,
+        "end_frame": 378000,
+        "centroid_hz": 2209.311332618799,
+        "peak_dbfs": -13.47638548065765,
+        "rms_dbfs": -30.077654487485653
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": 6,
+      "candidates": 12,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -28.43,
+      "source_prepared_true_peak_dbtp": -13.42,
+      "lufs": -18.01,
+      "true_peak_dbtp": -2.99,
+      "sample_peak_dbfs": -3.045035318879077,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 4 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.01,
+          "true_peak_dbtp": -2.99
+        }
+      ],
+      "frames": 18720,
+      "sha256": "23308c7b5a91773dda527378b8f862f1a305f75571c25d9232bed6358984818d"
+    },
+    {
+      "output": "VO_LF_Whistle_01.wav",
+      "source": "WHSTHmn_Whistle Male 06 09_SNDBTS_VH.wav",
+      "event": "voice_whistle",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 2.325,
+      "target_lufs": -18,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 2.325,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 111600,
+        "centroid_hz": 1703.4981622404034,
+        "peak_dbfs": -6.073227815189778,
+        "rms_dbfs": -15.785106966997668
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -12.44,
+      "source_prepared_true_peak_dbtp": -6.02,
+      "lufs": -18.01,
+      "true_peak_dbtp": -11.58,
+      "sample_peak_dbfs": -11.628124318483852,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.01,
+          "true_peak_dbtp": -11.58
+        }
+      ],
+      "frames": 111600,
+      "sha256": "39a07ceab35ea9a0350805dc2afd0147c6c9d5f14e203885eeff5fc49415b55c"
+    },
+    {
+      "output": "VO_LF_Taunt_01.wav",
+      "source": "VOXLaff_Police Officer Laugh Vocal Male 1.wav",
+      "event": "voice_taunt",
+      "group": "VOICE",
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.585,
+      "target_lufs": -18,
+      "source_start_seconds": 0.055,
+      "source_end_seconds": 1.64,
+      "selection_features": {
+        "start_frame": 2640,
+        "end_frame": 78720,
+        "centroid_hz": 902.5611953771593,
+        "peak_dbfs": -2.0290289993842903,
+        "rms_dbfs": -15.193747946936247
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=mono|c0=0.5*c0+0.5*c1",
+      "source_prepared_lufs": -14.34,
+      "source_prepared_true_peak_dbtp": -1.99,
+      "lufs": -18.0,
+      "true_peak_dbtp": -5.65,
+      "sample_peak_dbfs": -5.6872562874979025,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -18.0,
+          "true_peak_dbtp": -5.65
+        }
+      ],
+      "frames": 76080,
+      "sha256": "414ae16e456e581969b998306b3ca7028e659772d816007a1f3e52eb1725e08f"
+    },
+    {
+      "output": "UI_LF_FishBanked.wav",
+      "source": "Ting Coins.wav",
+      "event": "fish_banked",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.575,
+      "target_lufs": -20,
+      "source_start_seconds": 0.06,
+      "source_end_seconds": 0.635,
+      "selection_features": {
+        "start_frame": 2880,
+        "end_frame": 30480,
+        "centroid_hz": 961.0906362910978,
+        "peak_dbfs": -7.00126413996112,
+        "rms_dbfs": -26.115328048826466
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -22.85,
+      "source_prepared_true_peak_dbtp": -6.47,
+      "lufs": -20.05,
+      "true_peak_dbtp": -3.62,
+      "sample_peak_dbfs": -4.14326092661226,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.05,
+          "true_peak_dbtp": -3.62
+        }
+      ],
+      "frames": 27600,
+      "sha256": "ae724cd5e3f6052a82e05dde97875a1abd4b74c5e26e7d9e9ff6256d119fde29"
+    },
+    {
+      "output": "UI_LF_Accept.wav",
+      "source": "Accept Boing Crunch.wav",
+      "event": "accept",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.795,
+      "target_lufs": -20,
+      "source_start_seconds": 0.005,
+      "source_end_seconds": 0.8,
+      "selection_features": {
+        "start_frame": 240,
+        "end_frame": 38400,
+        "centroid_hz": 807.4348162588958,
+        "peak_dbfs": -3.7268070259370436,
+        "rms_dbfs": -18.83162579627768
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -14.92,
+      "source_prepared_true_peak_dbtp": -3.67,
+      "lufs": -20.01,
+      "true_peak_dbtp": -8.75,
+      "sample_peak_dbfs": -8.805361606820526,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.01,
+          "true_peak_dbtp": -8.75
+        }
+      ],
+      "frames": 38160,
+      "sha256": "33ececae955b6169aaae5d255c75b9702e4896506b999c67847988a3f2a90e99"
+    },
+    {
+      "output": "UI_LF_Deny.wav",
+      "source": "Deny Muted.wav",
+      "event": "deny",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.46,
+      "target_lufs": -20,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.46,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 22080,
+        "centroid_hz": 304.22709509317116,
+        "peak_dbfs": -5.527142233503924,
+        "rms_dbfs": -12.451484775673736
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -9.65,
+      "source_prepared_true_peak_dbtp": -5.53,
+      "lufs": -20.05,
+      "true_peak_dbtp": -15.88,
+      "sample_peak_dbfs": -15.87773233204474,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.05,
+          "true_peak_dbtp": -15.88
+        }
+      ],
+      "frames": 22080,
+      "sha256": "b1e8afcfd235cd259c790904be45ec89fc9c9a4a33e56425ca64e56d17c95080"
+    },
+    {
+      "output": "UI_LF_Win.wav",
+      "source": "Cofetti Whoosh Pluck Spill.wav",
+      "event": "win",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.805,
+      "target_lufs": -20,
+      "source_start_seconds": 0.02,
+      "source_end_seconds": 1.825,
+      "selection_features": {
+        "start_frame": 960,
+        "end_frame": 87600,
+        "centroid_hz": 6528.814371356703,
+        "peak_dbfs": -1.6003749936413487,
+        "rms_dbfs": -25.540665692084858
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -21.26,
+      "source_prepared_true_peak_dbtp": -1.58,
+      "lufs": -19.84,
+      "true_peak_dbtp": -1.2,
+      "sample_peak_dbfs": -1.2181989998979834,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.88,
+          "true_peak_dbtp": -1.1
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 1.2600000000000016,
+          "measured_lufs": -20.35,
+          "true_peak_dbtp": -1.2
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 1.8900000000000041,
+          "measured_lufs": -19.84,
+          "true_peak_dbtp": -1.2
+        }
+      ],
+      "frames": 86640,
+      "sha256": "9df44d37d7ae12c3772e451cfb9a67abb77175cd9244b9d2158464386fdfb1d3"
+    },
+    {
+      "output": "UI_LF_RoundStart.wav",
+      "source": "Game Entry Happy Short.wav",
+      "event": "round_start",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.355,
+      "target_lufs": -20,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.355,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 17040,
+        "centroid_hz": 669.2169772746828,
+        "peak_dbfs": -4.166252846317215,
+        "rms_dbfs": -16.237909366600828
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -13.87,
+      "source_prepared_true_peak_dbtp": -4.16,
+      "lufs": -20.02,
+      "true_peak_dbtp": -10.29,
+      "sample_peak_dbfs": -10.300317149607984,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 4 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.02,
+          "true_peak_dbtp": -10.29
+        }
+      ],
+      "frames": 17040,
+      "sha256": "51318041f27c06ac0a079dc123fb0d3bece41e40b75c87ad76c657704a794700"
+    },
+    {
+      "output": "UI_LF_FishCaught.wav",
+      "source": "Foley Coin Flip Single Fast.wav",
+      "event": "fish_caught",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.515,
+      "target_lufs": -20,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.515,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 24720,
+        "centroid_hz": 5656.039204780286,
+        "peak_dbfs": -3.1238593717444587,
+        "rms_dbfs": -28.449543819373364
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -21.82,
+      "source_prepared_true_peak_dbtp": -3.12,
+      "lufs": -20.02,
+      "true_peak_dbtp": -1.3,
+      "sample_peak_dbfs": -1.2972429486831552,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.02,
+          "true_peak_dbtp": -1.3
+        }
+      ],
+      "frames": 24720,
+      "sha256": "0e494b8a1d9610907d82264f552fbdd4159463fe83b342d2e470be1f56cbde4b"
+    },
+    {
+      "output": "UI_LF_GoldFish.wav",
+      "source": "DSGNStngr_Power Up Bright Positive Successful Light Saturation Crash Shimmer 05_ESM_AG.wav",
+      "event": "goldfish",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 1.205,
+      "target_lufs": -20,
+      "source_start_seconds": 0.04,
+      "source_end_seconds": 1.245,
+      "selection_features": {
+        "start_frame": 1920,
+        "end_frame": 59760,
+        "centroid_hz": 3571.043150059467,
+        "peak_dbfs": -1.0067156582583512,
+        "rms_dbfs": -21.307273269654136
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -15.46,
+      "source_prepared_true_peak_dbtp": -0.67,
+      "lufs": -19.99,
+      "true_peak_dbtp": -5.21,
+      "sample_peak_dbfs": -5.551591869659605,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -19.99,
+          "true_peak_dbtp": -5.21
+        }
+      ],
+      "frames": 57840,
+      "sha256": "3cc7e35fb44ff504c5669ab4a248af0f24e77be5e9bf1e1f9138170ef8e6dc32"
+    },
+    {
+      "output": "UI_LF_GoldFishSparkle.wav",
+      "source": "MAGMisc_Magic Christmas Bells 2_344 Audio_Christmas.wav",
+      "event": "goldfish_sparkle",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 16.145,
+      "target_lufs": -20,
+      "source_start_seconds": 0.815,
+      "source_end_seconds": 16.96,
+      "selection_features": {
+        "start_frame": 39120,
+        "end_frame": 814080,
+        "centroid_hz": 11471.175519033732,
+        "peak_dbfs": -17.149841840757983,
+        "rms_dbfs": -38.945934233375056
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=stereo|c0=c0|c1=c0",
+      "source_prepared_lufs": -32.45,
+      "source_prepared_true_peak_dbtp": -15.03,
+      "lufs": -20.01,
+      "true_peak_dbtp": -2.58,
+      "sample_peak_dbfs": -4.699707766655997,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.01,
+          "true_peak_dbtp": -2.58
+        }
+      ],
+      "frames": 774960,
+      "sha256": "735d539ab7d1e3842fb512a2e72d9135296d0600341808108ba3bb979bd579d6"
+    },
+    {
+      "output": "UI_LF_Final30_Loop.wav",
+      "source": "CLOCKTick_You're Running Late _344 Audio_Antique Clocks.wav",
+      "event": "final_30",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 58.0,
+      "target_lufs": -20,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 60.0,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 2880000,
+        "centroid_hz": 9557.447416979789,
+        "peak_dbfs": -4.470994944902008,
+        "rms_dbfs": -34.90214935847079
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": {
+        "crossfade_seconds": 2.0,
+        "crossfade_curve": "equal-power cosine/sine tail into head",
+        "rotation_samples": 1151,
+        "zero_crossing_channel": "stereo mid, minimum joint L/R energy",
+        "boundary_guard_samples": 64,
+        "start_sample": 0,
+        "end_sample_inclusive": 2783999,
+        "wav_smpl_chunk": true,
+        "endpoint_pcm_frames_zero": true
+      },
+      "downmix": "unchanged",
+      "source_prepared_lufs": -27.85,
+      "source_prepared_true_peak_dbtp": -4.32,
+      "lufs": -20.07,
+      "true_peak_dbtp": -1.12,
+      "sample_peak_dbfs": -1.179856013118778,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -21.98,
+          "true_peak_dbtp": -0.99
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 7.850000000000001,
+          "measured_lufs": -22.45,
+          "true_peak_dbtp": -1.19
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 12.260000000000002,
+          "measured_lufs": -21.1,
+          "true_peak_dbtp": -1.12
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 14.240000000000004,
+          "measured_lufs": -20.67,
+          "true_peak_dbtp": -1.12
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 15.446000000000007,
+          "measured_lufs": -20.41,
+          "true_peak_dbtp": -1.12
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 16.184000000000008,
+          "measured_lufs": -20.21,
+          "true_peak_dbtp": -1.12
+        },
+        {
+          "method": "single-pass oversampled limiter",
+          "gain_db": 16.684000000000008,
+          "measured_lufs": -20.07,
+          "true_peak_dbtp": -1.12
+        }
+      ],
+      "frames": 2784000,
+      "sha256": "bb2c8facf5bf43d6e15261c8cb4dd5209f5aab56f2d92213e4f92b47e121e54b"
+    },
+    {
+      "output": "UI_LF_MenuSelect.wav",
+      "source": "UIMisc_Kalimba 3 Up_CB Sounddesign_APPlicable Sounds.wav",
+      "event": "menu_select",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.36,
+      "target_lufs": -20,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.36,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 17280,
+        "centroid_hz": 2242.024796084929,
+        "peak_dbfs": -3.0000082935834738,
+        "rms_dbfs": -23.138655110358187
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -19.02,
+      "source_prepared_true_peak_dbtp": -2.7,
+      "lufs": -20.01,
+      "true_peak_dbtp": -3.79,
+      "sample_peak_dbfs": -4.113415409584765,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": true,
+      "analysis_mode": "repeated 4 cycles for short-event integrated measurement",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.01,
+          "true_peak_dbtp": -3.79
+        }
+      ],
+      "frames": 17280,
+      "sha256": "6d3d5dea21e8b94c37a4eedba38edefcc90bb0e7f34354ae31ff32861091d368"
+    },
+    {
+      "output": "UI_LF_MenuMove.wav",
+      "source": "Interface Plucks Happy.wav",
+      "event": "menu_move",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 0.65,
+      "target_lufs": -20,
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 0.65,
+      "selection_features": {
+        "start_frame": 0,
+        "end_frame": 31200,
+        "centroid_hz": 1483.9689799814537,
+        "peak_dbfs": -3.570262166632865,
+        "rms_dbfs": -18.173614942962267
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "unchanged",
+      "source_prepared_lufs": -12.88,
+      "source_prepared_true_peak_dbtp": -3.37,
+      "lufs": -20.0,
+      "true_peak_dbtp": -10.49,
+      "sample_peak_dbfs": -10.698023911998947,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.0,
+          "true_peak_dbtp": -10.49
+        }
+      ],
+      "frames": 31200,
+      "sha256": "9c126e6e8abb96d3c05844ad756f04980c10367e8d7cc90fef90c59bb14cd0b5"
+    },
+    {
+      "output": "UI_LF_EndCheer.wav",
+      "source": "CRWDCheer_Small Club, 50 People, Crowd, Spanish, Cheering and Applause-Surround_KSL_KS015.wav",
+      "event": "end_cheer",
+      "group": "UI / SCORE",
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits_per_sample": 16,
+      "duration_seconds": 4.0,
+      "target_lufs": -20,
+      "source_start_seconds": 0.205,
+      "source_end_seconds": 4.205,
+      "selection_features": {
+        "start_frame": 9840,
+        "end_frame": 201840,
+        "centroid_hz": 1082.1750201876027,
+        "peak_dbfs": -6.7975252799608885,
+        "rms_dbfs": -24.89006126094872
+      },
+      "silence_threshold_dbfs": -40,
+      "slices_kept": null,
+      "candidates": null,
+      "pitch_semitones": 0,
+      "loop": null,
+      "downmix": "pan=stereo|c0=0.414*c0+0.293*c2+0.293*c4|c1=0.414*c1+0.293*c2+0.293*c5",
+      "source_prepared_lufs": -21.62,
+      "source_prepared_true_peak_dbtp": -6.78,
+      "lufs": -20.0,
+      "true_peak_dbtp": -5.16,
+      "sample_peak_dbfs": -5.177529936719875,
+      "analysis_minimum_seconds": 0.4,
+      "short_event_meter_extended": false,
+      "analysis_mode": "native duration",
+      "normalization_attempts": [
+        {
+          "method": "loudnorm",
+          "gain_db": null,
+          "measured_lufs": -20.0,
+          "true_peak_dbtp": -5.16
+        }
+      ],
+      "frames": 192000,
+      "sha256": "6e209101fbce81ca96262ae0f96ce97d199a0761e8ebb9359388793bbe6ad113"
+    }
+  ]
+}
