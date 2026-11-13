@@ -21,7 +21,7 @@ for (int k = 0; k < 4; k++)
     float2 r = P.xy - BN[k].xy;
     float2 l2 = float2(cos(BN[k].z) * r.x + sin(BN[k].z) * r.y, -sin(BN[k].z) * r.x + cos(BN[k].z) * r.y);
     float dk = length(float2(max(abs(l2.x) - (BoatHalfLength - BoatRadius), 0.0), l2.y)) - BoatRadius;
-    boatNear = max(boatNear, 1.0 - saturate(dk / max(BoatDeepMargin, 1.0)));
+    boatNear = max(boatNear, 1.0 - smoothstep(BoatDeepMargin * 0.75, max(BoatDeepMargin, 1.0), dk));
 }
 float d01 = max(saturate(WDv / max(DeepDepth, 1.0)), boatNear);
 float3 albedo = lerp(ShallowColor, DeepColor, d01);
@@ -63,7 +63,7 @@ float wob = sin(T * FoamWobbleSpeed * 2.0 + noise * 6.2831853) * 0.5 + 0.5;
 float edge = FoamWidth * (1.0 - FoamNoiseAmount * (noise * 0.7 + wob * 0.3));
 float aaF = max(fwidth(WDv), 0.5);
 float thF = lerp(FoamFragDensity, 1.02, saturate(WDv / max(edge, 1.0)));
-float foam = max(1.0 - smoothstep(FoamSolidCore - aaF, FoamSolidCore + aaF, WDv), smoothstep(thF - 0.03, thF + 0.03, frag) * (1.0 - smoothstep(edge - aaF, edge + aaF, WDv))) * FoamOpacity;
+float foam = max(1.0 - smoothstep(FoamSolidCore - aaF, FoamSolidCore + aaF, WDv), smoothstep(thF - 0.03, thF + 0.03, frag) * (1.0 - smoothstep(edge - aaF, edge + aaF, WDv)) * lerp(1.0, FoamOuterAlpha, saturate(WDv / max(edge, 1.0)))) * FoamOpacity;
 
 // 8b. Boat contact foam + 11. wake. The hull water mask clips depth-fade foam at the hull, so boats get a world-space
 // noisy ring around a capsule hull outline, from Boat0..3 in MPC_LF_Water (X, Y, yaw rad, speed cm/s; pushed by
@@ -82,7 +82,8 @@ for (int b = 0; b < 4; b++)
     float edgeB = BoatFoamWidth * (1.0 + sp01) * (1.0 - FoamNoiseAmount * (noise * 0.7 + wob * 0.3));
     float aaB = max(fwidth(dB), 0.5);
     float thB = lerp(FoamFragDensity, 1.02, saturate(dB / max(edgeB, 1.0)));
-    boatFoam = max(boatFoam, max(1.0 - smoothstep(FoamSolidCore - aaB, FoamSolidCore + aaB, dB), smoothstep(thB - 0.03, thB + 0.03, frag) * (1.0 - smoothstep(edgeB - aaB, edgeB + aaB, dB))));
+    // Outer flecks fade to FoamOuterAlpha so the water colour shows between and through them (not a solid white ring).
+    boatFoam = max(boatFoam, max(1.0 - smoothstep(FoamSolidCore - aaB, FoamSolidCore + aaB, dB), smoothstep(thB - 0.03, thB + 0.03, frag) * (1.0 - smoothstep(edgeB - aaB, edgeB + aaB, dB)) * lerp(1.0, FoamOuterAlpha, saturate(dB / max(edgeB, 1.0)))));
 
     float wk = saturate((BS[b].w - WakeStartSpeed) / max(WakeFullSpeed - WakeStartSpeed, 1.0));
     float behind = -lp.x - BoatHalfLength * 0.8;

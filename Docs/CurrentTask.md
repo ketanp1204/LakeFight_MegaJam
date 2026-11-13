@@ -260,3 +260,21 @@ panning, wake above ~200 cm/s). The 4 shots in `Docs/Shots/`.
 **Follow-ups:** hull mask in world space (above); AGENTS.md says Unreal MCP is on port 8000 but `.mcp.json` uses 9500; MCP still
 has no console exec (I used the Slate inspector to type into the Cmd box - works, but fragile); boat shadows on water (deviation 1);
 the wake needs a real trail (ribbon/decal history) if the straight V reads wrong.
+
+**T01.3 review fixes (director videos `underwater graphics problem.mp4`, `line behind boat.mp4`)**
+- "Jagged polygons moving underwater" = the toon facet bands: each 1 m wave triangle shaded lighter/darker (`FacetContrast` 10),
+  moving with the waves. `FacetContrast` -> 0 on MI_LF_Lake: flat colour cells (confirmed by top-down before/after). Raise it again
+  (2-3) for a hint of facets.
+- "Two lines behind the boat" = my optional straight V-wake (rigid foam lines attached to the stern, swinging with the boat).
+  Disabled: `WakeOpacity` -> 0. A proper wake needs a trail with history (Niagara ribbon / decals) - follow-up.
+- Both are MI parameter changes only (no C++/material recompile). Updated `Docs/Shots/T013_topdown.png`.
+
+**T01.3 review fixes, round 2 ("foam looks solid white"; "bottom of the boat visible translucently")**
+- The pale/mint band under each hull was the WATER's shallow colour (proved by setting ShallowColor to red: the band turned red).
+  The near-hull "force deep" override ramped linearly over 80 cm, so water hugging the hull was still half shallow. Now it is fully deep
+  up to 75 % of `BoatDeepMargin`, then fades out. The hull now meets the water (chase shot updated).
+- Hull water mask (director asked to hide the submerged hull, so the mask was changed): water behind the WaterMask cap is clipped
+  only where the surface point lies inside a hull's gunwale outline in world XY (the RowboatPlan polygon x .958/.91, boat pos + yaw
+  from MPC Boat0..3). Water outside the hull is never clipped, so it covers the submerged hull. Source: `Docs/T013_LF_HullMask.hlsl`.
+  Limits: hull pitch/roll ignored (a few cm of leak at big rolls); assumes every ALFBoat uses the rowboat outline.
+- Foam: outer flecks fade to `FoamOuterAlpha` 0.35 so water shows through and between them; `FoamFragDensity` 0.56 (more gaps).
