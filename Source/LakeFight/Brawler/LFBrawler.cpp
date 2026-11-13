@@ -6,6 +6,8 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "PhysicsEngine/BodySetup.h"
+#include "PhysicsEngine/BodyInstance.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Containers/Ticker.h"
@@ -640,16 +642,10 @@ bool ALFBrawler::ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, floa
 
 	if (bOverboard)
 	{
-		// Launch up and out over the nearest side, mostly along the hit.
+		// Out over the nearest side, mostly along the hit.
 		const float Side = FMath::Abs(Local.Y) > 2.f ? FMath::Sign(float(Local.Y)) : (FVector::DotProduct(Dir, Hull.GetUnitAxis(EAxis::Y)) >= 0.f ? 1.f : -1.f);
 		const FVector Out = (Dir + Hull.GetUnitAxis(EAxis::Y).GetSafeNormal2D() * Side * 0.8f).GetSafeNormal2D();
-		State = ELFBrawlerState::Ragdoll;
-		RagdollStart = World->GetTimeSeconds();
-		bInWater = false;
-		GetCharacterMovement()->bCanWalkOffLedges = true;
-		LaunchCharacter(Out * OverboardSpeed + FVector(0.f, 0.f, OverboardPop), true, true);
-		TumbleAxis = FVector::CrossProduct(FVector::UpVector, Out).GetSafeNormal();
-		TumbleAngle = 0.f;
+		StartRagdoll(Out, Strength);
 	}
 	else
 	{
@@ -662,54 +658,195 @@ bool ALFBrawler::ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, floa
 	return bOverboard;
 }
 
+void ALFBrawler::StartRagdoll(const FVector& Out, float Strength)
+{
+	UWorld* World = GetWorld();
+	USkeletalMeshComponent* M = GetMesh();
+	State = ELFBrawlerState::Ragdoll;
+	RagdollPhase = ERagdollPhase::Flying;
+	RagdollStart = LaunchTime = World->GetTimeSeconds();
+	bInWater = false;
+	bRagdollIgnoresBoats = false;
+	ApexZ = -1e9f;
+	GunwaleZ = float(GetActorLocation().Z);
+	if (const ALFBoat* B = Boat.Get())
+	{
+		GunwaleZ = float(B->GetHull()->GetComponentTransform().TransformPosition(FVector(0.f, 0.f, 25.f)).Z);
+	}
+
+	// The capsule stops driving the body.
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCharacterMovement()->DisableMovement();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Paddle stays in the right hand for now.
+	Paddle->AttachToComponent(M, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_r"));
+
+	// Ragdoll: Manny's physics asset (PA_Mannequin on the mesh), Ragdoll profile, light bodies so a flailing ragdoll can't
+	// shove a 180 kg hull while it is still allowed to touch it.
+	M->SetCollisionProfileName(TEXT("Ragdoll"));
+	M->SetAllMassScale(RagdollMassScale);
+	M->SetSimulatePhysics(true);
+	M->SetAllBodiesPhysicsBlendWeight(1.f);
+	M->WakeAllRigidBodies();
+
+	// Mostly horizontal away from the hitter, small upward; the upper body gets extra horizontal speed so the legs catch the
+	// rail and he topples backward over it.
+	const float Horiz = FMath::Lerp(OverboardHorizSpeedMin, OverboardHorizSpeedMax, Strength);
+	const float Up = FMath::Lerp(OverboardUpSpeedMin, OverboardUpSpeedMax, Strength);
+	const FVector Base = Out * Horiz + FVector(0.f, 0.f, Up);
+	M->SetAllPhysicsLinearVelocity(Base);
+	static const FName UpperBones[] = { TEXT("spine_03"), TEXT("spine_05"), TEXT("neck_01"), TEXT("head") };
+	for (const FName& Bone : UpperBones)
+	{
+		if (FBodyInstance* BI = M->GetBodyInstance(Bone))
+		{
+			BI->SetLinearVelocity(Base + Out * OverboardToppleSpeed, false);
+		}
+	}
+	UE_LOG(LogLF, Display, TEXT("[overboard] %s ragdoll launch horiz=%.0f up=%.0f topple=+%.0f cm/s (strength %.2f, %d bodies)"), *GetName(),
+		Horiz, Up, OverboardToppleSpeed, Strength, M->Bodies.Num());
+}
+
+void ALFBrawler::UpdateWaterForces(float DeltaSeconds)
+{
+	// Per-body buoyancy + strong damping for every body below the surface: limp, quickly settling bob.
+	USkeletalMeshComponent* M = GetMesh();
+	const float Time = GetWorld()->GetTimeSeconds();
+	for (FBodyInstance* BI : M->Bodies)
+	{
+		if (!BI || !BI->IsInstanceSimulatingPhysics())
+		{
+			continue;
+		}
+		const FVector P = BI->GetUnrealWorldTransform().GetLocation();
+		const float Depth = LF::Water::GetHeightAt(P, Time) - float(P.Z);
+		if (Depth <= 0.f)
+		{
+			continue;
+		}
+		const FName Bone = BI->BodySetup.IsValid() ? BI->BodySetup->BoneName : NAME_None;
+		const bool bCore = Bone == TEXT("pelvis") || Bone == TEXT("spine_03") || Bone == TEXT("spine_05") || Bone == TEXT("head");
+		const float Buoy = WaterBuoyancyAccel * (bCore ? 1.f : WaterLimbBuoyancyScale) * FMath::Clamp(Depth / 25.f, 0.f, 1.f);
+		const FVector Accel = FVector(0.f, 0.f, Buoy) - BI->GetUnrealWorldVelocity() * WaterDamping;
+		BI->AddForce(Accel, true, /*bAccelChange*/ true);
+	}
+}
+
 void ALFBrawler::UpdateRagdoll(float DeltaSeconds)
 {
 	UWorld* World = GetWorld();
-	const FVector L = GetActorLocation();
+	USkeletalMeshComponent* M = GetMesh();
+	const double Now = World->GetTimeSeconds();
+	const FVector Pelvis = M->GetBoneLocation(TEXT("pelvis"));
+	const float Water = LF::Water::GetHeightAt(Pelvis, float(Now));
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-	if (!bInWater)
-	{
-		// Comedy tumble about the feet while flying.
-		TumbleAngle += 720.f * DeltaSeconds;
-		const FQuat Tumble(TumbleAxis, FMath::DegreesToRadians(TumbleAngle));
-		GetMesh()->SetWorldRotation(Tumble * (GetActorQuat() * MeshBaseRotation.Quaternion()));
 
-		const float Water = LF::Water::GetHeightAt(L, World->GetTimeSeconds());
-		if (L.Z - HalfHeight * 0.3f < Water && GetCharacterMovement()->Velocity.Z < 0.f)
+	if (RagdollPhase == ERagdollPhase::Flying || RagdollPhase == ERagdollPhase::Floating || RagdollPhase == ERagdollPhase::Recovering)
+	{
+		// Touch hulls only briefly (the rail trips him), then ignore boats so a flailing ragdoll can't shove one.
+		if (!bRagdollIgnoresBoats && Now - LaunchTime >= RagdollHullCollideTime)
 		{
+			M->SetCollisionResponseToChannel(ECC_PhysicsBody, ECR_Ignore);
+			M->SetCollisionResponseToChannel(ECC_Vehicle, ECR_Ignore);
+			M->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+			bRagdollIgnoresBoats = true;
+		}
+		UpdateWaterForces(DeltaSeconds);
+	}
+
+	switch (RagdollPhase)
+	{
+	case ERagdollPhase::Flying:
+		ApexZ = FMath::Max(ApexZ, float(Pelvis.Z));
+		if (Pelvis.Z < Water || Now - RagdollStart > 3.0)
+		{
+			RagdollPhase = ERagdollPhase::Floating;
+			RagdollStart = Now;
 			bInWater = true;
-			RagdollStart = World->GetTimeSeconds();
-			GetCharacterMovement()->StopMovementImmediately();
-			GetCharacterMovement()->DisableMovement();
-			// Head-and-shoulders out, lying back in the water (placeholder until swimming in step 3).
-			SetActorLocation(FVector(L.X, L.Y, Water - HalfHeight * 0.4f));
-			GetMesh()->SetWorldRotation(FQuat(TumbleAxis, FMath::DegreesToRadians(-70.f)) * (GetActorQuat() * MeshBaseRotation.Quaternion()));
-			const FVector SplashAt(L.X, L.Y, Water);
+			const FVector SplashAt(Pelvis.X, Pelvis.Y, Water);
 			if (SplashSystem)
 			{
-				if (UNiagaraComponent* NC = UNiagaraFunctionLibrary::SpawnSystemAtLocation(World, SplashSystem, SplashAt))
+				if (UNiagaraComponent* NC = UNiagaraFunctionLibrary::SpawnSystemAtLocation(World, SplashSystem, SplashAt, FRotator::ZeroRotator, FVector(OverboardSplashScale)))
 				{
-					NC->SetVariableFloat(TEXT("Strength"), 0.8f);
+					NC->SetVariableFloat(TEXT("Strength"), 1.f);
 				}
 			}
 			OnSplashIn(SplashAt);
-			UE_LOG(LogLF, Display, TEXT("[overboard] %s splash at (%.0f, %.0f)"), *GetName(), L.X, L.Y);
+			// Landing distance outside the victim boat's hull (local; half-beam 67 cm, half-length 158 cm).
+			float Outside = -1.f;
+			if (const ALFBoat* B = Boat.Get())
+			{
+				const FVector Lp = B->GetHull()->GetComponentTransform().InverseTransformPosition(Pelvis);
+				Outside = FMath::Max3(FMath::Abs(float(Lp.Y)) - 67.f, FMath::Abs(float(Lp.X)) - 158.f, 0.f);
+			}
+			UE_LOG(LogLF, Display, TEXT("[overboard] %s splash: apex %.0f cm above the gunwale, landed %.0f cm outside the hull, flight %.2f s"),
+				*GetName(), ApexZ - GunwaleZ, Outside, float(Now - LaunchTime));
 		}
-		else if (World->GetTimeSeconds() - RagdollStart > 5.0)
-		{
-			bInWater = true; // stuck somewhere: let the reset below handle it
-			RagdollStart = World->GetTimeSeconds();
-		}
-		return;
-	}
-	// In the water: bob, then (temporary, until step 3 swimming) go back into the boat.
-	const float Water = LF::Water::GetHeightAt(L, World->GetTimeSeconds());
-	SetActorLocation(FVector(L.X, L.Y, Water - HalfHeight * 0.4f));
-	if (World->GetTimeSeconds() - RagdollStart >= OverboardResetDelay && Boat.IsValid())
+		break;
+
+	case ERagdollPhase::Floating:
 	{
-		UE_LOG(LogLF, Display, TEXT("[overboard] %s reset into %s (placeholder until swimming)"), *GetName(), *Boat->GetName());
-		StandInBoat(Boat.Get());
+		const float Elapsed = float(Now - RagdollStart);
+		const float Speed = float(M->GetPhysicsLinearVelocity(TEXT("pelvis")).Size());
+		if (Elapsed >= FloatTime || (Elapsed > 0.6f && Speed < FloatStillSpeed))
+		{
+			UE_LOG(LogLF, Display, TEXT("[overboard] %s floated %.2f s (pelvis speed %.0f cm/s) -> recover"), *GetName(), Elapsed, Speed);
+			// Put the (animated) capsule upright at the pelvis, half in the water, then blend the ragdoll pose into it.
+			// No teleport: the simulated bodies stay where they are while the blend weight falls.
+			const float Yaw = M->GetBoneQuaternion(TEXT("pelvis")).GetForwardVector().GetSafeNormal2D().Rotation().Yaw;
+			SetActorLocationAndRotation(FVector(Pelvis.X, Pelvis.Y, Water - HalfHeight * 0.4f), FRotator(0.f, Yaw, 0.f));
+			RagdollPhase = ERagdollPhase::Recovering;
+			RecoverAge = 0.f;
+		}
+		break;
 	}
+
+	case ERagdollPhase::Recovering:
+	{
+		RecoverAge += DeltaSeconds;
+		const FVector L = GetActorLocation();
+		SetActorLocation(FVector(L.X, L.Y, LF::Water::GetHeightAt(L, float(Now)) - HalfHeight * 0.4f));
+		M->SetAllBodiesPhysicsBlendWeight(FMath::Clamp(1.f - RecoverAge / RecoverBlendTime, 0.f, 1.f));
+		if (RecoverAge >= RecoverBlendTime)
+		{
+			EndRagdoll();
+			RagdollPhase = ERagdollPhase::Upright;
+			RagdollStart = Now;
+		}
+		break;
+	}
+
+	case ERagdollPhase::Upright:
+	{
+		// Upright in the water, bobbing (temporary until step 3 swimming), then back into the boat.
+		const FVector L = GetActorLocation();
+		SetActorLocation(FVector(L.X, L.Y, LF::Water::GetHeightAt(L, float(Now)) - HalfHeight * 0.4f));
+		if (Now - RagdollStart >= OverboardResetDelay && Boat.IsValid())
+		{
+			UE_LOG(LogLF, Display, TEXT("[overboard] %s reset into %s (placeholder until swimming)"), *GetName(), *Boat->GetName());
+			StandInBoat(Boat.Get());
+		}
+		break;
+	}
+	}
+}
+
+void ALFBrawler::EndRagdoll()
+{
+	USkeletalMeshComponent* M = GetMesh();
+	M->SetSimulatePhysics(false);
+	M->SetAllBodiesPhysicsBlendWeight(0.f);
+	M->SetAllMassScale(1.f);
+	M->SetCollisionProfileName(TEXT("CharacterMesh"));
+	M->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// Simulating may have detached the mesh: put it back on the capsule.
+	M->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	M->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()), MeshBaseRotation);
+	Paddle->AttachToComponent(PaddlePivot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	Paddle->SetRelativeLocationAndRotation(FVector(-10.f, 0.f, 0.f), FRotator::ZeroRotator);
+	SwayQuat = FQuat::Identity;
+	UE_LOG(LogLF, Display, TEXT("[overboard] %s upright in the water"), *GetName());
 }
 
 // ---------------------------------------------------------------- Feedback / camera (real time)

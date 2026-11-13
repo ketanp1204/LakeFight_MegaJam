@@ -130,13 +130,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
 	float GunwaleNearY = 20.f;
 
-	/** Overboard launch: horizontal (cm/s) and upward (cm/s) velocity. */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
-	float OverboardSpeed = 450.f;
-
-	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
-	float OverboardPop = 520.f;
-
 	/** Stun (s) at strength 0 and 1: no moving or swinging. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
 	float StunMin = 0.4f;
@@ -148,8 +141,61 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
 	float HullHitImpulse = 120.f;
 
-	/** Temporary until swimming (step 3): an overboard brawler is put back in its boat after this (s). */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	// --- Overboard ragdoll (step 2.1) ---
+	/** Horizontal launch speed (cm/s) away from the hitter for the weakest (light/near-gunwale) and strongest (full charge) hits. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float OverboardHorizSpeedMin = 230.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float OverboardHorizSpeedMax = 320.f;
+
+	/** Small upward launch speed (cm/s) at strength 0 / 1. ~200 cm/s = ~20 cm of rise. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float OverboardUpSpeedMin = 180.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float OverboardUpSpeedMax = 240.f;
+
+	/** Extra horizontal speed (cm/s) on the upper body so he topples over the rail while the legs catch it. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float OverboardToppleSpeed = 160.f;
+
+	/** Ragdoll body mass multiplier: keeps a flailing body from shoving a 180 kg hull while it can still touch it. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0.01", ClampMax="1"))
+	float RagdollMassScale = 0.25f;
+
+	/** The ragdoll collides with hulls this long (s) - the rail trips him - then ignores boats entirely. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float RagdollHullCollideTime = 0.3f;
+
+	/** Buoyancy (cm/s^2 at >= 25 cm depth) for pelvis/chest/head; other bodies get WaterLimbBuoyancyScale of it. ~980 = neutral. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float WaterBuoyancyAccel = 1500.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0", ClampMax="2"))
+	float WaterLimbBuoyancyScale = 0.6f;
+
+	/** Velocity damping in the water (1/s) for every submerged body: limp, quickly settling bob. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float WaterDamping = 4.f;
+
+	/** Limp float time (s) before recovering; recovers earlier if the pelvis is nearly still (FloatStillSpeed cm/s) after 0.6 s. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float FloatTime = 1.3f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float FloatStillSpeed = 15.f;
+
+	/** Ragdoll -> upright blend (s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0.01"))
+	float RecoverBlendTime = 0.3f;
+
+	/** Overboard splash size relative to a hit splash. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float OverboardSplashScale = 1.8f;
+
+	/** Temporary until swimming (step 3): after recovering upright in the water, back into the boat after this (s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
 	float OverboardResetDelay = 2.5f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
@@ -310,10 +356,19 @@ private:
 	FRotator PaddleRot = FRotator::ZeroRotator;
 
 	double StunUntil = -1.0;
-	double RagdollStart = 0.0;
+	enum class ERagdollPhase : uint8 { Flying, Floating, Recovering, Upright };
+	ERagdollPhase RagdollPhase = ERagdollPhase::Flying;
+	double RagdollStart = 0.0;   // phase start (game s)
 	bool bInWater = false;
-	FVector TumbleAxis = FVector::ForwardVector;
-	float TumbleAngle = 0.f;
+	bool bRagdollIgnoresBoats = false;
+	float RecoverAge = 0.f;
+	float GunwaleZ = 0.f;        // victim boat's gunwale height at launch (for the apex log)
+	float ApexZ = -1e9f;         // highest pelvis Z while flying
+	double LaunchTime = 0.0;
+
+	void StartRagdoll(const FVector& Out, float Strength);
+	void UpdateWaterForces(float DeltaSeconds);
+	void EndRagdoll();
 
 	float ShakeAge = -1.f;
 	float ShakeStrength = 0.f;

@@ -114,3 +114,46 @@ The T01 `[settle]` check now allows 6 deg (2 waves + 4 crew tilt) - it flagged t
 **Please test (PIE):** the dummy is 15 m ahead in LF_Boat_Target - drive over (E), pull alongside, E to stand, aim with the camera,
 tap / hold LMB. Is it funny the first ten times? Reach, knockback, stun and overboard thresholds are all under `LF|Paddle` on BP_LF_Brawler.
 **Known:** procedural paddle/no arm IK (the arms stay idle); the tilt is subtle by design (raise FakeWeightKg).
+
+**Director: step 2 paddle + hits accepted; overboard rejected** (rigid upright dummy launched 5-8 m like a cannonball, feet-first landing
+holding the paddle up, teleport back). -> step 2.1.
+
+## Step 2.1 - ragdoll overboard (Claude Code, 13 Nov ~13:05-13:30 IST)
+
+**Changes** (`Source/LakeFight/Brawler/LFBrawler.h/.cpp`; tunables under `LF|Overboard`):
+1. Overboard = real ragdoll: the CMC stops, the capsule's collision goes off, and the mesh simulates with Manny's physics asset
+   (PA_Mannequin, 22 bodies) on collision profile `Ragdoll`. The paddle re-attaches to `hand_r`. (The old LaunchCharacter + spinning
+   rigid mesh are gone.)
+2. Launch: every body gets a mostly HORIZONTAL velocity away from the hitter (`OverboardHorizSpeedMin/Max` 230/320 cm/s) with a small
+   upward part (`OverboardUpSpeedMin/Max` 180/240); spine_03/spine_05/neck/head get `OverboardToppleSpeed` +160 cm/s extra, so the upper
+   body leads, the legs catch the rail and he topples backward over it.
+3. Ragdoll vs boats: bodies use `RagdollMassScale` 0.25 (they can't shove a 180 kg hull) and collide with hulls only for
+   `RagdollHullCollideTime` 0.3 s (the rail trip), then ignore PhysicsBody/Vehicle/Pawn.
+4. Water: every body below `GetHeightAt` gets buoyancy (`WaterBuoyancyAccel` 1500 cm/s^2 for pelvis/spine/head, x0.6 for limbs, ramping
+   over 25 cm of depth) and strong damping (`WaterDamping` 4/s): a limp, settling bob. Overboard splash at the entry point, scaled
+   `OverboardSplashScale` 1.8x, + `OnSplashIn`.
+5. Recovery: after `FloatTime` 1.3 s (or once the pelvis is nearly still after 0.6 s) the capsule is placed upright at the pelvis, half
+   in the water (facing the pelvis yaw), and the physics blend weight falls 1 -> 0 over `RecoverBlendTime` 0.3 s (no teleport: the bodies
+   blend into the animated pose), then simulation stops and the mesh/paddle re-attach. Then upright bobbing in the water ->
+   `OverboardResetDelay` 2.5 s -> back into the boat (placeholder until step 3; not teleported from mid-air any more).
+6. Boat-vs-boat: unchanged by T02 (the brawler capsule is query-only; the ragdoll ignores PhysicsBody after 0.3 s). **Verified in PIE:**
+   the target boat teleported into a 30 cm overlap with the player's boat was pushed apart (centres 1.0 -> 1.7 m in 1.5 s) - hulls block.
+   The visible overlap in the recording is most likely the UCX inset: the side UCX walls sit ~5-9 cm inside the visual hull (outer face
+   y ~0.578 m vs gunwale 0.65-0.67 m amidships; ~4 cm at the bow), so two hulls can look 10-15 cm overlapped while their collision
+   only just touches. Fix = widen the UCX walls in `Art/BlenderScripts/SM_LF_Rowboat.py` (Codex / Art) - not changed here.
+
+**Verification (PIE, `LFSwing 1`, boats side by side 1.5 m apart; 3 full-charge runs):**
+| Run | Apex above gunwale | Landed outside hull | Flight | Float |
+| --- | --- | --- | --- | --- |
+| 1 | 65 cm | 157 cm | 0.69 s | 1.30 s |
+| 2 | 70 cm | 141 cm | 0.97 s | 1.30 s |
+| 3 | 69 cm | 142 cm | 0.98 s | 1.30 s |
+Targets: apex <= ~1 m, landing ~1-1.5 m (charged a bit further) - met. Then `upright in the water` -> `reset into BP_LF_Boat_C_1`.
+A screenshot strip from the player's camera shows the dummy horizontal at the water's edge after toppling; I could not get a second camera
+on the float in PIE (MCP can't set the PIE control rotation; the viewport capture shows the editor world). Light near-gunwale hits use
+the Min values (lower and shorter) - not separately measured.
+PIE 07:55:42-07:57:46 UTC (124 s): no LF warnings; the only errors came from my MCP calls during PIE.
+Build: 1 compile error (missing `PhysicsEngine/BodySetup.h`) fixed -> Succeeded.
+
+**Please test:** whether the topple over the rail reads, the limp float (face-down-ish is not forced - it depends on how he lands), and the
+blend to upright. If he flies too far/near: `OverboardHorizSpeedMin/Max`; too high: `OverboardUpSpeed*`; not tipping: `OverboardToppleSpeed`.
