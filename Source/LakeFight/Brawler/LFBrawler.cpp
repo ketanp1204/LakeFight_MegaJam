@@ -1111,6 +1111,35 @@ void ALFBrawler::UpdateSwim(float DeltaSeconds)
 		}
 	}
 
+	// Hulls: the capsule is query-only (it never pushes a boat), so a boat would pass straight through a swimmer. Push the
+	// swimmer out to the hull outline instead; a fast boat runs him over.
+	const float Radius = GetCapsuleComponent()->GetScaledCapsuleRadius();
+	for (TActorIterator<ALFBoat> It(World); It; ++It)
+	{
+		ALFBoat* B = *It;
+		FVector2D NearLocal;
+		const float D = B->GunwaleDistance(L, NearLocal);
+		if (D >= Radius)
+		{
+			continue;
+		}
+		const FVector NearWorld = B->GetHull()->GetComponentTransform().TransformPosition(FVector(NearLocal.X, NearLocal.Y, 0.f));
+		FVector Out = (D >= 0.f ? (L - NearWorld) : (NearWorld - L)).GetSafeNormal2D();
+		if (Out.IsNearlyZero())
+		{
+			Out = (L - B->GetActorLocation()).GetSafeNormal2D();
+		}
+		const FVector BoatVel = B->GetVelocity() * FVector(1.f, 1.f, 0.f);
+		if (BoatVel.Size() > RunOverSpeed && FVector::DotProduct(BoatVel, Out) > 0.f)
+		{
+			UE_LOG(LogLF, Display, TEXT("[swim] %s run over by %s at %.0f cm/s"), *GetName(), *B->GetName(), BoatVel.Size());
+			StartRagdoll((BoatVel.GetSafeNormal() + Out).GetSafeNormal2D(), 0.2f);
+			return;
+		}
+		L.X = NearWorld.X + Out.X * (Radius + 2.f);
+		L.Y = NearWorld.Y + Out.Y * (Radius + 2.f);
+	}
+
 	// Bob on the water: capsule centre a fixed fraction of the half-height under the surface.
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const float Water = LF::Water::GetHeightAt(L, Now);

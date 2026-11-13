@@ -64,3 +64,15 @@ coasts to a stop. Rebuilt; a 40 s AI run still chases/rams/fights normally.
 
 **Queued (director, 13 Nov):** step 5 now also includes the paddle grip work (PaddleGrip_R / PaddleBack sockets, two-hand Two Bone IK to
 Grip_R / Grip_L sockets on SM_LF_Paddle, paddle placement per state, ragdoll paddle on hand_r, paddle absolute scale 0.85).
+
+**Stage 1 feedback fixes (director, 13 Nov)**
+- "I can't control the camera while driving": the boat camera now free-looks - mouse (template IMC_MouseLook / IA_MouseLook, same feel as on
+  foot) and gamepad right stick (runtime boat-only context) orbit it; after `CameraRecenterDelay` 2 s without look input it eases back behind
+  the boat with the normal lag (0 = never recentre). Pitch clamped `CameraMinPitch` -60 / `CameraMaxPitch` 10. Not testable through MCP
+  (no mouse) - please check, incl. gamepad pitch direction.
+- "The opponent tries to hit me while I'm swimming": swimmers/climbers are no longer AI targets (out of the fight); with no target in a boat
+  the AI goes Idle and its boat coasts. Verified: `RAM -> Idle` when the player went overboard, no swings while swimming.
+- "His boat passes through me": character capsules are query-only (T02 rule: never push a boat), so hulls never touched a swimmer. A swimmer
+  overlapping any hull outline is now pushed out to the edge; a boat moving > `RunOverSpeed` 250 cm/s toward him runs him over (small ragdoll
+  launch, `[swim] ... run over` log). Verified the push-out (boat teleported onto the swimmer -> pushed to the hull edge + capsule radius);
+  the run-over needs a moving boat - please test.

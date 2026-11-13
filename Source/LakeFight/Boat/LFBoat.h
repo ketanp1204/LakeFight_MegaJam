@@ -146,6 +146,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0", ClampMax="1"))
 	float CameraPitchFollow = 0.25f;
 
+	/** Free-look while driving: mouse / right stick orbit the camera; after this long (real s) without look input it
+	 *  eases back behind the boat with the normal lag. 0 = never recentre. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0"))
+	float CameraRecenterDelay = 2.f;
+
+	/** Free-look pitch limits (deg). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Camera")
+	float CameraMinPitch = -60.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Camera")
+	float CameraMaxPitch = 10.f;
+
 	/** How fast the camera pivot follows the boat's position (1/s). Replaces the spring arm's built-in lag so it runs
 	 *  on REAL (undilated) time: hitstop never freezes-then-snaps the camera. All camera feedback uses real time too. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0.1"))
@@ -257,6 +269,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
+	/** Mouse look while driving (template IMC_MouseLook / IA_MouseLook - same feel as on foot). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Input")
+	TObjectPtr<UInputMappingContext> MouseLookMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Input")
+	TObjectPtr<UInputAction> MouseLookAction;
+
 	/** Axis1D: +1 forward, -1 reverse. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Input")
 	TObjectPtr<UInputAction> ThrottleAction;
@@ -344,6 +363,8 @@ private:
 	void OnThrottleReleased();
 	void OnSteerReleased();
 	void OnInteract();
+	void OnLook(const FInputActionValue& Value);
+	double LastLookRealTime = -100.0;
 
 	void UpdateCamera(float DeltaSeconds);
 	void BuildWaterMask();

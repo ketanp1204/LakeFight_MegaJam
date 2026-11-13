@@ -16,7 +16,9 @@ namespace LF::Input
 	{
 		UInputAction* Interact = nullptr;
 		UInputAction* Swing = nullptr;
+		UInputAction* Look = nullptr; // gamepad right stick (Axis2D) - boat free-look
 		UInputMappingContext* Context = nullptr;
+		UInputMappingContext* BoatContext = nullptr; // driving only: right-stick free-look
 	};
 
 	/** Created once (rooted, transient) on first use. */

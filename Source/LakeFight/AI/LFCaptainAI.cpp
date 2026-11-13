@@ -63,11 +63,11 @@ ALFBrawler* ALFCaptainAI::PickTarget() const
 		{
 			continue;
 		}
-		float D = float(FVector::Dist2D(B->GetActorLocation(), Self->GetActorLocation()));
-		if (B->GetBrawlerState() == ELFBrawlerState::Swimming)
+		if (B->GetBrawlerState() == ELFBrawlerState::Swimming || B->GetBrawlerState() == ELFBrawlerState::Climbing)
 		{
-			D *= 1.5f; // swimmers are less interesting than enemies in boats
+			continue; // out of the fight: paddling swimmers isn't a useful strategy
 		}
+		const float D = float(FVector::Dist2D(B->GetActorLocation(), Self->GetActorLocation()));
 		if (D < BestD)
 		{
 			BestD = D;

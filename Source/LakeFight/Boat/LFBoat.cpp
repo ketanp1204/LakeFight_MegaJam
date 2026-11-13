@@ -89,6 +89,10 @@ ALFBoat::ALFBoat()
 	Camera->SetFieldOfView(80.f);
 
 	AutoPossessAI = EAutoPossessAI::Disabled;
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> IMCMouse(TEXT("/Game/Input/IMC_MouseLook.IMC_MouseLook"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> IAMouseLook(TEXT("/Game/Input/Actions/IA_MouseLook.IA_MouseLook"));
+	MouseLookMappingContext = IMCMouse.Object;
+	MouseLookAction = IAMouseLook.Object;
 	// Never refuse to spawn a boat (PIE spawn failed with the UCX hull at the PlayerStart); buoyancy settles it.
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
@@ -264,8 +268,23 @@ void ALFBoat::UpdateCamera(float RealDelta)
 	CameraArm->SetWorldLocation(CameraPivot);
 
 	const FRotator BoatRot = GetActorRotation();
-	CameraRot.Yaw = CameraRot.Yaw + FMath::FindDeltaAngleDegrees(CameraRot.Yaw, BoatRot.Yaw) * Follow(CameraYawLagSpeed);
-	CameraRot.Pitch = FMath::Lerp(CameraRot.Pitch, CameraPitch + BoatRot.Pitch * CameraPitchFollow, Follow(CameraPitchLagSpeed));
+	const bool bFreeLook = Controller && (CameraRecenterDelay <= 0.f || FPlatformTime::Seconds() - LastLookRealTime < CameraRecenterDelay);
+	if (bFreeLook && FPlatformTime::Seconds() - LastLookRealTime < 1e6)
+	{
+		// Player is looking around: the camera follows the control rotation (mouse / right stick).
+		const FRotator C = Controller->GetControlRotation();
+		CameraRot.Yaw = C.Yaw;
+		CameraRot.Pitch = FMath::ClampAngle(C.Pitch, CameraMinPitch, CameraMaxPitch);
+	}
+	else
+	{
+		CameraRot.Yaw = CameraRot.Yaw + FMath::FindDeltaAngleDegrees(CameraRot.Yaw, BoatRot.Yaw) * Follow(CameraYawLagSpeed);
+		CameraRot.Pitch = FMath::Lerp(CameraRot.Pitch, CameraPitch + BoatRot.Pitch * CameraPitchFollow, Follow(CameraPitchLagSpeed));
+		if (Controller)
+		{
+			Controller->SetControlRotation(CameraRot); // free-look starts from where the camera is
+		}
+	}
 	CameraRot.Roll = 0.f;
 	CameraArm->SetWorldRotation(CameraRot);
 
@@ -519,6 +538,11 @@ void ALFBoat::NotifyControllerChanged()
 	{
 		Sub->AddMappingContext(DefaultMappingContext, 0);
 		Sub->AddMappingContext(LF::Input::Get().Context, 1); // Interact = leave the driver seat
+		Sub->AddMappingContext(LF::Input::Get().BoatContext, 1); // right-stick free-look
+		if (MouseLookMappingContext)
+		{
+			Sub->AddMappingContext(MouseLookMappingContext, 0);
+		}
 	}
 }
 
@@ -534,6 +558,11 @@ void ALFBoat::UnPossessed()
 				Sub->RemoveMappingContext(DefaultMappingContext);
 			}
 			Sub->RemoveMappingContext(LF::Input::Get().Context);
+			Sub->RemoveMappingContext(LF::Input::Get().BoatContext);
+			if (MouseLookMappingContext)
+			{
+				Sub->RemoveMappingContext(MouseLookMappingContext);
+			}
 		}
 	}
 	ThrottleInput = 0.f;
@@ -574,6 +603,18 @@ FVector ALFBoat::GetDriverSeatWorld() const
 	return HullMesh->GetComponentTransform().TransformPosition(DriverSeatLocal);
 }
 
+void ALFBoat::OnLook(const FInputActionValue& Value)
+{
+	const FVector2D V = Value.Get<FVector2D>();
+	if (V.IsNearlyZero())
+	{
+		return;
+	}
+	AddControllerYawInput(V.X);
+	AddControllerPitchInput(V.Y);
+	LastLookRealTime = FPlatformTime::Seconds();
+}
+
 void ALFBoat::OnInteract()
 {
 	if (ALFBrawler* D = Driver.Get())
@@ -596,6 +637,11 @@ void ALFBoat::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	EIC->BindAction(SteerAction, ETriggerEvent::Triggered, this, &ALFBoat::OnSteer);
 	EIC->BindAction(SteerAction, ETriggerEvent::Completed, this, &ALFBoat::OnSteerReleased);
 	EIC->BindAction(LF::Input::Get().Interact, ETriggerEvent::Started, this, &ALFBoat::OnInteract);
+	EIC->BindAction(LF::Input::Get().Look, ETriggerEvent::Triggered, this, &ALFBoat::OnLook);
+	if (MouseLookAction)
+	{
+		EIC->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &ALFBoat::OnLook);
+	}
 }
 
 void ALFBoat::OnThrottle(const FInputActionValue& Value)

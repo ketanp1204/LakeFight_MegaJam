@@ -167,6 +167,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0", ClampMax="90"))
 	float SwimLeanDeg = 45.f;
 
+	/** A boat moving faster than this (cm/s) through a swimmer runs him over (small ragdoll launch); slower it just pushes him aside. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float RunOverSpeed = 250.f;
+
 	/** Can grab a hull when within this distance (cm) of its gunwale outline. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
 	float GrabRange = 150.f;
