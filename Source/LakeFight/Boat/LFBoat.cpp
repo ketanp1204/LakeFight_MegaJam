@@ -157,6 +157,12 @@ void ALFBoat::BeginPlay()
 
 	HullMesh->OnComponentHit.AddDynamic(this, &ALFBoat::OnHullHit);
 
+	// Placed instances saved before SplashSystem existed carry a stale None override: fall back to the class default.
+	if (!SplashSystem)
+	{
+		SplashSystem = GetClass()->GetDefaultObject<ALFBoat>()->SplashSystem;
+	}
+
 	if (WaterMask->GetNumSections() == 0)
 	{
 		BuildWaterMask();

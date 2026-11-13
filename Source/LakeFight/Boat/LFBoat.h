@@ -311,6 +311,14 @@ public:
 
 	UStaticMeshComponent* GetHull() const { return HullMesh; }
 
+	/** Drive input from an AI captain (same path as the player's Throttle/Steer actions): throttle -1..1, steer -1..1. */
+	UFUNCTION(BlueprintCallable, Category="LF|Crew")
+	void SetDriveInput(float Throttle, float Steer)
+	{
+		ThrottleInput = FMath::Clamp(Throttle, -1.f, 1.f);
+		SteerInput = FMath::Clamp(Steer, -1.f, 1.f);
+	}
+
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void NotifyControllerChanged() override;

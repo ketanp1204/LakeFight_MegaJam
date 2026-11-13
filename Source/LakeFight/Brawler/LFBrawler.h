@@ -24,6 +24,15 @@ enum class ELFBrawlerState : uint8
 	Ragdoll     // knocked overboard: flying/tumbling, then in the water
 };
 
+UENUM(BlueprintType)
+enum class ELFTeam : uint8
+{
+	Red,
+	Blue,
+	Green,
+	Yellow
+};
+
 UENUM()
 enum class ELFSwingPhase : uint8
 {
@@ -49,6 +58,10 @@ class LAKEFIGHT_API ALFBrawler : public ACharacter
 
 public:
 	ALFBrawler();
+
+	/** Crew. Same team = friends (AI won't target them). Player = Red. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Brawler")
+	ELFTeam Team = ELFTeam::Red;
 
 	// --- Boat ---
 	/** Player-controlled brawlers without a boat spawn one of these under them on possession. */
@@ -352,6 +365,20 @@ public:
 	UFUNCTION(BlueprintPure, Category="LF|Brawler")
 	ALFBoat* GetHomeBoat() const { return HomeBoat.Get(); }
 
+	/** True when the paddle is idle and we can swing (standing, not stunned). */
+	UFUNCTION(BlueprintPure, Category="LF|Brawler")
+	bool CanSwing() const;
+
+	/** Standing near our boat's gunwale (a light hit would knock us overboard). */
+	UFUNCTION(BlueprintPure, Category="LF|Brawler")
+	bool IsNearGunwale() const;
+
+	/** Number of paddle hits received in the last Window seconds. */
+	int32 RecentHits(float Window) const;
+
+	/** Debug text drawn above the head when lf.ai.debug is on (set by the AI). */
+	FString DebugState;
+
 	/** Paddle hit received. Dir = horizontal direction from the attacker. Returns true if it knocked us overboard. */
 	bool ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, float Strength);
 
@@ -444,6 +471,7 @@ private:
 	float GrabDistanceTo(const ALFBoat* B, FVector2D* OutLocal = nullptr) const;
 
 	TWeakObjectPtr<ALFBoat> HomeBoat;
+	TArray<double> HitTimes; // recent paddle hits received (game s)
 	float StandFallTime = 0.f;  // how long a Standing brawler has been falling (safety re-snap)
 	FVector SwimTarget = FVector::ZeroVector;
 	bool bHasSwimTarget = false;

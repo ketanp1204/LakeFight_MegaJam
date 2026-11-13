@@ -77,6 +77,10 @@ ALFBrawler::ALFBrawler()
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -CapsuleHalfHeight), MeshBaseRotation);
 	GetMesh()->SetRelativeScale3D(FVector(BrawlerScale));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// Same custom stencil as hulls (ALFBoat::HullStencil = 2): the lake treats water in front of a submerged body as deep,
+	// so a swimmer's legs don't show through as a pale ghost. (Lake material/stencil value unchanged.)
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->SetCustomDepthStencilValue(2);
 
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
@@ -103,6 +107,8 @@ ALFBrawler::ALFBrawler()
 	Paddle->SetupAttachment(PaddlePivot);
 	Paddle->SetRelativeLocation(FVector(-10.f, 0.f, 0.f)); // held near the grip end: ~130 cm reach to the blade centre
 	Paddle->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Paddle->SetRenderCustomDepth(true);
+	Paddle->SetCustomDepthStencilValue(2);
 	Paddle->SetCastShadow(true);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> PaddleMesh(TEXT("/Game/LakeFight/Meshes/SM_LF_Paddle.SM_LF_Paddle"));
 	if (PaddleMesh.Succeeded())
@@ -253,6 +259,33 @@ void ALFBrawler::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	EIC->BindAction(A.Interact, ETriggerEvent::Started, this, &ALFBrawler::OnInteract);
 	EIC->BindAction(A.Swing, ETriggerEvent::Started, this, &ALFBrawler::OnSwingPressed);
 	EIC->BindAction(A.Swing, ETriggerEvent::Completed, this, &ALFBrawler::OnSwingReleased);
+}
+
+bool ALFBrawler::CanSwing() const
+{
+	return State == ELFBrawlerState::Standing && !IsStunned() && SwingPhase == ELFSwingPhase::Idle;
+}
+
+bool ALFBrawler::IsNearGunwale() const
+{
+	const ALFBoat* B = Boat.Get();
+	if (!B || State != ELFBrawlerState::Standing)
+	{
+		return false;
+	}
+	const FVector L = B->GetHull()->GetComponentTransform().InverseTransformPosition(GetActorLocation());
+	return FMath::Abs(L.Y) > GunwaleNearY || L.X > 80.f || L.X < -110.f;
+}
+
+int32 ALFBrawler::RecentHits(float Window) const
+{
+	const double Now = GetWorld()->GetTimeSeconds();
+	int32 N = 0;
+	for (double T : HitTimes)
+	{
+		N += (Now - T) <= Window ? 1 : 0;
+	}
+	return N;
 }
 
 bool ALFBrawler::IsStunned() const
@@ -737,6 +770,11 @@ bool ALFBrawler::ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, floa
 		return false;
 	}
 	UWorld* World = GetWorld();
+	HitTimes.Add(World->GetTimeSeconds());
+	if (HitTimes.Num() > 8)
+	{
+		HitTimes.RemoveAt(0);
+	}
 	StunUntil = World->GetTimeSeconds() + FMath::Lerp(StunMin, StunMax, Strength);
 	SwingPhase = ELFSwingPhase::Recover;
 	SwingAge = 0.f;
@@ -1051,7 +1089,7 @@ void ALFBrawler::UpdateSwim(float DeltaSeconds)
 	FVector L = GetActorLocation();
 
 	// AI / dummy: swim home and climb in.
-	if (!IsPlayerControlled() && bAutoReturnHome && HomeBoat.IsValid() && Now - SwimStartTime >= AutoReturnDelay)
+	if (!Controller && bAutoReturnHome && HomeBoat.IsValid() && Now - SwimStartTime >= AutoReturnDelay)
 	{
 		if (GrabDistanceTo(HomeBoat.Get()) <= GrabRange * 0.8f)
 		{
