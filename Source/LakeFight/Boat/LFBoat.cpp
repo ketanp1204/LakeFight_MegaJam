@@ -1,5 +1,7 @@
 #include "Boat/LFBoat.h"
 
+#include "Brawler/LFBrawler.h"
+#include "Input/LFInput.h"
 #include "Water/LFWater.h"
 #include "Water/LFBuoyancyComponent.h"
 #include "Camera/CameraComponent.h"
@@ -509,6 +511,39 @@ void ALFBoat::NotifyControllerChanged()
 	if (UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 	{
 		Sub->AddMappingContext(DefaultMappingContext, 0);
+		Sub->AddMappingContext(LF::Input::Get().Context, 1); // Interact = leave the driver seat
+	}
+}
+
+void ALFBoat::UnPossessed()
+{
+	// Remove our contexts so W/S etc. don't keep consuming keys the brawler needs.
+	if (const APlayerController* PC = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
+		{
+			if (DefaultMappingContext)
+			{
+				Sub->RemoveMappingContext(DefaultMappingContext);
+			}
+			Sub->RemoveMappingContext(LF::Input::Get().Context);
+		}
+	}
+	ThrottleInput = 0.f;
+	SteerInput = 0.f;
+	Super::UnPossessed();
+}
+
+FVector ALFBoat::GetDriverSeatWorld() const
+{
+	return HullMesh->GetComponentTransform().TransformPosition(DriverSeatLocal);
+}
+
+void ALFBoat::OnInteract()
+{
+	if (ALFBrawler* D = Driver.Get())
+	{
+		D->LeaveDriving();
 	}
 }
 
@@ -525,6 +560,7 @@ void ALFBoat::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	EIC->BindAction(ThrottleAction, ETriggerEvent::Completed, this, &ALFBoat::OnThrottleReleased);
 	EIC->BindAction(SteerAction, ETriggerEvent::Triggered, this, &ALFBoat::OnSteer);
 	EIC->BindAction(SteerAction, ETriggerEvent::Completed, this, &ALFBoat::OnSteerReleased);
+	EIC->BindAction(LF::Input::Get().Interact, ETriggerEvent::Started, this, &ALFBoat::OnInteract);
 }
 
 void ALFBoat::OnThrottle(const FInputActionValue& Value)

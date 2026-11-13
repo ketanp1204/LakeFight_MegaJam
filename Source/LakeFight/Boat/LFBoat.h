@@ -13,6 +13,7 @@ class ULFBuoyancyComponent;
 class UInputMappingContext;
 class UInputAction;
 class UPhysicalMaterial;
+class ALFBrawler;
 struct FInputActionValue;
 
 /**
@@ -288,9 +289,28 @@ public:
 	UFUNCTION(BlueprintPure, Category="LF|Boat")
 	float GetTurnAuthority() const;
 
+	// --- Crew (T02) ---
+	/** Driver seat on the floor (local cm, floor top ~ -9 cm). A driver is attached here; leaving the seat stands here. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Crew")
+	FVector DriverSeatLocal = FVector(-55.f, 0.f, -9.f);
+
+	UFUNCTION(BlueprintPure, Category="LF|Crew")
+	ALFBrawler* GetDriver() const { return Driver.Get(); }
+
+	UFUNCTION(BlueprintPure, Category="LF|Crew")
+	bool HasDriver() const { return Driver.IsValid(); }
+
+	void SetDriver(ALFBrawler* InDriver) { Driver = InDriver; }
+
+	/** World position of the driver seat on the floor. */
+	FVector GetDriverSeatWorld() const;
+
+	UStaticMeshComponent* GetHull() const { return HullMesh; }
+
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void NotifyControllerChanged() override;
+	virtual void UnPossessed() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -301,6 +321,7 @@ private:
 	void OnSteer(const FInputActionValue& Value);
 	void OnThrottleReleased();
 	void OnSteerReleased();
+	void OnInteract();
 
 	void UpdateCamera(float DeltaSeconds);
 	void BuildWaterMask();
@@ -334,4 +355,6 @@ private:
 		int32 Suppressed = 0;      // contacts at >= MinContactSpeed swallowed by the cooldown since the last resolve
 	};
 	TMap<TWeakObjectPtr<ALFBoat>, FPairContact> PairContacts;
+
+	TWeakObjectPtr<ALFBrawler> Driver;
 };
