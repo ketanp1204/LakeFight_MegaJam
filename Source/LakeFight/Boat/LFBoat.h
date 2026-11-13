@@ -140,6 +140,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0", ClampMax="1"))
 	float CameraPitchFollow = 0.25f;
 
+	/** How fast the camera pivot follows the boat's position (1/s). Replaces the spring arm's built-in lag so it runs
+	 *  on REAL (undilated) time: hitstop never freezes-then-snaps the camera. All camera feedback uses real time too. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0.1"))
+	float CameraLocationLagSpeed = 5.f;
+
 	// --- Hits: bump vs ram ---
 	/** Contacts slower than this (cm/s along the contact normal) are resting/scraping: ignored, not logged. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
@@ -189,9 +194,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
 	float MaxHitRoll = 1.2f;
 
-	/** Seconds before the same boats can register another contact. */
+	/** Per-pair cooldown (REAL s). Every contact of the pair refreshes it, so one sustained contact = one bump/ram;
+	 *  the pair can register again only after being apart this long. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float HitCooldown = 0.3f;
+	float PairHitCooldown = 0.5f;
 
 	/** Hitstop: global time dilation during the freeze frame. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0.01", ClampMax="1"))
@@ -204,17 +210,22 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
 	float HitstopMaxTime = 0.10f;
 
-	/** Player camera shake: duration (s), vertical amplitude at full strength (cm), frequency (Hz). Horizontal = 40% of vertical. */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float ShakeDuration = 0.25f;
+	/** Player camera shake: ONE smooth decaying sine (real time). A new ram restarts it (never stacks).
+	 *  Duration (s), vertical amplitude at full strength (cm, scaled by ram strength), frequency (Hz). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0.01"))
+	float ShakeDuration = 0.3f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float ShakeAmplitude = 14.f;
+	float ShakeAmplitude = 12.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
-	float ShakeFrequency = 22.f;
+	float ShakeFrequency = 13.f;
 
-	/** FOV punch at full strength (deg), easing back over FovPunchTime (s). */
+	/** Sideways share of the shake (0 = purely vertical). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0", ClampMax="1"))
+	float ShakeHorizontalShare = 0.15f;
+
+	/** FOV punch at full strength (deg), easing out over FovPunchTime (REAL s). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hit", meta=(ClampMin="0"))
 	float FovPunchDeg = 5.f;
 
@@ -288,6 +299,7 @@ private:
 
 	void UpdateCamera(float DeltaSeconds);
 	void BuildWaterMask();
+	void ResolveContact(ALFBoat* Target, const FVector& TargetDir, float Closing, const FVector& Contact, double Now);
 	void ApplyRamTo(ALFBoat* Target, const FVector& TargetDir, const FVector& Contact, float Strength);
 	void PlayRamFeedback(float Strength);
 	void StartHitstop(float Strength);
@@ -300,12 +312,21 @@ private:
 	float ThrottleInput = 0.f;   // raw input
 	float SpooledThrottle = 0.f; // what the motor actually delivers
 	float SteerInput = 0.f;
-	float LastHitTime = -1000.f;
 	FVector PreStepVelocity = FVector::ZeroVector;
 	FRotator CameraRot = FRotator::ZeroRotator;
+	FVector CameraPivot = FVector::ZeroVector;
 	float BaseFov = 80.f;
-	float ShakeRemaining = 0.f;
+	float ShakeAge = -1.f;     // real s since the current shake started; < 0 = idle
 	float ShakeStrength = 0.f;
-	float FovPunchRemaining = 0.f;
+	float FovPunchAge = -1.f;  // real s; < 0 = idle
 	float FovPunchStrength = 0.f;
+
+	/** Per-pair contact bookkeeping (real time). Both boats keep a mirrored entry for each other. */
+	struct FPairContact
+	{
+		double LastContact = -1e9; // real s of the most recent contact event of any speed
+		double LastResolved = -1e9;
+		int32 Suppressed = 0;      // contacts at >= MinContactSpeed swallowed by the cooldown since the last resolve
+	};
+	TMap<TWeakObjectPtr<ALFBoat>, FPairContact> PairContacts;
 };

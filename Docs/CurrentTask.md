@@ -185,3 +185,78 @@ Hitstop restores on FTSTicker (real time). Shake/FOV are applied in UpdateCamera
 
 **Follow-ups:** tune NS_LF_Splash (shape the foam ring, water colours, scale by `Strength` user param - not added yet); collision-view verification
 by hand; the target boat placed in L_Lake01 had to be re-placed after the root-component change - future root changes need the same.
+
+## T01.3 - real-time camera shake + stylized water (Claude Code, 13 Nov ~11:13-11:40 IST)
+
+**Asked (director):** A. camera on rams: spring arm/lag + all feedback on real time; one smooth decaying ~12-15 Hz mostly-vertical
+oscillation scaled by ram strength, restart not stack; per-pair ram cooldown 0.5 s with `[hit]` logs; FOV punch eases out over 0.3 s real time.
+B. stylized M_LF_Lake (WPO formula + hull mask untouched): Surface ForwardShading, faceted normals, depth colour #4FD1C5 -> #1B6F8A at 2.5 m,
+fresnel sky lift, 3-band toon light + hard specular, contact foam, crest foam, two panning Voronoi line layers fading with distance,
+optional wake, everything on MI_LF_Lake. C. build, 60 s PIE, GPU time, 4 shots, commit.
+
+**Files changed**
+- `Source/LakeFight/Boat/LFBoat.h/.cpp`
+  - Camera: the spring arm uses absolute location and its built-in lag is OFF. `UpdateCamera` gets `World->DeltaRealTimeSeconds`
+    and does pivot position lag (`CameraLocationLagSpeed` 5), yaw/pitch lag and all feedback with frame-rate independent `1-exp(-k dt)`.
+  - Shake: one decaying sine. `ShakeDuration` 0.3 s, `ShakeFrequency` 13 Hz, `ShakeAmplitude` 12 cm x ram strength (min 0.25),
+    envelope (1-t)^2, starts at sin(0) (no pop). `ShakeHorizontalShare` 0.15 (half-frequency sideways). A new ram restarts it.
+  - FOV punch: instant widen, cubic ease-out over `FovPunchTime` 0.3 real s, also restarts.
+  - Hits: `HitCooldown` (per boat, game time) replaced by `PairHitCooldown` 0.5 s, per pair, REAL time. Every contact event of the
+    pair refreshes it, so one sustained contact = one bump/ram. The pair is resolved once, from the rammer's side (`ResolveContact`).
+    Log line: `[hit] A -> B tier=RAM|bump closing=.. strength=.. | t=<real s>, <s since last pair hit>, <n> contacts suppressed by 0.5 s pair cooldown`.
+- `Source/LakeFight/Water/LFLakeSurface.h/.cpp`: now ticks (TG_PostPhysics, also in the editor viewport) and writes up to 4 boats
+  into MPC_LF_Water `Boat0..3` = (X, Y, yaw rad, speed cm/s). That drives the boat foam ring and wake (see deviation 2).
+- `Docs/T013_LF_StylizedWater.hlsl`: the shader source in M_LF_Lake's `LF_StylizedWater` Custom node (for review/diffs).
+- Assets (MCP, saved): `M_LF_Lake` (new Custom node + 41 parameters; old base-colour lerp removed; BaseColor 0, Specular 0,
+  Roughness 1, Emissive = toon result, TranslucencyLightingMode = Surface ForwardShading; WPO node, faceted-normal node and hull-mask
+  opacity node untouched), new `MI_LF_Lake` (tuned values), `MPC_LF_Water` (+Boat0..3), `L_Lake01` (lake uses MI_LF_Lake; lake Size
+  12000x8000 -> 14000x10000, see the bug below).
+- `Docs/Shots/T013_chase.png` (PIE), `T013_topdown.png`, `T013_grazing.png`, `T013_dock.png` (editor viewport, game view).
+
+**Deviations (please OK)**
+1. Toon banding needs the lighting computed in the material, so engine lighting is neutralised (BaseColor 0, Specular 0) and the
+   result goes to Emissive. It is lit by the atmosphere sun: `SkyAtmosphereLightDirection` + `SkyAtmosphereLightIlluminanceOnGround`
+   x `Brightness`. Forward Shading is set as asked but contributes ~nothing. Side effect: no boat shadows on the water.
+2. Contact foam around BOATS cannot come from depth fade. The T01.2 hull mask clips every water pixel behind the gunwale cap in
+   screen space, and the hull flares, so the waterline is always under the cap. Boats therefore get a world-space foam ring around a
+   capsule hull outline from the MPC boat slots. Depth-fade foam still does the shore and dock posts.
+3. Wake (optional 11) is a straight foam V attached to the stern above `WakeStartSpeed` 200 cm/s. No path history (it swings with
+   the boat when turning). Not seen moving: I can't drive in PIE.
+
+**Changes from your mid-task feedback** ("foam looks solid"; "weird reflections / bottom of the lake artifacts")
+- All foam (contact, boat ring, wake, crests) is now thresholded against fine 2-octave noise (`FoamFragScale` 10 cm,
+  `FoamFragDensity`): flecks dense at the contact edge, sparser outward, with a solid line only `FoamSolidCore` 2 cm wide.
+  Crest foam = flecks instead of cloud-like blobs.
+- Found and fixed four artifact sources:
+  - **Real lake-bottom bug (pre-existing):** the lake mesh was 120x80 m but the banks sit at +-70/+-50 m, leaving a 10 m strip of
+    bare lake bed around the whole lake (the pale band at the shore + a hard edge). Lake Size is now 140x100 m.
+  - **Pale columns under the dock posts:** depth was measured along the view ray. It is now converted to vertical depth (x|V.z|,
+    clamped 0.25).
+  - **Big hard white disc:** the sun glint is now sparkles (noise-masked) and fades with distance.
+  - **Mint slab under each boat:** the depth colour measured the hull, not the lake. Within `BoatDeepMargin` 80 cm of a hull it is
+    forced to the deep colour.
+- **Still visible (needs you):** a mint/pale band right under each hull in the chase view. That's the hull's bottom paint, seen
+  because the T01.2 hull mask clips the water in front of the hull (screen-space stencil), so boats look like they sit ON the water.
+  You asked to keep the mask exactly as is, so it's untouched. Proposed fix: clip by world-space gunwale outline (the MPC boat
+  capsule) instead of the screen-space stencil. Also: faint dashed rows near the far shore at grazing angles (from foam; reduced,
+  not gone).
+
+**Commands / results**
+- 2 builds (`Tools/ue.ps1 -Action build ... -EngineDir D:\UE_EpicGames\UE_5.8`, editor closed/reopened by me): both **Succeeded** first try.
+- Material compiled after every graph change (MCP `recompile` returned OK).
+- GPU (`ProfileGPU` typed into the editor Cmd box during PIE, 1072x966 render res, TSR to 1350x1216):
+  frame root 2.95-3.62 ms; **Translucency pass (= the lake) 0.12-0.13 ms**. **No "before" number:** I changed the material before
+  I found a way to run console commands through MCP. The old material was a trivial lerp, so ~0.1 ms is the upper bound of the added cost.
+- PIE: see the DirectorsLog line for the final run. `[settle]` both boats level; no LF warnings.
+- `[hit]`: **not exercised** - I still can't drive or ram through MCP. Grep the Output Log for `[hit]` after ramming.
+
+**You must check by hand:** ram a few times. The camera should never freeze-then-snap in the hitstop; one smooth vertical wobble
+per ram; holding the boats together gives exactly one `[hit]` line; the FOV eases back. The look in motion (foam flecks drift, line
+panning, wake above ~200 cm/s). The 4 shots in `Docs/Shots/`.
+
+**First knobs (MI_LF_Lake)** `Brightness` 0.2 (overall exposure of the emissive water); `FoamFragDensity` 0.5 (lower = more foam);
+`BoatFoamWidth` 35 cm; `LineOpacity` 0.035 / `LineWidth` 0.03; `FacetContrast` 10 (facet visibility); `DeepDepth` 250; `SpecThreshold` 0.93.
+
+**Follow-ups:** hull mask in world space (above); AGENTS.md says Unreal MCP is on port 8000 but `.mcp.json` uses 9500; MCP still
+has no console exec (I used the Slate inspector to type into the Cmd box - works, but fragile); boat shadows on water (deviation 1);
+the wake needs a real trail (ribbon/decal history) if the straight V reads wrong.

@@ -38,6 +38,12 @@ public:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+	/** Also tick in the editor viewport, so boat foam shows outside PIE. */
+	virtual bool ShouldTickIfViewportsOnly() const override { return true; }
+
+	/** MPC slots Boat0..N-1 = (X, Y, yaw rad, horizontal speed cm/s) for the material's boat foam ring + wake. */
+	static constexpr int32 MaxFoamBoats = 4;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category="LF|Lake")

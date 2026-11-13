@@ -3,10 +3,15 @@
 #include "Water/LFWater.h"
 #include "ProceduralMeshComponent.h"
 #include "Materials/MaterialInterface.h"
+#include "Boat/LFBoat.h"
+#include "EngineUtils.h"
+#include "Kismet/KismetMaterialLibrary.h"
 
 ALFLakeSurface::ALFLakeSurface()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	// Ticks after physics so the boat foam (MPC Boat0..3) uses this frame's boat positions.
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PostPhysics;
 
 	Surface = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Surface"));
 	Surface->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -30,6 +35,30 @@ void ALFLakeSurface::BeginPlay()
 			*GetName(), GetActorLocation().Z, LF::Water::BaseHeight);
 	}
 	LF::Water::PushToMPC(this, WaterMPC);
+}
+
+void ALFLakeSurface::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (!WaterMPC)
+	{
+		return;
+	}
+	static const FName BoatParams[MaxFoamBoats] = { TEXT("Boat0"), TEXT("Boat1"), TEXT("Boat2"), TEXT("Boat3") };
+	int32 Slot = 0;
+	for (TActorIterator<ALFBoat> It(GetWorld()); It && Slot < MaxFoamBoats; ++It)
+	{
+		const ALFBoat* Boat = *It;
+		const FVector L = Boat->GetActorLocation();
+		const UPrimitiveComponent* Root = Cast<UPrimitiveComponent>(Boat->GetRootComponent());
+		const float Speed = Root ? float(Root->GetComponentVelocity().Size2D()) : 0.f;
+		UKismetMaterialLibrary::SetVectorParameterValue(this, WaterMPC, BoatParams[Slot++],
+			FLinearColor(float(L.X), float(L.Y), FMath::DegreesToRadians(float(Boat->GetActorRotation().Yaw)), Speed));
+	}
+	for (; Slot < MaxFoamBoats; ++Slot)
+	{
+		UKismetMaterialLibrary::SetVectorParameterValue(this, WaterMPC, BoatParams[Slot], FLinearColor(1e7f, 1e7f, 0.f, 0.f));
+	}
 }
 
 void ALFLakeSurface::BuildGrid()

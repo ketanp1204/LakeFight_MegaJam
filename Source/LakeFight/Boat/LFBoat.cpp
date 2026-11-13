@@ -70,14 +70,15 @@ ALFBoat::ALFBoat()
 
 	Buoyancy = CreateDefaultSubobject<ULFBuoyancyComponent>(TEXT("Buoyancy"));
 
-	// Camera rotation is driven manually (UpdateCamera) so yaw can lag more than pitch.
+	// Camera pivot position AND rotation are driven manually in UpdateCamera on REAL time (yaw lags more than pitch;
+	// the spring arm's own lag would use dilated time and freeze-then-snap during hitstop).
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
 	CameraArm->SetupAttachment(HullMesh);
+	CameraArm->SetUsingAbsoluteLocation(true);
 	CameraArm->SetUsingAbsoluteRotation(true);
 	CameraArm->TargetArmLength = 850.f;
 	CameraArm->SocketOffset = FVector(0.f, 0.f, 120.f);
-	CameraArm->bEnableCameraLag = true;
-	CameraArm->CameraLagSpeed = 5.f;
+	CameraArm->bEnableCameraLag = false;
 	CameraArm->bEnableCameraRotationLag = false;
 	CameraArm->bDoCollisionTest = false;
 
@@ -160,6 +161,8 @@ void ALFBoat::BeginPlay()
 	BaseFov = Camera->FieldOfView;
 	CameraRot = FRotator(CameraPitch, GetActorRotation().Yaw, 0.f);
 	CameraArm->SetWorldRotation(CameraRot);
+	CameraPivot = GetActorLocation();
+	CameraArm->SetWorldLocation(CameraPivot);
 
 	if (SettleLogDelay > 0.f)
 	{
@@ -190,7 +193,9 @@ void ALFBoat::Tick(float DeltaSeconds)
 	const float SpoolRate = 1.f / (bRising ? ThrottleRiseTime : ThrottleFallTime);
 	SpooledThrottle = FMath::FInterpConstantTo(SpooledThrottle, ThrottleInput, DeltaSeconds, SpoolRate);
 
-	UpdateCamera(DeltaSeconds);
+	// Camera and all its feedback run on REAL time (undilated), so hitstop doesn't freeze-then-snap it.
+	const UWorld* World = GetWorld();
+	UpdateCamera(FMath::Min(World ? World->DeltaRealTimeSeconds : DeltaSeconds, 0.1f));
 
 	if (!HullMesh->IsSimulatingPhysics() || Buoyancy->GetSubmergedFraction() <= 0.f)
 	{
@@ -240,34 +245,54 @@ void ALFBoat::Tick(float DeltaSeconds)
 	}
 }
 
-void ALFBoat::UpdateCamera(float DeltaSeconds)
+void ALFBoat::UpdateCamera(float RealDelta)
 {
+	// Frame-rate independent exponential follow, on real time.
+	auto Follow = [RealDelta](float Speed) { return 1.f - FMath::Exp(-Speed * RealDelta); };
+
+	CameraPivot = FMath::Lerp(CameraPivot, GetActorLocation(), Follow(CameraLocationLagSpeed));
+	CameraArm->SetWorldLocation(CameraPivot);
+
 	const FRotator BoatRot = GetActorRotation();
-	const float YawAlpha = FMath::Clamp(DeltaSeconds * CameraYawLagSpeed, 0.f, 1.f);
-	const float PitchAlpha = FMath::Clamp(DeltaSeconds * CameraPitchLagSpeed, 0.f, 1.f);
-	CameraRot.Yaw = CameraRot.Yaw + FMath::FindDeltaAngleDegrees(CameraRot.Yaw, BoatRot.Yaw) * YawAlpha;
-	CameraRot.Pitch = FMath::Lerp(CameraRot.Pitch, CameraPitch + BoatRot.Pitch * CameraPitchFollow, PitchAlpha);
+	CameraRot.Yaw = CameraRot.Yaw + FMath::FindDeltaAngleDegrees(CameraRot.Yaw, BoatRot.Yaw) * Follow(CameraYawLagSpeed);
+	CameraRot.Pitch = FMath::Lerp(CameraRot.Pitch, CameraPitch + BoatRot.Pitch * CameraPitchFollow, Follow(CameraPitchLagSpeed));
 	CameraRot.Roll = 0.f;
 	CameraArm->SetWorldRotation(CameraRot);
 
-	// Ram feedback (player only): mostly-vertical shake + FOV punch easing back.
+	// Ram shake (player only): one smooth decaying sine, mostly vertical. Starts at 0 (sin), envelope (1-t)^2 -> no pops.
 	FVector ShakeOffset = FVector::ZeroVector;
-	if (ShakeRemaining > 0.f)
+	if (ShakeAge >= 0.f)
 	{
-		ShakeRemaining = FMath::Max(ShakeRemaining - DeltaSeconds, 0.f);
-		const float Fade = ShakeDuration > 0.f ? ShakeRemaining / ShakeDuration : 0.f;
-		const float T = (ShakeDuration - ShakeRemaining) * ShakeFrequency * UE_TWO_PI;
-		const float Amp = ShakeAmplitude * ShakeStrength * Fade;
-		ShakeOffset = FVector(0.f, FMath::Sin(T * 1.37f) * Amp * 0.4f, FMath::Sin(T) * Amp);
+		ShakeAge += RealDelta;
+		const float U = ShakeAge / ShakeDuration;
+		if (U >= 1.f)
+		{
+			ShakeAge = -1.f;
+		}
+		else
+		{
+			const float Env = FMath::Square(1.f - U);
+			const float Phase = ShakeAge * ShakeFrequency * UE_TWO_PI;
+			const float Amp = ShakeAmplitude * ShakeStrength * Env;
+			ShakeOffset = FVector(0.f, FMath::Sin(Phase * 0.5f) * Amp * ShakeHorizontalShare, FMath::Sin(Phase) * Amp);
+		}
 	}
 	Camera->SetRelativeLocation(ShakeOffset);
 
+	// FOV punch: instant widen, cubic ease-out back to base over FovPunchTime real seconds.
 	float Fov = BaseFov;
-	if (FovPunchRemaining > 0.f)
+	if (FovPunchAge >= 0.f)
 	{
-		FovPunchRemaining = FMath::Max(FovPunchRemaining - DeltaSeconds, 0.f);
-		const float A = FovPunchRemaining / FovPunchTime;
-		Fov += FovPunchDeg * FovPunchStrength * A * A; // ease out
+		FovPunchAge += RealDelta;
+		const float U = FovPunchAge / FovPunchTime;
+		if (U >= 1.f)
+		{
+			FovPunchAge = -1.f;
+		}
+		else
+		{
+			Fov += FovPunchDeg * FovPunchStrength * FMath::Cube(1.f - U);
+		}
 	}
 	Camera->SetFieldOfView(Fov);
 }
@@ -281,11 +306,17 @@ void ALFBoat::OnHullHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		return;
 	}
-	const float Now = GetWorld()->GetTimeSeconds();
-	if (Now - LastHitTime < HitCooldown || Now - Other->LastHitTime < HitCooldown)
+	// Per-pair cooldown on REAL time. Every contact event refreshes it (both mirrored entries), so a sustained
+	// contact never re-fires; the first event of a new contact resolves the pair once, from the rammer's side.
+	const double Now = GetWorld()->GetRealTimeSeconds();
+	FPairContact& Mine = PairContacts.FindOrAdd(Other);
+	FPairContact& Theirs = Other->PairContacts.FindOrAdd(this);
+	if (Now == Mine.LastResolved)
 	{
-		return;
+		return; // the other boat's event for the contact already resolved this frame
 	}
+	const bool bCoolingDown = Now - Mine.LastContact < PairHitCooldown;
+	Mine.LastContact = Theirs.LastContact = Now;
 
 	// Flat contact normal, pointing from the other boat toward me.
 	FVector N = FVector(Hit.ImpactNormal.X, Hit.ImpactNormal.Y, 0.f).GetSafeNormal();
@@ -307,37 +338,56 @@ void ALFBoat::OnHullHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		return;
 	}
+	if (bCoolingDown)
+	{
+		++Mine.Suppressed;
+		++Theirs.Suppressed;
+		return;
+	}
 
-	// The boat moving faster into the contact is the rammer; it resolves the pair once.
+	// The boat moving faster into the contact is the rammer; the pair is resolved once, from its side.
 	const float MyApproach = float(FVector::DotProduct(MyV, -N));
 	const float OtherApproach = float(FVector::DotProduct(OtherV, N));
 	const bool bIAmRammer = MyApproach > OtherApproach || (MyApproach == OtherApproach && GetUniqueID() < Other->GetUniqueID());
-	if (!bIAmRammer)
+	const FVector Contact = Hit.ImpactPoint.IsNearlyZero() ? (GetActorLocation() + Other->GetActorLocation()) * 0.5 : FVector(Hit.ImpactPoint);
+	if (bIAmRammer)
 	{
-		return;
+		ResolveContact(Other, -N, Closing, Contact, Now);
 	}
-	LastHitTime = Now;
-	Other->LastHitTime = Now;
+	else
+	{
+		Other->ResolveContact(this, N, Closing, Contact, Now);
+	}
+}
+
+void ALFBoat::ResolveContact(ALFBoat* Target, const FVector& TargetDir, float Closing, const FVector& Contact, double Now)
+{
+	FPairContact& Mine = PairContacts.FindOrAdd(Target);
+	FPairContact& Theirs = Target->PairContacts.FindOrAdd(this);
+	const double SinceLast = Now - Mine.LastResolved;
+	const int32 Suppressed = Mine.Suppressed;
+	Mine.LastResolved = Theirs.LastResolved = Now;
+	Mine.Suppressed = Theirs.Suppressed = 0;
 
 	const bool bRam = Closing >= RamMinSpeed;
 	const float Strength = bRam ? FMath::Clamp((Closing - RamMinSpeed) / FMath::Max(RamFullSpeed - RamMinSpeed, 1.f), 0.f, 1.f) : 0.f;
-	const FVector Contact = Hit.ImpactPoint.IsNearlyZero() ? (GetActorLocation() + Other->GetActorLocation()) * 0.5 : FVector(Hit.ImpactPoint);
 
-	UE_LOG(LogLF, Display, TEXT("[hit] %s -> %s tier=%s closing=%.0f cm/s strength=%.2f"),
-		*GetName(), *Other->GetName(), bRam ? TEXT("RAM") : TEXT("bump"), Closing, Strength);
+	UE_LOG(LogLF, Display, TEXT("[hit] %s -> %s tier=%s closing=%.0f cm/s strength=%.2f | t=%.2f real s, %.2f s since last pair hit, %d contacts suppressed by %.1f s pair cooldown"),
+		*GetName(), *Target->GetName(), bRam ? TEXT("RAM") : TEXT("bump"), Closing, Strength,
+		Now, SinceLast > 1e6 ? -1.0 : SinceLast, Suppressed, PairHitCooldown);
 
 	if (!bRam)
 	{
 		return; // bump: physics only
 	}
 
-	ApplyRamTo(Other, -N, Contact, Strength);
+	ApplyRamTo(Target, TargetDir, Contact, Strength);
 
 	OnSplash(Contact, Strength);
 	OnRamImpact(Strength);
-	Other->OnRamImpact(Strength);
+	Target->OnRamImpact(Strength);
 	PlayRamFeedback(Strength);
-	Other->PlayRamFeedback(Strength);
+	Target->PlayRamFeedback(Strength);
 	StartHitstop(Strength);
 }
 
@@ -377,9 +427,10 @@ void ALFBoat::PlayRamFeedback(float Strength)
 	{
 		return;
 	}
-	ShakeRemaining = ShakeDuration;
+	// Restart (never stack): a new ram replaces the running shake/punch.
+	ShakeAge = 0.f;
 	ShakeStrength = FMath::Max(Strength, 0.25f);
-	FovPunchRemaining = FovPunchTime;
+	FovPunchAge = 0.f;
 	FovPunchStrength = FMath::Max(Strength, 0.25f);
 	PC->PlayDynamicForceFeedback(RumbleIntensity * FMath::Max(Strength, 0.3f), RumbleDuration, true, true, true, true);
 }
