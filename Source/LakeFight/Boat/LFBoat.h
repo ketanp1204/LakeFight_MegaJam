@@ -300,7 +300,17 @@ public:
 	UFUNCTION(BlueprintPure, Category="LF|Crew")
 	bool HasDriver() const { return Driver.IsValid(); }
 
-	void SetDriver(ALFBrawler* InDriver) { Driver = InDriver; }
+	/** Losing the driver (knocked out, left the seat) clears the drive input so an empty boat coasts to a stop
+	 *  (an AI's last throttle/steer kept the boat circling - the AI never possesses the boat, so UnPossessed didn't reset it). */
+	void SetDriver(ALFBrawler* InDriver)
+	{
+		Driver = InDriver;
+		if (!InDriver)
+		{
+			ThrottleInput = 0.f;
+			SteerInput = 0.f;
+		}
+	}
 
 	/** World position of the driver seat on the floor. */
 	FVector GetDriverSeatWorld() const;
