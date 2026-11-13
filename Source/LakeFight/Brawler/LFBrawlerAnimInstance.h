@@ -11,7 +11,8 @@ class UAnimSequence;
 enum class ELFBrawlerClip : uint8
 {
 	Locomotion, // idle <-> walk by speed
-	Row,        // Sitting_Rowing (driving)
+	Row,        // Sitting_Rowing (driving), play rate = throttle (reverse plays backward)
+	Sit,        // Sitting (driving, idle: |throttle| < 0.1 and speed < 50 cm/s)
 	Water,      // Treading_Water <-> Swimming by speed
 	Climb,      // Swimming_To_Edge, scrubbed over the climb
 	Dizzy,      // Dizzy_Idle (stunned)
@@ -34,6 +35,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") TObjectPtr<UAnimSequence> IdleAnim;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") TObjectPtr<UAnimSequence> WalkAnim;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") TObjectPtr<UAnimSequence> RowAnim;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") TObjectPtr<UAnimSequence> SitAnim;
+
+	/** Rowing play rate at full throttle (scales linearly with throttle; negative = backward). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") float RowRateAtFullThrottle = 1.f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") TObjectPtr<UAnimSequence> TreadAnim;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") TObjectPtr<UAnimSequence> SwimAnim;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim") TObjectPtr<UAnimSequence> ClimbAnim;
@@ -63,6 +68,7 @@ public:
 	ELFBrawlerClip Clip = ELFBrawlerClip::Locomotion;
 	float Speed = 0.f;
 	float Scrub = 0.f; // 0..1 for Climb / Slash
+	float RowRate = 0.f;
 	bool bArmIK = false;
 	FVector RightTargetCS = FVector::ZeroVector;
 	FVector LeftTargetCS = FVector::ZeroVector;
@@ -84,7 +90,9 @@ struct FLFBrawlerAnimProxy : public FAnimInstanceProxy
 
 	void EvalClip(ELFBrawlerClip C, float InScrub, FAnimationPoseData& Out) const;
 
-	TObjectPtr<UAnimSequence> Idle, Walk, Row, Tread, Swim, ClimbSeq, Dizzy, Slash;
+	TObjectPtr<UAnimSequence> Idle, Walk, Row, Sit, Tread, Swim, ClimbSeq, Dizzy, Slash;
+	float RowRate = 0.f;
+	float RowTime = 0.f;
 	float WalkFullSpeed = 180.f;
 	float SwimFullSpeed = 100.f;
 	float BlendTime = 0.2f;

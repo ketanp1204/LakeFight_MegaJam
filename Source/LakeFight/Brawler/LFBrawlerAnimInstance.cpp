@@ -16,6 +16,8 @@ ULFBrawlerAnimInstance::ULFBrawlerAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> WalkSeq(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/Walk/MF_Unarmed_Walk_Fwd.MF_Unarmed_Walk_Fwd"));
 	// Retargeted Mixamo clips (director, Content/LakeFight/Anim/Manny).
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> RowSeq(TEXT("/Game/LakeFight/Anim/Manny/Sitting_Rowing.Sitting_Rowing"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> SitSeq(TEXT("/Game/LakeFight/Anim/Manny/Sitting.Sitting"));
+	SitAnim = SitSeq.Object;
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> TreadSeq(TEXT("/Game/LakeFight/Anim/Manny/Treading_Water.Treading_Water"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> SwimSeq(TEXT("/Game/LakeFight/Anim/Manny/Swimming.Swimming"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> ClimbSeq(TEXT("/Game/LakeFight/Anim/Manny/Swimming_To_Edge.Swimming_To_Edge"));
@@ -47,7 +49,11 @@ void ULFBrawlerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Scrub = 0.f;
 	switch (V.State)
 	{
-	case ELFBrawlerState::Driving:  Clip = ELFBrawlerClip::Row; break;
+	case ELFBrawlerState::Driving:
+		// Rowing follows the boat: sit still when idle, otherwise row at a rate set by the throttle (reverse rows backward).
+		RowRate = V.DriveThrottle * RowRateAtFullThrottle;
+		Clip = (FMath::Abs(V.DriveThrottle) < 0.1f && V.BoatSpeed < 50.f) ? ELFBrawlerClip::Sit : ELFBrawlerClip::Row;
+		break;
 	case ELFBrawlerState::Swimming: Clip = ELFBrawlerClip::Water; break;
 	case ELFBrawlerState::Climbing: Clip = ELFBrawlerClip::Climb; Scrub = V.ClimbAlpha; break;
 	case ELFBrawlerState::Standing:
@@ -90,7 +96,7 @@ void FLFBrawlerAnimProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSe
 {
 	FAnimInstanceProxy::PreUpdate(InAnimInstance, DeltaSeconds);
 	const ULFBrawlerAnimInstance* I = CastChecked<ULFBrawlerAnimInstance>(InAnimInstance);
-	Idle = I->IdleAnim; Walk = I->WalkAnim; Row = I->RowAnim; Tread = I->TreadAnim; Swim = I->SwimAnim;
+	Idle = I->IdleAnim; Walk = I->WalkAnim; Row = I->RowAnim; Sit = I->SitAnim; RowRate = I->RowRate; Tread = I->TreadAnim; Swim = I->SwimAnim;
 	ClimbSeq = I->ClimbAnim; Dizzy = I->DizzyAnim; Slash = I->SlashAnim;
 	WalkFullSpeed = I->WalkFullSpeed;
 	SwimFullSpeed = I->SwimFullSpeed;
@@ -113,6 +119,7 @@ void FLFBrawlerAnimProxy::Update(float DeltaSeconds)
 {
 	FAnimInstanceProxy::Update(DeltaSeconds);
 	LoopTime += DeltaSeconds;
+	RowTime += DeltaSeconds * RowRate;
 	const float Rate = FMath::Clamp(Speed / WalkFullSpeed, 0.4f, 1.5f);
 	WalkTime += DeltaSeconds * Rate;
 	if (Fade < 1.f)
@@ -126,7 +133,11 @@ namespace
 	void SamplePose(const UAnimSequence* Seq, float Time, bool bLoop, FAnimationPoseData& Out)
 	{
 		const float Len = FMath::Max(Seq->GetPlayLength(), 0.01f);
-		const float T = bLoop ? FMath::Fmod(Time, Len) : FMath::Clamp(Time, 0.f, Len);
+		float T = bLoop ? FMath::Fmod(Time, Len) : FMath::Clamp(Time, 0.f, Len);
+		if (T < 0.f)
+		{
+			T += Len; // backward play (reverse rowing)
+		}
 		Seq->GetAnimationPose(Out, FAnimExtractContext(double(T), false));
 	}
 
@@ -154,7 +165,11 @@ void FLFBrawlerAnimProxy::EvalClip(ELFBrawlerClip C, float InScrub, FAnimationPo
 	switch (C)
 	{
 	case ELFBrawlerClip::Row:
-		if (Valid(Row)) { SamplePose(Row, LoopTime, true, Out); return; }
+		if (Valid(Row)) { SamplePose(Row, RowTime, true, Out); return; }
+		break;
+	case ELFBrawlerClip::Sit:
+		if (Valid(Sit)) { SamplePose(Sit, LoopTime, true, Out); return; }
+		if (Valid(Row)) { SamplePose(Row, RowTime, true, Out); return; }
 		break;
 	case ELFBrawlerClip::Water:
 		if (Valid(Tread) && Valid(Swim))

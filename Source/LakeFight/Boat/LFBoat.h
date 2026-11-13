@@ -344,6 +344,9 @@ public:
 
 	UStaticMeshComponent* GetHull() const { return HullMesh; }
 
+	/** Throttle the motor actually delivers (-1..1, spooled). */
+	float GetThrottleOutput() const { return SpooledThrottle; }
+
 	/** Debug console while driving (the controller possesses the boat): leave the seat (same as Interact). */
 	UFUNCTION(Exec)
 	void LFDrive() { OnInteract(); }

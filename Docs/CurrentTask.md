@@ -156,3 +156,15 @@ Thief 7 Steal + 2 Flee decisions. Screenshots: `Docs/Shots/T03_spectate_1.png`, 
 **Please check:** whether the personalities read without debug text (the Bully's captain hat + beard and constant ramming, the Thief's
 moustache and stolen boats, the Hothead standing and swinging early); `lf.ai.spectate` (restart PIE to play again).
 **Known:** steals happen only via swimming (no boat-to-boat jump until step 4); spectate is one-way per PIE session.
+
+## T03.1 - playtest fixes (director, 13 Nov; stop 19:15 IST)
+1 rowing follows the boat; 2 paddle grip on Grip_R/Grip_L sockets with hand alignment + finger curl, lf.debug.ik; 3 climb relative to the
+hull, 1.2 s at 150-350 cm/s, hang + tow above 350; 4 capsize rule (roll > 70 deg for 0.3 s -> everyone overboard, no driving, rights itself
+after 3 s over ~1.2 s with a big splash, [capsize] log). Commit per item.
+
+**Item 1 - rowing follows the boat.** `ULFBrawlerAnimInstance`: while driving, `Sitting` when |spooled throttle| < 0.1 and boat speed
+< 50 cm/s, else `Sitting_Rowing` with play rate = throttle x `RowRateAtFullThrottle` (1.0; negative throttle plays it backward); 0.2 s
+crossfade. Same path for AI drivers (they drive through SetDriveInput -> the same spooled throttle). `ALFBoat::GetThrottleOutput()`.
+Verified: builds; PIE with the player seated at idle + 25 s of AI spectate, no warnings/errors; screenshots show seated drivers (too small
+to judge the stroke rate - please check rowing speed vs throttle and reverse). Also committed: the director's saved BP_LF_Brawler and
+L_Lake01 changes.

@@ -43,6 +43,8 @@ struct FLFBrawlerAnimView
 	float SwingAlpha = 0.f;
 	bool bStunned = false;
 	float ClimbAlpha = 0.f;
+	float DriveThrottle = 0.f; // spooled throttle of the boat we drive
+	float BoatSpeed = 0.f;     // cm/s
 };
 
 UENUM()

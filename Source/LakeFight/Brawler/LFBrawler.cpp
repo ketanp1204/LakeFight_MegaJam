@@ -260,6 +260,11 @@ void ALFBrawler::GetAnimView(FLFBrawlerAnimView& Out) const
 		: (SwingPhase == ELFSwingPhase::Recover ? FMath::Clamp(SwingAge / RecoverTime, 0.f, 1.f) : 0.f);
 	Out.bStunned = IsStunned();
 	Out.ClimbAlpha = FMath::Clamp(ClimbAge / FMath::Max(ClimbTime, 0.01f), 0.f, 1.f);
+	if (State == ELFBrawlerState::Driving && Boat.IsValid())
+	{
+		Out.DriveThrottle = Boat->GetThrottleOutput();
+		Out.BoatSpeed = float(Boat->GetVelocity().Size2D());
+	}
 }
 
 void ALFBrawler::SetSpectating()
