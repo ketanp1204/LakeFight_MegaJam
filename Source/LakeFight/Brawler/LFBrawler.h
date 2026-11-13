@@ -41,6 +41,9 @@ struct FLFBrawlerAnimView
 	ELFBrawlerState State = ELFBrawlerState::None;
 	uint8 SwingPhase = 0;
 	float SwingAlpha = 0.f;
+	float SwingStrength = 0.f; // 0..1 of the current swing (light = LightStrength)
+	bool bChargedSwing = false;
+	bool bChargeHeld = false; // charging and held past ChargeMinTime (it will be a charged punch)
 	bool bStunned = false;
 	float ClimbAlpha = 0.f;
 	float DriveThrottle = 0.f; // spooled throttle of the boat we drive
@@ -93,20 +96,36 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Look")
 	TObjectPtr<UStaticMesh> FacePiece;
 
+	/** Standing paddle hold (T03.1): the paddle pivot as an offset from the SHOULDER MIDPOINT (actor axes: fwd, right, up; mesh
+	 *  units = cm on an unscaled Manny, scaled with the body) - so the paddle and hands ride the idle / walk motion instead of being
+	 *  pinned to the capsule - and its rotation (actor space, blade along +X). Default: centred on the chest, held out from the
+	 *  body, both arms ~0.7-0.85 of their reach, shaft level (hands at equal height, director). The swing poses rotate around this pivot; the pivot turns with the swing's torso twist. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	FVector HoldPivot = FVector(35.3f, 22.7f, -13.3f);
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	FRotator HoldRotation = FRotator(0.f, -86.f, 0.f);
+
+	/** Back-swing: the hands pull back toward the right shoulder (chest space, cm: back / right / up), blended in with the torso's
+	 *  wind-up twist and gone by mid-strike - keeps the right hand right of the chest in the charge hold. Mesh units. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	FVector WindupPivotOffset = FVector(-8.f, 16.f, 8.f);
+
 	/** Paddle absolute scale (slightly oversized reads as comedy on a 135 cm brawler). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.1"))
 	float PaddleScale = 0.85f;
 
-	/** Grip points in the paddle's local space (cm, before scale; origin = T-grip, blade along +X). Stand-ins for Grip_R / Grip_L
-	 *  sockets on SM_LF_Paddle (static-mesh sockets can't be added through MCP). */
+	/** Fallback grip points in the paddle's local space (cm, before scale; origin = T-grip, blade along +X), used only when
+	 *  SM_LF_Paddle has no Grip_R / Grip_L sockets (B07 adds them). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
-	FVector GripROffset = FVector(4.f, 0.f, 0.f);
+	FVector GripROffset = FVector(3.5f, 0.f, 0.f);
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
-	FVector GripLOffset = FVector(59.f, 0.f, 0.f);
+	FVector GripLOffset = FVector(58.5f, 0.f, 0.f);
 
-	/** IK targets for both hands on the paddle (world). False when the paddle isn't in the hands (stowed / ragdoll). */
-	bool GetPaddleGripTargets(FVector& OutRight, FVector& OutLeft) const;
+	/** Hand targets on the paddle (world): the Grip_R / Grip_L socket transforms (X = shaft toward the blade). False when the
+	 *  paddle isn't in the hands (stowed / ragdoll). */
+	bool GetPaddleGripTargets(FTransform& OutRight, FTransform& OutLeft) const;
 
 	void GetAnimView(FLFBrawlerAnimView& Out) const;
 
@@ -168,7 +187,7 @@ public:
 	float LightSwingTime = 0.22f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.05"))
-	float ChargedSwingTime = 0.3f;
+	float ChargedSwingTime = 0.15f; // director: the charged punch fires FASTER than a light one
 
 	/** Blade sweep sphere radius (cm). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="1"))
@@ -392,6 +411,14 @@ public:
 	UFUNCTION(Exec)
 	void LFSwing(float Strength = -1.f);
 
+	/** Debug console: drop yourself as a ragdoll at world X, Y (e.g. on the shore, to test washing back into the lake). */
+	UFUNCTION(Exec)
+	void LFRagdollAt(float X, float Y);
+
+	/** Debug console: press Swing, hold the charge for HoldSeconds, then release (tests the charge-hold pose). */
+	UFUNCTION(Exec)
+	void LFCharge(float HoldSeconds = 1.5f);
+
 	/** Debug console: throw yourself overboard to the right (Side 1) or left (-1) - for testing swim/climb/steal. */
 	UFUNCTION(Exec)
 	void LFOverboard(float Side = 1.f);
@@ -520,6 +547,8 @@ private:
 	void UpdateFakeWeight(float DeltaSeconds);
 	void UpdatePaddle(float DeltaSeconds);
 	void SweepPaddle();
+	void FollowTorsoTwist();
+
 	void UpdateRagdoll(float DeltaSeconds);
 	void UpdateCamera(float RealDelta);
 	void PlayHitFeedback(float Strength);
@@ -536,6 +565,7 @@ private:
 	FVector FakeWeightOffset = FVector::ZeroVector; // smoothed horizontal offset from the hull CoM (cm)
 
 	ELFSwingPhase SwingPhase = ELFSwingPhase::Idle;
+	FVector PaddlePivotBase = FVector::ZeroVector; // pivot location at rest; it turns with the swing's torso twist
 	float SwingAge = 0.f;
 	float SwingDuration = 0.2f;
 	float SwingStrength = 0.f;
@@ -543,6 +573,13 @@ private:
 	bool bSwingHit = false;      // one victim per swing
 	bool bHullHit = false;       // one hull per swing
 	FVector PrevBladePoint = FVector::ZeroVector;
+	/** Hit sweep points along the paddle (fraction of grip -> blade centre): the shaft hits too, so close-range swings land. */
+	static constexpr int32 NumSweepPoints = 3;
+	FVector PrevSweepPoints[NumSweepPoints];
+	FVector GetPaddlePoint(float Frac) const;
+	void ResetSweepPoints();
+	/** Knocked onto the shore: the nearest open water to wash back into (false = none found). */
+	bool FindWaterNear(const FVector& From, FVector& OutWater) const;
 	FRotator PaddleRot = FRotator::ZeroRotator;
 
 	double StunUntil = -1.0;

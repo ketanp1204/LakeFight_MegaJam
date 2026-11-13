@@ -193,3 +193,120 @@ for that step.
 in `d1d7ec0` (hang/tow not yet seen in PIE). The re-imported SM_LF_Paddle (B07 Grip_R/Grip_L sockets) and the four rowboats (B06 UCX)
 are committed separately ("Import B06 rowboat UCX + B07 paddle sockets"). **Item 2 (paddle grip) is not started: it's the first task on
 the laptop.**
+
+**Item 2 - paddle grip (Claude Code, laptop, 13 Nov evening).**
+- Hands go to SM_LF_Paddle's `Grip_R` / `Grip_L` sockets (B07; the old C++ offsets are only a fallback). The shaft axis is taken from
+  the two socket positions: the imported sockets' own X axis is NOT along the shaft (FBX empty axis conversion) - using it turned the
+  hands 90 deg off the shaft ("arms mixed up").
+- `ULFBrawlerAnimInstance`: each hand is turned so its knuckle line runs along the shaft (right thumb toward the blade, left toward
+  the T-grip = overhand), the wrist is IK'd so the PALM lands on the socket, fingers + thumb curl around the shaft (`LF|Anim|Grip`).
+  No X (director: "X cross still occurs"): while the paddle points out to the right (wind-up, charge hold, early strike) the left
+  hand's place on the shaft is right of the right hand, so the left hand lets go (one-handed back-swing) and re-grips over 0.12 s
+  when the shaft comes back across to the left. Otherwise, if the lower socket is out of reach, the left hand slides up the shaft.
+  Charge hold (director: "the right hand in front of the left shoulder"): the chest twisted +35 deg but the paddle pivot stayed on
+  the capsule, so relative to the chest the right hand ended up past the left shoulder (measured: right wrist -1.37 shoulder
+  half-widths). The pivot now turns around the body axis with the torso twist (`FollowTorsoTwist`) - this moves the strike's arc a
+  little (starts further right/back, ends further left), timing unchanged - and the free left hand rests beside the left hip
+  (`FreeHandOut/Forward/Up`) instead of wherever the clip + twist put it. Idle pivot (25, 26, 28.8) balances the wrists on the chest.
+  Debug: `LFCharge <s>` holds a charge from the console; the `[ik]` log also gives each wrist's position across the body.
+  Final grip spec (director, 13 Nov late): hands at EQUAL height (shaft level, `HoldPivot` (28.5, 17, 31), `HoldRotation` (0, -86, 0),
+  both now tunable on the brawler, `LF|Paddle`), held out from the body (arms ~0.7-0.85 of reach); palm grip = right hand overhand
+  (palm down, `bRightOverhand`), left underhand (palm up, `bLeftUnderhand`), both thumbs toward the blade. Light punch: both hands
+  stay on the paddle (the earlier "no X" auto-release is removed). Charged punch: once the hold passes `ChargeMinTime` the left hand
+  lets go and rests by the hip, the right holds the charge pose (pivot pulled back toward the right shoulder, `WindupPivotOffset`)
+  and fires; the left re-grips in the recover. Measured: idle both 0.0 cm on the sockets; light swing left grip 1.00 throughout;
+  charge hold left grip 0.00, right wrist +0.6..0.75 (right of the chest); re-grip 0.0 cm by recover. Shot:
+  `Docs/Shots/T031_level_hold_and_charge.png` (idle behind / idle side / charge hold). Known: a light swing's first frame snaps
+  (pivot reads the torso twist one frame late).
+- Standing hold (director: "hold it more horizontal, centred on the chest"): `PaddlePivot` (25, 16.6, 28.8), `PoseIdle` (-10, -90, 0):
+  shaft ~10 deg across the chest, grips symmetric about the body centre (was: pivot at the right waist, left grip out of reach -
+  the left hand never reached the paddle, also before this item). The swing poses are unchanged, but the pivot moved ~17 cm up/left.
+- Swing (director): the Great_Sword_Slash clip is gone (it fought the IK). The arms follow the paddle arc; the spine
+  (spine_01/02/03 = 20/30/50 %) twists +35 deg at the wind-up -> -45 deg at the follow-through, pitches forward over the strike
+  (10 deg x strength), charged swings lean in (pelvis 6 cm forward + 6 deg) (`LF|Anim|Swing`).
+- Seated (director: "Sitting1 is the new idle sitting animation"; "hands go inside the thighs"): the sit clip is `Anim/Manny/Sitting1`;
+  while sitting/rowing each palm is pushed out to the thigh surface + 2 cm (`LF|Anim|Sit`, thigh radius 9 cm mesh space).
+- Debug: `lf.debug.ik 1` draws sockets (green/blue), palm grip points (red) + palm normal (yellow) / thumb side (cyan) and logs
+  `[ik]` from the solved pose itself (palm -> socket, distance off the shaft, left grip weight; seated: palm -> thigh surface).
+  `lf.ai.freeze 1` (director's idea) stops the AI captains so the player can be tested alone.
+
+**Verification** (PIE, `lf.ai.freeze 1`, `LFSwing 1` / `LFSwing`, slomo 0.03 for the shots; builds Succeeded, Live Coding for .cpp-only steps):
+idle hold palm -> socket R 0.0 / L 0.0 cm for the player and all three AI crews; charged swing: right hand 0.0 cm on its socket
+throughout, left hand lets go in the wind-up/strike (grip weight -> 0.16) and is back on the paddle (0.0 cm) by the follow-through;
+seated in Sitting1: palms 1.5 cm outside the thighs (world) every sample. Shots: `Docs/Shots/T031_grip_hold_front.png`,
+`T031_swing_no_cross.png` (wind-up / strike / follow-through / recover, from behind), `T031_swing_hold_windup_strike_follow.png`
+(the version before the no-X release), `T031_grip_v1_diagonal_*` = the rejected first diagonal hold.
+**Please check in PIE:** the hold and the swing feel (torso twist amounts, lean), Sitting1 hands on the thighs, the hit reach/feel
+after the pivot move. **Known:** the debug drawing can lag a frame in a fast swing (the log is exact); during the strike the left hand
+visibly slides along the shaft.
+**Follow-ups (not done):** paddle in the hands while rowing (driving still stows it on the back, T02 step 5 rule; needs the new
+sitting/rowing clips); the life vest sits low on the hips in the shots (spine_03 attach offsets).
+
+**Driving paddle + punch speed + camera (director, 13 Nov late):**
+- Charged punch fires faster than a light one: `ChargedSwingTime` 0.3 -> 0.15 s (light stays 0.22 s).
+- The paddle stays in the hands while driving (was stowed on the back): no throttle = seated hold, level across the lap in front of
+  the chest (`SitHoldOffset` (30, 22, -16) from the shoulder midpoint, `SitHoldRotation` (0, -86, 0)) - no longer behind the right
+  shoulder / through the floor, hands off the vest. Throttle = a procedural canoe stroke on the left side (`LF|Paddle|Drive`: blade
+  catches 45 cm forward, pulls to -25 cm, 12 cm deep, lifts 18 cm on the recovery; the shaft leans toward a point above the right
+  shoulder; 0.3 s blend between hold and stroke). Both hands IK onto it.
+- Stroke rate follows the boat: strokes/s = speed / 300 cm/s, at least 0.6 x |throttle|, at most 1.6; reverse strokes backward.
+  The rowing clip is sampled at the same stroke phase (`RowClipPhaseOffset` aligns the body's pull with the blade's).
+- Boat camera no longer recentres behind the boat by itself (`CameraRecenterDelay` default 0).
+- Measured (PIE, AIs driving): hands 0.0 cm on the paddle seated and rowing; 0.50 strokes/s at 69 cm/s, 1.0 at ~300, 1.6 (cap) at
+  519; blade 7-13 cm under water pulling, ~16 cm above on the recovery. Shot: `Docs/Shots/T031_seated_hold.png` (player, idle).
+  Not filmed close: the player's own stroke (needs throttle input) - please check the stroke look, `RowClipPhaseOffset` sync, and
+  that the hands clear the vest.
+
+**Superseded + new (director, 13 Nov late): oars, size, chest-anchored hold, walk.**
+- The procedural paddle stroke / seated paddle hold above are REMOVED (director: "the rowing animation is bad... rowing on both
+  sides like the FBX"). The paddle is stowed on the back while driving again.
+- Oars on the boat (`ALFBoat` OarL/OarR, `LF|Oars`): pivot at `Oarlock_L/R` hull sockets when they exist, else placeholders
+  `OarlockLocalL/R` (-12, -/+67.2, 36) from the rowboat script's oarlock forks. Placeholder oar = SM_LF_Paddle x (1.2, 0.85, 0.85)
+  until `OarMesh` (SM_LF_Oar, Codex) is assigned on BP_LF_Boat - convention assumed: origin at the grip, blade +X. While someone
+  drives: each oar's grip sits in the matching hand (hand -> middle knuckle midpoint), shaft through the oarlock, blade squared;
+  the clip drives the hands, no hand IK. Nobody driving (or capsized): shipped along the inside of the gunwale (grip 75 cm forward
+  of the oarlock, blade aft). 0.3 s blend. They're hull children, so they flip with a capsize.
+- Rowing clip play rate = boat speed / 300 cm/s, at least 0.6 x |throttle|, capped at 1.25x natural speed; reverse plays backward.
+- Brawler size `BrawlerScale` 0.75 -> 0.85 (director: try 0.85, then 0.9); crew gear scaled with it (authored for 0.75).
+- Standing hold anchored to the shoulder midpoint (`HoldPivot` now mesh-unit offsets from it), so the paddle and hands ride the
+  idle breathing / walk bob (director: "artificially stiff").
+- Walk: the only unarmed walk in the project is the mannequin's MF_ (feminine) walk; its pelvis sway is damped 60 %
+  (`WalkHipDamp`, thighs/spine counter-rotated) and it now plays at the body's scale (a smaller body steps faster for the same
+  cm/s) - it looked slow before. A male walk clip (Mixamo) would replace it properly.
+- Charged punch 0.15 s (faster than light 0.22 s); boat camera never auto-recentres.
+- Verified (PIE + Simulate, AIs rowing): oar grips in the hands, blades 13-33 cm under water while rowing, ~20 cm above at sit idle;
+  shots `Docs/Shots/T031_oars_rowing_side.png`, `_top.png` (mid-stroke, Simulate), `T031_oars_shipped_side.png` (nobody rowing),
+  `T031_oars_seated_idle.png`. Known: the driver faces the bow while the clip PULLS, so the blades sweep forward on the pull
+  (real rowers face the stern) - flip the clip direction or the driver if it reads wrong.
+
+**Playtest 006 fixes (director, 13 Nov late) - BUILT, NOT YET VERIFIED IN PIE:**
+- Walk clip = director's `Anim/Manny/Wheelbarrow_Walk` (replaces MF_Unarmed_Walk_Fwd); `WalkHipDamp` default 0.
+- Paddle lagging / sliding out of the hands while walking: the mesh now ticks after the brawler (`AddTickPrerequisiteActor`), so the
+  hands are solved onto this frame's paddle.
+- Close-range hits never landed: the hit sweep now runs at 3 points along the paddle (35 % / 65 % shaft, blade centre); hull
+  hits stay blade-only.
+- Knocked onto the shore = stuck: at ragdoll recovery, if the ground under the pelvis is above the water, `FindWaterNear` searches
+  rings (16 dirs, up to 25 m) for open water and the brawler is washed back there swimming (`[shore]` log).
+- Debug: `LFRagdollAt X Y` (e.g. `LFRagdollAt 0 -4300` = left shore) to test the wash-back.
+
+**Procedural oar rowing + walk in place (director, 14 Nov early):**
+- Walk: Wheelbarrow_Walk carries forward travel in the hips (not an in-place export): the body ran ahead of the capsule, snapped
+  back at the loop and circled when turning. `bWalkInPlace` keeps the root/pelvis at the idle pose's horizontal position (vertical
+  bob kept). No re-source needed.
+- Rowing (director: no usable rowing clip, "procedurally animate torso + hands"; option 3 without art changes): the driver sits on
+  the FORWARD thwart (`DriverSeatLocal` X +40; thwart at +0.52 m in the mesh) and faces the STERN (`bDriverFacesStern`); the
+  oarlocks (X -12) are ~50 cm in front of him. Sitting1 is the base pose; a stroke phase drives both hands together (IK onto the
+  handles, overhand, thumbs inboard) - catch: lean 22 deg toward the stern, arms out; drive: pull to the ribs, lean back 15 deg,
+  blades in; recovery: handles down (blades up) and back out. Elbows flare out to the sides (explicit IK pole; director: they
+  converged behind the back). Strokes/s = boat speed / 500, at least 0.45 x |throttle|, at most 0.9; reverse rows backward; no
+  throttle = hands resting on the handles. The boat's oars pair with the NEAREST hand (facing the stern, left hand = starboard oar).
+  Tunables: `LF|Anim|Row`. The Sitting_Rowing clip is no longer used.
+- Debug: `LFRow <throttle>` (while driving) holds a throttle without keys; `LFRagdollAt X Y`.
+- Verified: PIE, player rowing with `LFRow 1` at slomo 0.1 - `Docs/Shots/T031_rowing_stroke.png` (6 phases, elbows out); [oars]
+  blades 11-22 cm under water on the drive; shore test: `LFRagdollAt 0 -4300` -> "[shore] ... on land (ground 49 cm above the water)
+  -> washed back 400 cm into the lake", swimming. NOT yet measured: close-range hit rate (3-point sweep), walk in place in PIE.
+- Director: W moved the boat behind the stern-facing rower -> the rower faces the BOW again (`bDriverFacesStern` off, seat back on
+  the aft thwart X -55); the procedural pull stroke stays (oars push water the "wrong" way - reads as rowing).
+
+**T03.1 item 2 status at commit (14 Nov):** committed as reviewed in PIE by the director ("looks great" for rowing). Not measured:
+close-range hit rate with the 3-point sweep, walk-in-place feel. Next task: A02 audio.

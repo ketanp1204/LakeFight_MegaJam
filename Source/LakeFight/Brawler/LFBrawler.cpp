@@ -17,6 +17,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Containers/Ticker.h"
+#include "TimerManager.h"
+#include "HAL/IConsoleManager.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/SkeletalMesh.h"
 #include "Engine/StaticMesh.h"
@@ -39,12 +41,12 @@
 namespace
 {
 	// Brawler scale (director, T02 step 1a): the whole character is 0.75 of the UE mannequin.
-	constexpr float BrawlerScale = 0.75f;
+	constexpr float BrawlerScale = 0.85f; // director 13 Nov: 0.75 (135 cm) read small in the boat; try 0.85, then 0.9
+	constexpr float GearScale = BrawlerScale / 0.75f; // vest / hats / face pieces were authored for the 0.75 (135 cm) body
 	constexpr float CapsuleRadius = 30.f * BrawlerScale;
 	constexpr float CapsuleHalfHeight = 88.f * BrawlerScale;
 
 	// Paddle poses (pivot yaw/pitch, deg; pivot at the right shoulder, blade along +X).
-	const FRotator PoseIdle(-50.f, -35.f, 0.f); // diagonal across the body, blade low front-left
 	const FRotator PoseWindup(15.f, 140.f, 0.f);
 	const FRotator PoseFollow(0.f, -90.f, 0.f);
 	constexpr float RecoverTime = 0.3f;
@@ -114,8 +116,8 @@ ALFBrawler::ALFBrawler()
 
 	PaddlePivot = CreateDefaultSubobject<USceneComponent>(TEXT("PaddlePivot"));
 	PaddlePivot->SetupAttachment(RootComponent);
-	PaddlePivot->SetRelativeLocation(FVector(22.f, 12.f, 12.f)); // right-front of the waist: two-handed hold reachable by both arms
-	PaddlePivot->SetRelativeRotation(PoseIdle);
+	PaddlePivot->SetRelativeLocation(FVector(30.f, 15.f, 25.f)); // placed every tick from the chest (FollowTorsoTwist)
+	PaddlePivot->SetRelativeRotation(HoldRotation);
 
 	Paddle = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Paddle"));
 	Paddle->SetupAttachment(PaddlePivot);
@@ -131,7 +133,7 @@ ALFBrawler::ALFBrawler()
 	{
 		Paddle->SetStaticMesh(PaddleMesh.Object);
 	}
-	PaddleRot = PoseIdle;
+	PaddleRot = HoldRotation;
 
 	// Crew gear (meshes authored for the 0.75 Manny: absolute scale 1, attached to bones so they follow the ragdoll).
 	auto MakeGear = [this](const TCHAR* Name)
@@ -189,6 +191,10 @@ void ALFBrawler::BeginPlay()
 {
 	Super::BeginPlay();
 	BaseFov = Camera->FieldOfView;
+	// The paddle is placed in our Tick; the anim reads its grips in the mesh's tick. Without this order the hands were solved
+	// onto last frame's paddle and the paddle visibly lagged / slid out of the hands while walking.
+	GetMesh()->AddTickPrerequisiteActor(this);
+	PaddleRot = HoldRotation;
 	ApplyCrewLook();
 	Paddle->SetWorldScale3D(FVector(PaddleScale));
 	if (!Paddle->GetStaticMesh())
@@ -247,9 +253,9 @@ void ALFBrawler::ApplyCrewLook()
 	AttachAligned(Vest, NAME_None, TEXT("spine_03"), FVector::ZeroVector, FRotator::ZeroRotator);
 	AttachAligned(Hat, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
 	AttachAligned(Face, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
-	Vest->SetWorldScale3D(FVector::OneVector);
-	Hat->SetWorldScale3D(FVector::OneVector);
-	Face->SetWorldScale3D(FVector::OneVector);
+	Vest->SetWorldScale3D(FVector(GearScale));
+	Hat->SetWorldScale3D(FVector(GearScale));
+	Face->SetWorldScale3D(FVector(GearScale));
 }
 
 void ALFBrawler::GetAnimView(FLFBrawlerAnimView& Out) const
@@ -258,6 +264,9 @@ void ALFBrawler::GetAnimView(FLFBrawlerAnimView& Out) const
 	Out.SwingPhase = uint8(SwingPhase);
 	Out.SwingAlpha = SwingPhase == ELFSwingPhase::Swinging ? FMath::Clamp(SwingAge / FMath::Max(SwingDuration, 0.01f), 0.f, 1.f)
 		: (SwingPhase == ELFSwingPhase::Recover ? FMath::Clamp(SwingAge / RecoverTime, 0.f, 1.f) : 0.f);
+	Out.SwingStrength = SwingStrength;
+	Out.bChargedSwing = SwingPhase != ELFSwingPhase::Idle && SwingStrength >= ChargedMinStrength;
+	Out.bChargeHeld = SwingPhase == ELFSwingPhase::Charging && GetWorld() && GetWorld()->GetTimeSeconds() - ChargeStartTime >= ChargeMinTime;
 	Out.bStunned = IsStunned();
 	Out.ClimbAlpha = bHanging ? 0.15f : FMath::Clamp(ClimbAge / FMath::Max(ClimbDuration, 0.01f), 0.f, 1.f);
 	if (State == ELFBrawlerState::Driving && Boat.IsValid())
@@ -282,21 +291,23 @@ void ALFBrawler::SetSpectating()
 	SetActorLocation(GetActorLocation() + FVector(0.f, 0.f, 5000.f));
 }
 
-bool ALFBrawler::GetPaddleGripTargets(FVector& OutRight, FVector& OutLeft) const
+bool ALFBrawler::GetPaddleGripTargets(FTransform& OutRight, FTransform& OutLeft) const
 {
 	if (PaddleMount != EPaddleMount::Hands || State != ELFBrawlerState::Standing || !Paddle->GetStaticMesh())
 	{
 		return false;
 	}
+	static const FName GripR(TEXT("Grip_R"));
+	static const FName GripL(TEXT("Grip_L"));
 	const FTransform& P = Paddle->GetComponentTransform();
-	OutRight = P.TransformPosition(GripROffset);
-	OutLeft = P.TransformPosition(GripLOffset);
+	OutRight = Paddle->DoesSocketExist(GripR) ? Paddle->GetSocketTransform(GripR) : FTransform(P.GetRotation(), P.TransformPosition(GripROffset));
+	OutLeft = Paddle->DoesSocketExist(GripL) ? Paddle->GetSocketTransform(GripL) : FTransform(P.GetRotation(), P.TransformPosition(GripLOffset));
 	return true;
 }
 
 void ALFBrawler::UpdatePaddleStow()
 {
-	// Standing: in the hands (pivot + IK). Driving / swimming / climbing: stowed on the back. Ragdoll: right hand (set in StartRagdoll).
+	// Standing: in the hands (pivot + IK). Driving (the oars row) / swimming / climbing: stowed on the back. Ragdoll: right hand.
 	const EPaddleMount Want = State == ELFBrawlerState::Standing ? EPaddleMount::Hands
 		: (State == ELFBrawlerState::Ragdoll ? EPaddleMount::Hand : EPaddleMount::Back);
 	if (Want == PaddleMount || Want == EPaddleMount::Hand)
@@ -568,7 +579,7 @@ bool ALFBrawler::TryDrive()
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const FTransform& Hull = B->GetHull()->GetComponentTransform();
 	SetActorLocationAndRotation(B->GetDriverSeatWorld() + Hull.GetUnitAxis(EAxis::Z) * HalfHeight,
-		FRotator(0.f, B->GetActorRotation().Yaw, 0.f), false, nullptr, ETeleportType::TeleportPhysics);
+		FRotator(0.f, B->GetActorRotation().Yaw + (B->bDriverFacesStern ? 180.f : 0.f), 0.f), false, nullptr, ETeleportType::TeleportPhysics);
 	AttachToComponent(B->GetHull(), FAttachmentTransformRules::KeepWorldTransform);
 	GetMesh()->SetRelativeRotation(MeshBaseRotation);
 	SwayQuat = FQuat::Identity;
@@ -751,12 +762,33 @@ void ALFBrawler::OnSwingReleased()
 	}
 	PaddlePivot->SetRelativeRotation(PoseWindup);
 	PrevBladePoint = GetBladePoint();
+	ResetSweepPoints();
 	UE_LOG(LogLF, Display, TEXT("[paddle] %s swing %s strength=%.2f (held %.2f s)"), *GetName(), bCharged ? TEXT("CHARGED") : TEXT("light"), SwingStrength, Held);
 }
 
 void ALFBrawler::LFSwing(float Strength)
 {
 	Swing(Strength);
+}
+
+void ALFBrawler::LFRagdollAt(float X, float Y)
+{
+	if (State == ELFBrawlerState::Driving)
+	{
+		LeaveDriving();
+	}
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	SetActorLocation(FVector(X, Y, GetActorLocation().Z + 150.f), false, nullptr, ETeleportType::TeleportPhysics);
+	StartRagdoll(FVector(1.f, 0.f, 0.f), 0.2f);
+	UE_LOG(LogLF, Display, TEXT("[debug] %s ragdolled at (%.0f, %.0f)"), *GetName(), X, Y);
+}
+
+void ALFBrawler::LFCharge(float HoldSeconds)
+{
+	OnSwingPressed();
+	FTimerHandle Handle;
+	GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateWeakLambda(this, [this]() { OnSwingReleased(); }),
+		FMath::Max(HoldSeconds, 0.01f), false);
 }
 
 void ALFBrawler::Swing(float Strength)
@@ -812,7 +844,7 @@ void ALFBrawler::UpdatePaddle(float DeltaSeconds)
 	switch (SwingPhase)
 	{
 	case ELFSwingPhase::Idle:
-		PaddleRot = LerpRot(PaddleRot, PoseIdle, Follow);
+		PaddleRot = LerpRot(PaddleRot, HoldRotation, Follow);
 		break;
 	case ELFSwingPhase::Charging:
 	{
@@ -831,11 +863,13 @@ void ALFBrawler::UpdatePaddle(float DeltaSeconds)
 		const float A = FMath::Clamp(SwingAge / SwingDuration, 0.f, 1.f);
 		PaddleRot = LerpRot(PoseWindup, PoseFollow, FMath::SmoothStep(0.f, 1.f, A));
 		PaddlePivot->SetRelativeRotation(PaddleRot);
+		FollowTorsoTwist();
 		if (A > 0.1f && A < 0.95f)
 		{
 			SweepPaddle();
 		}
 		PrevBladePoint = GetBladePoint();
+		ResetSweepPoints();
 		if (A >= 1.f)
 		{
 			SwingPhase = ELFSwingPhase::Recover;
@@ -845,7 +879,7 @@ void ALFBrawler::UpdatePaddle(float DeltaSeconds)
 	}
 	case ELFSwingPhase::Recover:
 		SwingAge += DeltaSeconds;
-		PaddleRot = LerpRot(PoseFollow, PoseIdle, FMath::SmoothStep(0.f, 1.f, FMath::Clamp(SwingAge / RecoverTime, 0.f, 1.f)));
+		PaddleRot = LerpRot(PoseFollow, HoldRotation, FMath::SmoothStep(0.f, 1.f, FMath::Clamp(SwingAge / RecoverTime, 0.f, 1.f)));
 		if (SwingAge >= RecoverTime)
 		{
 			SwingPhase = ELFSwingPhase::Idle;
@@ -853,6 +887,69 @@ void ALFBrawler::UpdatePaddle(float DeltaSeconds)
 		break;
 	}
 	PaddlePivot->SetRelativeRotation(PaddleRot);
+	FollowTorsoTwist();
+}
+
+void ALFBrawler::FollowTorsoTwist()
+{
+	// The hands hold the paddle in front of the CHEST, so the pivot turns around the body axis with the swing's torso twist
+	// (otherwise the twisted chest leaves the hands behind: right hand in front of the left shoulder in the charge hold).
+	// The hold is anchored to the shoulder midpoint (last evaluated pose), so the paddle and the hands on it ride the idle
+	// breathing and the walk bob instead of being pinned to the capsule (director: "artificially stiff").
+	const ULFBrawlerAnimInstance* Anim = Cast<ULFBrawlerAnimInstance>(GetMesh()->GetAnimInstance());
+	const float Yaw = Anim ? Anim->TorsoYaw : 0.f;
+	const float Windup = Anim && Anim->SwingTwistWindupDeg > 1.f ? FMath::Clamp(Yaw / Anim->SwingTwistWindupDeg, 0.f, 1.f) : 0.f;
+	const USkeletalMeshComponent* M = GetMesh();
+	const FVector Mid = GetActorTransform().InverseTransformPosition(
+		(M->GetBoneLocation(TEXT("upperarm_r")) + M->GetBoneLocation(TEXT("upperarm_l"))) * 0.5f);
+	const float S = float(M->GetComponentScale().X);
+	PaddlePivot->SetRelativeLocation(Mid + FRotator(0.f, Yaw, 0.f).RotateVector((HoldPivot + WindupPivotOffset * Windup) * S));
+}
+
+FVector ALFBrawler::GetPaddlePoint(float Frac) const
+{
+	return Paddle->GetComponentTransform().TransformPosition(FVector(BladeCentreCm * Frac, 0.f, 0.f));
+}
+
+void ALFBrawler::ResetSweepPoints()
+{
+	static const float Fracs[NumSweepPoints] = { 0.35f, 0.65f, 1.f };
+	for (int32 K = 0; K < NumSweepPoints; ++K)
+	{
+		PrevSweepPoints[K] = GetPaddlePoint(Fracs[K]);
+	}
+}
+
+bool ALFBrawler::FindWaterNear(const FVector& From, FVector& OutWater) const
+{
+	// Open water = the ground under the point (lake bed) is well below the water surface. Search rings outward, 16 directions.
+	const UWorld* World = GetWorld();
+	const float Time = float(World->GetTimeSeconds());
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(LFShore), false, this);
+	auto IsWater = [&](const FVector& P) -> bool
+	{
+		const float Water = LF::Water::GetHeightAt(P, Time);
+		FHitResult Hit;
+		const bool bHit = World->LineTraceSingleByChannel(Hit, FVector(P.X, P.Y, Water + 300.f), FVector(P.X, P.Y, Water - 500.f),
+			ECC_WorldStatic, Params);
+		return !bHit || Hit.ImpactPoint.Z < Water - 40.f;
+	};
+	for (float R = 100.f; R <= 2500.f; R += 100.f)
+	{
+		for (int32 I = 0; I < 16; ++I)
+		{
+			const float A = I * (2.f * PI / 16.f);
+			const FVector P = From + FVector(FMath::Cos(A), FMath::Sin(A), 0.f) * R;
+			if (IsWater(P))
+			{
+				// One more metre out so he isn't hugging the bank.
+				const FVector Out = From + FVector(FMath::Cos(A), FMath::Sin(A), 0.f) * (R + 100.f);
+				OutWater = IsWater(Out) ? Out : P;
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void ALFBrawler::SweepPaddle()
@@ -867,8 +964,23 @@ void ALFBrawler::SweepPaddle()
 	{
 		Params.AddIgnoredActor(Own);
 	}
+	// Three sweeps along the paddle (shaft at 35 % / 65 %, blade centre): up close the opponent is inside the blade's arc and only
+	// the shaft passes through him (playtest 006: chest-to-chest swings never landed). Hull hits stay blade-only.
+	static const float Fracs[NumSweepPoints] = { 0.35f, 0.65f, 1.f };
 	TArray<FHitResult> Hits;
-	World->SweepMultiByObjectType(Hits, PrevBladePoint, To, FQuat::Identity, Objects, FCollisionShape::MakeSphere(PaddleHitRadius), Params);
+	for (int32 K = 0; K < NumSweepPoints; ++K)
+	{
+		TArray<FHitResult> Part;
+		World->SweepMultiByObjectType(Part, PrevSweepPoints[K], GetPaddlePoint(Fracs[K]), FQuat::Identity, Objects,
+			FCollisionShape::MakeSphere(PaddleHitRadius), Params);
+		for (const FHitResult& H : Part)
+		{
+			if (K == NumSweepPoints - 1 || Cast<ALFBrawler>(H.GetActor()))
+			{
+				Hits.Add(H);
+			}
+		}
+	}
 
 	for (const FHitResult& Hit : Hits)
 	{
@@ -1125,6 +1237,25 @@ void ALFBrawler::UpdateRagdoll(float DeltaSeconds)
 		if (Elapsed >= FloatTime || (Elapsed > 0.6f && Speed < FloatStillSpeed))
 		{
 			UE_LOG(LogLF, Display, TEXT("[overboard] %s floated %.2f s (pelvis speed %.0f cm/s) -> recover"), *GetName(), Elapsed, Speed);
+			// Landed on the shore (playtest 006: no way back): the ground under him is above the water - wash him back into the
+			// nearest open water and let him swim.
+			{
+				FHitResult Ground;
+				FCollisionQueryParams GP(SCENE_QUERY_STAT(LFShoreCheck), false, this);
+				const bool bGround = World->LineTraceSingleByChannel(Ground, Pelvis + FVector(0.f, 0.f, 200.f), FVector(Pelvis.X, Pelvis.Y, Water - 500.f),
+					ECC_WorldStatic, GP);
+				FVector WaterAt;
+				if (bGround && Ground.ImpactPoint.Z > Water - 20.f && FindWaterNear(Pelvis, WaterAt))
+				{
+					UE_LOG(LogLF, Display, TEXT("[shore] %s is on land (ground %.0f cm above the water) -> washed back %.0f cm into the lake"),
+						*GetName(), float(Ground.ImpactPoint.Z - Water), float(FVector::Dist2D(Pelvis, WaterAt)));
+					EndRagdoll();
+					RagdollPhase = ERagdollPhase::Upright;
+					SetActorLocation(FVector(WaterAt.X, WaterAt.Y, LF::Water::GetHeightAt(WaterAt, float(Now)) - HalfHeight * 0.4f));
+					EnterSwimming();
+					break;
+				}
+			}
 			// Put the (animated) capsule upright at the pelvis, half in the water, then blend the ragdoll pose into it.
 			// No teleport: the simulated bodies stay where they are while the blend weight falls.
 			const float Yaw = M->GetBoneQuaternion(TEXT("pelvis")).GetForwardVector().GetSafeNormal2D().Rotation().Yaw;

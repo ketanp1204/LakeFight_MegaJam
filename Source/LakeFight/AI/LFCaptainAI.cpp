@@ -14,6 +14,7 @@
 #include "HAL/IConsoleManager.h"
 
 static TAutoConsoleVariable<int32> CVarLFAIDebug(TEXT("lf.ai.debug"), 0, TEXT("1 = show each AI captain's state above its head."));
+static TAutoConsoleVariable<int32> CVarLFAIFreeze(TEXT("lf.ai.freeze"), 0, TEXT("1 = AI captains stop deciding and acting (their boats coast to a stop) - for testing the player alone."));
 
 // lf.ai.spectate: take the player out of the fight (hidden, untargetable) and watch the AI crews from an overview camera.
 static FAutoConsoleCommandWithWorldAndArgs CmdLFAISpectate(TEXT("lf.ai.spectate"),
@@ -213,6 +214,15 @@ void ALFCaptainAI::Tick(float DeltaSeconds)
 	ALFBrawler* Self = Me();
 	if (!Self)
 	{
+		return;
+	}
+	if (CVarLFAIFreeze.GetValueOnGameThread() != 0)
+	{
+		ALFBoat* B = Self->GetBoat();
+		if (B && B->GetDriver() == Self)
+		{
+			B->SetDriveInput(0.f, 0.f);
+		}
 		return;
 	}
 	const double Now = GetWorld()->GetTimeSeconds();

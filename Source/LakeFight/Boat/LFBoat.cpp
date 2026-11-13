@@ -77,6 +77,13 @@ ALFBoat::ALFBoat()
 	HullMesh->SetSimulatePhysics(true);
 	HullMesh->SetNotifyRigidBodyCollision(true);
 	HullMesh->SetLinearDamping(0.f);   // drag comes from ULFBuoyancyComponent
+	for (TObjectPtr<UStaticMeshComponent>* Oar : { &OarL, &OarR })
+	{
+		*Oar = CreateDefaultSubobject<UStaticMeshComponent>(Oar == &OarL ? TEXT("OarL") : TEXT("OarR"));
+		(*Oar)->SetupAttachment(HullMesh);
+		(*Oar)->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		(*Oar)->SetCanEverAffectNavigation(false);
+	}
 	HullMesh->SetAngularDamping(0.f);
 	RootComponent = HullMesh;
 
@@ -152,6 +159,16 @@ void ALFBoat::BuildWaterMask()
 void ALFBoat::BeginPlay()
 {
 	Super::BeginPlay();
+	{
+		// Oars: SM_LF_Oar once it is assigned; until then SM_LF_Paddle stretched (placeholder).
+		UStaticMesh* Mesh = OarMesh ? OarMesh.Get() : LoadObject<UStaticMesh>(nullptr, TEXT("/Game/LakeFight/Meshes/SM_LF_Paddle.SM_LF_Paddle"));
+		for (UStaticMeshComponent* Oar : { OarL.Get(), OarR.Get() })
+		{
+			Oar->SetStaticMesh(Mesh);
+			Oar->SetWorldScale3D(OarMesh ? FVector::OneVector : OarPlaceholderScale);
+		}
+		UpdateOars(1.f);
+	}
 
 	if (!HullMesh->GetStaticMesh())
 	{
@@ -217,6 +234,64 @@ float ALFBoat::GetTurnAuthority() const
 	return V < 0.f ? Authority * ReverseRudderScale : Authority;
 }
 
+FVector ALFBoat::GetOarlockWorld(bool bLeft) const
+{
+	const FName Socket = bLeft ? FName(TEXT("Oarlock_L")) : FName(TEXT("Oarlock_R"));
+	return HullMesh->DoesSocketExist(Socket) ? HullMesh->GetSocketLocation(Socket)
+		: HullMesh->GetComponentTransform().TransformPosition(bLeft ? OarlockLocalL : OarlockLocalR);
+}
+
+void ALFBoat::UpdateOars(float DeltaSeconds)
+{
+	const FTransform& H = HullMesh->GetComponentTransform();
+	const FVector Fwd = H.GetUnitAxis(EAxis::X), Right = H.GetUnitAxis(EAxis::Y), Up = H.GetUnitAxis(EAxis::Z);
+	const ALFBrawler* D = Driver.Get();
+	const bool bRowing = D && D->GetBrawlerState() == ELFBrawlerState::Driving && !bCapsized;
+	OarRowBlend = FMath::FInterpConstantTo(OarRowBlend, bRowing ? 1.f : 0.f, DeltaSeconds, 1.f / OarBlendTime);
+	for (int32 Side = 0; Side < 2; ++Side)
+	{
+		const bool bLeft = Side == 0;
+		UStaticMeshComponent* Oar = bLeft ? OarL.Get() : OarR.Get();
+		if (!Oar)
+		{
+			continue;
+		}
+		const FVector Lock = GetOarlockWorld(bLeft);
+		// Shipped: along the inside of the gunwale, grip forward, blade aft, flat.
+		const FVector ShipGrip = Lock + Fwd * OarShipForward + Right * ((bLeft ? 1.f : -1.f) * OarShipInboard) + Up * OarShipUp;
+		const FQuat ShipRot = FRotationMatrix::MakeFromXZ(-Fwd, Up).ToQuat();
+		FVector Grip = ShipGrip;
+		FQuat Rot = ShipRot;
+		if (OarRowBlend > 0.f && D)
+		{
+			// Rowing: grip in the NEAREST hand (palm: between the wrist and the middle knuckle; facing the stern his left hand takes
+			// the starboard oar), shaft through the oarlock, blade squared.
+			const USkeletalMeshComponent* M = D->GetMesh();
+			const FVector HandL = (M->GetBoneLocation(TEXT("hand_l")) + M->GetBoneLocation(TEXT("middle_01_l"))) * 0.5f;
+			const FVector HandR = (M->GetBoneLocation(TEXT("hand_r")) + M->GetBoneLocation(TEXT("middle_01_r"))) * 0.5f;
+			const FVector Hand = FVector::DistSquared(HandL, Lock) < FVector::DistSquared(HandR, Lock) ? HandL : HandR;
+			const FVector X = (Lock - Hand).GetSafeNormal();
+			if (!X.IsNearlyZero())
+			{
+				const FQuat RowRot = FRotationMatrix::MakeFromXY(X, Up).ToQuat();
+				Grip = FMath::Lerp(ShipGrip, Hand, OarRowBlend);
+				Rot = FQuat::Slerp(ShipRot, RowRot, OarRowBlend).GetNormalized();
+			}
+		}
+		Oar->SetWorldLocationAndRotation(Grip, Rot);
+	}
+	static const IConsoleVariable* DebugIK = IConsoleManager::Get().FindConsoleVariable(TEXT("lf.debug.ik"));
+	const double Now = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
+	if (DebugIK && DebugIK->GetInt() != 0 && D && bRowing && Now - LastOarLogTime >= 1.0)
+	{
+		LastOarLogTime = Now;
+		const float Water = LF::Water::GetHeightAt(H.GetLocation(), float(Now));
+		auto BladeZ = [&](const UStaticMeshComponent* Oar) { return float(Oar->GetComponentTransform().TransformPosition(FVector(140.f, 0.f, 0.f)).Z) - Water; };
+		UE_LOG(LogLF, Log, TEXT("[oars] %s rowing (throttle %.2f): blade centres L %.0f R %.0f cm vs water, grips at the hands"),
+			*GetName(), GetThrottleOutput(), BladeZ(OarL.Get()), BladeZ(OarR.Get()));
+	}
+}
+
 void ALFBoat::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -225,7 +300,7 @@ void ALFBoat::Tick(float DeltaSeconds)
 	// Player driving: the live action values are the truth (AI drives through SetDriveInput instead).
 	if (IsPlayerControlled() && ThrottleValue && SteerValue)
 	{
-		ThrottleInput = FMath::Clamp(ThrottleValue->GetValue().Get<float>(), -1.f, 1.f);
+		ThrottleInput = DebugThrottle != 0.f ? DebugThrottle : FMath::Clamp(ThrottleValue->GetValue().Get<float>(), -1.f, 1.f);
 		SteerInput = FMath::Clamp(SteerValue->GetValue().Get<float>(), -1.f, 1.f);
 	}
 	UpdateCapsize(DeltaSeconds);
@@ -243,6 +318,7 @@ void ALFBoat::Tick(float DeltaSeconds)
 	// Camera and all its feedback run on REAL time (undilated), so hitstop doesn't freeze-then-snap it.
 	const UWorld* World = GetWorld();
 	UpdateCamera(FMath::Min(World ? World->DeltaRealTimeSeconds : DeltaSeconds, 0.1f));
+	UpdateOars(DeltaSeconds);
 
 	if (!HullMesh->IsSimulatingPhysics() || Buoyancy->GetSubmergedFraction() <= 0.f)
 	{

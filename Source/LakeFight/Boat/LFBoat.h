@@ -35,6 +35,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="LF|Boat")
 	TObjectPtr<UStaticMeshComponent> HullMesh;
 
+	UPROPERTY(VisibleAnywhere, Category="LF|Oars")
+	TObjectPtr<UStaticMeshComponent> OarL;
+
+	UPROPERTY(VisibleAnywhere, Category="LF|Oars")
+	TObjectPtr<UStaticMeshComponent> OarR;
+
 	/** Invisible cap over the open cockpit at gunwale height. Custom depth/stencil only; M_LF_Lake clips water behind it. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="LF|Boat")
 	TObjectPtr<UProceduralMeshComponent> WaterMask;
@@ -149,7 +155,7 @@ public:
 	/** Free-look while driving: mouse / right stick orbit the camera; after this long (real s) without look input it
 	 *  eases back behind the boat with the normal lag. 0 = never recentre. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0"))
-	float CameraRecenterDelay = 2.f;
+	float CameraRecenterDelay = 0.f; // director: no automatic recentre while sitting
 
 	/** Free-look pitch limits (deg). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera")
@@ -315,7 +321,15 @@ public:
 	// --- Crew (T02) ---
 	/** Driver seat on the floor (local cm, floor top ~ -9 cm). A driver is attached here; leaving the seat stands here. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Crew")
-	FVector DriverSeatLocal = FVector(-55.f, 0.f, -9.f);
+	FVector DriverSeatLocal = FVector(-55.f, 0.f, -9.f); // aft thwart, facing the bow (director: W must move the boat where he faces)
+
+	/** Seat the driver facing the stern (real rowing; then W moves the boat behind his back - rejected by the director, off).
+	 *  With it on, DriverSeatLocal must move to the forward thwart (X +40). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	bool bDriverFacesStern = false;
+
+	/** Oarlock pivot in world space (the hull socket when it exists, else the placeholder position). */
+	FVector GetOarlockWorld(bool bLeft) const;
 
 	UFUNCTION(BlueprintPure, Category="LF|Crew")
 	ALFBrawler* GetDriver() const { return Driver.Get(); }
@@ -369,6 +383,39 @@ public:
 	UFUNCTION(BlueprintPure, Category="LF|Capsize")
 	bool IsCapsized() const { return bCapsized; }
 
+	// --- Oars (T03.1, director): on the boat at the oarlocks. The rowing clip drives the driver's hands; each oar aims from its
+	// oarlock toward the matching hand with its grip in the hand (no hand IK). Nobody driving: shipped along the gunwales. ---
+
+	/** Oar mesh: origin at the grip, blade along +X (same convention as SM_LF_Paddle). Empty = placeholder (SM_LF_Paddle stretched
+	 *  by OarPlaceholderScale) until SM_LF_Oar exists - assign it here then. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	TObjectPtr<UStaticMesh> OarMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	FVector OarPlaceholderScale = FVector(1.2f, 0.85f, 0.85f);
+
+	/** Oarlock pivots (hull-local cm) used until SM_LF_Rowboat has Oarlock_L / Oarlock_R sockets (from the rowboat script's oarlock
+	 *  forks: 12 cm aft of midships, 67 cm out, 36 cm above the waterline). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	FVector OarlockLocalL = FVector(-12.f, -67.2f, 36.f);
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	FVector OarlockLocalR = FVector(-12.f, 67.2f, 36.f);
+
+	/** Shipped oars: grip this far forward of / inboard of / above the oarlock, oar lying along the gunwale with the blade aft. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	float OarShipForward = 75.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	float OarShipInboard = 8.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	float OarShipUp = 2.f;
+
+	/** Blend between shipped and rowing when a driver sits down / leaves (s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars", meta=(ClampMin="0.01"))
+	float OarBlendTime = 0.3f;
+
 	/** Tilt of the hull from upright (deg). */
 	float GetTiltDeg() const;
 
@@ -381,6 +428,11 @@ public:
 	/** Debug console while driving (the controller possesses the boat): leave the seat (same as Interact). */
 	UFUNCTION(Exec)
 	void LFDrive() { OnInteract(); }
+
+	/** Debug console while driving: hold this throttle (-1..1) without keys, 0 = back to the keys (tests rowing). */
+	UFUNCTION(Exec)
+	void LFRow(float Throttle) { DebugThrottle = FMath::Clamp(Throttle, -1.f, 1.f); }
+	float DebugThrottle = 0.f;
 
 	/** Drive input from an AI captain (same path as the player's Throttle/Steer actions): throttle -1..1, steer -1..1. */
 	UFUNCTION(BlueprintCallable, Category="LF|Crew")
@@ -446,6 +498,9 @@ private:
 	TWeakObjectPtr<ALFBrawler> Driver;
 
 	bool bCapsized = false;
+	float OarRowBlend = 0.f;
+	double LastOarLogTime = -100.0;
+	void UpdateOars(float DeltaSeconds);
 	float CapsizeTimer = 0.f;
 	double CapsizedAt = 0.0;
 	void UpdateCapsize(float DeltaSeconds);
