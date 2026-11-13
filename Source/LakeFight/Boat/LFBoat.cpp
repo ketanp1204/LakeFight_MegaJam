@@ -480,7 +480,8 @@ void ALFBoat::LogSettle()
 	const FVector L = GetActorLocation();
 	const FRotator R = GetActorRotation();
 	const float Water = Buoyancy->GetWaterHeightAt(L);
-	const bool bLevel = FMath::Abs(R.Pitch) < 2.f && FMath::Abs(R.Roll) < 2.f && FMath::Abs(float(L.Z) - Water) < 10.f;
+	// 2 deg of wave slop + up to 4 deg of deliberate crew fake-weight tilt (ALFBrawler::MaxFakeTiltDeg, T02).
+	const bool bLevel = FMath::Abs(R.Pitch) < 6.f && FMath::Abs(R.Roll) < 6.f && FMath::Abs(float(L.Z) - Water) < 10.f;
 	if (bLevel)
 	{
 		UE_LOG(LogLF, Display, TEXT("[settle] %s t=%.1fs Z=%.1f water=%.1f (diff %.1f cm) pitch=%.2f roll=%.2f -> level"),

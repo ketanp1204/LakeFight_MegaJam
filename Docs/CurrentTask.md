@@ -69,3 +69,48 @@ paddle mesh SM_LF_Paddle. (T01.x reports are in git history of this file.)
 drive with E, steer/ram, E again to stand; while standing, the boat rocking and you leaning with it; whether the brawler's weight
 "not counting" reads OK (boat doesn't tilt when you walk to one side - by design for now).
 **Known:** the mannequin is big for a 3 m rowboat (comedy, or scale it later); idle/walk anims only, no sitting pose when driving.
+
+**Director: step 1 accepted.**
+
+## Step 1 adjustments (a, b) + Step 2 - paddle (Claude Code, 13 Nov ~12:40-13:00 IST)
+
+**a. Scale 0.75** - capsule 22.5 x 66 (was 30 x 88), mesh scale 0.75 at -66, camera boom 650 -> 500 (offset z 90 -> 70), walk speed
+220 -> 180, boat step height 15 -> 12. Boat unchanged.
+
+**b. Fake weight tilt** (`LF|Brawler`): while Standing, a PURE torque = (smoothed horizontal offset of the brawler from the hull's CoM)
+x (`FakeWeightKg` x g) - no net force, so no sinking and still no added mass. It fades to zero as the boat's lean toward the brawler
+approaches `MaxFakeTiltDeg` (4 deg), so by itself it can never tilt past 4 deg or flip the boat; the brawler is never launched (it doesn't
+touch the physics). `FakeTiltFollowSpeed` 3/s smooths it; Driving (seated) and overboard decay it to zero.
+`FakeWeightKg` 120: measured pitch with a brawler standing at the stern seat = 2.05 deg (vs 0.82 with nobody; 40 kg gave only ~0.6 deg).
+The T01 `[settle]` check now allows 6 deg (2 waves + 4 crew tilt) - it flagged the deliberate 2 deg as "NOT level".
+
+**Step 2 - paddle**
+- `ALFBrawler`: SM_LF_Paddle on a right-shoulder pivot (grip end, ~130 cm reach to the blade centre). Placeholder procedural animation:
+  idle (held down at the side) -> wind-up while holding -> arc from behind-right to the left -> recover. The brawler turns to the camera's
+  yaw when swinging (aim with the camera).
+- Input: **LMB / right trigger**. Tap (< 0.2 s) = light swing (strength 0.35, 0.22 s arc); hold = charged (0.55 -> 1.0 at 0.8 s hold,
+  0.3 s arc, paddle trembles at full charge).
+- Hit detection: each frame of the arc, a 28 cm sphere sweep from the blade's previous to current position (Pawn + PhysicsBody objects,
+  ignores self and own boat). One brawler per swing.
+- Hit on a brawler: stun 0.4-1.0 s (no move/swing) + knockback 180-320 cm/s + hop. **Overboard** if strength >= 0.75 (charged) OR the victim
+  stands near the gunwale (|local Y| > 20 cm, or near bow/stern): launched up and over the nearest side (450 out, 520 up), tumbling, splash
+  (NS_LF_Splash) on hitting the water. Hitting someone who is driving knocks them out of the seat first.
+- Hit on another boat's hull: velocity change at the hit point (120 cm/s x strength) - the boat rocks/turns.
+- Feedback (real time, same approach as T01.3): one decaying sine camera shake + FOV punch, rumble, hitstop 0.04-0.09 s.
+- Temporary until step 3: an overboard brawler lies in the water and is put back in its boat after 2.5 s (so the dummy can be hit again).
+- Hooks: `OnPaddleHit(Victim, Strength, bOverboard)`, `OnSplashIn(Location)` (BlueprintImplementableEvent; step 5 adds the rest).
+- Debug console (works in PIE): `LFSwing [strength]` (no arg = light), `LFDrive` (toggle).
+- Level: `LF_Dummy` (BP_LF_Brawler, no controller) placed in LF_Boat_Target via `StartBoat` (L_Lake01 saved).
+
+**Commands / results**
+- 3 builds (adding console commands; reach/weight; diagnostics) - all Succeeded.
+- PIE 07:27:16-07:29:21 UTC (125 s); LF log, with the target boat teleported alongside (y = 150) through MCP:
+  `[settle] ... pitch=2.05 ... -> level` (fake weight) /
+  `swing light strength=0.35` -> `hit at local (-52, -1)` -> `HIT ... -> knockback+stun` /
+  `swing CHARGED strength=1.00` -> `hit at local (-53, 24) ... >= overboard strength near gunwale` -> `OVERBOARD` -> `splash at (-59, 359)` ->
+  `reset into BP_LF_Boat_C_1`. No LF warnings; the only errors were from my MCP calls during PIE ("Editor is currently in a play mode").
+  Screenshot: dummy tumbling through the air over the far side.
+
+**Please test (PIE):** the dummy is 15 m ahead in LF_Boat_Target - drive over (E), pull alongside, E to stand, aim with the camera,
+tap / hold LMB. Is it funny the first ten times? Reach, knockback, stun and overboard thresholds are all under `LF|Paddle` on BP_LF_Brawler.
+**Known:** procedural paddle/no arm IK (the arms stay idle); the tilt is subtle by design (raise FakeWeightKg).

@@ -9,6 +9,8 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
+class UNiagaraSystem;
+class UStaticMeshComponent;
 struct FInputActionValue;
 
 UENUM(BlueprintType)
@@ -19,15 +21,26 @@ enum class ELFBrawlerState : uint8
 	Driving,    // InBoat, attached at the driver seat; the PlayerController possesses the boat
 	Swimming,   // T02 step 3
 	Climbing,   // T02 step 3
-	Ragdoll     // T02 step 2 (ragdoll-lite)
+	Ragdoll     // knocked overboard: flying/tumbling, then in the water
+};
+
+UENUM()
+enum class ELFSwingPhase : uint8
+{
+	Idle,
+	Charging,   // holding Swing: wound up
+	Swinging,   // the arc; sweeps for hits
+	Recover
 };
 
 /**
  * T02 brawler: a character standing IN a physics boat.
  * Standing: the CMC walks on the hull (movement base = HullMesh) but the capsule is QUERY-ONLY, so it never pushes or
- * weighs on any boat (no physics contact; bEnablePhysicsInteraction off). Can't walk off ledges or step over the gunwale.
- * The mesh leans with the boat's roll/pitch (procedural sway). Driving: attached at the boat's driver seat and the
- * PlayerController possesses the boat (T01 controls + boat camera). Interact toggles.
+ * weighs on any boat (no physics contact; bEnablePhysicsInteraction off). A separate, clamped "fake weight" torque tilts
+ * the boat gently toward where the brawler stands. Can't walk off ledges or step over the gunwale. The mesh leans with
+ * the boat (procedural sway). Driving: attached at the boat's driver seat and the PlayerController possesses the boat.
+ * Paddle (step 2): tap = light swing, hold = charged swing; sphere sweeps along the blade arc; knockback + stun; strong or
+ * near-gunwale hits knock the victim overboard. Hitting another boat's hull rocks it.
  */
 UCLASS()
 class LAKEFIGHT_API ALFBrawler : public ACharacter
@@ -55,11 +68,119 @@ public:
 	float SwayFollowSpeed = 8.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Boat", meta=(ClampMin="0"))
-	float BoatWalkSpeed = 220.f;
+	float BoatWalkSpeed = 180.f;
 
 	/** Step height while in a boat - below the ~40 cm floor-to-gunwale so you can't step out. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Boat", meta=(ClampMin="0"))
-	float BoatStepHeight = 15.f;
+	float BoatStepHeight = 12.f;
+
+	// --- Fake weight tilt (Standing only; pure torque, no added mass) ---
+	/** Pretend weight (kg) whose torque about the hull's centre of mass tilts the boat toward the brawler. 0 = off. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Brawler", meta=(ClampMin="0"))
+	float FakeWeightKg = 120.f;
+
+	/** The torque fades out as the boat's lean toward the brawler reaches this (deg): it can never push past it. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Brawler", meta=(ClampMin="0", ClampMax="15"))
+	float MaxFakeTiltDeg = 4.f;
+
+	/** How fast the weight follows the brawler's position (1/s); also how fast it fades when driving/overboard. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Brawler", meta=(ClampMin="0.1"))
+	float FakeTiltFollowSpeed = 3.f;
+
+	// --- Paddle (step 2) ---
+	/** Hold time (s) below which a release is a light swing. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float ChargeMinTime = 0.2f;
+
+	/** Hold time (s) for a full-strength charged swing. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.05"))
+	float ChargeFullTime = 0.8f;
+
+	/** Strength (0..1) of a light swing; charged swings go from ChargedMinStrength to 1. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0", ClampMax="1"))
+	float LightStrength = 0.35f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0", ClampMax="1"))
+	float ChargedMinStrength = 0.55f;
+
+	/** Swing arc duration (s) for light / full-charge swings. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.05"))
+	float LightSwingTime = 0.22f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.05"))
+	float ChargedSwingTime = 0.3f;
+
+	/** Blade sweep sphere radius (cm). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="1"))
+	float PaddleHitRadius = 28.f;
+
+	/** Knockback (cm/s) at strength 0 and 1 for a hit that stays in the boat. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float KnockbackMin = 180.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float KnockbackMax = 320.f;
+
+	/** At or above this strength the victim goes overboard (charged hits). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0", ClampMax="1"))
+	float OverboardStrength = 0.75f;
+
+	/** Victims standing within this distance of the side (cm from the hull centreline beyond which = "near the gunwale") go
+	 *  overboard from any hit. The floor is ~36 cm each side of the centreline. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float GunwaleNearY = 20.f;
+
+	/** Overboard launch: horizontal (cm/s) and upward (cm/s) velocity. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float OverboardSpeed = 450.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float OverboardPop = 520.f;
+
+	/** Stun (s) at strength 0 and 1: no moving or swinging. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float StunMin = 0.4f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float StunMax = 1.0f;
+
+	/** Velocity change (cm/s) at the hit point when the paddle hits another boat's hull, at strength 1. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float HullHitImpulse = 120.f;
+
+	/** Temporary until swimming (step 3): an overboard brawler is put back in its boat after this (s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float OverboardResetDelay = 2.5f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	TObjectPtr<UNiagaraSystem> SplashSystem;
+
+	// --- Hit feedback (REAL time, like the boat camera in T01.3) ---
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.01", ClampMax="1"))
+	float HitstopDilation = 0.05f;
+
+	/** Hitstop (real s) at strength 0 and 1. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float HitstopMinTime = 0.04f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float HitstopMaxTime = 0.09f;
+
+	/** Camera shake: one decaying sine, restarted per hit. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.01"))
+	float ShakeDuration = 0.25f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float ShakeAmplitude = 8.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float ShakeFrequency = 14.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float FovPunchDeg = 4.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.01"))
+	float FovPunchTime = 0.25f;
 
 	// --- Camera (third person, frames brawler + boat; real-time lag like the boat camera) ---
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0", ClampMax="1"))
@@ -94,6 +215,9 @@ public:
 	UFUNCTION(BlueprintPure, Category="LF|Brawler")
 	ALFBoat* GetBoat() const { return Boat.Get(); }
 
+	UFUNCTION(BlueprintPure, Category="LF|Brawler")
+	bool IsStunned() const;
+
 	/** Put the brawler standing on the boat floor at the driver seat spot. */
 	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
 	void StandInBoat(ALFBoat* InBoat);
@@ -105,6 +229,25 @@ public:
 	/** Driving -> Standing; the PlayerController possesses the brawler again. */
 	UFUNCTION(BlueprintCallable, Category="LF|Brawler")
 	void LeaveDriving();
+
+	/** Debug console: swing now with this strength (0..1, <0 = light). Works while standing. */
+	UFUNCTION(Exec)
+	void LFSwing(float Strength = -1.f);
+
+	/** Debug console: toggle drive/stand (same as Interact). */
+	UFUNCTION(Exec)
+	void LFDrive();
+
+	/** Paddle hit received. Dir = horizontal direction from the attacker. Returns true if it knocked us overboard. */
+	bool ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, float Strength);
+
+	/** Audio/FX hook: our paddle hit a brawler (Victim) or a hull (Victim null). */
+	UFUNCTION(BlueprintImplementableEvent, Category="LF|Brawler")
+	void OnPaddleHit(ALFBrawler* Victim, float Strength, bool bOverboard);
+
+	/** Audio/FX hook: we hit the water. */
+	UFUNCTION(BlueprintImplementableEvent, Category="LF|Brawler")
+	void OnSplashIn(FVector Location);
 
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
@@ -122,13 +265,30 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="LF|Camera")
 	TObjectPtr<UCameraComponent> Camera;
 
+	/** Shoulder pivot the paddle swings around (procedural placeholder animation). */
+	UPROPERTY(VisibleAnywhere, Category="LF|Paddle")
+	TObjectPtr<USceneComponent> PaddlePivot;
+
+	/** SM_LF_Paddle: origin at the grip, blade along +X. */
+	UPROPERTY(VisibleAnywhere, Category="LF|Paddle")
+	TObjectPtr<UStaticMeshComponent> Paddle;
+
 	void OnMove(const FInputActionValue& Value);
 	void OnLook(const FInputActionValue& Value);
 	void OnInteract();
+	void OnSwingPressed();
+	void OnSwingReleased();
 
 	void SetBoatMovementRules(bool bInBoat);
 	void UpdateSway(float DeltaSeconds);
+	void UpdateFakeWeight(float DeltaSeconds);
+	void UpdatePaddle(float DeltaSeconds);
+	void SweepPaddle();
+	void UpdateRagdoll(float DeltaSeconds);
 	void UpdateCamera(float RealDelta);
+	void PlayHitFeedback(float Strength);
+	void StartHitstop(float Strength);
+	FVector GetBladePoint() const;
 
 	ELFBrawlerState State = ELFBrawlerState::None;
 	TWeakObjectPtr<ALFBoat> Boat;
@@ -136,4 +296,28 @@ private:
 	FRotator MeshBaseRotation = FRotator(0.f, -90.f, 0.f);
 	FVector CameraPivot = FVector::ZeroVector;
 	bool bCameraPivotInit = false;
+
+	FVector FakeWeightOffset = FVector::ZeroVector; // smoothed horizontal offset from the hull CoM (cm)
+
+	ELFSwingPhase SwingPhase = ELFSwingPhase::Idle;
+	float SwingAge = 0.f;
+	float SwingDuration = 0.2f;
+	float SwingStrength = 0.f;
+	double ChargeStartTime = 0.0;
+	bool bSwingHit = false;      // one victim per swing
+	bool bHullHit = false;       // one hull per swing
+	FVector PrevBladePoint = FVector::ZeroVector;
+	FRotator PaddleRot = FRotator::ZeroRotator;
+
+	double StunUntil = -1.0;
+	double RagdollStart = 0.0;
+	bool bInWater = false;
+	FVector TumbleAxis = FVector::ForwardVector;
+	float TumbleAngle = 0.f;
+
+	float ShakeAge = -1.f;
+	float ShakeStrength = 0.f;
+	float FovPunchAge = -1.f;
+	float FovPunchStrength = 0.f;
+	float BaseFov = 80.f;
 };
