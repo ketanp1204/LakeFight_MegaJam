@@ -1,0 +1,8 @@
+{
+  "asset_double_runs": true,
+  "review_double_runs": true,
+  "validation_double_runs": true,
+  "fbx_roundtrip_assets": 20,
+  "target_mannequin_height_m": 1.35,
+  "authored_scale_vs_original": 0.75
+}

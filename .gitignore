@@ -23,3 +23,10 @@ __pycache__/
 
 # Playtest evidence folder
 Playtest/
+
+# Audio and Art sources
+Audio/Source/
+Art/Source/
+Tools/audio/.venv/
+Tools/audio/.work/
+Tools/audio/.tmp/

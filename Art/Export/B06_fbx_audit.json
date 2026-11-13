@@ -1,0 +1,1138 @@
+{
+  "SM_LF_Rowboat": {
+    "render_tris_before": 1214,
+    "render_tris_after": 1214,
+    "render_geometry_and_materials_identical": true,
+    "render_signature_sha256": "45b391a003f212dcf1c0155d6f4a739163550ce86be02dd4a770c1c6b13b5e1e",
+    "floor_00_identical": true,
+    "stern_05_identical": true,
+    "ucx_pieces": {
+      "0": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 1.4901161193847656e-08,
+        "volume_m3": 0.23191737463732148,
+        "material_slots": 0
+      },
+      "1": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 6.815032804752263e-08,
+        "volume_m3": 0.05700475843219412,
+        "material_slots": 0
+      },
+      "2": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 3.128187486822753e-08,
+        "volume_m3": 0.057004761320597654,
+        "material_slots": 0
+      },
+      "3": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 5.587935447692871e-08,
+        "volume_m3": 0.024536557842317105,
+        "material_slots": 0
+      },
+      "4": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.568167686462402e-08,
+        "volume_m3": 0.024536547763718636,
+        "material_slots": 0
+      },
+      "5": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 2.980232327587373e-08,
+        "volume_m3": 0.03833500323110023,
+        "material_slots": 0
+      },
+      "6": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5041557333006494e-08,
+        "volume_m3": 0.04274137383012917,
+        "material_slots": 0
+      },
+      "7": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 2.9802322387695312e-08,
+        "volume_m3": 0.04274137809959673,
+        "material_slots": 0
+      },
+      "8": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5894572131299606e-07,
+        "volume_m3": 0.005776175944197569,
+        "material_slots": 0
+      },
+      "9": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 4.668254405260086e-08,
+        "volume_m3": 0.005776173786071814,
+        "material_slots": 0
+      },
+      "10": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.1749921924320006e-07,
+        "volume_m3": 0.004887810076936995,
+        "material_slots": 0
+      },
+      "11": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.265487849712372e-08,
+        "volume_m3": 0.004887812488001979,
+        "material_slots": 0
+      }
+    },
+    "ucx_count": 12,
+    "ucx_tris_before": 72,
+    "ucx_tris_after": 232,
+    "maximum_ucx_vertices": 14,
+    "inner_faces": {
+      "1": {
+        "original_piece": 1,
+        "replacement_pieces": [
+          1,
+          6
+        ],
+        "normal": [
+          1.5930815777664975e-07,
+          -0.9816271662712097,
+          -0.19080905616283417
+        ],
+        "offset": 0.4664517832746071,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.5641895717853913e-08,
+        "old_inner_face_area_m2": 0.949399914592527,
+        "new_inner_face_area_m2": 0.9493999774467028,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.4917045591575376,
+          "1.185": -0.49170436684402646,
+          "1.45": -0.4917043238372075
+        }
+      },
+      "2": {
+        "original_piece": 2,
+        "replacement_pieces": [
+          2,
+          7
+        ],
+        "normal": [
+          -1.5930815777664975e-07,
+          0.9816271662712097,
+          -0.19080911576747894
+        ],
+        "offset": 0.4664517892072695,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.7504547972512228e-08,
+        "old_inner_face_area_m2": 0.9494000598788487,
+        "new_inner_face_area_m2": 0.9494000996746705,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.49170457036246096,
+          "1.185": 0.4917047626759721,
+          "1.45": 0.491704805682791
+        }
+      },
+      "3": {
+        "original_piece": 3,
+        "replacement_pieces": [
+          3,
+          8
+        ],
+        "normal": [
+          0.5252218842506409,
+          -0.8292973041534424,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015183478594,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 4.0978193283081055e-08,
+        "old_inner_face_area_m2": 0.5766915120184422,
+        "new_inner_face_area_m2": 0.5766914657207407,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.9343094228184543,
+          "1.185": -0.18380905374713402,
+          "1.45": -0.015975637878864166
+        }
+      },
+      "4": {
+        "original_piece": 4,
+        "replacement_pieces": [
+          4,
+          9
+        ],
+        "normal": [
+          0.525221586227417,
+          0.8292974233627319,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015071719885,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.0489096641540527e-08,
+        "old_inner_face_area_m2": 0.5766914505511522,
+        "new_inner_face_area_m2": 0.5766914797688694,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.9343092750376583,
+          "1.185": 0.18380943970022348,
+          "1.45": 0.015976143190164403
+        }
+      }
+    },
+    "added_aft_pieces_behind_original_floor": true,
+    "aft_extension_max_x_m": -1.279999852180481,
+    "original_floor_min_x_m": -1.149999976158142,
+    "fit": {
+      "metric": "top-down outside envelope, visible wood hull/gunwale; metal hardware excluded",
+      "max_absolute_gap_m": 0.008783546398666742,
+      "worst": {
+        "x_m": 0.7099111080169678,
+        "side": "port",
+        "visible_abs_y_m": 0.5568656054033962,
+        "collision_abs_y_m": 0.565649151802063,
+        "signed_error_m": 0.008783546398666742
+      },
+      "maximum_outward_m": 0.008783546398666742,
+      "maximum_inward_m": 1.4028849748548566e-08,
+      "critical_samples": 52
+    },
+    "outline_y_table": [
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "port",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "port",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "port",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "port",
+        "visible_abs_y_m": 0.016486987871430325,
+        "before_outer_abs_y_m": 0.10173809928146571,
+        "after_outer_abs_y_m": 0.016487023114018395
+      },
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "starboard",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "starboard",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "starboard",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "starboard",
+        "visible_abs_y_m": 0.01648698787143034,
+        "before_outer_abs_y_m": 0.10173809928146568,
+        "after_outer_abs_y_m": 0.016487023114018395
+      }
+    ],
+    "fbx_sha256": "e7f507ce6d280525d977d9ea155c935bacee98ac31f3c3ebeec8d46d9180cb70"
+  },
+  "SM_LF_Rowboat_Blue": {
+    "render_tris_before": 1214,
+    "render_tris_after": 1214,
+    "render_geometry_and_materials_identical": true,
+    "render_signature_sha256": "b148b230c44e5cb5fa97b166ecad40a1dec849096a6a79b17e8d5d4f55315c4d",
+    "floor_00_identical": true,
+    "stern_05_identical": true,
+    "ucx_pieces": {
+      "0": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 1.4901161193847656e-08,
+        "volume_m3": 0.23191737463732148,
+        "material_slots": 0
+      },
+      "1": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 6.815032804752263e-08,
+        "volume_m3": 0.05700475843219412,
+        "material_slots": 0
+      },
+      "2": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 3.128187486822753e-08,
+        "volume_m3": 0.057004761320597654,
+        "material_slots": 0
+      },
+      "3": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 5.587935447692871e-08,
+        "volume_m3": 0.024536557842317105,
+        "material_slots": 0
+      },
+      "4": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.568167686462402e-08,
+        "volume_m3": 0.024536547763718636,
+        "material_slots": 0
+      },
+      "5": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 2.980232327587373e-08,
+        "volume_m3": 0.03833500323110023,
+        "material_slots": 0
+      },
+      "6": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5041557333006494e-08,
+        "volume_m3": 0.04274137383012917,
+        "material_slots": 0
+      },
+      "7": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 2.9802322387695312e-08,
+        "volume_m3": 0.04274137809959673,
+        "material_slots": 0
+      },
+      "8": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5894572131299606e-07,
+        "volume_m3": 0.005776175944197569,
+        "material_slots": 0
+      },
+      "9": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 4.668254405260086e-08,
+        "volume_m3": 0.005776173786071814,
+        "material_slots": 0
+      },
+      "10": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.1749921924320006e-07,
+        "volume_m3": 0.004887810076936995,
+        "material_slots": 0
+      },
+      "11": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.265487849712372e-08,
+        "volume_m3": 0.004887812488001979,
+        "material_slots": 0
+      }
+    },
+    "ucx_count": 12,
+    "ucx_tris_before": 72,
+    "ucx_tris_after": 232,
+    "maximum_ucx_vertices": 14,
+    "inner_faces": {
+      "1": {
+        "original_piece": 1,
+        "replacement_pieces": [
+          1,
+          6
+        ],
+        "normal": [
+          1.5930815777664975e-07,
+          -0.9816271662712097,
+          -0.19080905616283417
+        ],
+        "offset": 0.4664517832746071,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.5641895717853913e-08,
+        "old_inner_face_area_m2": 0.949399914592527,
+        "new_inner_face_area_m2": 0.9493999774467028,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.4917045591575376,
+          "1.185": -0.49170436684402646,
+          "1.45": -0.4917043238372075
+        }
+      },
+      "2": {
+        "original_piece": 2,
+        "replacement_pieces": [
+          2,
+          7
+        ],
+        "normal": [
+          -1.5930815777664975e-07,
+          0.9816271662712097,
+          -0.19080911576747894
+        ],
+        "offset": 0.4664517892072695,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.7504547972512228e-08,
+        "old_inner_face_area_m2": 0.9494000598788487,
+        "new_inner_face_area_m2": 0.9494000996746705,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.49170457036246096,
+          "1.185": 0.4917047626759721,
+          "1.45": 0.491704805682791
+        }
+      },
+      "3": {
+        "original_piece": 3,
+        "replacement_pieces": [
+          3,
+          8
+        ],
+        "normal": [
+          0.5252218842506409,
+          -0.8292973041534424,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015183478594,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 4.0978193283081055e-08,
+        "old_inner_face_area_m2": 0.5766915120184422,
+        "new_inner_face_area_m2": 0.5766914657207407,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.9343094228184543,
+          "1.185": -0.18380905374713402,
+          "1.45": -0.015975637878864166
+        }
+      },
+      "4": {
+        "original_piece": 4,
+        "replacement_pieces": [
+          4,
+          9
+        ],
+        "normal": [
+          0.525221586227417,
+          0.8292974233627319,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015071719885,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.0489096641540527e-08,
+        "old_inner_face_area_m2": 0.5766914505511522,
+        "new_inner_face_area_m2": 0.5766914797688694,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.9343092750376583,
+          "1.185": 0.18380943970022348,
+          "1.45": 0.015976143190164403
+        }
+      }
+    },
+    "added_aft_pieces_behind_original_floor": true,
+    "aft_extension_max_x_m": -1.279999852180481,
+    "original_floor_min_x_m": -1.149999976158142,
+    "fit": {
+      "metric": "top-down outside envelope, visible wood hull/gunwale; metal hardware excluded",
+      "max_absolute_gap_m": 0.008783546398666742,
+      "worst": {
+        "x_m": 0.7099111080169678,
+        "side": "port",
+        "visible_abs_y_m": 0.5568656054033962,
+        "collision_abs_y_m": 0.565649151802063,
+        "signed_error_m": 0.008783546398666742
+      },
+      "maximum_outward_m": 0.008783546398666742,
+      "maximum_inward_m": 1.4028849748548566e-08,
+      "critical_samples": 52
+    },
+    "outline_y_table": [
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "port",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "port",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "port",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "port",
+        "visible_abs_y_m": 0.016486987871430325,
+        "before_outer_abs_y_m": 0.10173809928146571,
+        "after_outer_abs_y_m": 0.016487023114018395
+      },
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "starboard",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "starboard",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "starboard",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "starboard",
+        "visible_abs_y_m": 0.01648698787143034,
+        "before_outer_abs_y_m": 0.10173809928146568,
+        "after_outer_abs_y_m": 0.016487023114018395
+      }
+    ],
+    "fbx_sha256": "a33c189852cedf54f628c6bf2c8071df7d5bfd0476f8068b623ea4243fabb0ab"
+  },
+  "SM_LF_Rowboat_Green": {
+    "render_tris_before": 1214,
+    "render_tris_after": 1214,
+    "render_geometry_and_materials_identical": true,
+    "render_signature_sha256": "a66e2fbe8540d8d919e140001f8521c01de6e7c09872a3cdfaf681a0d64626f8",
+    "floor_00_identical": true,
+    "stern_05_identical": true,
+    "ucx_pieces": {
+      "0": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 1.4901161193847656e-08,
+        "volume_m3": 0.23191737463732148,
+        "material_slots": 0
+      },
+      "1": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 6.815032804752263e-08,
+        "volume_m3": 0.05700475843219412,
+        "material_slots": 0
+      },
+      "2": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 3.128187486822753e-08,
+        "volume_m3": 0.057004761320597654,
+        "material_slots": 0
+      },
+      "3": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 5.587935447692871e-08,
+        "volume_m3": 0.024536557842317105,
+        "material_slots": 0
+      },
+      "4": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.568167686462402e-08,
+        "volume_m3": 0.024536547763718636,
+        "material_slots": 0
+      },
+      "5": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 2.980232327587373e-08,
+        "volume_m3": 0.03833500323110023,
+        "material_slots": 0
+      },
+      "6": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5041557333006494e-08,
+        "volume_m3": 0.04274137383012917,
+        "material_slots": 0
+      },
+      "7": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 2.9802322387695312e-08,
+        "volume_m3": 0.04274137809959673,
+        "material_slots": 0
+      },
+      "8": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5894572131299606e-07,
+        "volume_m3": 0.005776175944197569,
+        "material_slots": 0
+      },
+      "9": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 4.668254405260086e-08,
+        "volume_m3": 0.005776173786071814,
+        "material_slots": 0
+      },
+      "10": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.1749921924320006e-07,
+        "volume_m3": 0.004887810076936995,
+        "material_slots": 0
+      },
+      "11": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.265487849712372e-08,
+        "volume_m3": 0.004887812488001979,
+        "material_slots": 0
+      }
+    },
+    "ucx_count": 12,
+    "ucx_tris_before": 72,
+    "ucx_tris_after": 232,
+    "maximum_ucx_vertices": 14,
+    "inner_faces": {
+      "1": {
+        "original_piece": 1,
+        "replacement_pieces": [
+          1,
+          6
+        ],
+        "normal": [
+          1.5930815777664975e-07,
+          -0.9816271662712097,
+          -0.19080905616283417
+        ],
+        "offset": 0.4664517832746071,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.5641895717853913e-08,
+        "old_inner_face_area_m2": 0.949399914592527,
+        "new_inner_face_area_m2": 0.9493999774467028,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.4917045591575376,
+          "1.185": -0.49170436684402646,
+          "1.45": -0.4917043238372075
+        }
+      },
+      "2": {
+        "original_piece": 2,
+        "replacement_pieces": [
+          2,
+          7
+        ],
+        "normal": [
+          -1.5930815777664975e-07,
+          0.9816271662712097,
+          -0.19080911576747894
+        ],
+        "offset": 0.4664517892072695,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.7504547972512228e-08,
+        "old_inner_face_area_m2": 0.9494000598788487,
+        "new_inner_face_area_m2": 0.9494000996746705,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.49170457036246096,
+          "1.185": 0.4917047626759721,
+          "1.45": 0.491704805682791
+        }
+      },
+      "3": {
+        "original_piece": 3,
+        "replacement_pieces": [
+          3,
+          8
+        ],
+        "normal": [
+          0.5252218842506409,
+          -0.8292973041534424,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015183478594,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 4.0978193283081055e-08,
+        "old_inner_face_area_m2": 0.5766915120184422,
+        "new_inner_face_area_m2": 0.5766914657207407,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.9343094228184543,
+          "1.185": -0.18380905374713402,
+          "1.45": -0.015975637878864166
+        }
+      },
+      "4": {
+        "original_piece": 4,
+        "replacement_pieces": [
+          4,
+          9
+        ],
+        "normal": [
+          0.525221586227417,
+          0.8292974233627319,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015071719885,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.0489096641540527e-08,
+        "old_inner_face_area_m2": 0.5766914505511522,
+        "new_inner_face_area_m2": 0.5766914797688694,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.9343092750376583,
+          "1.185": 0.18380943970022348,
+          "1.45": 0.015976143190164403
+        }
+      }
+    },
+    "added_aft_pieces_behind_original_floor": true,
+    "aft_extension_max_x_m": -1.279999852180481,
+    "original_floor_min_x_m": -1.149999976158142,
+    "fit": {
+      "metric": "top-down outside envelope, visible wood hull/gunwale; metal hardware excluded",
+      "max_absolute_gap_m": 0.008783546398666742,
+      "worst": {
+        "x_m": 0.7099111080169678,
+        "side": "port",
+        "visible_abs_y_m": 0.5568656054033962,
+        "collision_abs_y_m": 0.565649151802063,
+        "signed_error_m": 0.008783546398666742
+      },
+      "maximum_outward_m": 0.008783546398666742,
+      "maximum_inward_m": 1.4028849748548566e-08,
+      "critical_samples": 52
+    },
+    "outline_y_table": [
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "port",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "port",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "port",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "port",
+        "visible_abs_y_m": 0.016486987871430325,
+        "before_outer_abs_y_m": 0.10173809928146571,
+        "after_outer_abs_y_m": 0.016487023114018395
+      },
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "starboard",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "starboard",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "starboard",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "starboard",
+        "visible_abs_y_m": 0.01648698787143034,
+        "before_outer_abs_y_m": 0.10173809928146568,
+        "after_outer_abs_y_m": 0.016487023114018395
+      }
+    ],
+    "fbx_sha256": "54170120c26a639b555f86004f3e9a873b34d6613fa4839692a66a7ebd96357c"
+  },
+  "SM_LF_Rowboat_Yellow": {
+    "render_tris_before": 1214,
+    "render_tris_after": 1214,
+    "render_geometry_and_materials_identical": true,
+    "render_signature_sha256": "0dbbcedf8c33316284e237d5420bc1925c2c9d4ecd168b04fd271024c2d0ab30",
+    "floor_00_identical": true,
+    "stern_05_identical": true,
+    "ucx_pieces": {
+      "0": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 1.4901161193847656e-08,
+        "volume_m3": 0.23191737463732148,
+        "material_slots": 0
+      },
+      "1": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 6.815032804752263e-08,
+        "volume_m3": 0.05700475843219412,
+        "material_slots": 0
+      },
+      "2": {
+        "vertices": 14,
+        "triangles": 24,
+        "convex": true,
+        "max_plane_violation_m": 3.128187486822753e-08,
+        "volume_m3": 0.057004761320597654,
+        "material_slots": 0
+      },
+      "3": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 5.587935447692871e-08,
+        "volume_m3": 0.024536557842317105,
+        "material_slots": 0
+      },
+      "4": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.568167686462402e-08,
+        "volume_m3": 0.024536547763718636,
+        "material_slots": 0
+      },
+      "5": {
+        "vertices": 8,
+        "triangles": 12,
+        "convex": true,
+        "max_plane_violation_m": 2.980232327587373e-08,
+        "volume_m3": 0.03833500323110023,
+        "material_slots": 0
+      },
+      "6": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5041557333006494e-08,
+        "volume_m3": 0.04274137383012917,
+        "material_slots": 0
+      },
+      "7": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 2.9802322387695312e-08,
+        "volume_m3": 0.04274137809959673,
+        "material_slots": 0
+      },
+      "8": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.5894572131299606e-07,
+        "volume_m3": 0.005776175944197569,
+        "material_slots": 0
+      },
+      "9": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 4.668254405260086e-08,
+        "volume_m3": 0.005776173786071814,
+        "material_slots": 0
+      },
+      "10": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 1.1749921924320006e-07,
+        "volume_m3": 0.004887810076936995,
+        "material_slots": 0
+      },
+      "11": {
+        "vertices": 12,
+        "triangles": 20,
+        "convex": true,
+        "max_plane_violation_m": 8.265487849712372e-08,
+        "volume_m3": 0.004887812488001979,
+        "material_slots": 0
+      }
+    },
+    "ucx_count": 12,
+    "ucx_tris_before": 72,
+    "ucx_tris_after": 232,
+    "maximum_ucx_vertices": 14,
+    "inner_faces": {
+      "1": {
+        "original_piece": 1,
+        "replacement_pieces": [
+          1,
+          6
+        ],
+        "normal": [
+          1.5930815777664975e-07,
+          -0.9816271662712097,
+          -0.19080905616283417
+        ],
+        "offset": 0.4664517832746071,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.5641895717853913e-08,
+        "old_inner_face_area_m2": 0.949399914592527,
+        "new_inner_face_area_m2": 0.9493999774467028,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.4917045591575376,
+          "1.185": -0.49170436684402646,
+          "1.45": -0.4917043238372075
+        }
+      },
+      "2": {
+        "original_piece": 2,
+        "replacement_pieces": [
+          2,
+          7
+        ],
+        "normal": [
+          -1.5930815777664975e-07,
+          0.9816271662712097,
+          -0.19080911576747894
+        ],
+        "offset": 0.4664517892072695,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.7504547972512228e-08,
+        "old_inner_face_area_m2": 0.9494000598788487,
+        "new_inner_face_area_m2": 0.9494000996746705,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.49170457036246096,
+          "1.185": 0.4917047626759721,
+          "1.45": 0.491704805682791
+        }
+      },
+      "3": {
+        "original_piece": 3,
+        "replacement_pieces": [
+          3,
+          8
+        ],
+        "normal": [
+          0.5252218842506409,
+          -0.8292973041534424,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015183478594,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 4.0978193283081055e-08,
+        "old_inner_face_area_m2": 0.5766915120184422,
+        "new_inner_face_area_m2": 0.5766914657207407,
+        "analytic_inner_y_at_z085_m": {
+          "0": -0.9343094228184543,
+          "1.185": -0.18380905374713402,
+          "1.45": -0.015975637878864166
+        }
+      },
+      "4": {
+        "original_piece": 4,
+        "replacement_pieces": [
+          4,
+          9
+        ],
+        "normal": [
+          0.525221586227417,
+          0.8292974233627319,
+          -0.19080902636051178
+        ],
+        "offset": 0.7586015071719885,
+        "max_original_corner_displacement_m": 0.0,
+        "max_inward_plane_intrusion_m": 2.0489096641540527e-08,
+        "old_inner_face_area_m2": 0.5766914505511522,
+        "new_inner_face_area_m2": 0.5766914797688694,
+        "analytic_inner_y_at_z085_m": {
+          "0": 0.9343092750376583,
+          "1.185": 0.18380943970022348,
+          "1.45": 0.015976143190164403
+        }
+      }
+    },
+    "added_aft_pieces_behind_original_floor": true,
+    "aft_extension_max_x_m": -1.279999852180481,
+    "original_floor_min_x_m": -1.149999976158142,
+    "fit": {
+      "metric": "top-down outside envelope, visible wood hull/gunwale; metal hardware excluded",
+      "max_absolute_gap_m": 0.008783546398666742,
+      "worst": {
+        "x_m": 0.7099111080169678,
+        "side": "port",
+        "visible_abs_y_m": 0.5568656054033962,
+        "collision_abs_y_m": 0.565649151802063,
+        "signed_error_m": 0.008783546398666742
+      },
+      "maximum_outward_m": 0.008783546398666742,
+      "maximum_inward_m": 1.4028849748548566e-08,
+      "critical_samples": 52
+    },
+    "outline_y_table": [
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "port",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "port",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "port",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "port",
+        "visible_abs_y_m": 0.016486987871430325,
+        "before_outer_abs_y_m": 0.10173809928146571,
+        "after_outer_abs_y_m": 0.016487023114018395
+      },
+      {
+        "station": "amidships",
+        "x_m": 0,
+        "side": "starboard",
+        "visible_abs_y_m": 0.6684019279047474,
+        "before_outer_abs_y_m": 0.6215593218803406,
+        "after_outer_abs_y_m": 0.6684019460135622
+      },
+      {
+        "station": "three-quarter forward",
+        "x_m": 1.185,
+        "side": "starboard",
+        "visible_abs_y_m": 0.32483242175539695,
+        "before_outer_abs_y_m": 0.3519047939765098,
+        "after_outer_abs_y_m": 0.32483244150846413
+      },
+      {
+        "station": "bow",
+        "x_m": 1.45,
+        "side": "starboard",
+        "visible_abs_y_m": 0.1295304306711168,
+        "before_outer_abs_y_m": 0.1840714418393284,
+        "after_outer_abs_y_m": 0.12953045243725653
+      },
+      {
+        "station": "near stem",
+        "x_m": 1.58,
+        "side": "starboard",
+        "visible_abs_y_m": 0.01648698787143034,
+        "before_outer_abs_y_m": 0.10173809928146568,
+        "after_outer_abs_y_m": 0.016487023114018395
+      }
+    ],
+    "fbx_sha256": "58cbfd0e4f615f4e0bca948280fc16a715387406bd6e6ec2a627dfff1d10c9e8"
+  }
+}

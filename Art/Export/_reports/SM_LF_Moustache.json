@@ -1,0 +1,61 @@
+{
+  "asset": "SM_LF_Moustache",
+  "tris": 112,
+  "limit_exclusive": 600,
+  "bounds_min_m": [
+    0.10106250643730164,
+    -0.12168809026479721,
+    0.02475079335272312
+  ],
+  "bounds_max_m": [
+    0.13817210495471954,
+    0.12168809026479721,
+    0.10409163683652878
+  ],
+  "size_m": [
+    0.03710959851741791,
+    0.24337618052959442,
+    0.07934084348380566
+  ],
+  "origin": "assumed head pivot; baked offset",
+  "attachment": {
+    "bone": "head",
+    "proxy_pivot_m": [
+      0.0,
+      0.0,
+      1.1925000000000001
+    ],
+    "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+    "preview_relative_location_cm": [
+      0,
+      0,
+      0
+    ],
+    "preview_relative_rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "baked_mesh_offset": "Upper-lip centre approximately +11.25cm X,+5.55cm Z from assumed head pivot, curl span approximately 24.3cm.",
+    "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+    "authored_size_scale": 0.75,
+    "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+  },
+  "palette": [
+    "M_LF_WoodDark"
+  ],
+  "material_linear": {
+    "M_LF_WoodDark": [
+      0.2800000011920929,
+      0.17000000178813934,
+      0.09000000357627869
+    ]
+  },
+  "team": null,
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "5e6e95c812cb30b8b40fde3cff6c8a3b5adeaf4b703cd70b07de6c48d127d2bf",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Moustache.fbx",
+  "notes": "Two tapered six-sided curled handlebars; WoodDark matches beard. Separate face piece for optional combination."
+}

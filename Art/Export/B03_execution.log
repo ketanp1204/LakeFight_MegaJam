@@ -1,0 +1,152 @@
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed_v1.fbx'
+export finished in 0.0067 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed_v1.fbx tris=2996
+[B02] {"asset": "SM_LF_ReedBed_v1", "bounds_max_m": [2.000518, 1.500825, 1.8], "bounds_min_m": [-2.000544, -1.500814, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed_v1.fbx", "geometry_sha256": "1e64082616ea7e3e832ec6021f7d7468b14d443f62c3db79d19113cd3cc36c22", "limit_exclusive": 3000, "nonmanifold_edges": 0, "notes": "Thirty stems, eighteen seed heads and 180 leaves retained. Every leaf rebuilt to final-world 10 mm solid thickness; two broadest blade tips chamfered; envelope grows slightly with final thickness.", "objects": ["SM_LF_ReedBed_v1"], "origin": "base centre", "palette": ["M_LF_Reed", "M_LF_WoodDark"], "size_m": [4.001063, 3.001639, 1.8], "tris": 2996}
+[LEAF MEASURED] {'count': 180, 'thickness_min_m': 0.00999985623639077, 'thickness_max_m': 0.010000092326663435, 'smallest_leaf_volume_m3': 0.0010992417088709773, 'largest_leaf_volume_m3': 0.0018626572136417963, 'leaf_triangles': 2168, 'side_wall_triangles': 1448, 'chamfered_blades': 2}
+[B02.1] ReedBed side-screen probe: {'hits': 637, 'samples': 671, 'occlusion_fraction': 0.9493, 'window': '3 m wide x Z=0.10..0.55 m; rays from -Y through bed'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed_v1.fbx'
+export finished in 0.0061 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed_v1.fbx tris=2996
+[B02] {"asset": "SM_LF_ReedBed_v1", "bounds_max_m": [2.000518, 1.500825, 1.8], "bounds_min_m": [-2.000544, -1.500814, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed_v1.fbx", "geometry_sha256": "1e64082616ea7e3e832ec6021f7d7468b14d443f62c3db79d19113cd3cc36c22", "limit_exclusive": 3000, "nonmanifold_edges": 0, "notes": "Thirty stems, eighteen seed heads and 180 leaves retained. Every leaf rebuilt to final-world 10 mm solid thickness; two broadest blade tips chamfered; envelope grows slightly with final thickness.", "objects": ["SM_LF_ReedBed_v1"], "origin": "base centre", "palette": ["M_LF_Reed", "M_LF_WoodDark"], "size_m": [4.001063, 3.001639, 1.8], "tris": 2996}
+[LEAF MEASURED] {'count': 180, 'thickness_min_m': 0.00999985623639077, 'thickness_max_m': 0.010000092326663435, 'smallest_leaf_volume_m3': 0.0010992417088709773, 'largest_leaf_volume_m3': 0.0018626572136417963, 'leaf_triangles': 2168, 'side_wall_triangles': 1448, 'chamfered_blades': 2}
+[B02.1] ReedBed side-screen probe: {'hits': 637, 'samples': 671, 'occlusion_fraction': 0.9493, 'window': '3 m wide x Z=0.10..0.55 m; rays from -Y through bed'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0073 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.832936, 1.376575, 1.799318], "bounds_min_m": [-1.832936, -1.376575, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "e7b9de035d54742e1c3d515eda4e44e6c6c1959d47fbfdb1ff4b4c9b13dc839d", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 180 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.665871, 2.753151, 1.799318], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2145, 'samples': 2299, 'fraction': 0.93301}, '1Y': {'hits': 2145, 'samples': 2299, 'fraction': 0.93301}}}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0063 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.832936, 1.376575, 1.799318], "bounds_min_m": [-1.832936, -1.376575, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "e7b9de035d54742e1c3d515eda4e44e6c6c1959d47fbfdb1ff4b4c9b13dc839d", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 180 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.665871, 2.753151, 1.799318], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2145, 'samples': 2299, 'fraction': 0.93301}, '1Y': {'hits': 2145, 'samples': 2299, 'fraction': 0.93301}}}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_Straight.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Shore_Straight.fbx tris=66
+[B02] {"asset": "SM_LF_Shore_Straight", "bounds_max_m": [4.0, 3.0, 0.6], "bounds_min_m": [-4.0, -3.0, -1.25], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_Straight.fbx", "geometry_sha256": "a886a3bd12793ba1a4c6c033ca786132aed4d52b48c7c4e68009849f4debdf23", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "8m straight or R4m quarter-turn. Shared profile: underwater toe Z=-1, waterline Z=0, grass Z=0.42..0.60. Buried closing sole Z=-1.25; end caps are hidden by adjoining modules.", "objects": ["SM_LF_Shore_Straight"], "origin": "Z=0 waterline; straight midpoint / corner arc centre", "palette": ["M_LF_Moss", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [8.0, 6.0, 1.85], "tris": 66}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_Straight.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Shore_Straight.fbx tris=66
+[B02] {"asset": "SM_LF_Shore_Straight", "bounds_max_m": [4.0, 3.0, 0.6], "bounds_min_m": [-4.0, -3.0, -1.25], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_Straight.fbx", "geometry_sha256": "a886a3bd12793ba1a4c6c033ca786132aed4d52b48c7c4e68009849f4debdf23", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "8m straight or R4m quarter-turn. Shared profile: underwater toe Z=-1, waterline Z=0, grass Z=0.42..0.60. Buried closing sole Z=-1.25; end caps are hidden by adjoining modules.", "objects": ["SM_LF_Shore_Straight"], "origin": "Z=0 waterline; straight midpoint / corner arc centre", "palette": ["M_LF_Moss", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [8.0, 6.0, 1.85], "tris": 66}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerOut.fbx'
+export finished in 0.0139 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Shore_CornerOut.fbx tris=122
+[B02] {"asset": "SM_LF_Shore_CornerOut", "bounds_max_m": [7.0, 7.0, 0.6], "bounds_min_m": [0.0, 0.0, -1.25], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerOut.fbx", "geometry_sha256": "29eef02ba38decce072b9d0ab3eb19222d169284140a1088ac60f29147b04dcb", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "8m straight or R4m quarter-turn. Shared profile: underwater toe Z=-1, waterline Z=0, grass Z=0.42..0.60. Buried closing sole Z=-1.25; end caps are hidden by adjoining modules.", "objects": ["SM_LF_Shore_CornerOut"], "origin": "Z=0 waterline; straight midpoint / corner arc centre", "palette": ["M_LF_Moss", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [7.0, 7.0, 1.85], "tris": 122}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerOut.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Shore_CornerOut.fbx tris=122
+[B02] {"asset": "SM_LF_Shore_CornerOut", "bounds_max_m": [7.0, 7.0, 0.6], "bounds_min_m": [0.0, 0.0, -1.25], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerOut.fbx", "geometry_sha256": "29eef02ba38decce072b9d0ab3eb19222d169284140a1088ac60f29147b04dcb", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "8m straight or R4m quarter-turn. Shared profile: underwater toe Z=-1, waterline Z=0, grass Z=0.42..0.60. Buried closing sole Z=-1.25; end caps are hidden by adjoining modules.", "objects": ["SM_LF_Shore_CornerOut"], "origin": "Z=0 waterline; straight midpoint / corner arc centre", "palette": ["M_LF_Moss", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [7.0, 7.0, 1.85], "tris": 122}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerIn.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Shore_CornerIn.fbx tris=122
+[B02] {"asset": "SM_LF_Shore_CornerIn", "bounds_max_m": [7.0, 7.0, 0.6], "bounds_min_m": [0.0, 0.0, -1.25], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerIn.fbx", "geometry_sha256": "172eba5e9781fb8d06c6788d90298b58bfe56d9f44de8eba47b57957297b2f6c", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "8m straight or R4m quarter-turn. Shared profile: underwater toe Z=-1, waterline Z=0, grass Z=0.42..0.60. Buried closing sole Z=-1.25; end caps are hidden by adjoining modules.", "objects": ["SM_LF_Shore_CornerIn"], "origin": "Z=0 waterline; straight midpoint / corner arc centre", "palette": ["M_LF_Moss", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [7.0, 7.0, 1.85], "tris": 122}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerIn.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Shore_CornerIn.fbx tris=122
+[B02] {"asset": "SM_LF_Shore_CornerIn", "bounds_max_m": [7.0, 7.0, 0.6], "bounds_min_m": [0.0, 0.0, -1.25], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerIn.fbx", "geometry_sha256": "172eba5e9781fb8d06c6788d90298b58bfe56d9f44de8eba47b57957297b2f6c", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "8m straight or R4m quarter-turn. Shared profile: underwater toe Z=-1, waterline Z=0, grass Z=0.42..0.60. Buried closing sole Z=-1.25; end caps are hidden by adjoining modules.", "objects": ["SM_LF_Shore_CornerIn"], "origin": "Z=0 waterline; straight midpoint / corner arc centre", "palette": ["M_LF_Moss", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [7.0, 7.0, 1.85], "tris": 122}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_S.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Island_S.fbx tris=126
+[B02] {"asset": "SM_LF_Island_S", "bounds_max_m": [3.0, 2.694335, 0.52], "bounds_min_m": [-3.0, -2.67617, -1.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_S.fbx", "geometry_sha256": "da1b521b2258523c1d8f8599e1955c508da88d1279485c4e9859cc20707820e3", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "Irregular low grassy crown, continuous sandy rim and sloping closed underwater toe. Diameter includes toe, not just dry land.", "objects": ["SM_LF_Island_S"], "origin": "waterline centre Z=0", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [6.0, 5.370505, 1.52], "tris": 126}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_S.fbx'
+export finished in 0.0053 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Island_S.fbx tris=126
+[B02] {"asset": "SM_LF_Island_S", "bounds_max_m": [3.0, 2.694335, 0.52], "bounds_min_m": [-3.0, -2.67617, -1.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_S.fbx", "geometry_sha256": "da1b521b2258523c1d8f8599e1955c508da88d1279485c4e9859cc20707820e3", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "Irregular low grassy crown, continuous sandy rim and sloping closed underwater toe. Diameter includes toe, not just dry land.", "objects": ["SM_LF_Island_S"], "origin": "waterline centre Z=0", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [6.0, 5.370505, 1.52], "tris": 126}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_M.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Island_M.fbx tris=158
+[B02] {"asset": "SM_LF_Island_M", "bounds_max_m": [7.0, 6.386655, 0.78], "bounds_min_m": [-7.0, -6.365771, -1.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_M.fbx", "geometry_sha256": "72cd400a15adfd5186ed6821552f88f2db12f8f424f65f42c1da503f9ae86697", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "Irregular low grassy crown, continuous sandy rim and sloping closed underwater toe. Diameter includes toe, not just dry land.", "objects": ["SM_LF_Island_M"], "origin": "waterline centre Z=0", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [14.0, 12.752426, 1.78], "tris": 158}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_M.fbx'
+export finished in 0.0047 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Island_M.fbx tris=158
+[B02] {"asset": "SM_LF_Island_M", "bounds_max_m": [7.0, 6.386655, 0.78], "bounds_min_m": [-7.0, -6.365771, -1.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_M.fbx", "geometry_sha256": "72cd400a15adfd5186ed6821552f88f2db12f8f424f65f42c1da503f9ae86697", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "Irregular low grassy crown, continuous sandy rim and sloping closed underwater toe. Diameter includes toe, not just dry land.", "objects": ["SM_LF_Island_M"], "origin": "waterline centre Z=0", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_Rope", "M_LF_WoodDark"], "size_m": [14.0, 12.752426, 1.78], "tris": 158}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LilyPads.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LilyPads.fbx tris=280
+[B02] {"asset": "SM_LF_LilyPads", "bounds_max_m": [1.177002, 0.908548, 0.098], "bounds_min_m": [-1.177002, -0.908548, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LilyPads.fbx", "geometry_sha256": "83574480c67bd33378d58f5e70fa26dd1eb5648531afba5991a2c912c900faf4", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "Eight closed 12mm flat pads with V notches, two five-petal cream flowers; no team colours.", "objects": ["SM_LF_LilyPads"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_PaintCream", "M_LF_PaintOrange", "M_LF_Reed"], "size_m": [2.354005, 1.817096, 0.098], "tris": 280}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LilyPads.fbx'
+export finished in 0.0051 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LilyPads.fbx tris=280
+[B02] {"asset": "SM_LF_LilyPads", "bounds_max_m": [1.177002, 0.908548, 0.098], "bounds_min_m": [-1.177002, -0.908548, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LilyPads.fbx", "geometry_sha256": "83574480c67bd33378d58f5e70fa26dd1eb5648531afba5991a2c912c900faf4", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "Eight closed 12mm flat pads with V notches, two five-petal cream flowers; no team colours.", "objects": ["SM_LF_LilyPads"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_PaintCream", "M_LF_PaintOrange", "M_LF_Reed"], "size_m": [2.354005, 1.817096, 0.098], "tris": 280}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Stump.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Stump.fbx tris=184
+[B02] {"asset": "SM_LF_Stump", "bounds_max_m": [0.865744, 0.838658, 0.66], "bounds_min_m": [-0.865744, -0.838658, -0.71879], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Stump.fbx", "geometry_sha256": "b2ea137a4f5aea0358d7ec428f5e44b50f623b95998fc5aed123f7e0c078d2ee", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "Broken hollow cut, pale end-grain rim, six submerged buttress roots and one snapped branch. Main trunk -0.65..+0.66m.", "objects": ["SM_LF_Stump"], "origin": "waterline centre Z=0", "palette": ["M_LF_Rope", "M_LF_Wood", "M_LF_WoodDark"], "size_m": [1.731488, 1.677317, 1.37879], "tris": 184}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Stump.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Stump.fbx tris=184
+[B02] {"asset": "SM_LF_Stump", "bounds_max_m": [0.865744, 0.838658, 0.66], "bounds_min_m": [-0.865744, -0.838658, -0.71879], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Stump.fbx", "geometry_sha256": "b2ea137a4f5aea0358d7ec428f5e44b50f623b95998fc5aed123f7e0c078d2ee", "limit_exclusive": 1000, "nonmanifold_edges": 0, "notes": "Broken hollow cut, pale end-grain rim, six submerged buttress roots and one snapped branch. Main trunk -0.65..+0.66m.", "objects": ["SM_LF_Stump"], "origin": "waterline centre Z=0", "palette": ["M_LF_Rope", "M_LF_Wood", "M_LF_WoodDark"], "size_m": [1.731488, 1.677317, 1.37879], "tris": 184}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Pine.fbx'
+export finished in 0.0051 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Tree_Pine.fbx tris=138
+[B02] {"asset": "SM_LF_Tree_Pine", "bounds_max_m": [1.4, 1.364899, 5.06], "bounds_min_m": [-1.261356, -1.364899, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Pine.fbx", "geometry_sha256": "ccc5c8c2f0b38956bde8e77c05743c0ed36a2de4f708694f93b3b81f1533c3c6", "limit_exclusive": 600, "nonmanifold_edges": 0, "notes": "Three chunky staggered seven-sided foliage skirts and visible dark trunk; 5.06m tall.", "objects": ["SM_LF_Tree_Pine"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [2.661356, 2.729798, 5.06], "tris": 138}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Pine.fbx'
+export finished in 0.0048 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Tree_Pine.fbx tris=138
+[B02] {"asset": "SM_LF_Tree_Pine", "bounds_max_m": [1.4, 1.364899, 5.06], "bounds_min_m": [-1.261356, -1.364899, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Pine.fbx", "geometry_sha256": "ccc5c8c2f0b38956bde8e77c05743c0ed36a2de4f708694f93b3b81f1533c3c6", "limit_exclusive": 600, "nonmanifold_edges": 0, "notes": "Three chunky staggered seven-sided foliage skirts and visible dark trunk; 5.06m tall.", "objects": ["SM_LF_Tree_Pine"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [2.661356, 2.729798, 5.06], "tris": 138}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Round.fbx'
+export finished in 0.0156 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Tree_Round.fbx tris=332
+[B02] {"asset": "SM_LF_Tree_Round", "bounds_max_m": [2.184398, 2.044174, 5.409506], "bounds_min_m": [-1.858464, -1.668087, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Round.fbx", "geometry_sha256": "eb62d1bc704a109513bcffdd2746996587b674dba4604a9983f77593c7db7d43", "limit_exclusive": 600, "nonmanifold_edges": 0, "notes": "Forked chunky trunk with five irregular solid faceted crowns; base at Z=0.", "objects": ["SM_LF_Tree_Round"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Wood", "M_LF_WoodDark"], "size_m": [4.042862, 3.712262, 5.409506], "tris": 332}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Round.fbx'
+export finished in 0.0049 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Tree_Round.fbx tris=332
+[B02] {"asset": "SM_LF_Tree_Round", "bounds_max_m": [2.184398, 2.044174, 5.409506], "bounds_min_m": [-1.858464, -1.668087, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Round.fbx", "geometry_sha256": "eb62d1bc704a109513bcffdd2746996587b674dba4604a9983f77593c7db7d43", "limit_exclusive": 600, "nonmanifold_edges": 0, "notes": "Forked chunky trunk with five irregular solid faceted crowns; base at Z=0.", "objects": ["SM_LF_Tree_Round"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Wood", "M_LF_WoodDark"], "size_m": [4.042862, 3.712262, 5.409506], "tris": 332}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0071 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.88941, 1.404604, 1.800104], "bounds_min_m": [-1.88941, -1.404604, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "119f86429467f1d5ae4343562a6de4a555f426a8764ad54f4208044def43c2a4", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 180 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.778819, 2.809209, 1.800104], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2137, 'samples': 2299, 'fraction': 0.92953}, '1Y': {'hits': 2137, 'samples': 2299, 'fraction': 0.92953}}}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0070 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.88941, 1.404604, 1.800104], "bounds_min_m": [-1.88941, -1.404604, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "119f86429467f1d5ae4343562a6de4a555f426a8764ad54f4208044def43c2a4", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 180 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.778819, 2.809209, 1.800104], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2137, 'samples': 2299, 'fraction': 0.92953}, '1Y': {'hits': 2137, 'samples': 2299, 'fraction': 0.92953}}}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0070 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.889765, 1.40454, 1.800128], "bounds_min_m": [-1.889765, -1.40454, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "06730cfd816a6afa5adf1eae73a796ae3ad346239e0c5c2578eae6b34d9df257", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 180 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.77953, 2.80908, 1.800128], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2232, 'samples': 2299, 'fraction': 0.97086}, '1Y': {'hits': 2232, 'samples': 2299, 'fraction': 0.97086}}}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0072 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.889765, 1.40454, 1.800128], "bounds_min_m": [-1.889765, -1.40454, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "06730cfd816a6afa5adf1eae73a796ae3ad346239e0c5c2578eae6b34d9df257", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 180 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.77953, 2.80908, 1.800128], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2232, 'samples': 2299, 'fraction': 0.97086}, '1Y': {'hits': 2232, 'samples': 2299, 'fraction': 0.97086}}}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0077 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.878184, 1.570313, 1.800543], "bounds_min_m": [-1.878184, -1.570313, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "81292c58d473aa032aa207f67f997327087fb634c739993c1b639fda83a1ec08", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 270 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.756369, 3.140626, 1.800543], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2289, 'samples': 2299, 'fraction': 0.99565}, '1Y': {'hits': 2289, 'samples': 2299, 'fraction': 0.99565}}}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx'
+export finished in 0.0064 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_ReedBed.fbx tris=3468
+[B02] {"asset": "SM_LF_ReedBed", "bounds_max_m": [1.878184, 1.570313, 1.800543], "bounds_min_m": [-1.878184, -1.570313, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx", "geometry_sha256": "81292c58d473aa032aa207f67f997327087fb634c739993c1b639fda83a1ec08", "limit_exclusive": 3500, "nonmanifold_edges": 0, "notes": "v2: 270 Poisson-distributed narrow upright 1.2-1.8m blades, eight broad low leaves, 36 stems and thirty cattails. Closed true-10mm leaf shells. No rows, no external mesh, seed 202611130302.", "objects": ["SM_LF_ReedBed"], "origin": "base centre", "palette": ["M_LF_Moss", "M_LF_Reed", "M_LF_WoodDark"], "size_m": [3.756369, 3.140626, 1.800543], "tris": 3468}
+[B03 REED SCREEN] {'window': '3m wide x Z=.10.. .55m', 'directions': {'-1Y': {'hits': 2289, 'samples': 2299, 'fraction': 0.99565}, '1Y': {'hits': 2289, 'samples': 2299, 'fraction': 0.99565}}}

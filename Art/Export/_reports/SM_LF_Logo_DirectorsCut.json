@@ -1,0 +1,50 @@
+{
+  "asset": "SM_LF_Logo_DirectorsCut",
+  "tris": 1752,
+  "limit_exclusive": 5000,
+  "objects": [
+    "SM_LF_Logo_DirectorsCut"
+  ],
+  "bounds_min_m": [
+    -2.0999999046325684,
+    -0.1349048912525177,
+    -1.2100000381469727
+  ],
+  "bounds_max_m": [
+    2.0999999046325684,
+    0.05999999865889549,
+    -0.7699999809265137
+  ],
+  "size_m": [
+    4.199999809265137,
+    0.1949048899114132,
+    0.440000057220459
+  ],
+  "palette": [
+    "M_LF_PaintCream",
+    "M_LF_PaintRed"
+  ],
+  "material_linear": {
+    "M_LF_PaintRed": [
+      0.6000000238418579,
+      0.05000000074505806,
+      0.03999999910593033
+    ],
+    "M_LF_PaintCream": [
+      0.9200000166893005,
+      0.8600000143051147,
+      0.699999988079071
+    ]
+  },
+  "geometry_sha256": "080efc3c79a21002cd1e84d33df59c4509f209a6b5708b60030ddaef6d0da699",
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Logo_DirectorsCut.fbx",
+  "notes": "Separate notched red wooden ribbon/plank with original Cream DIRECTOR'S CUT geometry. Shared origin with main sign; toggle independently without repositioning.",
+  "origin": "same as SM_LF_Logo_LakeFight; plank centre baked at Z=-.99m",
+  "title": "DIRECTOR'S CUT",
+  "lettering_source": "explicit original GLYPHS cell masks in lf_b05.py",
+  "plank_centre_z_m": -0.99,
+  "main_logo": "SM_LF_Logo_LakeFight"
+}

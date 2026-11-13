@@ -1,0 +1,37 @@
+{
+  "asset": "SM_LF_Island_S",
+  "tris": 126,
+  "limit_exclusive": 1000,
+  "objects": [
+    "SM_LF_Island_S"
+  ],
+  "bounds_min_m": [
+    -3.0,
+    -2.67617,
+    -1.0
+  ],
+  "bounds_max_m": [
+    3.0,
+    2.694335,
+    0.52
+  ],
+  "size_m": [
+    6.0,
+    5.370505,
+    1.52
+  ],
+  "origin": "waterline centre Z=0",
+  "palette": [
+    "M_LF_Moss",
+    "M_LF_Reed",
+    "M_LF_Rope",
+    "M_LF_WoodDark"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "da1b521b2258523c1d8f8599e1955c508da88d1279485c4e9859cc20707820e3",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Island_S.fbx",
+  "notes": "Irregular low grassy crown, continuous sandy rim and sloping closed underwater toe. Diameter includes toe, not just dry land.",
+  "nominal_diameter_m": 6.0,
+  "shoreline_z_m": 0,
+  "underwater_toe_z_m": -1.0
+}

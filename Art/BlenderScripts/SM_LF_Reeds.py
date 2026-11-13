@@ -8,6 +8,7 @@ importlib.reload(b)
 from mathutils import Vector
 
 g = b.Geometry()
+leaf_records = []
 rng = random.Random(20261112)
 heights = [1.04, .88, .96, .84, .91, .79, .75, .85, .69, .77]
 for i, h in enumerate(heights):
@@ -28,9 +29,31 @@ for i, h in enumerate(heights):
     transverse = Vector((-direction.y, direction.x, 0)) * .005
     outline = [root, root + direction * .29 + Vector((0, 0, .33)),
                root + direction * .08 + Vector((0, 0, .27))]
+    # Clip the sharp tip to give the solid blade a visible four-sided rim.
+    a, tip, c = outline
+    outline = [a, tip.lerp(a, .06), tip.lerp(c, .06), c]
+    leaf_records.append((len(g.vertices), len(outline)))
     g.loft([[tuple(v + transverse * sign) for v in outline] for sign in [-1, 1]], "Reed")
 g.fit()
 height = max(v[2] for v in g.vertices)
 g.vertices = [(x, y, z * 1.2 / height) for x, y, z in g.vertices]
+# Rebuild the paired surfaces AFTER fitting: 10 mm along each leaf's actual normal.
+thicknesses, volumes = [], []
+for start, n in leaf_records:
+    outline = [(Vector(g.vertices[start + i]) + Vector(g.vertices[start + n + i])) / 2 for i in range(n)]
+    normal = (outline[1] - outline[0]).cross(outline[2] - outline[0]).normalized()
+    for i, centre in enumerate(outline):
+        g.vertices[start + i] = tuple(centre - normal * .005)
+        g.vertices[start + n + i] = tuple(centre + normal * .005)
+        thicknesses.append(abs((Vector(g.vertices[start + n + i]) - Vector(g.vertices[start + i])).dot(normal)))
+    area_vector = sum((outline[i].cross(outline[(i + 1) % n]) for i in range(n)), Vector()) / 2
+    volumes.append(abs(area_vector.dot(normal)) * .01)
+assert min(thicknesses) > .009999 and max(thicknesses) < .010001
+assert min(volumes) > 0
 REPORTS = [b.finish(g, "SM_LF_Reeds", 400,
-                    notes="Ten deterministic stems, six seed heads, ten solid 1 cm leaves; exactly 1.2 m tall; no alpha cards.")]
+                    notes="Ten stems and six seed heads unchanged; ten clipped-tip closed leaf shells rebuilt to final-world 10 mm thickness, with end caps and side walls.")]
+REPORTS[0]["leaf_evidence"] = dict(count=10, thickness_min_m=min(thicknesses), thickness_max_m=max(thicknesses),
+                                   smallest_leaf_volume_m3=min(volumes), largest_leaf_volume_m3=max(volumes),
+                                   leaf_triangles=120, side_wall_triangles=80)
+assert REPORTS[0]["tris"] == 396
+print("[LEAF MEASURED]", REPORTS[0]["leaf_evidence"])

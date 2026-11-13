@@ -1,0 +1,33 @@
+{
+  "asset": "SM_LF_Tree_Round",
+  "tris": 332,
+  "limit_exclusive": 600,
+  "objects": [
+    "SM_LF_Tree_Round"
+  ],
+  "bounds_min_m": [
+    -1.858464,
+    -1.668087,
+    0.0
+  ],
+  "bounds_max_m": [
+    2.184398,
+    2.044174,
+    5.409506
+  ],
+  "size_m": [
+    4.042862,
+    3.712262,
+    5.409506
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Moss",
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "eb62d1bc704a109513bcffdd2746996587b674dba4604a9983f77593c7db7d43",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Round.fbx",
+  "notes": "Forked chunky trunk with five irregular solid faceted crowns; base at Z=0."
+}

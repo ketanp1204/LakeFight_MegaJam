@@ -1,0 +1,75 @@
+{
+  "target": "UE5 Manny at 0.75 scale",
+  "proxy_height_m": 1.350000023841858,
+  "proxy_is_synthetic": true,
+  "assumed_pivots_m": {
+    "head": [
+      0.0,
+      0.0,
+      1.1925000000000001
+    ],
+    "spine_03": [
+      0.0,
+      0.0,
+      1.0125000000000002
+    ],
+    "hand_r": [
+      0.037500000000000006,
+      0.3525,
+      0.705
+    ]
+  },
+  "aligned_socket_axes": "X forward / Y right / Z up",
+  "raw_Manny_fit_verified": false,
+  "fishing_rod_preview_rotation_about_Y_deg": 25,
+  "asset_screenshots": {
+    "SM_LF_Hat_Bucket_Red": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Red_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Red_Detail.png"
+    ],
+    "SM_LF_Hat_Bucket_Blue": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Blue_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Blue_Detail.png"
+    ],
+    "SM_LF_Hat_Bucket_Green": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Green_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Green_Detail.png"
+    ],
+    "SM_LF_Hat_Bucket_Yellow": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Yellow_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Bucket_Yellow_Detail.png"
+    ],
+    "SM_LF_LifeVest_Red": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Red_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Red_Detail.png"
+    ],
+    "SM_LF_LifeVest_Blue": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Blue_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Blue_Detail.png"
+    ],
+    "SM_LF_LifeVest_Green": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Green_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Green_Detail.png"
+    ],
+    "SM_LF_LifeVest_Yellow": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Yellow_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_LifeVest_Yellow_Detail.png"
+    ],
+    "SM_LF_Hat_Captain": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Captain_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Hat_Captain_Detail.png"
+    ],
+    "SM_LF_Beard": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Beard_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Beard_Detail.png"
+    ],
+    "SM_LF_Moustache": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Moustache_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Moustache_Detail.png"
+    ],
+    "SM_LF_FishingRod": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_FishingRod_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_FishingRod_Detail.png"
+    ]
+  }
+}

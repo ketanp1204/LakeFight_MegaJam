@@ -1,0 +1,228 @@
+{
+  "runs": [
+    [
+      {
+        "asset": "SM_LF_Paddle",
+        "tris": 204,
+        "limit_exclusive": 300,
+        "objects": [
+          "SM_LF_Paddle",
+          "SOCKET_Grip_L",
+          "SOCKET_Grip_R"
+        ],
+        "bounds_min_m": [
+          0.0,
+          -0.1885,
+          -0.0325
+        ],
+        "bounds_max_m": [
+          1.6,
+          0.1885,
+          0.0325
+        ],
+        "size_m": [
+          1.6,
+          0.377,
+          0.065
+        ],
+        "origin": "grip; blade +X",
+        "palette": [
+          "M_LF_Wood",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "b0db5c0aa03c9df216f450cdb3b63b8b42f824925ee487aa28a7ff0e49813c36",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+        "notes": "1.6 m grip-to-tip; constant 4 cm octagonal shaft; blade 0.377 m wide (1.3x B02), 2.7 to 2.3 cm tapered, with four rounded edge facets.",
+        "part_measurements_m": {
+          "shaft_diameter": 0.04,
+          "blade_width": 0.377,
+          "blade_root_thickness": 0.02692,
+          "blade_tip_thickness": 0.023079999999999996
+        },
+        "sockets": {
+          "SOCKET_Grip_R": {
+            "location_m": [
+              0.035,
+              0,
+              0
+            ],
+            "rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "parent": "SM_LF_Paddle"
+          },
+          "SOCKET_Grip_L": {
+            "location_m": [
+              0.585,
+              0,
+              0
+            ],
+            "rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "parent": "SM_LF_Paddle"
+          }
+        },
+        "socket_spacing_m": 0.55
+      }
+    ],
+    [
+      {
+        "asset": "SM_LF_Paddle",
+        "tris": 204,
+        "limit_exclusive": 300,
+        "objects": [
+          "SM_LF_Paddle",
+          "SOCKET_Grip_L",
+          "SOCKET_Grip_R"
+        ],
+        "bounds_min_m": [
+          0.0,
+          -0.1885,
+          -0.0325
+        ],
+        "bounds_max_m": [
+          1.6,
+          0.1885,
+          0.0325
+        ],
+        "size_m": [
+          1.6,
+          0.377,
+          0.065
+        ],
+        "origin": "grip; blade +X",
+        "palette": [
+          "M_LF_Wood",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "b0db5c0aa03c9df216f450cdb3b63b8b42f824925ee487aa28a7ff0e49813c36",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+        "notes": "1.6 m grip-to-tip; constant 4 cm octagonal shaft; blade 0.377 m wide (1.3x B02), 2.7 to 2.3 cm tapered, with four rounded edge facets.",
+        "part_measurements_m": {
+          "shaft_diameter": 0.04,
+          "blade_width": 0.377,
+          "blade_root_thickness": 0.02692,
+          "blade_tip_thickness": 0.023079999999999996
+        },
+        "sockets": {
+          "SOCKET_Grip_R": {
+            "location_m": [
+              0.035,
+              0,
+              0
+            ],
+            "rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "parent": "SM_LF_Paddle"
+          },
+          "SOCKET_Grip_L": {
+            "location_m": [
+              0.585,
+              0,
+              0
+            ],
+            "rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "parent": "SM_LF_Paddle"
+          }
+        },
+        "socket_spacing_m": 0.55
+      }
+    ]
+  ],
+  "consecutive_runs_verified": 2,
+  "mesh_unchanged": true,
+  "fbx_sockets": {
+    "SOCKET_Grip_L": {
+      "relative_matrix": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.5849999785423279
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "parent_is_paddle": true
+    },
+    "SOCKET_Grip_R": {
+      "relative_matrix": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.03500000014901161
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "parent_is_paddle": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "asset": "SM_LF_Tree_Pine",
+  "tris": 138,
+  "limit_exclusive": 600,
+  "objects": [
+    "SM_LF_Tree_Pine"
+  ],
+  "bounds_min_m": [
+    -1.261356,
+    -1.364899,
+    0.0
+  ],
+  "bounds_max_m": [
+    1.4,
+    1.364899,
+    5.06
+  ],
+  "size_m": [
+    2.661356,
+    2.729798,
+    5.06
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Moss",
+    "M_LF_Reed",
+    "M_LF_WoodDark"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "ccc5c8c2f0b38956bde8e77c05743c0ed36a2de4f708694f93b3b81f1533c3c6",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Tree_Pine.fbx",
+  "notes": "Three chunky staggered seven-sided foliage skirts and visible dark trunk; 5.06m tall."
+}

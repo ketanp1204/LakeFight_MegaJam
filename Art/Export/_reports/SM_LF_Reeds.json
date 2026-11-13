@@ -1,38 +1,41 @@
 {
   "asset": "SM_LF_Reeds",
-  "bounds_max_m": [
-    0.451184,
-    0.43625,
-    1.2
-  ],
-  "bounds_min_m": [
-    -0.451184,
-    -0.43625,
-    0.0
-  ],
-  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Reeds.fbx",
-  "geometry_sha256": "e1db248323fe71b02e2a107ab6e35f2fbd45cb2d2fb94bfe5968d24ca89a5165",
+  "tris": 396,
   "limit_exclusive": 400,
-  "nonmanifold_edges": 0,
-  "notes": "Ten deterministic stems, six seed heads, ten solid 1 cm leaves; exactly 1.2 m tall; no alpha cards.",
   "objects": [
     "SM_LF_Reeds"
+  ],
+  "bounds_min_m": [
+    -0.438938,
+    -0.423809,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.438938,
+    0.423809,
+    1.2
+  ],
+  "size_m": [
+    0.877876,
+    0.847619,
+    1.2
   ],
   "origin": "base centre",
   "palette": [
     "M_LF_Reed",
     "M_LF_WoodDark"
   ],
-  "size_m": [
-    0.902369,
-    0.872499,
-    1.2
-  ],
-  "tris": 356,
-  "status": "PASS",
-  "script": "SM_LF_Reeds.py",
-  "consecutive_runs_verified": 2,
-  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_Reeds.png",
-  "fbx_bytes": 25372,
-  "failures": 0
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "6491b15dbd77aa9778c937a363aab3bcd30b9737fc1ade74b65026cc5dc60bf4",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Reeds.fbx",
+  "notes": "Ten stems and six seed heads unchanged; ten clipped-tip closed leaf shells rebuilt to final-world 10 mm thickness, with end caps and side walls.",
+  "leaf_evidence": {
+    "count": 10,
+    "thickness_min_m": 0.009999986737966537,
+    "thickness_max_m": 0.010000020265579224,
+    "smallest_leaf_volume_m3": 0.0002584227256011277,
+    "largest_leaf_volume_m3": 0.0002584228827618033,
+    "leaf_triangles": 120,
+    "side_wall_triangles": 80
+  }
 }

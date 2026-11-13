@@ -1,0 +1,36 @@
+{
+  "asset": "SM_LF_LilyPads",
+  "tris": 280,
+  "limit_exclusive": 300,
+  "objects": [
+    "SM_LF_LilyPads"
+  ],
+  "bounds_min_m": [
+    -1.177002,
+    -0.908548,
+    0.0
+  ],
+  "bounds_max_m": [
+    1.177002,
+    0.908548,
+    0.098
+  ],
+  "size_m": [
+    2.354005,
+    1.817096,
+    0.098
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Moss",
+    "M_LF_PaintCream",
+    "M_LF_PaintOrange",
+    "M_LF_Reed"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "83574480c67bd33378d58f5e70fa26dd1eb5648531afba5991a2c912c900faf4",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LilyPads.fbx",
+  "notes": "Eight closed 12mm flat pads with V notches, two five-petal cream flowers; no team colours.",
+  "pad_count": 8,
+  "flower_count": 2
+}

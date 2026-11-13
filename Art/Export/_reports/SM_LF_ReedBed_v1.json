@@ -1,0 +1,32 @@
+{
+  "asset": "SM_LF_ReedBed_v1",
+  "tris": 2996,
+  "limit_exclusive": 3000,
+  "objects": [
+    "SM_LF_ReedBed_v1"
+  ],
+  "bounds_min_m": [
+    -2.000544,
+    -1.500814,
+    0.0
+  ],
+  "bounds_max_m": [
+    2.000518,
+    1.500825,
+    1.8
+  ],
+  "size_m": [
+    4.001063,
+    3.001639,
+    1.8
+  ],
+  "origin": "base centre",
+  "palette": [
+    "M_LF_Reed",
+    "M_LF_WoodDark"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "1e64082616ea7e3e832ec6021f7d7468b14d443f62c3db79d19113cd3cc36c22",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed_v1.fbx",
+  "notes": "Thirty stems, eighteen seed heads and 180 leaves retained. Every leaf rebuilt to final-world 10 mm solid thickness; two broadest blade tips chamfered; envelope grows slightly with final thickness."
+}

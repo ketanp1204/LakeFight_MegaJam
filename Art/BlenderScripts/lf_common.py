@@ -15,10 +15,10 @@ import bpy
 PALETTE = {
     "Wood":      (0.45, 0.28, 0.15),
     "WoodDark":  (0.28, 0.17, 0.09),
-    "PaintRed":  (0.75, 0.18, 0.14),
-    "PaintBlue": (0.16, 0.36, 0.70),
-    "PaintGreen": (0.20, 0.55, 0.25),
-    "PaintYellow": (0.90, 0.72, 0.15),
+    "PaintRed":  (0.60, 0.05, 0.04),
+    "PaintBlue": (0.035, 0.17, 0.65),
+    "PaintGreen": (0.035, 0.38, 0.055),
+    "PaintYellow": (0.90, 0.60, 0.025),
     "Black":     (0.03, 0.03, 0.03),
     "PaintOrange": (0.95, 0.45, 0.10),
     "Moss":      (0.33, 0.42, 0.22),
@@ -51,18 +51,20 @@ def fresh_collection(name):
 
 
 def mat(name):
-    """Get or create a flat material M_LF_<name> from the palette."""
+    """Get/create a palette material and refresh colours on existing materials."""
     full = f"M_LF_{name}"
     m = bpy.data.materials.get(full)
     if m is None:
         m = bpy.data.materials.new(full)
         m.use_nodes = True
         bsdf = next((n for n in m.node_tree.nodes if n.type == "BSDF_PRINCIPLED"), None)
-        r, g, b = PALETTE[name]
         if bsdf:
-            bsdf.inputs["Base Color"].default_value = (r, g, b, 1.0)
             bsdf.inputs["Roughness"].default_value = 0.85
-        m.diffuse_color = (r, g, b, 1.0)
+    r, g, b = PALETTE[name]
+    bsdf = next((n for n in m.node_tree.nodes if n.type == "BSDF_PRINCIPLED"), None) if m.use_nodes else None
+    if bsdf:
+        bsdf.inputs["Base Color"].default_value = (r, g, b, 1.0)
+    m.diffuse_color = (r, g, b, 1.0)
     return m
 
 

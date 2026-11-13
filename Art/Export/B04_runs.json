@@ -1,0 +1,1784 @@
+{
+  "SM_LF_Hat_Bucket": {
+    "status": "PASS",
+    "runs": [
+      [
+        {
+          "asset": "SM_LF_Hat_Bucket_Red",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintCream",
+            "M_LF_PaintRed",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintRed": [
+              0.6000000238418579,
+              0.05000000074505806,
+              0.03999999910593033
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Red",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "9b86c802fbb8e0ccbe5c6857ec37aed619091d8faa90ffaab5d67a57db6bf0c9",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Red.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        },
+        {
+          "asset": "SM_LF_Hat_Bucket_Blue",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintBlue",
+            "M_LF_PaintCream",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintBlue": [
+              0.03500000014901161,
+              0.17000000178813934,
+              0.6499999761581421
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Blue",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "b743118b236df7fdb22e81691f4dae70b311566f321cb989d4869e6cd7f84cc6",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Blue.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        },
+        {
+          "asset": "SM_LF_Hat_Bucket_Green",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintCream",
+            "M_LF_PaintGreen",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintGreen": [
+              0.03500000014901161,
+              0.3799999952316284,
+              0.054999999701976776
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Green",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "e049578976c944a5cbb082f8ee9a0206a00df78013253eff13853511105dfbff",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Green.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        },
+        {
+          "asset": "SM_LF_Hat_Bucket_Yellow",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintCream",
+            "M_LF_PaintYellow",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintYellow": [
+              0.8999999761581421,
+              0.6000000238418579,
+              0.02500000037252903
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Yellow",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "df5961d40b16ef456f9613ceec27b9cd7c3e3375aa0a6f96bcfa957da5c02077",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Yellow.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        }
+      ],
+      [
+        {
+          "asset": "SM_LF_Hat_Bucket_Red",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintCream",
+            "M_LF_PaintRed",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintRed": [
+              0.6000000238418579,
+              0.05000000074505806,
+              0.03999999910593033
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Red",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "9b86c802fbb8e0ccbe5c6857ec37aed619091d8faa90ffaab5d67a57db6bf0c9",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Red.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        },
+        {
+          "asset": "SM_LF_Hat_Bucket_Blue",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintBlue",
+            "M_LF_PaintCream",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintBlue": [
+              0.03500000014901161,
+              0.17000000178813934,
+              0.6499999761581421
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Blue",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "b743118b236df7fdb22e81691f4dae70b311566f321cb989d4869e6cd7f84cc6",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Blue.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        },
+        {
+          "asset": "SM_LF_Hat_Bucket_Green",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintCream",
+            "M_LF_PaintGreen",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintGreen": [
+              0.03500000014901161,
+              0.3799999952316284,
+              0.054999999701976776
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Green",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "e049578976c944a5cbb082f8ee9a0206a00df78013253eff13853511105dfbff",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Green.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        },
+        {
+          "asset": "SM_LF_Hat_Bucket_Yellow",
+          "tris": 304,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          "bounds_max_m": [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ],
+          "size_m": [
+            0.3075000047683716,
+            0.26249998807907104,
+            0.1165500059723854
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Brim opening centre +10.125cm Z from head pivot; outer crown +18.375cm Z; no separate UE translation assumed.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_PaintCream",
+            "M_LF_PaintYellow",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_PaintYellow": [
+              0.8999999761581421,
+              0.6000000238418579,
+              0.02500000037252903
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": "Yellow",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "df5961d40b16ef456f9613ceec27b9cd7c3e3375aa0a6f96bcfa957da5c02077",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Yellow.fbx",
+          "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+        }
+      ]
+    ],
+    "consecutive_runs_verified": 2,
+    "script_sha256": "2f9a3239be6cf322561a7c2823349dd5efac8d3538f5eedd255b0d6d2aa83524"
+  },
+  "SM_LF_LifeVest": {
+    "status": "PASS",
+    "runs": [
+      [
+        {
+          "asset": "SM_LF_LifeVest_Red",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream",
+            "M_LF_PaintRed"
+          ],
+          "material_linear": {
+            "M_LF_PaintRed": [
+              0.6000000238418579,
+              0.05000000074505806,
+              0.03999999910593033
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Red",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "2023dd500e203d6573f873c0fc02c2a4ccd405cf49c1c5a20fb0cc1b084237ea",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Red.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        },
+        {
+          "asset": "SM_LF_LifeVest_Blue",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintBlue",
+            "M_LF_PaintCream"
+          ],
+          "material_linear": {
+            "M_LF_PaintBlue": [
+              0.03500000014901161,
+              0.17000000178813934,
+              0.6499999761581421
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Blue",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "97b851627ee67271df229c43edb6b7ed09fdc00fb31911ad84a5c7308e3f5634",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Blue.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        },
+        {
+          "asset": "SM_LF_LifeVest_Green",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream",
+            "M_LF_PaintGreen"
+          ],
+          "material_linear": {
+            "M_LF_PaintGreen": [
+              0.03500000014901161,
+              0.3799999952316284,
+              0.054999999701976776
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Green",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "a677c50304a84788756dad2d8e19e7cb043044d4449dfccff7eaf7cb45d80e62",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Green.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        },
+        {
+          "asset": "SM_LF_LifeVest_Yellow",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream",
+            "M_LF_PaintYellow"
+          ],
+          "material_linear": {
+            "M_LF_PaintYellow": [
+              0.8999999761581421,
+              0.6000000238418579,
+              0.02500000037252903
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Yellow",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "2ae19c6bb62ba348d92dbb4e220e3ed53ffc7f06f6f835c33eea7f1e5191d6aa",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Yellow.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        }
+      ],
+      [
+        {
+          "asset": "SM_LF_LifeVest_Red",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream",
+            "M_LF_PaintRed"
+          ],
+          "material_linear": {
+            "M_LF_PaintRed": [
+              0.6000000238418579,
+              0.05000000074505806,
+              0.03999999910593033
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Red",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "2023dd500e203d6573f873c0fc02c2a4ccd405cf49c1c5a20fb0cc1b084237ea",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Red.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        },
+        {
+          "asset": "SM_LF_LifeVest_Blue",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintBlue",
+            "M_LF_PaintCream"
+          ],
+          "material_linear": {
+            "M_LF_PaintBlue": [
+              0.03500000014901161,
+              0.17000000178813934,
+              0.6499999761581421
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Blue",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "97b851627ee67271df229c43edb6b7ed09fdc00fb31911ad84a5c7308e3f5634",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Blue.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        },
+        {
+          "asset": "SM_LF_LifeVest_Green",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream",
+            "M_LF_PaintGreen"
+          ],
+          "material_linear": {
+            "M_LF_PaintGreen": [
+              0.03500000014901161,
+              0.3799999952316284,
+              0.054999999701976776
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Green",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "a677c50304a84788756dad2d8e19e7cb043044d4449dfccff7eaf7cb45d80e62",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Green.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        },
+        {
+          "asset": "SM_LF_LifeVest_Yellow",
+          "tris": 440,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.18000000715255737,
+            -0.2084999978542328,
+            -0.17624999582767487
+          ],
+          "bounds_max_m": [
+            0.21375001966953278,
+            0.2084999978542328,
+            0.13302117586135864
+          ],
+          "size_m": [
+            0.39375002682209015,
+            0.4169999957084656,
+            0.3092711716890335
+          ],
+          "origin": "assumed spine_03 pivot; baked offset",
+          "attachment": {
+            "bone": "spine_03",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.0125000000000002
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream",
+            "M_LF_PaintYellow"
+          ],
+          "material_linear": {
+            "M_LF_PaintYellow": [
+              0.8999999761581421,
+              0.6000000238418579,
+              0.02500000037252903
+            ],
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": "Yellow",
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "2ae19c6bb62ba348d92dbb4e220e3ed53ffc7f06f6f835c33eea7f1e5191d6aa",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Yellow.fbx",
+          "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+        }
+      ]
+    ],
+    "consecutive_runs_verified": 2,
+    "script_sha256": "c6df9e85748edf02afb8f6a2d7e573dc5350c22bc8880fa56bda086029b29b36"
+  },
+  "SM_LF_Hat_Captain": {
+    "status": "PASS",
+    "runs": [
+      [
+        {
+          "asset": "SM_LF_Hat_Captain",
+          "tris": 344,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.11174999922513962,
+            -0.0989999994635582,
+            0.09465000033378601
+          ],
+          "bounds_max_m": [
+            0.1837500035762787,
+            0.0989999994635582,
+            0.226500004529953
+          ],
+          "size_m": [
+            0.2955000028014183,
+            0.1979999989271164,
+            0.131850004196167
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Band lower edge +11.25cm Z and crown top +22.65cm Z from assumed head pivot; visor +X.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream"
+          ],
+          "material_linear": {
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "08342a2afcec53f7c2a2d2b33c0d16455691f3fd9483f251cdd6e6530955bb42",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Captain.fbx",
+          "notes": "Cream puffy crown, black band/forward peak and original geometric anchor badge. Hollow head cavity."
+        }
+      ],
+      [
+        {
+          "asset": "SM_LF_Hat_Captain",
+          "tris": 344,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.11174999922513962,
+            -0.0989999994635582,
+            0.09465000033378601
+          ],
+          "bounds_max_m": [
+            0.1837500035762787,
+            0.0989999994635582,
+            0.226500004529953
+          ],
+          "size_m": [
+            0.2955000028014183,
+            0.1979999989271164,
+            0.131850004196167
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Band lower edge +11.25cm Z and crown top +22.65cm Z from assumed head pivot; visor +X.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_PaintCream"
+          ],
+          "material_linear": {
+            "M_LF_PaintCream": [
+              0.9200000166893005,
+              0.8600000143051147,
+              0.699999988079071
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "08342a2afcec53f7c2a2d2b33c0d16455691f3fd9483f251cdd6e6530955bb42",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Captain.fbx",
+          "notes": "Cream puffy crown, black band/forward peak and original geometric anchor badge. Hollow head cavity."
+        }
+      ]
+    ],
+    "consecutive_runs_verified": 2,
+    "script_sha256": "5708339163acc39bcbf8043cb694e8050fd65ad9c559f5f01c3f6eddfde985c0"
+  },
+  "SM_LF_Beard": {
+    "status": "PASS",
+    "runs": [
+      [
+        {
+          "asset": "SM_LF_Beard",
+          "tris": 80,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            0.03884842246770859,
+            -0.0893356204032898,
+            -0.08624999970197678
+          ],
+          "bounds_max_m": [
+            0.14474999904632568,
+            0.08933563530445099,
+            0.08690591901540756
+          ],
+          "size_m": [
+            0.1059015765786171,
+            0.17867125570774078,
+            0.17315591871738434
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Front surface X=7.125..14.475cm, lower tip Z=-8.625cm, cheek tips Z=+8.25cm from assumed head pivot.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "e7c4fe9cb65b1a795706a8b830ce600cbea8602580d5a8d6043c1bfd4d69b4e4",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Beard.fbx",
+          "notes": "Chunky pointed beard with raised cheek tufts, two sideburn blocks and a V mouth opening; WoodDark only."
+        }
+      ],
+      [
+        {
+          "asset": "SM_LF_Beard",
+          "tris": 80,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            0.03884842246770859,
+            -0.0893356204032898,
+            -0.08624999970197678
+          ],
+          "bounds_max_m": [
+            0.14474999904632568,
+            0.08933563530445099,
+            0.08690591901540756
+          ],
+          "size_m": [
+            0.1059015765786171,
+            0.17867125570774078,
+            0.17315591871738434
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Front surface X=7.125..14.475cm, lower tip Z=-8.625cm, cheek tips Z=+8.25cm from assumed head pivot.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "e7c4fe9cb65b1a795706a8b830ce600cbea8602580d5a8d6043c1bfd4d69b4e4",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Beard.fbx",
+          "notes": "Chunky pointed beard with raised cheek tufts, two sideburn blocks and a V mouth opening; WoodDark only."
+        }
+      ]
+    ],
+    "consecutive_runs_verified": 2,
+    "script_sha256": "16046eb9b896701227be60e6184cbf746ba76d528bf886384f6812bec99b4a91"
+  },
+  "SM_LF_Moustache": {
+    "status": "PASS",
+    "runs": [
+      [
+        {
+          "asset": "SM_LF_Moustache",
+          "tris": 112,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            0.10106250643730164,
+            -0.12168809026479721,
+            0.02475079335272312
+          ],
+          "bounds_max_m": [
+            0.13817210495471954,
+            0.12168809026479721,
+            0.10409163683652878
+          ],
+          "size_m": [
+            0.03710959851741791,
+            0.24337618052959442,
+            0.07934084348380566
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Upper-lip centre approximately +11.25cm X,+5.55cm Z from assumed head pivot, curl span approximately 24.3cm.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "5e6e95c812cb30b8b40fde3cff6c8a3b5adeaf4b703cd70b07de6c48d127d2bf",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Moustache.fbx",
+          "notes": "Two tapered six-sided curled handlebars; WoodDark matches beard. Separate face piece for optional combination."
+        }
+      ],
+      [
+        {
+          "asset": "SM_LF_Moustache",
+          "tris": 112,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            0.10106250643730164,
+            -0.12168809026479721,
+            0.02475079335272312
+          ],
+          "bounds_max_m": [
+            0.13817210495471954,
+            0.12168809026479721,
+            0.10409163683652878
+          ],
+          "size_m": [
+            0.03710959851741791,
+            0.24337618052959442,
+            0.07934084348380566
+          ],
+          "origin": "assumed head pivot; baked offset",
+          "attachment": {
+            "bone": "head",
+            "proxy_pivot_m": [
+              0.0,
+              0.0,
+              1.1925000000000001
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Upper-lip centre approximately +11.25cm X,+5.55cm Z from assumed head pivot, curl span approximately 24.3cm.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "5e6e95c812cb30b8b40fde3cff6c8a3b5adeaf4b703cd70b07de6c48d127d2bf",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Moustache.fbx",
+          "notes": "Two tapered six-sided curled handlebars; WoodDark matches beard. Separate face piece for optional combination."
+        }
+      ]
+    ],
+    "consecutive_runs_verified": 2,
+    "script_sha256": "15b85d2a52409f4c518fbf530c6f5f042ff98cac224e25d66b310eeab65c50d7"
+  },
+  "SM_LF_FishingRod": {
+    "status": "PASS",
+    "runs": [
+      [
+        {
+          "asset": "SM_LF_FishingRod",
+          "tris": 324,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.07800000160932541,
+            -0.09375,
+            -0.1274999976158142
+          ],
+          "bounds_max_m": [
+            0.19499999284744263,
+            0.017249999567866325,
+            1.4632083177566528
+          ],
+          "size_m": [
+            0.27299999445676804,
+            0.11099999956786633,
+            1.590708315372467
+          ],
+          "origin": "assumed hand_r pivot; baked offset",
+          "attachment": {
+            "bone": "hand_r",
+            "proxy_pivot_m": [
+              0.037500000000000006,
+              0.3525,
+              0.705
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Origin at middle of grip; butt Z=-12.75cm, rod tip Z=+146.25cm. Align socket local +Z along rod; review holds it 25deg forward.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_Metal",
+            "M_LF_Rope",
+            "M_LF_Wood",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ],
+            "M_LF_Wood": [
+              0.44999998807907104,
+              0.2800000011920929,
+              0.15000000596046448
+            ],
+            "M_LF_Metal": [
+              0.550000011920929,
+              0.5699999928474426,
+              0.6000000238418579
+            ],
+            "M_LF_Rope": [
+              0.699999988079071,
+              0.6000000238418579,
+              0.4000000059604645
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "e8f6eb877c9e62c8033fa13a3f2be26fca7a085ec45e432e9a085c20a5a43a41",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_FishingRod.fbx",
+          "notes": "Tapered wood shaft, dark grip, solid reel/crank, three guide eyes and static black fishing line. No animation/line simulation."
+        }
+      ],
+      [
+        {
+          "asset": "SM_LF_FishingRod",
+          "tris": 324,
+          "limit_exclusive": 600,
+          "bounds_min_m": [
+            -0.07800000160932541,
+            -0.09375,
+            -0.1274999976158142
+          ],
+          "bounds_max_m": [
+            0.19499999284744263,
+            0.017249999567866325,
+            1.4632083177566528
+          ],
+          "size_m": [
+            0.27299999445676804,
+            0.11099999956786633,
+            1.590708315372467
+          ],
+          "origin": "assumed hand_r pivot; baked offset",
+          "attachment": {
+            "bone": "hand_r",
+            "proxy_pivot_m": [
+              0.037500000000000006,
+              0.3525,
+              0.705
+            ],
+            "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+            "preview_relative_location_cm": [
+              0,
+              0,
+              0
+            ],
+            "preview_relative_rotation_deg": [
+              0,
+              0,
+              0
+            ],
+            "baked_mesh_offset": "Origin at middle of grip; butt Z=-12.75cm, rod tip Z=+146.25cm. Align socket local +Z along rod; review holds it 25deg forward.",
+            "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+            "authored_size_scale": 0.75,
+            "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+          },
+          "palette": [
+            "M_LF_Black",
+            "M_LF_Metal",
+            "M_LF_Rope",
+            "M_LF_Wood",
+            "M_LF_WoodDark"
+          ],
+          "material_linear": {
+            "M_LF_WoodDark": [
+              0.2800000011920929,
+              0.17000000178813934,
+              0.09000000357627869
+            ],
+            "M_LF_Wood": [
+              0.44999998807907104,
+              0.2800000011920929,
+              0.15000000596046448
+            ],
+            "M_LF_Metal": [
+              0.550000011920929,
+              0.5699999928474426,
+              0.6000000238418579
+            ],
+            "M_LF_Rope": [
+              0.699999988079071,
+              0.6000000238418579,
+              0.4000000059604645
+            ],
+            "M_LF_Black": [
+              0.029999999329447746,
+              0.029999999329447746,
+              0.029999999329447746
+            ]
+          },
+          "team": null,
+          "nonmanifold_edges": 0,
+          "degenerate_faces": 0,
+          "flat_shaded": true,
+          "geometry_sha256": "e8f6eb877c9e62c8033fa13a3f2be26fca7a085ec45e432e9a085c20a5a43a41",
+          "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_FishingRod.fbx",
+          "notes": "Tapered wood shaft, dark grip, solid reel/crank, three guide eyes and static black fishing line. No animation/line simulation."
+        }
+      ]
+    ],
+    "consecutive_runs_verified": 2,
+    "script_sha256": "2200ac2a01a077af2c85e29d19e9d74853c88fc01907c169e182c0c8bfc42ef5"
+  }
+}

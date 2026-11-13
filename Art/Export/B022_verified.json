@@ -1,0 +1,276 @@
+{
+  "SM_LF_Paddle": {
+    "runs": [
+      {
+        "asset": "SM_LF_Paddle",
+        "tris": 204,
+        "limit_exclusive": 300,
+        "objects": [
+          "SM_LF_Paddle"
+        ],
+        "bounds_min_m": [
+          0.0,
+          -0.1885,
+          -0.0325
+        ],
+        "bounds_max_m": [
+          1.6,
+          0.1885,
+          0.0325
+        ],
+        "size_m": [
+          1.6,
+          0.377,
+          0.065
+        ],
+        "origin": "grip; blade +X",
+        "palette": [
+          "M_LF_Wood",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "b0db5c0aa03c9df216f450cdb3b63b8b42f824925ee487aa28a7ff0e49813c36",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+        "notes": "1.6 m grip-to-tip; constant 4 cm octagonal shaft; blade 0.377 m wide (1.3x B02), 2.7 to 2.3 cm tapered, with four rounded edge facets.",
+        "part_measurements_m": {
+          "shaft_diameter": 0.04,
+          "blade_width": 0.377,
+          "blade_root_thickness": 0.02692,
+          "blade_tip_thickness": 0.023079999999999996
+        }
+      },
+      {
+        "asset": "SM_LF_Paddle",
+        "tris": 204,
+        "limit_exclusive": 300,
+        "objects": [
+          "SM_LF_Paddle"
+        ],
+        "bounds_min_m": [
+          0.0,
+          -0.1885,
+          -0.0325
+        ],
+        "bounds_max_m": [
+          1.6,
+          0.1885,
+          0.0325
+        ],
+        "size_m": [
+          1.6,
+          0.377,
+          0.065
+        ],
+        "origin": "grip; blade +X",
+        "palette": [
+          "M_LF_Wood",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "b0db5c0aa03c9df216f450cdb3b63b8b42f824925ee487aa28a7ff0e49813c36",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx",
+        "notes": "1.6 m grip-to-tip; constant 4 cm octagonal shaft; blade 0.377 m wide (1.3x B02), 2.7 to 2.3 cm tapered, with four rounded edge facets.",
+        "part_measurements_m": {
+          "shaft_diameter": 0.04,
+          "blade_width": 0.377,
+          "blade_root_thickness": 0.02692,
+          "blade_tip_thickness": 0.023079999999999996
+        }
+      }
+    ],
+    "consecutive_runs_verified": 2,
+    "unchanged_from_session_start": true
+  },
+  "SM_LF_Reeds": {
+    "runs": [
+      {
+        "asset": "SM_LF_Reeds",
+        "tris": 396,
+        "limit_exclusive": 400,
+        "objects": [
+          "SM_LF_Reeds"
+        ],
+        "bounds_min_m": [
+          -0.438938,
+          -0.423809,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.438938,
+          0.423809,
+          1.2
+        ],
+        "size_m": [
+          0.877876,
+          0.847619,
+          1.2
+        ],
+        "origin": "base centre",
+        "palette": [
+          "M_LF_Reed",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "6491b15dbd77aa9778c937a363aab3bcd30b9737fc1ade74b65026cc5dc60bf4",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Reeds.fbx",
+        "notes": "Ten stems and six seed heads unchanged; ten clipped-tip closed leaf shells rebuilt to final-world 10 mm thickness, with end caps and side walls.",
+        "leaf_evidence": {
+          "count": 10,
+          "thickness_min_m": 0.009999986737966537,
+          "thickness_max_m": 0.010000020265579224,
+          "smallest_leaf_volume_m3": 0.0002584227256011277,
+          "largest_leaf_volume_m3": 0.0002584228827618033,
+          "leaf_triangles": 120,
+          "side_wall_triangles": 80
+        }
+      },
+      {
+        "asset": "SM_LF_Reeds",
+        "tris": 396,
+        "limit_exclusive": 400,
+        "objects": [
+          "SM_LF_Reeds"
+        ],
+        "bounds_min_m": [
+          -0.438938,
+          -0.423809,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.438938,
+          0.423809,
+          1.2
+        ],
+        "size_m": [
+          0.877876,
+          0.847619,
+          1.2
+        ],
+        "origin": "base centre",
+        "palette": [
+          "M_LF_Reed",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "6491b15dbd77aa9778c937a363aab3bcd30b9737fc1ade74b65026cc5dc60bf4",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Reeds.fbx",
+        "notes": "Ten stems and six seed heads unchanged; ten clipped-tip closed leaf shells rebuilt to final-world 10 mm thickness, with end caps and side walls.",
+        "leaf_evidence": {
+          "count": 10,
+          "thickness_min_m": 0.009999986737966537,
+          "thickness_max_m": 0.010000020265579224,
+          "smallest_leaf_volume_m3": 0.0002584227256011277,
+          "largest_leaf_volume_m3": 0.0002584228827618033,
+          "leaf_triangles": 120,
+          "side_wall_triangles": 80
+        }
+      }
+    ],
+    "consecutive_runs_verified": 2,
+    "unchanged_from_session_start": true
+  },
+  "SM_LF_ReedBed": {
+    "runs": [
+      {
+        "asset": "SM_LF_ReedBed",
+        "tris": 2996,
+        "limit_exclusive": 3000,
+        "objects": [
+          "SM_LF_ReedBed"
+        ],
+        "bounds_min_m": [
+          -2.000544,
+          -1.500814,
+          0.0
+        ],
+        "bounds_max_m": [
+          2.000518,
+          1.500825,
+          1.8
+        ],
+        "size_m": [
+          4.001063,
+          3.001639,
+          1.8
+        ],
+        "origin": "base centre",
+        "palette": [
+          "M_LF_Reed",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "bb7c11c9529396ee23be39f50b6340c18dfcdf968a828a8003290916c4f5abf1",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx",
+        "notes": "Thirty stems, eighteen seed heads and 180 leaves retained. Every leaf rebuilt to final-world 10 mm solid thickness; two broadest blade tips chamfered; envelope grows slightly with final thickness.",
+        "leaf_evidence": {
+          "count": 180,
+          "thickness_min_m": 0.00999985623639077,
+          "thickness_max_m": 0.010000092326663435,
+          "smallest_leaf_volume_m3": 0.0010992417088709773,
+          "largest_leaf_volume_m3": 0.0018626572136417963,
+          "leaf_triangles": 2168,
+          "side_wall_triangles": 1448,
+          "chamfered_blades": 2
+        },
+        "reed_count": 30,
+        "side_screen_probe": {
+          "hits": 637,
+          "samples": 671,
+          "occlusion_fraction": 0.9493,
+          "window": "3 m wide x Z=0.10..0.55 m; rays from -Y through bed"
+        }
+      },
+      {
+        "asset": "SM_LF_ReedBed",
+        "tris": 2996,
+        "limit_exclusive": 3000,
+        "objects": [
+          "SM_LF_ReedBed"
+        ],
+        "bounds_min_m": [
+          -2.000544,
+          -1.500814,
+          0.0
+        ],
+        "bounds_max_m": [
+          2.000518,
+          1.500825,
+          1.8
+        ],
+        "size_m": [
+          4.001063,
+          3.001639,
+          1.8
+        ],
+        "origin": "base centre",
+        "palette": [
+          "M_LF_Reed",
+          "M_LF_WoodDark"
+        ],
+        "nonmanifold_edges": 0,
+        "geometry_sha256": "bb7c11c9529396ee23be39f50b6340c18dfcdf968a828a8003290916c4f5abf1",
+        "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_ReedBed.fbx",
+        "notes": "Thirty stems, eighteen seed heads and 180 leaves retained. Every leaf rebuilt to final-world 10 mm solid thickness; two broadest blade tips chamfered; envelope grows slightly with final thickness.",
+        "leaf_evidence": {
+          "count": 180,
+          "thickness_min_m": 0.00999985623639077,
+          "thickness_max_m": 0.010000092326663435,
+          "smallest_leaf_volume_m3": 0.0010992417088709773,
+          "largest_leaf_volume_m3": 0.0018626572136417963,
+          "leaf_triangles": 2168,
+          "side_wall_triangles": 1448,
+          "chamfered_blades": 2
+        },
+        "reed_count": 30,
+        "side_screen_probe": {
+          "hits": 637,
+          "samples": 671,
+          "occlusion_fraction": 0.9493,
+          "window": "3 m wide x Z=0.10..0.55 m; rays from -Y through bed"
+        }
+      }
+    ],
+    "consecutive_runs_verified": 2,
+    "unchanged_from_session_start": true
+  }
+}

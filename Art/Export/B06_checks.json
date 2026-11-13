@@ -1,0 +1,11 @@
+{
+  "asset_double_runs": true,
+  "validation_double_runs": true,
+  "review_double_runs": true,
+  "render_construction_source_identical": true,
+  "render_source_sha256": "d6d2e4dc340e4ee35c4900eab381fe7be7ea3fa551061ee253caccc35e7cb703",
+  "render_triangles": 1214,
+  "ucx_triangles": 232,
+  "ucx_piece_count": 12,
+  "max_piece_vertices": 14
+}

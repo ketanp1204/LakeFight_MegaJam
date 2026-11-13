@@ -31,7 +31,7 @@ stealing boats. Stylized low-poly. The human is the director; you execute one bo
   trigger Live Coding. Never leave the project in a state that doesn't compile.
 
 ## Unreal MCP (editor must be open)
-- Endpoint `http://127.0.0.1:8000/mcp`. Calls run serially on the game thread: never overlap calls.
+- Endpoint `http://127.0.0.1:9500/mcp`. Calls run serially on the game thread: never overlap calls.
 - Use MCP for placing actors, setting properties, importing meshes, inspecting levels. C++ goes through files.
 - Save levels/assets after MCP edits and list what you saved.
 

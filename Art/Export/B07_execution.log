@@ -1,0 +1,21 @@
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Paddle.fbx tris=204
+[B02] {"asset": "SM_LF_Paddle", "bounds_max_m": [1.6, 0.1885, 0.0325], "bounds_min_m": [0.0, -0.1885, -0.0325], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx", "geometry_sha256": "b0db5c0aa03c9df216f450cdb3b63b8b42f824925ee487aa28a7ff0e49813c36", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "1.6 m grip-to-tip; constant 4 cm octagonal shaft; blade 0.377 m wide (1.3x B02), 2.7 to 2.3 cm tapered, with four rounded edge facets.", "objects": ["SM_LF_Paddle"], "origin": "grip; blade +X", "palette": ["M_LF_Wood", "M_LF_WoodDark"], "size_m": [1.6, 0.377, 0.065], "tris": 204}
+[PADDLE MEASURED] {'shaft_diameter': 0.04, 'blade_width': 0.377, 'blade_root_thickness': 0.02692, 'blade_tip_thickness': 0.023079999999999996}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Paddle.fbx tris=204
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx'
+export finished in 0.0043 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Paddle.fbx tris=204
+[B02] {"asset": "SM_LF_Paddle", "bounds_max_m": [1.6, 0.1885, 0.0325], "bounds_min_m": [0.0, -0.1885, -0.0325], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx", "geometry_sha256": "b0db5c0aa03c9df216f450cdb3b63b8b42f824925ee487aa28a7ff0e49813c36", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "1.6 m grip-to-tip; constant 4 cm octagonal shaft; blade 0.377 m wide (1.3x B02), 2.7 to 2.3 cm tapered, with four rounded edge facets.", "objects": ["SM_LF_Paddle"], "origin": "grip; blade +X", "palette": ["M_LF_Wood", "M_LF_WoodDark"], "size_m": [1.6, 0.377, 0.065], "tris": 204}
+[PADDLE MEASURED] {'shaft_diameter': 0.04, 'blade_width': 0.377, 'blade_root_thickness': 0.02692, 'blade_tip_thickness': 0.023079999999999996}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Paddle.fbx'
+export finished in 0.0048 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Paddle.fbx tris=204
+FBX version: 7400

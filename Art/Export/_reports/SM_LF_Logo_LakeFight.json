@@ -1,0 +1,57 @@
+{
+  "asset": "SM_LF_Logo_LakeFight",
+  "tris": 1400,
+  "limit_exclusive": 5000,
+  "objects": [
+    "SM_LF_Logo_LakeFight"
+  ],
+  "bounds_min_m": [
+    -2.5,
+    -0.19963523745536804,
+    -1.0021030902862549
+  ],
+  "bounds_max_m": [
+    2.5,
+    0.25174999237060547,
+    1.027475118637085
+  ],
+  "size_m": [
+    5.0,
+    0.4513852298259735,
+    2.02957820892334
+  ],
+  "palette": [
+    "M_LF_PaintCream",
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "material_linear": {
+    "M_LF_WoodDark": [
+      0.2800000011920929,
+      0.17000000178813934,
+      0.09000000357627869
+    ],
+    "M_LF_PaintCream": [
+      0.9200000166893005,
+      0.8600000143051147,
+      0.699999988079071
+    ],
+    "M_LF_Wood": [
+      0.44999998807907104,
+      0.2800000011920929,
+      0.15000000596046448
+    ]
+  },
+  "geometry_sha256": "fcdde95a67bd60f18f358979c8ef8e8ef214a0f4844cd013f2e7bfbe27f27084",
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Logo_LakeFight.fbx",
+  "notes": "Original irregular block-cell LAKE FIGHT lettering extruded 10cm, chipped WoodDark sign and one diagonal rear paddle. No font object, font file, texture or external logo.",
+  "origin": "main board centre; X horizontal, Z up, front -Y",
+  "title": "LAKE FIGHT",
+  "lettering_source": "explicit original GLYPHS cell masks in lf_b05.py",
+  "letter_depth_m": 0.1,
+  "text_width_m": 4.095,
+  "directors_cut_companion": "SM_LF_Logo_DirectorsCut; same origin and orientation"
+}

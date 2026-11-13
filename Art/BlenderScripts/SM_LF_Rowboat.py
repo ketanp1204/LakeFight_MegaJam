@@ -16,6 +16,8 @@ importlib.reload(lf)
 import bpy
 import bmesh
 from mathutils import Vector, Matrix
+import lf_b06
+importlib.reload(lf_b06)
 
 
 # Counterclockwise plan: square transom, broad middle, tapered raised bow.
@@ -167,7 +169,7 @@ def build(name, paint):
     hull.name = name
     hull.data.name = name + "_Mesh"
 
-    # Six convex cuboids. Two angled bow boxes leave the bow cockpit hollow.
+    # Original floor/stern and protected inner-plane templates for B06 walls.
     # 00 floor, 01 port, 02 starboard, 03/04 bow halves, 05 stern.
     def collision(index, centre, size, yaw=0, flare=0):
         ob = box(col, f"UCX_{name}_{index:02d}", (0, 0, 0), size, None)
@@ -197,6 +199,10 @@ def build(name, paint):
         v.co = rot @ (v.co - centre) + centre
     stern.data.update()
 
+    # B06: split side/bow exteriors into convex segments. The original inner
+    # planes, floor 00 and stern 05 stay fixed; new names continue at 06.
+    collision_segments = lf_b06.fit_collision_set(col, hull, name, sheer)
+
     bpy.context.view_layer.update()
     verts = [hull.matrix_world @ v.co for v in hull.data.vertices]
     lo = [min(v[i] for v in verts) for i in range(3)]
@@ -216,7 +222,9 @@ def build(name, paint):
                    for m in ob.data.materials), ob.name
         if ob.name.startswith("UCX_"):
             assert len(ob.data.materials) == 0, ob.name
-            assert len(ob.data.vertices) == 8 and len(ob.data.polygons) == 6, ob.name
+            assert len(ob.data.vertices) <= 24, ob.name
+            if ob.name.endswith(("_00", "_05")):
+                assert len(ob.data.vertices) == 8 and len(ob.data.polygons) == 6, ob.name
             # Every vertex lies on or behind every face: convex, outward-facing.
             for p in ob.data.polygons:
                 assert all(p.normal.dot(v.co - p.center) < 1e-5 for v in ob.data.vertices), ob.name
@@ -225,7 +233,7 @@ def build(name, paint):
     total_tris = lf.tri_count(col)
     assert not bad, bad
     assert total_tris < 2500, total_tris
-    assert len(col.objects) == 7
+    assert len(col.objects) == 13
     assert hull.name == name and hull.location.length == 0
     fingerprint = hashlib.sha256(json.dumps([
         (ob.name, [tuple(v.co) for v in ob.data.vertices],
@@ -238,7 +246,9 @@ def build(name, paint):
               "size_m": [round(b - a, 6) for a, b in zip(lo, hi)],
               "origin_above_lowest_m": round(-lo[2], 6), "nonmanifold_edges": bad,
               "geometry_sha256": fingerprint, "broadside_flare_degrees": 11,
-              "gunwale_bow_rise_added_m": .20, "gunwale_stern_rise_added_m": .08}
+              "gunwale_bow_rise_added_m": .20, "gunwale_stern_rise_added_m": .08,
+              "collision_piece_count": 12, "collision_segments": collision_segments,
+              "max_ucx_vertices": max(len(o.data.vertices) for o in col.objects if o.name.startswith("UCX_"))}
     print("[B01.1] " + json.dumps(report, sort_keys=True))
     lf.export_fbx(col, name)
     return report
@@ -251,4 +261,4 @@ bpy.context.scene.unit_settings.scale_length = 1.0
 B01_REPORT = [build("SM_LF_Rowboat", "PaintRed"), build("SM_LF_Rowboat_Blue", "PaintBlue"),
               build("SM_LF_Rowboat_Green", "PaintGreen"), build("SM_LF_Rowboat_Yellow", "PaintYellow")]
 REPORTS = B01_REPORT
-print("[B02.1] complete: four team boats exported; bow +X, waterline Z=0, keel Z=-0.25 m")
+print("[B06] complete: four boats, unchanged render, twelve convex UCX pieces each; bow +X, waterline Z=0")

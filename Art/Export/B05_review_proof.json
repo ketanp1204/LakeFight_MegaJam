@@ -1,0 +1,225 @@
+{
+  "target_mannequin_height_m": 1.35,
+  "hat_proof": {
+    "SM_LF_Hat_Bucket_Red": {
+      "tris_before": 304,
+      "tris_after": 304,
+      "bounds_before_m": [
+        [
+          -0.1537500023841858,
+          -0.13124999403953552,
+          0.06719999760389328
+        ],
+        [
+          0.1537500023841858,
+          0.13124999403953552,
+          0.1837500035762787
+        ]
+      ],
+      "bounds_after_m": [
+        [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ]
+      ],
+      "size_before_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "size_after_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "dimension_ratios": [
+        1.299999961232752,
+        1.3000000681195971,
+        1.2999999296813536
+      ],
+      "pivot_unchanged": true,
+      "brim_seating_height_unchanged_m": 0.10125
+    },
+    "SM_LF_Hat_Bucket_Blue": {
+      "tris_before": 304,
+      "tris_after": 304,
+      "bounds_before_m": [
+        [
+          -0.1537500023841858,
+          -0.13124999403953552,
+          0.06719999760389328
+        ],
+        [
+          0.1537500023841858,
+          0.13124999403953552,
+          0.1837500035762787
+        ]
+      ],
+      "bounds_after_m": [
+        [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ]
+      ],
+      "size_before_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "size_after_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "dimension_ratios": [
+        1.299999961232752,
+        1.3000000681195971,
+        1.2999999296813536
+      ],
+      "pivot_unchanged": true,
+      "brim_seating_height_unchanged_m": 0.10125
+    },
+    "SM_LF_Hat_Bucket_Green": {
+      "tris_before": 304,
+      "tris_after": 304,
+      "bounds_before_m": [
+        [
+          -0.1537500023841858,
+          -0.13124999403953552,
+          0.06719999760389328
+        ],
+        [
+          0.1537500023841858,
+          0.13124999403953552,
+          0.1837500035762787
+        ]
+      ],
+      "bounds_after_m": [
+        [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ]
+      ],
+      "size_before_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "size_after_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "dimension_ratios": [
+        1.299999961232752,
+        1.3000000681195971,
+        1.2999999296813536
+      ],
+      "pivot_unchanged": true,
+      "brim_seating_height_unchanged_m": 0.10125
+    },
+    "SM_LF_Hat_Bucket_Yellow": {
+      "tris_before": 304,
+      "tris_after": 304,
+      "bounds_before_m": [
+        [
+          -0.1537500023841858,
+          -0.13124999403953552,
+          0.06719999760389328
+        ],
+        [
+          0.1537500023841858,
+          0.13124999403953552,
+          0.1837500035762787
+        ]
+      ],
+      "bounds_after_m": [
+        [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ]
+      ],
+      "size_before_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "size_after_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "dimension_ratios": [
+        1.299999961232752,
+        1.3000000681195971,
+        1.2999999296813536
+      ],
+      "pivot_unchanged": true,
+      "brim_seating_height_unchanged_m": 0.10125
+    }
+  },
+  "logo_combined_tris": 3152,
+  "logo_shared_origin": true,
+  "font_files_used": false,
+  "lettering_is_mesh_only": true,
+  "flag_holder_local_transform": {
+    "location_m": [
+      1.82,
+      1.08,
+      0.7
+    ],
+    "rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ]
+  },
+  "flag_base_clearance_per_side_m": 0.01,
+  "hat_screenshots": {
+    "Red": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Red_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Red_Detail.png"
+    ],
+    "Blue": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Blue_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Blue_Detail.png"
+    ],
+    "Green": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Green_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Green_Detail.png"
+    ],
+    "Yellow": [
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Yellow_Proxy.png",
+      "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Yellow_Detail.png"
+    ]
+  }
+}

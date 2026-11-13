@@ -1,0 +1,918 @@
+{
+  "palette": {
+    "PaintRed": {
+      "before": {
+        "linear": [
+          0.75,
+          0.18,
+          0.14
+        ],
+        "srgb_255": [
+          225,
+          118,
+          105
+        ]
+      },
+      "after": {
+        "linear": [
+          0.6,
+          0.05,
+          0.04
+        ],
+        "srgb_255": [
+          203,
+          63,
+          56
+        ]
+      }
+    },
+    "PaintBlue": {
+      "before": {
+        "linear": [
+          0.16,
+          0.36,
+          0.7
+        ],
+        "srgb_255": [
+          111,
+          162,
+          218
+        ]
+      },
+      "after": {
+        "linear": [
+          0.035,
+          0.17,
+          0.65
+        ],
+        "srgb_255": [
+          53,
+          115,
+          211
+        ]
+      }
+    },
+    "PaintGreen": {
+      "before": {
+        "linear": [
+          0.2,
+          0.55,
+          0.25
+        ],
+        "srgb_255": [
+          124,
+          196,
+          137
+        ]
+      },
+      "after": {
+        "linear": [
+          0.035,
+          0.38,
+          0.055
+        ],
+        "srgb_255": [
+          53,
+          166,
+          66
+        ]
+      }
+    },
+    "PaintYellow": {
+      "before": {
+        "linear": [
+          0.9,
+          0.72,
+          0.15
+        ],
+        "srgb_255": [
+          243,
+          221,
+          108
+        ]
+      },
+      "after": {
+        "linear": [
+          0.9,
+          0.6,
+          0.025
+        ],
+        "srgb_255": [
+          243,
+          203,
+          44
+        ]
+      }
+    }
+  },
+  "baseline_FBX": {
+    "SM_LF_Rowboat": {
+      "tris": 1286,
+      "bounds_min_m": [
+        -1.5989601612091064,
+        -0.7095000743865967,
+        -0.25
+      ],
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "fbx_sha256": "fc407634672efc1823dd97aad23cf7468123071241426ad422529a607b632bce"
+    },
+    "SM_LF_Rowboat_Blue": {
+      "tris": 1286,
+      "bounds_min_m": [
+        -1.5989601612091064,
+        -0.7095000743865967,
+        -0.25
+      ],
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "fbx_sha256": "85843d2f3e7b2eb3c3d15a1e1425400f245c6d83742268837009e85fb764a978"
+    },
+    "SM_LF_Rowboat_Green": {
+      "tris": 1286,
+      "bounds_min_m": [
+        -1.5989601612091064,
+        -0.7095000743865967,
+        -0.25
+      ],
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "fbx_sha256": "0c1e198afd27a6bbe0ed33b5e77e9994468269b8eb64c04dafb178c76c88f1c5"
+    },
+    "SM_LF_Rowboat_Yellow": {
+      "tris": 1286,
+      "bounds_min_m": [
+        -1.5989601612091064,
+        -0.7095000743865967,
+        -0.25
+      ],
+      "bounds_max_m": [
+        1.598960041999817,
+        0.7095000147819519,
+        0.5519999861717224
+      ],
+      "fbx_sha256": "ba4606e90d363a4c2815dbe1e5ebdd74ad72a51e67294a4250a37c7ca6010e80"
+    },
+    "SM_LF_TeamFlag_Red": {
+      "tris": 216,
+      "bounds_min_m": [
+        -0.11000001430511475,
+        -0.11000001430511475,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.1449999809265137,
+        0.11000001430511475,
+        2.5799999237060547
+      ],
+      "fbx_sha256": "758b49dc171df5a8188ee1b9d61672aa5feded593536af291009cee65e99f0ff"
+    },
+    "SM_LF_TeamFlag_Blue": {
+      "tris": 216,
+      "bounds_min_m": [
+        -0.11000001430511475,
+        -0.11000001430511475,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.1449999809265137,
+        0.11000001430511475,
+        2.5799999237060547
+      ],
+      "fbx_sha256": "a8225bc5d7e0ac930acb8a133754d19c752c4d59dbed09cd90fde2c50dcd1a35"
+    },
+    "SM_LF_TeamFlag_Green": {
+      "tris": 216,
+      "bounds_min_m": [
+        -0.11000001430511475,
+        -0.11000001430511475,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.1449999809265137,
+        0.11000001430511475,
+        2.5799999237060547
+      ],
+      "fbx_sha256": "c99ae5ba194310afbc9b01e991ca8de639a1f173242892682d424cc05b401656"
+    },
+    "SM_LF_TeamFlag_Yellow": {
+      "tris": 216,
+      "bounds_min_m": [
+        -0.11000001430511475,
+        -0.11000001430511475,
+        0.0
+      ],
+      "bounds_max_m": [
+        1.1449999809265137,
+        0.11000001430511475,
+        2.5799999237060547
+      ],
+      "fbx_sha256": "28e940e349c027fcb5662657415f07276d2457b5c39b64ff2afb7a2c93e99d25"
+    }
+  },
+  "scripts": {
+    "SM_LF_Rowboat.py": {
+      "runs": [
+        [
+          {
+            "asset": "SM_LF_Rowboat",
+            "objects": [
+              "SM_LF_Rowboat",
+              "UCX_SM_LF_Rowboat_00",
+              "UCX_SM_LF_Rowboat_01",
+              "UCX_SM_LF_Rowboat_02",
+              "UCX_SM_LF_Rowboat_03",
+              "UCX_SM_LF_Rowboat_04",
+              "UCX_SM_LF_Rowboat_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "c2c4df5a3d978ba98a4eae8f59f74f73cb33ddd65988d281570b57a67901612d",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          },
+          {
+            "asset": "SM_LF_Rowboat_Blue",
+            "objects": [
+              "SM_LF_Rowboat_Blue",
+              "UCX_SM_LF_Rowboat_Blue_00",
+              "UCX_SM_LF_Rowboat_Blue_01",
+              "UCX_SM_LF_Rowboat_Blue_02",
+              "UCX_SM_LF_Rowboat_Blue_03",
+              "UCX_SM_LF_Rowboat_Blue_04",
+              "UCX_SM_LF_Rowboat_Blue_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "fbe97b81552c3a3fbcb8b92024cb485f3906dcd01d9a341696b55711d1caa5e2",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          },
+          {
+            "asset": "SM_LF_Rowboat_Green",
+            "objects": [
+              "SM_LF_Rowboat_Green",
+              "UCX_SM_LF_Rowboat_Green_00",
+              "UCX_SM_LF_Rowboat_Green_01",
+              "UCX_SM_LF_Rowboat_Green_02",
+              "UCX_SM_LF_Rowboat_Green_03",
+              "UCX_SM_LF_Rowboat_Green_04",
+              "UCX_SM_LF_Rowboat_Green_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "657eea3f03553abd14c36109a0bc581477725d790e001ab3b3d8615e814ba0d7",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          },
+          {
+            "asset": "SM_LF_Rowboat_Yellow",
+            "objects": [
+              "SM_LF_Rowboat_Yellow",
+              "UCX_SM_LF_Rowboat_Yellow_00",
+              "UCX_SM_LF_Rowboat_Yellow_01",
+              "UCX_SM_LF_Rowboat_Yellow_02",
+              "UCX_SM_LF_Rowboat_Yellow_03",
+              "UCX_SM_LF_Rowboat_Yellow_04",
+              "UCX_SM_LF_Rowboat_Yellow_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "3372df7e318d6c76bdb3341eda16ec97413168d66201979516705fc77d96c1b0",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          }
+        ],
+        [
+          {
+            "asset": "SM_LF_Rowboat",
+            "objects": [
+              "SM_LF_Rowboat",
+              "UCX_SM_LF_Rowboat_00",
+              "UCX_SM_LF_Rowboat_01",
+              "UCX_SM_LF_Rowboat_02",
+              "UCX_SM_LF_Rowboat_03",
+              "UCX_SM_LF_Rowboat_04",
+              "UCX_SM_LF_Rowboat_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "c2c4df5a3d978ba98a4eae8f59f74f73cb33ddd65988d281570b57a67901612d",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          },
+          {
+            "asset": "SM_LF_Rowboat_Blue",
+            "objects": [
+              "SM_LF_Rowboat_Blue",
+              "UCX_SM_LF_Rowboat_Blue_00",
+              "UCX_SM_LF_Rowboat_Blue_01",
+              "UCX_SM_LF_Rowboat_Blue_02",
+              "UCX_SM_LF_Rowboat_Blue_03",
+              "UCX_SM_LF_Rowboat_Blue_04",
+              "UCX_SM_LF_Rowboat_Blue_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "fbe97b81552c3a3fbcb8b92024cb485f3906dcd01d9a341696b55711d1caa5e2",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          },
+          {
+            "asset": "SM_LF_Rowboat_Green",
+            "objects": [
+              "SM_LF_Rowboat_Green",
+              "UCX_SM_LF_Rowboat_Green_00",
+              "UCX_SM_LF_Rowboat_Green_01",
+              "UCX_SM_LF_Rowboat_Green_02",
+              "UCX_SM_LF_Rowboat_Green_03",
+              "UCX_SM_LF_Rowboat_Green_04",
+              "UCX_SM_LF_Rowboat_Green_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "657eea3f03553abd14c36109a0bc581477725d790e001ab3b3d8615e814ba0d7",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          },
+          {
+            "asset": "SM_LF_Rowboat_Yellow",
+            "objects": [
+              "SM_LF_Rowboat_Yellow",
+              "UCX_SM_LF_Rowboat_Yellow_00",
+              "UCX_SM_LF_Rowboat_Yellow_01",
+              "UCX_SM_LF_Rowboat_Yellow_02",
+              "UCX_SM_LF_Rowboat_Yellow_03",
+              "UCX_SM_LF_Rowboat_Yellow_04",
+              "UCX_SM_LF_Rowboat_Yellow_05"
+            ],
+            "render_tris": 1214,
+            "ucx_tris": 72,
+            "total_tris": 1286,
+            "bounds_min_m": [
+              -1.598960041999817,
+              -0.7095000147819519,
+              -0.25
+            ],
+            "bounds_max_m": [
+              1.598960041999817,
+              0.7095000147819519,
+              0.5519999861717224
+            ],
+            "size_m": [
+              3.19792,
+              1.419,
+              0.802
+            ],
+            "origin_above_lowest_m": 0.25,
+            "nonmanifold_edges": {},
+            "geometry_sha256": "3372df7e318d6c76bdb3341eda16ec97413168d66201979516705fc77d96c1b0",
+            "broadside_flare_degrees": 11,
+            "gunwale_bow_rise_added_m": 0.2,
+            "gunwale_stern_rise_added_m": 0.08
+          }
+        ]
+      ],
+      "consecutive_runs_verified": 2,
+      "script_sha256": "e886fff0912c18498a16419031cd55c7595495fc865e58ccd7f954fc63a47955"
+    },
+    "SM_LF_TeamFlag.py": {
+      "runs": [
+        [
+          {
+            "asset": "SM_LF_TeamFlag_Red",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Red",
+              "SM_LF_TeamFlag_Red_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintCream",
+              "M_LF_PaintRed",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "8432c5c3b75bcd7a73b69d5e5030bfb056bf87183904efc1eb2b9bdfbd8dd539",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Red.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          },
+          {
+            "asset": "SM_LF_TeamFlag_Blue",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Blue",
+              "SM_LF_TeamFlag_Blue_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintBlue",
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "b2b346b690190481abdcaaad233bab64d9d37ac3ae02e2d8b153baa1418e6be8",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Blue.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          },
+          {
+            "asset": "SM_LF_TeamFlag_Green",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Green",
+              "SM_LF_TeamFlag_Green_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintCream",
+              "M_LF_PaintGreen",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "d1441a7a1e2b249075c26a40a4aa76b37a7b46b48ced42d9b5e69ccfc9d5b2b9",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Green.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          },
+          {
+            "asset": "SM_LF_TeamFlag_Yellow",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Yellow",
+              "SM_LF_TeamFlag_Yellow_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintCream",
+              "M_LF_PaintYellow",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "3f976289a09c4047b9f3980ed9558b4f71cd835c84a31264ba4cf6f9b66cf289",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          }
+        ],
+        [
+          {
+            "asset": "SM_LF_TeamFlag_Red",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Red",
+              "SM_LF_TeamFlag_Red_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintCream",
+              "M_LF_PaintRed",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "8432c5c3b75bcd7a73b69d5e5030bfb056bf87183904efc1eb2b9bdfbd8dd539",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Red.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          },
+          {
+            "asset": "SM_LF_TeamFlag_Blue",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Blue",
+              "SM_LF_TeamFlag_Blue_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintBlue",
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "b2b346b690190481abdcaaad233bab64d9d37ac3ae02e2d8b153baa1418e6be8",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Blue.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          },
+          {
+            "asset": "SM_LF_TeamFlag_Green",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Green",
+              "SM_LF_TeamFlag_Green_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintCream",
+              "M_LF_PaintGreen",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "d1441a7a1e2b249075c26a40a4aa76b37a7b46b48ced42d9b5e69ccfc9d5b2b9",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Green.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          },
+          {
+            "asset": "SM_LF_TeamFlag_Yellow",
+            "tris": 216,
+            "limit_exclusive": 300,
+            "objects": [
+              "SM_LF_TeamFlag_Yellow",
+              "SM_LF_TeamFlag_Yellow_Flag"
+            ],
+            "bounds_min_m": [
+              -0.11,
+              -0.11,
+              0.0
+            ],
+            "bounds_max_m": [
+              1.145,
+              0.11,
+              2.58
+            ],
+            "size_m": [
+              1.255,
+              0.22,
+              2.58
+            ],
+            "origin": "base centre",
+            "palette": [
+              "M_LF_Metal",
+              "M_LF_PaintCream",
+              "M_LF_PaintYellow",
+              "M_LF_WoodDark"
+            ],
+            "nonmanifold_edges": 0,
+            "geometry_sha256": "3f976289a09c4047b9f3980ed9558b4f71cd835c84a31264ba4cf6f9b66cf289",
+            "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx",
+            "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
+          }
+        ]
+      ],
+      "consecutive_runs_verified": 2,
+      "script_sha256": "fd56d75cf50e9b42fc952aeb6df7f6ba0c1ec12b77ce84c0ce187d248c1f1cda"
+    }
+  },
+  "export_checks": {
+    "SM_LF_Rowboat": {
+      "tris_before": 1286,
+      "tris_after": 1286,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintRed": [
+          0.6000000238418579,
+          0.05000000074505806,
+          0.03999999910593033
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    },
+    "SM_LF_Rowboat_Blue": {
+      "tris_before": 1286,
+      "tris_after": 1286,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintBlue": [
+          0.03500000014901161,
+          0.17000000178813934,
+          0.6499999761581421
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    },
+    "SM_LF_Rowboat_Green": {
+      "tris_before": 1286,
+      "tris_after": 1286,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintGreen": [
+          0.03500000014901161,
+          0.3799999952316284,
+          0.054999999701976776
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    },
+    "SM_LF_Rowboat_Yellow": {
+      "tris_before": 1286,
+      "tris_after": 1286,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintYellow": [
+          0.8999999761581421,
+          0.6000000238418579,
+          0.02500000037252903
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    },
+    "SM_LF_TeamFlag_Red": {
+      "tris_before": 216,
+      "tris_after": 216,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintRed": [
+          0.6000000238418579,
+          0.05000000074505806,
+          0.03999999910593033
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    },
+    "SM_LF_TeamFlag_Blue": {
+      "tris_before": 216,
+      "tris_after": 216,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintBlue": [
+          0.03500000014901161,
+          0.17000000178813934,
+          0.6499999761581421
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    },
+    "SM_LF_TeamFlag_Green": {
+      "tris_before": 216,
+      "tris_after": 216,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintGreen": [
+          0.03500000014901161,
+          0.3799999952316284,
+          0.054999999701976776
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    },
+    "SM_LF_TeamFlag_Yellow": {
+      "tris_before": 216,
+      "tris_after": 216,
+      "bounds_unchanged": true,
+      "team_linear_in_actual_FBX": {
+        "PaintYellow": [
+          0.8999999761581421,
+          0.6000000238418579,
+          0.02500000037252903
+        ]
+      },
+      "geometry_sha256_unchanged_from_B021": true
+    }
+  }
+}

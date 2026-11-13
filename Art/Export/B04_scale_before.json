@@ -1,0 +1,824 @@
+{
+  "SM_LF_Hat_Bucket_Red": {
+    "asset": "SM_LF_Hat_Bucket_Red",
+    "tris": 304,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.20499999821186066,
+      -0.17499999701976776,
+      0.08959999680519104
+    ],
+    "bounds_max_m": [
+      0.20499999821186066,
+      0.17499999701976776,
+      0.24500000476837158
+    ],
+    "size_m": [
+      0.4099999964237213,
+      0.3499999940395355,
+      0.15540000796318054
+    ],
+    "origin": "assumed head pivot; baked offset",
+    "attachment": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.59
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre +13.5cm Z from head pivot; outer crown +24.5cm Z; no separate UE translation assumed."
+    },
+    "palette": [
+      "M_LF_PaintCream",
+      "M_LF_PaintRed",
+      "M_LF_WoodDark"
+    ],
+    "material_linear": {
+      "M_LF_PaintRed": [
+        0.6000000238418579,
+        0.05000000074505806,
+        0.03999999910593033
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_WoodDark": [
+        0.2800000011920929,
+        0.17000000178813934,
+        0.09000000357627869
+      ]
+    },
+    "team": "Red",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "f3d813aa9c6486dea76a6b930a7700d05a06afc35c453a2a1ab10968da050270",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Red.fbx",
+    "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+  },
+  "SM_LF_Hat_Bucket_Blue": {
+    "asset": "SM_LF_Hat_Bucket_Blue",
+    "tris": 304,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.20499999821186066,
+      -0.17499999701976776,
+      0.08959999680519104
+    ],
+    "bounds_max_m": [
+      0.20499999821186066,
+      0.17499999701976776,
+      0.24500000476837158
+    ],
+    "size_m": [
+      0.4099999964237213,
+      0.3499999940395355,
+      0.15540000796318054
+    ],
+    "origin": "assumed head pivot; baked offset",
+    "attachment": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.59
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre +13.5cm Z from head pivot; outer crown +24.5cm Z; no separate UE translation assumed."
+    },
+    "palette": [
+      "M_LF_PaintBlue",
+      "M_LF_PaintCream",
+      "M_LF_WoodDark"
+    ],
+    "material_linear": {
+      "M_LF_PaintBlue": [
+        0.03500000014901161,
+        0.17000000178813934,
+        0.6499999761581421
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_WoodDark": [
+        0.2800000011920929,
+        0.17000000178813934,
+        0.09000000357627869
+      ]
+    },
+    "team": "Blue",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "910a554a5307d12e48821e4778bc13682f93d85ebaf2f6dd93981c24f1b2b84c",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Blue.fbx",
+    "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+  },
+  "SM_LF_Hat_Bucket_Green": {
+    "asset": "SM_LF_Hat_Bucket_Green",
+    "tris": 304,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.20499999821186066,
+      -0.17499999701976776,
+      0.08959999680519104
+    ],
+    "bounds_max_m": [
+      0.20499999821186066,
+      0.17499999701976776,
+      0.24500000476837158
+    ],
+    "size_m": [
+      0.4099999964237213,
+      0.3499999940395355,
+      0.15540000796318054
+    ],
+    "origin": "assumed head pivot; baked offset",
+    "attachment": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.59
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre +13.5cm Z from head pivot; outer crown +24.5cm Z; no separate UE translation assumed."
+    },
+    "palette": [
+      "M_LF_PaintCream",
+      "M_LF_PaintGreen",
+      "M_LF_WoodDark"
+    ],
+    "material_linear": {
+      "M_LF_PaintGreen": [
+        0.03500000014901161,
+        0.3799999952316284,
+        0.054999999701976776
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_WoodDark": [
+        0.2800000011920929,
+        0.17000000178813934,
+        0.09000000357627869
+      ]
+    },
+    "team": "Green",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "9f0a0fb0f94041a41c622f3fc24df9f3a266b698996a517b761b51bc4763eaa1",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Green.fbx",
+    "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+  },
+  "SM_LF_Hat_Bucket_Yellow": {
+    "asset": "SM_LF_Hat_Bucket_Yellow",
+    "tris": 304,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.20499999821186066,
+      -0.17499999701976776,
+      0.08959999680519104
+    ],
+    "bounds_max_m": [
+      0.20499999821186066,
+      0.17499999701976776,
+      0.24500000476837158
+    ],
+    "size_m": [
+      0.4099999964237213,
+      0.3499999940395355,
+      0.15540000796318054
+    ],
+    "origin": "assumed head pivot; baked offset",
+    "attachment": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.59
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre +13.5cm Z from head pivot; outer crown +24.5cm Z; no separate UE translation assumed."
+    },
+    "palette": [
+      "M_LF_PaintCream",
+      "M_LF_PaintYellow",
+      "M_LF_WoodDark"
+    ],
+    "material_linear": {
+      "M_LF_PaintYellow": [
+        0.8999999761581421,
+        0.6000000238418579,
+        0.02500000037252903
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_WoodDark": [
+        0.2800000011920929,
+        0.17000000178813934,
+        0.09000000357627869
+      ]
+    },
+    "team": "Yellow",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "a2c2ec1ff4fc9cd8a069e82f6d394c2dadb70afdd76699883d8175083f17bfcf",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Yellow.fbx",
+    "notes": "Hollow 12-sided crown, 12mm wavy floppy brim, cream band and dark sewn patch. Four identical shapes with crew colour changes only."
+  },
+  "SM_LF_LifeVest_Red": {
+    "asset": "SM_LF_LifeVest_Red",
+    "tris": 440,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.23999999463558197,
+      -0.27799999713897705,
+      -0.23499999940395355
+    ],
+    "bounds_max_m": [
+      0.2850000262260437,
+      0.27799999713897705,
+      0.17736156284809113
+    ],
+    "size_m": [
+      0.5250000208616257,
+      0.5559999942779541,
+      0.4123615622520447
+    ],
+    "origin": "assumed spine_03 pivot; baked offset",
+    "attachment": {
+      "bone": "spine_03",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.35
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Puff centre approximately +15.5cm X, -5cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 135cm above soles."
+    },
+    "palette": [
+      "M_LF_Black",
+      "M_LF_PaintCream",
+      "M_LF_PaintRed"
+    ],
+    "material_linear": {
+      "M_LF_PaintRed": [
+        0.6000000238418579,
+        0.05000000074505806,
+        0.03999999910593033
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_Black": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0.029999999329447746
+      ]
+    },
+    "team": "Red",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "65402a3c838525a8de783aa50146546027ebcffb36956db891fdbe4907e666de",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Red.fbx",
+    "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+  },
+  "SM_LF_LifeVest_Blue": {
+    "asset": "SM_LF_LifeVest_Blue",
+    "tris": 440,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.23999999463558197,
+      -0.27799999713897705,
+      -0.23499999940395355
+    ],
+    "bounds_max_m": [
+      0.2850000262260437,
+      0.27799999713897705,
+      0.17736156284809113
+    ],
+    "size_m": [
+      0.5250000208616257,
+      0.5559999942779541,
+      0.4123615622520447
+    ],
+    "origin": "assumed spine_03 pivot; baked offset",
+    "attachment": {
+      "bone": "spine_03",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.35
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Puff centre approximately +15.5cm X, -5cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 135cm above soles."
+    },
+    "palette": [
+      "M_LF_Black",
+      "M_LF_PaintBlue",
+      "M_LF_PaintCream"
+    ],
+    "material_linear": {
+      "M_LF_PaintBlue": [
+        0.03500000014901161,
+        0.17000000178813934,
+        0.6499999761581421
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_Black": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0.029999999329447746
+      ]
+    },
+    "team": "Blue",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "6483637783176b55f36ad693ebd7e33693d7b22ed6a08bc9ab57863a6afd01cd",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Blue.fbx",
+    "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+  },
+  "SM_LF_LifeVest_Green": {
+    "asset": "SM_LF_LifeVest_Green",
+    "tris": 440,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.23999999463558197,
+      -0.27799999713897705,
+      -0.23499999940395355
+    ],
+    "bounds_max_m": [
+      0.2850000262260437,
+      0.27799999713897705,
+      0.17736156284809113
+    ],
+    "size_m": [
+      0.5250000208616257,
+      0.5559999942779541,
+      0.4123615622520447
+    ],
+    "origin": "assumed spine_03 pivot; baked offset",
+    "attachment": {
+      "bone": "spine_03",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.35
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Puff centre approximately +15.5cm X, -5cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 135cm above soles."
+    },
+    "palette": [
+      "M_LF_Black",
+      "M_LF_PaintCream",
+      "M_LF_PaintGreen"
+    ],
+    "material_linear": {
+      "M_LF_PaintGreen": [
+        0.03500000014901161,
+        0.3799999952316284,
+        0.054999999701976776
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_Black": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0.029999999329447746
+      ]
+    },
+    "team": "Green",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "83a809d4b7c9493a02f4033dd5a0062b24628f8fc1390b6aed49c487172dc171",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Green.fbx",
+    "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+  },
+  "SM_LF_LifeVest_Yellow": {
+    "asset": "SM_LF_LifeVest_Yellow",
+    "tris": 440,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.23999999463558197,
+      -0.27799999713897705,
+      -0.23499999940395355
+    ],
+    "bounds_max_m": [
+      0.2850000262260437,
+      0.27799999713897705,
+      0.17736156284809113
+    ],
+    "size_m": [
+      0.5250000208616257,
+      0.5559999942779541,
+      0.4123615622520447
+    ],
+    "origin": "assumed spine_03 pivot; baked offset",
+    "attachment": {
+      "bone": "spine_03",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.35
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Puff centre approximately +15.5cm X, -5cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 135cm above soles."
+    },
+    "palette": [
+      "M_LF_Black",
+      "M_LF_PaintCream",
+      "M_LF_PaintYellow"
+    ],
+    "material_linear": {
+      "M_LF_PaintYellow": [
+        0.8999999761581421,
+        0.6000000238418579,
+        0.02500000037252903
+      ],
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_Black": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0.029999999329447746
+      ]
+    },
+    "team": "Yellow",
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "72065fccd939e2ffbf6bf6024e0ee959ee28daa35cc8061a2a1e93878860a7c3",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Yellow.fbx",
+    "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+  },
+  "SM_LF_Hat_Captain": {
+    "asset": "SM_LF_Hat_Captain",
+    "tris": 344,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.14900000393390656,
+      -0.13199999928474426,
+      0.12620000541210175
+    ],
+    "bounds_max_m": [
+      0.24500000476837158,
+      0.13199999928474426,
+      0.3019999861717224
+    ],
+    "size_m": [
+      0.39400000870227814,
+      0.2639999985694885,
+      0.17579998075962067
+    ],
+    "origin": "assumed head pivot; baked offset",
+    "attachment": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.59
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Band lower edge +15cm Z and crown top +30.2cm Z from assumed head pivot; visor +X."
+    },
+    "palette": [
+      "M_LF_Black",
+      "M_LF_PaintCream"
+    ],
+    "material_linear": {
+      "M_LF_PaintCream": [
+        0.9200000166893005,
+        0.8600000143051147,
+        0.699999988079071
+      ],
+      "M_LF_Black": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0.029999999329447746
+      ]
+    },
+    "team": null,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "65874eec2f8b959dcf2c1084fb129c65698c05414eaab7a266c17eca5de8b0be",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Captain.fbx",
+    "notes": "Cream puffy crown, black band/forward peak and original geometric anchor badge. Hollow head cavity."
+  },
+  "SM_LF_Beard": {
+    "asset": "SM_LF_Beard",
+    "tris": 80,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      0.05179789662361145,
+      -0.11911416053771973,
+      -0.11500000208616257
+    ],
+    "bounds_max_m": [
+      0.19300000369548798,
+      0.11911418288946152,
+      0.11587455868721008
+    ],
+    "size_m": [
+      0.14120210707187653,
+      0.23822834342718124,
+      0.23087456077337265
+    ],
+    "origin": "assumed head pivot; baked offset",
+    "attachment": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.59
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Front surface X=9.5..19.3cm, lower tip Z=-11.5cm, cheek tips Z=+11cm from assumed head pivot."
+    },
+    "palette": [
+      "M_LF_WoodDark"
+    ],
+    "material_linear": {
+      "M_LF_WoodDark": [
+        0.2800000011920929,
+        0.17000000178813934,
+        0.09000000357627869
+      ]
+    },
+    "team": null,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "001fc3e3dbf68ca07bc4638d994a740fd0747a28d77c8800548514849eaea6fd",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Beard.fbx",
+    "notes": "Chunky pointed beard with raised cheek tufts, two sideburn blocks and a V mouth opening; WoodDark only."
+  },
+  "SM_LF_Moustache": {
+    "asset": "SM_LF_Moustache",
+    "tris": 112,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      0.13475000858306885,
+      -0.16225078701972961,
+      0.03300105780363083
+    ],
+    "bounds_max_m": [
+      0.18422947824001312,
+      0.16225078701972961,
+      0.1387888491153717
+    ],
+    "size_m": [
+      0.049479469656944275,
+      0.32450157403945923,
+      0.10578779131174088
+    ],
+    "origin": "assumed head pivot; baked offset",
+    "attachment": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.59
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Upper-lip centre approximately +15cm X,+7.4cm Z from assumed head pivot, curl span approximately 32cm."
+    },
+    "palette": [
+      "M_LF_WoodDark"
+    ],
+    "material_linear": {
+      "M_LF_WoodDark": [
+        0.2800000011920929,
+        0.17000000178813934,
+        0.09000000357627869
+      ]
+    },
+    "team": null,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "2c46580f433cb7a034b36407f65bf5c277013cf609ec95c81021168b9a0175fc",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Moustache.fbx",
+    "notes": "Two tapered six-sided curled handlebars; WoodDark matches beard. Separate face piece for optional combination."
+  },
+  "SM_LF_FishingRod": {
+    "asset": "SM_LF_FishingRod",
+    "tris": 324,
+    "limit_exclusive": 600,
+    "bounds_min_m": [
+      -0.10400000214576721,
+      -0.125,
+      -0.17000000178813934
+    ],
+    "bounds_max_m": [
+      0.25999999046325684,
+      0.023000000044703484,
+      1.950944423675537
+    ],
+    "size_m": [
+      0.36399999260902405,
+      0.14800000004470348,
+      2.1209444254636765
+    ],
+    "origin": "assumed hand_r pivot; baked offset",
+    "attachment": {
+      "bone": "hand_r",
+      "proxy_pivot_m": [
+        0.05,
+        0.47,
+        0.94
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Origin at middle of grip; butt Z=-17cm, rod tip Z=+195cm. Align socket local +Z along rod; review holds it 25deg forward."
+    },
+    "palette": [
+      "M_LF_Black",
+      "M_LF_Metal",
+      "M_LF_Rope",
+      "M_LF_Wood",
+      "M_LF_WoodDark"
+    ],
+    "material_linear": {
+      "M_LF_WoodDark": [
+        0.2800000011920929,
+        0.17000000178813934,
+        0.09000000357627869
+      ],
+      "M_LF_Wood": [
+        0.44999998807907104,
+        0.2800000011920929,
+        0.15000000596046448
+      ],
+      "M_LF_Metal": [
+        0.550000011920929,
+        0.5699999928474426,
+        0.6000000238418579
+      ],
+      "M_LF_Rope": [
+        0.699999988079071,
+        0.6000000238418579,
+        0.4000000059604645
+      ],
+      "M_LF_Black": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0.029999999329447746
+      ]
+    },
+    "team": null,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "flat_shaded": true,
+    "geometry_sha256": "edd0ab58622e01f65a49f2a4aa079f34c8824b3b9c7570a2a112198b3715ec55",
+    "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_FishingRod.fbx",
+    "notes": "Tapered wood shaft, dark grip, solid reel/crank, three guide eyes and static black fishing line. No animation/line simulation."
+  }
+}

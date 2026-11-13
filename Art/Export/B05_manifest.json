@@ -1,0 +1,1136 @@
+{
+  "task": "B05 hats, original title/ribbon, team dock",
+  "started_utc": "2026-11-13T07:27:33+00:00",
+  "deadline_utc": "2026-11-13T10:27:33+00:00",
+  "completed_utc": "2026-11-13T07:41:50.549764+00:00",
+  "before": {
+    "SM_LF_Hat_Bucket_Red": {
+      "tris": 304,
+      "bounds_min_m": [
+        -0.1537500023841858,
+        -0.13124999403953552,
+        0.06719999760389328
+      ],
+      "bounds_max_m": [
+        0.1537500023841858,
+        0.13124999403953552,
+        0.1837500035762787
+      ],
+      "size_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "fbx_sha256": "625ea9962d36261b3ed87c418c47c75a4177ab1210d74be8f9825ed11af70f4a"
+    },
+    "SM_LF_Hat_Bucket_Blue": {
+      "tris": 304,
+      "bounds_min_m": [
+        -0.1537500023841858,
+        -0.13124999403953552,
+        0.06719999760389328
+      ],
+      "bounds_max_m": [
+        0.1537500023841858,
+        0.13124999403953552,
+        0.1837500035762787
+      ],
+      "size_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "fbx_sha256": "d95e4d39e546121c05213d602389e4d0fe5dfe12fe96f1248e28583ccdb6f506"
+    },
+    "SM_LF_Hat_Bucket_Green": {
+      "tris": 304,
+      "bounds_min_m": [
+        -0.1537500023841858,
+        -0.13124999403953552,
+        0.06719999760389328
+      ],
+      "bounds_max_m": [
+        0.1537500023841858,
+        0.13124999403953552,
+        0.1837500035762787
+      ],
+      "size_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "fbx_sha256": "2363744df454b3ce63c02713109e5766c600f29787d32aef12630b34e526a180"
+    },
+    "SM_LF_Hat_Bucket_Yellow": {
+      "tris": 304,
+      "bounds_min_m": [
+        -0.1537500023841858,
+        -0.13124999403953552,
+        0.06719999760389328
+      ],
+      "bounds_max_m": [
+        0.1537500023841858,
+        0.13124999403953552,
+        0.1837500035762787
+      ],
+      "size_m": [
+        0.3075000047683716,
+        0.26249998807907104,
+        0.1165500059723854
+      ],
+      "fbx_sha256": "7413a0c90ca96f90aacfbf3db74786b3286cd276629f448b421c0e45f6b3cecf"
+    },
+    "SM_LF_Logo_LakeFight": {
+      "tris": 0,
+      "bounds": null,
+      "existed": false
+    },
+    "SM_LF_Logo_DirectorsCut": {
+      "tris": 0,
+      "bounds": null,
+      "existed": false
+    },
+    "SM_LF_Dock_Team": {
+      "tris": 0,
+      "bounds": null,
+      "existed": false
+    }
+  },
+  "assets": [
+    {
+      "asset": "SM_LF_Hat_Bucket_Red",
+      "tris": 304,
+      "limit_exclusive": 600,
+      "bounds_min_m": [
+        -0.19987499713897705,
+        -0.1706250011920929,
+        0.056984998285770416
+      ],
+      "bounds_max_m": [
+        0.19987499713897705,
+        0.1706250011920929,
+        0.2084999978542328
+      ],
+      "size_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "origin": "assumed head pivot; baked offset",
+      "attachment": {
+        "bone": "head",
+        "proxy_pivot_m": [
+          0.0,
+          0.0,
+          1.1925000000000001
+        ],
+        "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+        "preview_relative_location_cm": [
+          0,
+          0,
+          0
+        ],
+        "preview_relative_rotation_deg": [
+          0,
+          0,
+          0
+        ],
+        "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+        "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+        "authored_size_scale": 0.75,
+        "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+      },
+      "palette": [
+        "M_LF_PaintCream",
+        "M_LF_PaintRed",
+        "M_LF_WoodDark"
+      ],
+      "material_linear": {
+        "M_LF_PaintRed": [
+          0.6000000238418579,
+          0.05000000074505806,
+          0.03999999910593033
+        ],
+        "M_LF_PaintCream": [
+          0.9200000166893005,
+          0.8600000143051147,
+          0.699999988079071
+        ],
+        "M_LF_WoodDark": [
+          0.2800000011920929,
+          0.17000000178813934,
+          0.09000000357627869
+        ]
+      },
+      "team": "Red",
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "a85932764ced5d9ce9a4be759ca074e9c932604086ed736f7a55e0686c8b6327",
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Red.fbx",
+      "notes": "B05: 1.3x B04 dimensions around the brim-opening centre; wider brim, taller crown. Same head-origin and seating height, updated crew palette, 135cm Manny target."
+    },
+    {
+      "asset": "SM_LF_Hat_Bucket_Blue",
+      "tris": 304,
+      "limit_exclusive": 600,
+      "bounds_min_m": [
+        -0.19987499713897705,
+        -0.1706250011920929,
+        0.056984998285770416
+      ],
+      "bounds_max_m": [
+        0.19987499713897705,
+        0.1706250011920929,
+        0.2084999978542328
+      ],
+      "size_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "origin": "assumed head pivot; baked offset",
+      "attachment": {
+        "bone": "head",
+        "proxy_pivot_m": [
+          0.0,
+          0.0,
+          1.1925000000000001
+        ],
+        "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+        "preview_relative_location_cm": [
+          0,
+          0,
+          0
+        ],
+        "preview_relative_rotation_deg": [
+          0,
+          0,
+          0
+        ],
+        "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+        "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+        "authored_size_scale": 0.75,
+        "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+      },
+      "palette": [
+        "M_LF_PaintBlue",
+        "M_LF_PaintCream",
+        "M_LF_WoodDark"
+      ],
+      "material_linear": {
+        "M_LF_PaintBlue": [
+          0.03500000014901161,
+          0.17000000178813934,
+          0.6499999761581421
+        ],
+        "M_LF_PaintCream": [
+          0.9200000166893005,
+          0.8600000143051147,
+          0.699999988079071
+        ],
+        "M_LF_WoodDark": [
+          0.2800000011920929,
+          0.17000000178813934,
+          0.09000000357627869
+        ]
+      },
+      "team": "Blue",
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "0bc19852754ec8ddb5109a2a8ef09bb8385c872cf4838f6231ea87f226413d31",
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Blue.fbx",
+      "notes": "B05: 1.3x B04 dimensions around the brim-opening centre; wider brim, taller crown. Same head-origin and seating height, updated crew palette, 135cm Manny target."
+    },
+    {
+      "asset": "SM_LF_Hat_Bucket_Green",
+      "tris": 304,
+      "limit_exclusive": 600,
+      "bounds_min_m": [
+        -0.19987499713897705,
+        -0.1706250011920929,
+        0.056984998285770416
+      ],
+      "bounds_max_m": [
+        0.19987499713897705,
+        0.1706250011920929,
+        0.2084999978542328
+      ],
+      "size_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "origin": "assumed head pivot; baked offset",
+      "attachment": {
+        "bone": "head",
+        "proxy_pivot_m": [
+          0.0,
+          0.0,
+          1.1925000000000001
+        ],
+        "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+        "preview_relative_location_cm": [
+          0,
+          0,
+          0
+        ],
+        "preview_relative_rotation_deg": [
+          0,
+          0,
+          0
+        ],
+        "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+        "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+        "authored_size_scale": 0.75,
+        "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+      },
+      "palette": [
+        "M_LF_PaintCream",
+        "M_LF_PaintGreen",
+        "M_LF_WoodDark"
+      ],
+      "material_linear": {
+        "M_LF_PaintGreen": [
+          0.03500000014901161,
+          0.3799999952316284,
+          0.054999999701976776
+        ],
+        "M_LF_PaintCream": [
+          0.9200000166893005,
+          0.8600000143051147,
+          0.699999988079071
+        ],
+        "M_LF_WoodDark": [
+          0.2800000011920929,
+          0.17000000178813934,
+          0.09000000357627869
+        ]
+      },
+      "team": "Green",
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "b52931ced7f4265029f65618dbdfff992ac537c4ba539df0949bf57a3593e756",
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Green.fbx",
+      "notes": "B05: 1.3x B04 dimensions around the brim-opening centre; wider brim, taller crown. Same head-origin and seating height, updated crew palette, 135cm Manny target."
+    },
+    {
+      "asset": "SM_LF_Hat_Bucket_Yellow",
+      "tris": 304,
+      "limit_exclusive": 600,
+      "bounds_min_m": [
+        -0.19987499713897705,
+        -0.1706250011920929,
+        0.056984998285770416
+      ],
+      "bounds_max_m": [
+        0.19987499713897705,
+        0.1706250011920929,
+        0.2084999978542328
+      ],
+      "size_m": [
+        0.3997499942779541,
+        0.3412500023841858,
+        0.15151499956846237
+      ],
+      "origin": "assumed head pivot; baked offset",
+      "attachment": {
+        "bone": "head",
+        "proxy_pivot_m": [
+          0.0,
+          0.0,
+          1.1925000000000001
+        ],
+        "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+        "preview_relative_location_cm": [
+          0,
+          0,
+          0
+        ],
+        "preview_relative_rotation_deg": [
+          0,
+          0,
+          0
+        ],
+        "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+        "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+        "authored_size_scale": 0.75,
+        "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+      },
+      "palette": [
+        "M_LF_PaintCream",
+        "M_LF_PaintYellow",
+        "M_LF_WoodDark"
+      ],
+      "material_linear": {
+        "M_LF_PaintYellow": [
+          0.8999999761581421,
+          0.6000000238418579,
+          0.02500000037252903
+        ],
+        "M_LF_PaintCream": [
+          0.9200000166893005,
+          0.8600000143051147,
+          0.699999988079071
+        ],
+        "M_LF_WoodDark": [
+          0.2800000011920929,
+          0.17000000178813934,
+          0.09000000357627869
+        ]
+      },
+      "team": "Yellow",
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "3bc3803e44e15df87b4d849289d6685057a240ab481f6ecef1cd9cba7ae77816",
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Yellow.fbx",
+      "notes": "B05: 1.3x B04 dimensions around the brim-opening centre; wider brim, taller crown. Same head-origin and seating height, updated crew palette, 135cm Manny target."
+    },
+    {
+      "asset": "SM_LF_Logo_LakeFight",
+      "tris": 1400,
+      "limit_exclusive": 5000,
+      "objects": [
+        "SM_LF_Logo_LakeFight"
+      ],
+      "bounds_min_m": [
+        -2.5,
+        -0.19963523745536804,
+        -1.0021030902862549
+      ],
+      "bounds_max_m": [
+        2.5,
+        0.25174999237060547,
+        1.027475118637085
+      ],
+      "size_m": [
+        5.0,
+        0.4513852298259735,
+        2.02957820892334
+      ],
+      "palette": [
+        "M_LF_PaintCream",
+        "M_LF_Wood",
+        "M_LF_WoodDark"
+      ],
+      "material_linear": {
+        "M_LF_WoodDark": [
+          0.2800000011920929,
+          0.17000000178813934,
+          0.09000000357627869
+        ],
+        "M_LF_PaintCream": [
+          0.9200000166893005,
+          0.8600000143051147,
+          0.699999988079071
+        ],
+        "M_LF_Wood": [
+          0.44999998807907104,
+          0.2800000011920929,
+          0.15000000596046448
+        ]
+      },
+      "geometry_sha256": "fcdde95a67bd60f18f358979c8ef8e8ef214a0f4844cd013f2e7bfbe27f27084",
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Logo_LakeFight.fbx",
+      "notes": "Original irregular block-cell LAKE FIGHT lettering extruded 10cm, chipped WoodDark sign and one diagonal rear paddle. No font object, font file, texture or external logo.",
+      "origin": "main board centre; X horizontal, Z up, front -Y",
+      "title": "LAKE FIGHT",
+      "lettering_source": "explicit original GLYPHS cell masks in lf_b05.py",
+      "letter_depth_m": 0.1,
+      "text_width_m": 4.095,
+      "directors_cut_companion": "SM_LF_Logo_DirectorsCut; same origin and orientation"
+    },
+    {
+      "asset": "SM_LF_Logo_DirectorsCut",
+      "tris": 1752,
+      "limit_exclusive": 5000,
+      "objects": [
+        "SM_LF_Logo_DirectorsCut"
+      ],
+      "bounds_min_m": [
+        -2.0999999046325684,
+        -0.1349048912525177,
+        -1.2100000381469727
+      ],
+      "bounds_max_m": [
+        2.0999999046325684,
+        0.05999999865889549,
+        -0.7699999809265137
+      ],
+      "size_m": [
+        4.199999809265137,
+        0.1949048899114132,
+        0.440000057220459
+      ],
+      "palette": [
+        "M_LF_PaintCream",
+        "M_LF_PaintRed"
+      ],
+      "material_linear": {
+        "M_LF_PaintRed": [
+          0.6000000238418579,
+          0.05000000074505806,
+          0.03999999910593033
+        ],
+        "M_LF_PaintCream": [
+          0.9200000166893005,
+          0.8600000143051147,
+          0.699999988079071
+        ]
+      },
+      "geometry_sha256": "080efc3c79a21002cd1e84d33df59c4509f209a6b5708b60030ddaef6d0da699",
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Logo_DirectorsCut.fbx",
+      "notes": "Separate notched red wooden ribbon/plank with original Cream DIRECTOR'S CUT geometry. Shared origin with main sign; toggle independently without repositioning.",
+      "origin": "same as SM_LF_Logo_LakeFight; plank centre baked at Z=-.99m",
+      "title": "DIRECTOR'S CUT",
+      "lettering_source": "explicit original GLYPHS cell masks in lf_b05.py",
+      "plank_centre_z_m": -0.99,
+      "main_logo": "SM_LF_Logo_LakeFight"
+    },
+    {
+      "asset": "SM_LF_Dock_Team",
+      "tris": 992,
+      "limit_exclusive": 1000,
+      "objects": [
+        "SM_LF_Dock_Team"
+      ],
+      "bounds_min_m": [
+        -2.0,
+        -1.0,
+        -1.5
+      ],
+      "bounds_max_m": [
+        2.0,
+        1.2200000286102295,
+        0.7369999885559082
+      ],
+      "size_m": [
+        4.0,
+        2.2200000286102295,
+        2.236999988555908
+      ],
+      "palette": [
+        "M_LF_Metal",
+        "M_LF_Wood",
+        "M_LF_WoodDark"
+      ],
+      "material_linear": {
+        "M_LF_Wood": [
+          0.44999998807907104,
+          0.2800000011920929,
+          0.15000000596046448
+        ],
+        "M_LF_WoodDark": [
+          0.2800000011920929,
+          0.17000000178813934,
+          0.09000000357627869
+        ],
+        "M_LF_Metal": [
+          0.550000011920929,
+          0.5699999928474426,
+          0.6000000238418579
+        ]
+      },
+      "geometry_sha256": "908af7c9d040d400def691476d376de577ed2ae05c9feb5593e618554b1ca777",
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dock_Team.fbx",
+      "notes": "Original 4x2m dock plus three closed framed banking crates and a post-mounted neutral metal flag-base tray. Tray accepts the separate existing TeamFlag base; no flag or team-coloured material in this export.",
+      "origin": "walking surface centre; deck Z=0",
+      "base_dock_tris": 788,
+      "crate_count": 3,
+      "crate_dimensions_m": [
+        0.6,
+        0.4,
+        0.3
+      ],
+      "flag_holder": {
+        "location_m": [
+          1.82,
+          1.08,
+          0.7
+        ],
+        "rotation_deg": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "inner_tray_size_m": [
+          0.24,
+          0.24
+        ],
+        "flag_base_size_m": [
+          0.22,
+          0.22
+        ],
+        "clearance_per_side_m": 0.01,
+        "instructions": "Place existing SM_LF_TeamFlag_<Colour> origin at this local transform. No UE socket was created by this Blender-only task."
+      }
+    }
+  ],
+  "fbx_audit": {
+    "assets": {
+      "SM_LF_Hat_Bucket_Red": {
+        "status": "PASS",
+        "tris": 304,
+        "bounds_min_m": [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        "bounds_max_m": [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ],
+        "size_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "material_linear": {
+          "M_LF_PaintRed": [
+            0.6000000238418579,
+            0.05000000074505806,
+            0.03999999910593033
+          ],
+          "M_LF_PaintCream": [
+            0.9200000166893005,
+            0.8600000143051147,
+            0.699999988079071
+          ],
+          "M_LF_WoodDark": [
+            0.2800000011920929,
+            0.17000000178813934,
+            0.09000000357627869
+          ]
+        },
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "smooth_faces": 0,
+        "fbx_sha256": "97341d8c1efdb9d274d05470dfa7d0d9a004726dc8bd7717b4ca93768fd84bc5",
+        "fbx_bytes": 23020,
+        "mesh_objects": 1
+      },
+      "SM_LF_Hat_Bucket_Blue": {
+        "status": "PASS",
+        "tris": 304,
+        "bounds_min_m": [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        "bounds_max_m": [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ],
+        "size_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "material_linear": {
+          "M_LF_PaintBlue": [
+            0.03500000014901161,
+            0.17000000178813934,
+            0.6499999761581421
+          ],
+          "M_LF_PaintCream": [
+            0.9200000166893005,
+            0.8600000143051147,
+            0.699999988079071
+          ],
+          "M_LF_WoodDark": [
+            0.2800000011920929,
+            0.17000000178813934,
+            0.09000000357627869
+          ]
+        },
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "smooth_faces": 0,
+        "fbx_sha256": "5ddeabdfb41dc7579b283787b8e147c697c8000e322652b1bebb94399e904d72",
+        "fbx_bytes": 23020,
+        "mesh_objects": 1
+      },
+      "SM_LF_Hat_Bucket_Green": {
+        "status": "PASS",
+        "tris": 304,
+        "bounds_min_m": [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        "bounds_max_m": [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ],
+        "size_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "material_linear": {
+          "M_LF_PaintGreen": [
+            0.03500000014901161,
+            0.3799999952316284,
+            0.054999999701976776
+          ],
+          "M_LF_PaintCream": [
+            0.9200000166893005,
+            0.8600000143051147,
+            0.699999988079071
+          ],
+          "M_LF_WoodDark": [
+            0.2800000011920929,
+            0.17000000178813934,
+            0.09000000357627869
+          ]
+        },
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "smooth_faces": 0,
+        "fbx_sha256": "9f4d842f9ca76aa1531780cb5e4d1507438bd9ae76b9ee6e97354f3a02ac606a",
+        "fbx_bytes": 23020,
+        "mesh_objects": 1
+      },
+      "SM_LF_Hat_Bucket_Yellow": {
+        "status": "PASS",
+        "tris": 304,
+        "bounds_min_m": [
+          -0.19987499713897705,
+          -0.1706250011920929,
+          0.056984998285770416
+        ],
+        "bounds_max_m": [
+          0.19987499713897705,
+          0.1706250011920929,
+          0.2084999978542328
+        ],
+        "size_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "material_linear": {
+          "M_LF_PaintYellow": [
+            0.8999999761581421,
+            0.6000000238418579,
+            0.02500000037252903
+          ],
+          "M_LF_PaintCream": [
+            0.9200000166893005,
+            0.8600000143051147,
+            0.699999988079071
+          ],
+          "M_LF_WoodDark": [
+            0.2800000011920929,
+            0.17000000178813934,
+            0.09000000357627869
+          ]
+        },
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "smooth_faces": 0,
+        "fbx_sha256": "341dea23496a706a796a771162a13e691475c2a56505fe5b4bd2280e79bc16d3",
+        "fbx_bytes": 23020,
+        "mesh_objects": 1
+      },
+      "SM_LF_Logo_LakeFight": {
+        "status": "PASS",
+        "tris": 1400,
+        "bounds_min_m": [
+          -2.5,
+          -0.19963502883911133,
+          -1.0021030902862549
+        ],
+        "bounds_max_m": [
+          2.5,
+          0.25174981355667114,
+          1.027475118637085
+        ],
+        "size_m": [
+          5.0,
+          0.45138484239578247,
+          2.02957820892334
+        ],
+        "material_linear": {
+          "M_LF_WoodDark": [
+            0.2800000011920929,
+            0.17000000178813934,
+            0.09000000357627869
+          ],
+          "M_LF_PaintCream": [
+            0.9200000166893005,
+            0.8600000143051147,
+            0.699999988079071
+          ],
+          "M_LF_Wood": [
+            0.44999998807907104,
+            0.2800000011920929,
+            0.15000000596046448
+          ]
+        },
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "smooth_faces": 0,
+        "fbx_sha256": "1caab8210147f70f7e8b3820bffc55b578c975333b9d7b411ded7bc2b93c6c8f",
+        "fbx_bytes": 43580,
+        "mesh_objects": 1
+      },
+      "SM_LF_Logo_DirectorsCut": {
+        "status": "PASS",
+        "tris": 1752,
+        "bounds_min_m": [
+          -2.0999999046325684,
+          -0.13490502536296844,
+          -1.2100000381469727
+        ],
+        "bounds_max_m": [
+          2.0999999046325684,
+          0.06000034138560295,
+          -0.7699999809265137
+        ],
+        "size_m": [
+          4.199999809265137,
+          0.1949053667485714,
+          0.440000057220459
+        ],
+        "material_linear": {
+          "M_LF_PaintRed": [
+            0.6000000238418579,
+            0.05000000074505806,
+            0.03999999910593033
+          ],
+          "M_LF_PaintCream": [
+            0.9200000166893005,
+            0.8600000143051147,
+            0.699999988079071
+          ]
+        },
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "smooth_faces": 0,
+        "fbx_sha256": "b60f4ad89d3222c39699f7e485686c851208efe864142f11d25b8d55d21ff8ae",
+        "fbx_bytes": 48220,
+        "mesh_objects": 1
+      },
+      "SM_LF_Dock_Team": {
+        "status": "PASS",
+        "tris": 992,
+        "bounds_min_m": [
+          -2.000000238418579,
+          -1.0000003576278687,
+          -1.5
+        ],
+        "bounds_max_m": [
+          2.000000238418579,
+          1.2200003862380981,
+          0.7369999885559082
+        ],
+        "size_m": [
+          4.000000476837158,
+          2.220000743865967,
+          2.236999988555908
+        ],
+        "material_linear": {
+          "M_LF_Wood": [
+            0.44999998807907104,
+            0.2800000011920929,
+            0.15000000596046448
+          ],
+          "M_LF_WoodDark": [
+            0.2800000011920929,
+            0.17000000178813934,
+            0.09000000357627869
+          ],
+          "M_LF_Metal": [
+            0.550000011920929,
+            0.5699999928474426,
+            0.6000000238418579
+          ]
+        },
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "smooth_faces": 0,
+        "fbx_sha256": "8738976c20fd81dbd61ce217196a812e2f1f05364670d3781e0c01c3200d3b69",
+        "fbx_bytes": 30604,
+        "mesh_objects": 1
+      }
+    },
+    "dock_base_check": {
+      "original_dock_tris": 788,
+      "team_dock_tris": 992,
+      "added_triangles": 204,
+      "base_vertices_unchanged": true,
+      "base_vertex_count": 440
+    },
+    "logo_combined_tris": 3152
+  },
+  "review_proof": {
+    "target_mannequin_height_m": 1.35,
+    "hat_proof": {
+      "SM_LF_Hat_Bucket_Red": {
+        "tris_before": 304,
+        "tris_after": 304,
+        "bounds_before_m": [
+          [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ]
+        ],
+        "bounds_after_m": [
+          [
+            -0.19987499713897705,
+            -0.1706250011920929,
+            0.056984998285770416
+          ],
+          [
+            0.19987499713897705,
+            0.1706250011920929,
+            0.2084999978542328
+          ]
+        ],
+        "size_before_m": [
+          0.3075000047683716,
+          0.26249998807907104,
+          0.1165500059723854
+        ],
+        "size_after_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "dimension_ratios": [
+          1.299999961232752,
+          1.3000000681195971,
+          1.2999999296813536
+        ],
+        "pivot_unchanged": true,
+        "brim_seating_height_unchanged_m": 0.10125
+      },
+      "SM_LF_Hat_Bucket_Blue": {
+        "tris_before": 304,
+        "tris_after": 304,
+        "bounds_before_m": [
+          [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ]
+        ],
+        "bounds_after_m": [
+          [
+            -0.19987499713897705,
+            -0.1706250011920929,
+            0.056984998285770416
+          ],
+          [
+            0.19987499713897705,
+            0.1706250011920929,
+            0.2084999978542328
+          ]
+        ],
+        "size_before_m": [
+          0.3075000047683716,
+          0.26249998807907104,
+          0.1165500059723854
+        ],
+        "size_after_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "dimension_ratios": [
+          1.299999961232752,
+          1.3000000681195971,
+          1.2999999296813536
+        ],
+        "pivot_unchanged": true,
+        "brim_seating_height_unchanged_m": 0.10125
+      },
+      "SM_LF_Hat_Bucket_Green": {
+        "tris_before": 304,
+        "tris_after": 304,
+        "bounds_before_m": [
+          [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ]
+        ],
+        "bounds_after_m": [
+          [
+            -0.19987499713897705,
+            -0.1706250011920929,
+            0.056984998285770416
+          ],
+          [
+            0.19987499713897705,
+            0.1706250011920929,
+            0.2084999978542328
+          ]
+        ],
+        "size_before_m": [
+          0.3075000047683716,
+          0.26249998807907104,
+          0.1165500059723854
+        ],
+        "size_after_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "dimension_ratios": [
+          1.299999961232752,
+          1.3000000681195971,
+          1.2999999296813536
+        ],
+        "pivot_unchanged": true,
+        "brim_seating_height_unchanged_m": 0.10125
+      },
+      "SM_LF_Hat_Bucket_Yellow": {
+        "tris_before": 304,
+        "tris_after": 304,
+        "bounds_before_m": [
+          [
+            -0.1537500023841858,
+            -0.13124999403953552,
+            0.06719999760389328
+          ],
+          [
+            0.1537500023841858,
+            0.13124999403953552,
+            0.1837500035762787
+          ]
+        ],
+        "bounds_after_m": [
+          [
+            -0.19987499713897705,
+            -0.1706250011920929,
+            0.056984998285770416
+          ],
+          [
+            0.19987499713897705,
+            0.1706250011920929,
+            0.2084999978542328
+          ]
+        ],
+        "size_before_m": [
+          0.3075000047683716,
+          0.26249998807907104,
+          0.1165500059723854
+        ],
+        "size_after_m": [
+          0.3997499942779541,
+          0.3412500023841858,
+          0.15151499956846237
+        ],
+        "dimension_ratios": [
+          1.299999961232752,
+          1.3000000681195971,
+          1.2999999296813536
+        ],
+        "pivot_unchanged": true,
+        "brim_seating_height_unchanged_m": 0.10125
+      }
+    },
+    "logo_combined_tris": 3152,
+    "logo_shared_origin": true,
+    "font_files_used": false,
+    "lettering_is_mesh_only": true,
+    "flag_holder_local_transform": {
+      "location_m": [
+        1.82,
+        1.08,
+        0.7
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "flag_base_clearance_per_side_m": 0.01,
+    "hat_screenshots": {
+      "Red": [
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Red_Proxy.png",
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Red_Detail.png"
+      ],
+      "Blue": [
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Blue_Proxy.png",
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Blue_Detail.png"
+      ],
+      "Green": [
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Green_Proxy.png",
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Green_Detail.png"
+      ],
+      "Yellow": [
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Yellow_Proxy.png",
+        "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\B05_Hat_Bucket_Yellow_Detail.png"
+      ]
+    }
+  },
+  "checks": {
+    "asset_double_runs": true,
+    "review_double_runs": true,
+    "validation_double_runs": true,
+    "fbx_assets": 7,
+    "logo_combined_triangles": 3152,
+    "dock_team_triangles": 992
+  },
+  "only_writes_under": "Art/",
+  "git_used": false,
+  "unreal_mcp_used": false,
+  "human_acceptance": "pending",
+  "actual_chase_camera_or_game_lighting_tested": false,
+  "script_sha256": {
+    "SM_LF_Hat_Bucket.py": "f2296716d6b7d784e34f9bccc3bc93dfa46e98d35d395ead4c37138d1a279ad3",
+    "SM_LF_Logo_LakeFight.py": "8f414eb70e232b9d12e92aeef6c3c02d27523f7203eaf357d57b97eef7b83bb4",
+    "SM_LF_Logo_DirectorsCut.py": "bf775d598d40f913e525b1357f2a939d245ad5ac7a66d3492b2070da850f6990",
+    "SM_LF_Dock_Team.py": "c081712b37a3a5e4e9cf009e0bd8f5bfc9adbdd4a9d5229cfa38c18d0b325e95",
+    "lf_b05.py": "64364fbbbb5964ff6211c310a50195e99f735c8b50e6be99e453a5a8846b6ea0",
+    "B05_Review.py": "e55c63a10957e1d1ea0009d85e7274c56638dac83db87b4d8e1c0c098aded95d",
+    "B05_Validate.py": "1131ee09c8f955e13c1459679bf538c869dacee906e5e4d0a6ecfa42744824c1",
+    "lf_common.py": "0cda01b730725378c87308b4ae13e30522bcfa04b5179dd63aca285aed884e74",
+    "lf_b04.py": "a2f5f4c16aeb614ad766eba2fb7f57fdad9b7e090f02559990b39b8e48f1702f"
+  }
+}

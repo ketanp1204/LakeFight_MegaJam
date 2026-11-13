@@ -1,0 +1,68 @@
+{
+  "asset": "SM_LF_Shore_CornerOut",
+  "tris": 122,
+  "limit_exclusive": 1000,
+  "objects": [
+    "SM_LF_Shore_CornerOut"
+  ],
+  "bounds_min_m": [
+    0.0,
+    0.0,
+    -1.25
+  ],
+  "bounds_max_m": [
+    7.0,
+    7.0,
+    0.6
+  ],
+  "size_m": [
+    7.0,
+    7.0,
+    1.85
+  ],
+  "origin": "Z=0 waterline; straight midpoint / corner arc centre",
+  "palette": [
+    "M_LF_Moss",
+    "M_LF_Rope",
+    "M_LF_WoodDark"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "29eef02ba38decce072b9d0ab3eb19222d169284140a1088ac60f29147b04dcb",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Shore_CornerOut.fbx",
+  "notes": "8m straight or R4m quarter-turn. Shared profile: underwater toe Z=-1, waterline Z=0, grass Z=0.42..0.60. Buried closing sole Z=-1.25; end caps are hidden by adjoining modules.",
+  "profile_yz_m": [
+    [
+      -3.0,
+      -1.0
+    ],
+    [
+      -1.4,
+      -0.42
+    ],
+    [
+      0.0,
+      0.0
+    ],
+    [
+      1.15,
+      0.42
+    ],
+    [
+      3.0,
+      0.6
+    ]
+  ],
+  "shoreline_connectors_m": [
+    [
+      4,
+      0,
+      0
+    ],
+    [
+      0,
+      4,
+      0
+    ]
+  ],
+  "corner_land_side": "inside radius"
+}

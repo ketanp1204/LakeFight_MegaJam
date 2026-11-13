@@ -1,23 +1,25 @@
 {
   "asset": "SM_LF_TeamFlag_Yellow",
-  "bounds_max_m": [
-    1.145,
-    0.11,
-    2.58
+  "tris": 216,
+  "limit_exclusive": 300,
+  "objects": [
+    "SM_LF_TeamFlag_Yellow",
+    "SM_LF_TeamFlag_Yellow_Flag"
   ],
   "bounds_min_m": [
     -0.11,
     -0.11,
     0.0
   ],
-  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx",
-  "geometry_sha256": "3f976289a09c4047b9f3980ed9558b4f71cd835c84a31264ba4cf6f9b66cf289",
-  "limit_exclusive": 300,
-  "nonmanifold_edges": 0,
-  "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.",
-  "objects": [
-    "SM_LF_TeamFlag_Yellow",
-    "SM_LF_TeamFlag_Yellow_Flag"
+  "bounds_max_m": [
+    1.145,
+    0.11,
+    2.58
+  ],
+  "size_m": [
+    1.255,
+    0.22,
+    2.58
   ],
   "origin": "base centre",
   "palette": [
@@ -26,16 +28,8 @@
     "M_LF_PaintYellow",
     "M_LF_WoodDark"
   ],
-  "size_m": [
-    1.255,
-    0.22,
-    2.58
-  ],
-  "tris": 216,
-  "status": "PASS",
-  "script": "SM_LF_TeamFlag.py",
-  "consecutive_runs_verified": 2,
-  "screenshot": "D:\\Projects\\LakeFight\\Art\\Export\\_shots\\SM_LF_TeamFlag_Yellow.png",
-  "fbx_bytes": 23964,
-  "failures": 0
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "3f976289a09c4047b9f3980ed9558b4f71cd835c84a31264ba4cf6f9b66cf289",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx",
+  "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base."
 }

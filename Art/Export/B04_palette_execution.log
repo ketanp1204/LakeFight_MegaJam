@@ -1,0 +1,82 @@
+[B01.1] {"asset": "SM_LF_Rowboat", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "c2c4df5a3d978ba98a4eae8f59f74f73cb33ddd65988d281570b57a67901612d", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat", "UCX_SM_LF_Rowboat_00", "UCX_SM_LF_Rowboat_01", "UCX_SM_LF_Rowboat_02", "UCX_SM_LF_Rowboat_03", "UCX_SM_LF_Rowboat_04", "UCX_SM_LF_Rowboat_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat.fbx'
+export finished in 0.0082 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat.fbx tris=1286
+[B01.1] {"asset": "SM_LF_Rowboat_Blue", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "fbe97b81552c3a3fbcb8b92024cb485f3906dcd01d9a341696b55711d1caa5e2", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat_Blue", "UCX_SM_LF_Rowboat_Blue_00", "UCX_SM_LF_Rowboat_Blue_01", "UCX_SM_LF_Rowboat_Blue_02", "UCX_SM_LF_Rowboat_Blue_03", "UCX_SM_LF_Rowboat_Blue_04", "UCX_SM_LF_Rowboat_Blue_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat_Blue.fbx'
+export finished in 0.0073 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat_Blue.fbx tris=1286
+[B01.1] {"asset": "SM_LF_Rowboat_Green", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "657eea3f03553abd14c36109a0bc581477725d790e001ab3b3d8615e814ba0d7", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat_Green", "UCX_SM_LF_Rowboat_Green_00", "UCX_SM_LF_Rowboat_Green_01", "UCX_SM_LF_Rowboat_Green_02", "UCX_SM_LF_Rowboat_Green_03", "UCX_SM_LF_Rowboat_Green_04", "UCX_SM_LF_Rowboat_Green_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat_Green.fbx'
+export finished in 0.0067 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat_Green.fbx tris=1286
+[B01.1] {"asset": "SM_LF_Rowboat_Yellow", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "3372df7e318d6c76bdb3341eda16ec97413168d66201979516705fc77d96c1b0", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat_Yellow", "UCX_SM_LF_Rowboat_Yellow_00", "UCX_SM_LF_Rowboat_Yellow_01", "UCX_SM_LF_Rowboat_Yellow_02", "UCX_SM_LF_Rowboat_Yellow_03", "UCX_SM_LF_Rowboat_Yellow_04", "UCX_SM_LF_Rowboat_Yellow_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat_Yellow.fbx'
+export finished in 0.0071 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat_Yellow.fbx tris=1286
+[B02.1] complete: four team boats exported; bow +X, waterline Z=0, keel Z=-0.25 m
+[B01.1] {"asset": "SM_LF_Rowboat", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "c2c4df5a3d978ba98a4eae8f59f74f73cb33ddd65988d281570b57a67901612d", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat", "UCX_SM_LF_Rowboat_00", "UCX_SM_LF_Rowboat_01", "UCX_SM_LF_Rowboat_02", "UCX_SM_LF_Rowboat_03", "UCX_SM_LF_Rowboat_04", "UCX_SM_LF_Rowboat_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat.fbx'
+export finished in 0.0070 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat.fbx tris=1286
+[B01.1] {"asset": "SM_LF_Rowboat_Blue", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "fbe97b81552c3a3fbcb8b92024cb485f3906dcd01d9a341696b55711d1caa5e2", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat_Blue", "UCX_SM_LF_Rowboat_Blue_00", "UCX_SM_LF_Rowboat_Blue_01", "UCX_SM_LF_Rowboat_Blue_02", "UCX_SM_LF_Rowboat_Blue_03", "UCX_SM_LF_Rowboat_Blue_04", "UCX_SM_LF_Rowboat_Blue_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat_Blue.fbx'
+export finished in 0.0068 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat_Blue.fbx tris=1286
+[B01.1] {"asset": "SM_LF_Rowboat_Green", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "657eea3f03553abd14c36109a0bc581477725d790e001ab3b3d8615e814ba0d7", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat_Green", "UCX_SM_LF_Rowboat_Green_00", "UCX_SM_LF_Rowboat_Green_01", "UCX_SM_LF_Rowboat_Green_02", "UCX_SM_LF_Rowboat_Green_03", "UCX_SM_LF_Rowboat_Green_04", "UCX_SM_LF_Rowboat_Green_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat_Green.fbx'
+export finished in 0.0072 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat_Green.fbx tris=1286
+[B01.1] {"asset": "SM_LF_Rowboat_Yellow", "bounds_max_m": [1.598960041999817, 0.7095000147819519, 0.5519999861717224], "bounds_min_m": [-1.598960041999817, -0.7095000147819519, -0.25], "broadside_flare_degrees": 11, "geometry_sha256": "3372df7e318d6c76bdb3341eda16ec97413168d66201979516705fc77d96c1b0", "gunwale_bow_rise_added_m": 0.2, "gunwale_stern_rise_added_m": 0.08, "nonmanifold_edges": {}, "objects": ["SM_LF_Rowboat_Yellow", "UCX_SM_LF_Rowboat_Yellow_00", "UCX_SM_LF_Rowboat_Yellow_01", "UCX_SM_LF_Rowboat_Yellow_02", "UCX_SM_LF_Rowboat_Yellow_03", "UCX_SM_LF_Rowboat_Yellow_04", "UCX_SM_LF_Rowboat_Yellow_05"], "origin_above_lowest_m": 0.25, "render_tris": 1214, "size_m": [3.19792, 1.419, 0.802], "total_tris": 1286, "ucx_tris": 72}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Rowboat_Yellow.fbx'
+export finished in 0.0074 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Rowboat_Yellow.fbx tris=1286
+[B02.1] complete: four team boats exported; bow +X, waterline Z=0, keel Z=-0.25 m
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Red.fbx'
+export finished in 0.0062 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Red.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Red", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Red.fbx", "geometry_sha256": "8432c5c3b75bcd7a73b69d5e5030bfb056bf87183904efc1eb2b9bdfbd8dd539", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Red", "SM_LF_TeamFlag_Red_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintCream", "M_LF_PaintRed", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Blue.fbx'
+export finished in 0.0054 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Blue.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Blue", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Blue.fbx", "geometry_sha256": "b2b346b690190481abdcaaad233bab64d9d37ac3ae02e2d8b153baa1418e6be8", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Blue", "SM_LF_TeamFlag_Blue_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintBlue", "M_LF_PaintCream", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Green.fbx'
+export finished in 0.0050 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Green.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Green", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Green.fbx", "geometry_sha256": "d1441a7a1e2b249075c26a40a4aa76b37a7b46b48ced42d9b5e69ccfc9d5b2b9", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Green", "SM_LF_TeamFlag_Green_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintCream", "M_LF_PaintGreen", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx'
+export finished in 0.0065 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Yellow.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Yellow", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx", "geometry_sha256": "3f976289a09c4047b9f3980ed9558b4f71cd835c84a31264ba4cf6f9b66cf289", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Yellow", "SM_LF_TeamFlag_Yellow_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintCream", "M_LF_PaintYellow", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Red.fbx'
+export finished in 0.0051 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Red.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Red", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Red.fbx", "geometry_sha256": "8432c5c3b75bcd7a73b69d5e5030bfb056bf87183904efc1eb2b9bdfbd8dd539", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Red", "SM_LF_TeamFlag_Red_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintCream", "M_LF_PaintRed", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Blue.fbx'
+export finished in 0.0049 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Blue.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Blue", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Blue.fbx", "geometry_sha256": "b2b346b690190481abdcaaad233bab64d9d37ac3ae02e2d8b153baa1418e6be8", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Blue", "SM_LF_TeamFlag_Blue_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintBlue", "M_LF_PaintCream", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Green.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Green.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Green", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Green.fbx", "geometry_sha256": "d1441a7a1e2b249075c26a40a4aa76b37a7b46b48ced42d9b5e69ccfc9d5b2b9", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Green", "SM_LF_TeamFlag_Green_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintCream", "M_LF_PaintGreen", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx'
+export finished in 0.0054 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_TeamFlag_Yellow.fbx tris=216
+[B02] {"asset": "SM_LF_TeamFlag_Yellow", "bounds_max_m": [1.145, 0.11, 2.58], "bounds_min_m": [-0.11, -0.11, 0.0], "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_TeamFlag_Yellow.fbx", "geometry_sha256": "3f976289a09c4047b9f3980ed9558b4f71cd835c84a31264ba4cf6f9b66cf289", "limit_exclusive": 300, "nonmanifold_edges": 0, "notes": "2.58 m dock flagpole and separate 1.10 x 0.62 m waved, solid flag; cream hoist plus team field; both origins at pole base.", "objects": ["SM_LF_TeamFlag_Yellow", "SM_LF_TeamFlag_Yellow_Flag"], "origin": "base centre", "palette": ["M_LF_Metal", "M_LF_PaintCream", "M_LF_PaintYellow", "M_LF_WoodDark"], "size_m": [1.255, 0.22, 2.58], "tris": 216}

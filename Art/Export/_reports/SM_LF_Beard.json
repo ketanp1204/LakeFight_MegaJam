@@ -1,0 +1,61 @@
+{
+  "asset": "SM_LF_Beard",
+  "tris": 80,
+  "limit_exclusive": 600,
+  "bounds_min_m": [
+    0.03884842246770859,
+    -0.0893356204032898,
+    -0.08624999970197678
+  ],
+  "bounds_max_m": [
+    0.14474999904632568,
+    0.08933563530445099,
+    0.08690591901540756
+  ],
+  "size_m": [
+    0.1059015765786171,
+    0.17867125570774078,
+    0.17315591871738434
+  ],
+  "origin": "assumed head pivot; baked offset",
+  "attachment": {
+    "bone": "head",
+    "proxy_pivot_m": [
+      0.0,
+      0.0,
+      1.1925000000000001
+    ],
+    "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+    "preview_relative_location_cm": [
+      0,
+      0,
+      0
+    ],
+    "preview_relative_rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "baked_mesh_offset": "Front surface X=7.125..14.475cm, lower tip Z=-8.625cm, cheek tips Z=+8.25cm from assumed head pivot.",
+    "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+    "authored_size_scale": 0.75,
+    "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+  },
+  "palette": [
+    "M_LF_WoodDark"
+  ],
+  "material_linear": {
+    "M_LF_WoodDark": [
+      0.2800000011920929,
+      0.17000000178813934,
+      0.09000000357627869
+    ]
+  },
+  "team": null,
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "e7c4fe9cb65b1a795706a8b830ce600cbea8602580d5a8d6043c1bfd4d69b4e4",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Beard.fbx",
+  "notes": "Chunky pointed beard with raised cheek tufts, two sideburn blocks and a V mouth opening; WoodDark only."
+}

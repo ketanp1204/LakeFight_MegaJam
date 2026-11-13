@@ -1,0 +1,15 @@
+{
+  "actual_boat_occlusion": {
+    "covered": 8867,
+    "boat_silhouette_samples": 8868,
+    "fraction": 0.9998872350022553,
+    "window": "X=-1.61..1.61m, Z=.004.. .554m, 241x61 rays; actual original B01 rowboat at Y=2.4m; submerged portion excluded"
+  },
+  "shore_seam_max_gaps_m": [
+    4.807479782492389e-07,
+    5.442043255561248e-07,
+    1.3113416079607617e-07,
+    0.0
+  ],
+  "shore_fixtures": "Out: corner origin; straights (4,-4) Rz90,(-4,4) Rz180. In: corner (16,0); straights (20,-4) Rz-90,(12,4) Rz0."
+}

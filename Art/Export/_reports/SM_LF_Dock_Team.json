@@ -1,0 +1,86 @@
+{
+  "asset": "SM_LF_Dock_Team",
+  "tris": 992,
+  "limit_exclusive": 1000,
+  "objects": [
+    "SM_LF_Dock_Team"
+  ],
+  "bounds_min_m": [
+    -2.0,
+    -1.0,
+    -1.5
+  ],
+  "bounds_max_m": [
+    2.0,
+    1.2200000286102295,
+    0.7369999885559082
+  ],
+  "size_m": [
+    4.0,
+    2.2200000286102295,
+    2.236999988555908
+  ],
+  "palette": [
+    "M_LF_Metal",
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "material_linear": {
+    "M_LF_Wood": [
+      0.44999998807907104,
+      0.2800000011920929,
+      0.15000000596046448
+    ],
+    "M_LF_WoodDark": [
+      0.2800000011920929,
+      0.17000000178813934,
+      0.09000000357627869
+    ],
+    "M_LF_Metal": [
+      0.550000011920929,
+      0.5699999928474426,
+      0.6000000238418579
+    ]
+  },
+  "geometry_sha256": "908af7c9d040d400def691476d376de577ed2ae05c9feb5593e618554b1ca777",
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dock_Team.fbx",
+  "notes": "Original 4x2m dock plus three closed framed banking crates and a post-mounted neutral metal flag-base tray. Tray accepts the separate existing TeamFlag base; no flag or team-coloured material in this export.",
+  "origin": "walking surface centre; deck Z=0",
+  "base_dock_tris": 788,
+  "crate_count": 3,
+  "crate_dimensions_m": [
+    0.6,
+    0.4,
+    0.3
+  ],
+  "flag_holder": {
+    "location_m": [
+      1.82,
+      1.08,
+      0.7
+    ],
+    "rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "inner_tray_size_m": [
+      0.24,
+      0.24
+    ],
+    "flag_base_size_m": [
+      0.22,
+      0.22
+    ],
+    "clearance_per_side_m": 0.01,
+    "instructions": "Place existing SM_LF_TeamFlag_<Colour> origin at this local transform. No UE socket was created by this Blender-only task."
+  }
+}

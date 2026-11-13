@@ -1,0 +1,67 @@
+{
+  "asset": "SM_LF_Hat_Captain",
+  "tris": 344,
+  "limit_exclusive": 600,
+  "bounds_min_m": [
+    -0.11174999922513962,
+    -0.0989999994635582,
+    0.09465000033378601
+  ],
+  "bounds_max_m": [
+    0.1837500035762787,
+    0.0989999994635582,
+    0.226500004529953
+  ],
+  "size_m": [
+    0.2955000028014183,
+    0.1979999989271164,
+    0.131850004196167
+  ],
+  "origin": "assumed head pivot; baked offset",
+  "attachment": {
+    "bone": "head",
+    "proxy_pivot_m": [
+      0.0,
+      0.0,
+      1.1925000000000001
+    ],
+    "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+    "preview_relative_location_cm": [
+      0,
+      0,
+      0
+    ],
+    "preview_relative_rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "baked_mesh_offset": "Band lower edge +11.25cm Z and crown top +22.65cm Z from assumed head pivot; visor +X.",
+    "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+    "authored_size_scale": 0.75,
+    "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+  },
+  "palette": [
+    "M_LF_Black",
+    "M_LF_PaintCream"
+  ],
+  "material_linear": {
+    "M_LF_PaintCream": [
+      0.9200000166893005,
+      0.8600000143051147,
+      0.699999988079071
+    ],
+    "M_LF_Black": [
+      0.029999999329447746,
+      0.029999999329447746,
+      0.029999999329447746
+    ]
+  },
+  "team": null,
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "08342a2afcec53f7c2a2d2b33c0d16455691f3fd9483f251cdd6e6530955bb42",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Captain.fbx",
+  "notes": "Cream puffy crown, black band/forward peak and original geometric anchor badge. Hollow head cavity."
+}

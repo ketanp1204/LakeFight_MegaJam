@@ -1,0 +1,73 @@
+{
+  "asset": "SM_LF_LifeVest_Blue",
+  "tris": 440,
+  "limit_exclusive": 600,
+  "bounds_min_m": [
+    -0.18000000715255737,
+    -0.2084999978542328,
+    -0.17624999582767487
+  ],
+  "bounds_max_m": [
+    0.21375001966953278,
+    0.2084999978542328,
+    0.13302117586135864
+  ],
+  "size_m": [
+    0.39375002682209015,
+    0.4169999957084656,
+    0.3092711716890335
+  ],
+  "origin": "assumed spine_03 pivot; baked offset",
+  "attachment": {
+    "bone": "spine_03",
+    "proxy_pivot_m": [
+      0.0,
+      0.0,
+      1.0125000000000002
+    ],
+    "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+    "preview_relative_location_cm": [
+      0,
+      0,
+      0
+    ],
+    "preview_relative_rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "baked_mesh_offset": "Puff centre approximately +11.625cm X, -3.75cm Z from spine_03; front opens along centre Y=0. Proxy spine_03 at 101.25cm above soles.",
+    "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+    "authored_size_scale": 0.75,
+    "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+  },
+  "palette": [
+    "M_LF_Black",
+    "M_LF_PaintBlue",
+    "M_LF_PaintCream"
+  ],
+  "material_linear": {
+    "M_LF_PaintBlue": [
+      0.03500000014901161,
+      0.17000000178813934,
+      0.6499999761581421
+    ],
+    "M_LF_PaintCream": [
+      0.9200000166893005,
+      0.8600000143051147,
+      0.699999988079071
+    ],
+    "M_LF_Black": [
+      0.029999999329447746,
+      0.029999999329447746,
+      0.029999999329447746
+    ]
+  },
+  "team": "Blue",
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "97b851627ee67271df229c43edb6b7ed09fdc00fb31911ad84a5c7308e3f5634",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeVest_Blue.fbx",
+  "notes": "Four bevelled front flotation pillows, puffy back and sides, open neck/arm spaces, cream wrap strap and black buckle. Static rigid attachment; running/arm clearance requires human check."
+}

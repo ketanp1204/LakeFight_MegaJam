@@ -1,0 +1,33 @@
+{
+  "asset": "SM_LF_Stump",
+  "tris": 184,
+  "limit_exclusive": 1000,
+  "objects": [
+    "SM_LF_Stump"
+  ],
+  "bounds_min_m": [
+    -0.865744,
+    -0.838658,
+    -0.71879
+  ],
+  "bounds_max_m": [
+    0.865744,
+    0.838658,
+    0.66
+  ],
+  "size_m": [
+    1.731488,
+    1.677317,
+    1.37879
+  ],
+  "origin": "waterline centre Z=0",
+  "palette": [
+    "M_LF_Rope",
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "nonmanifold_edges": 0,
+  "geometry_sha256": "b2ea137a4f5aea0358d7ec428f5e44b50f623b95998fc5aed123f7e0c078d2ee",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Stump.fbx",
+  "notes": "Broken hollow cut, pale end-grain rim, six submerged buttress roots and one snapped branch. Main trunk -0.65..+0.66m."
+}

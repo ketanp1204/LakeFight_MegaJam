@@ -1,0 +1,314 @@
+{
+  "SM_LF_ReedBed_v1": {
+    "status": "PASS",
+    "tris": 2996,
+    "bounds_min_m": [
+      -2.0005440711975098,
+      -1.5008139610290527,
+      0.0
+    ],
+    "bounds_max_m": [
+      2.000518321990967,
+      1.500825047492981,
+      1.7999999523162842
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Reed",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 101068,
+    "fbx_sha256": "73e870652f24736f7fc938e5cfa6eeb42f5a1e0026d712350880e4a414065c8a"
+  },
+  "SM_LF_ReedBed": {
+    "status": "PASS",
+    "tris": 3468,
+    "bounds_min_m": [
+      -1.87818443775177,
+      -1.5703130960464478,
+      0.0
+    ],
+    "bounds_max_m": [
+      1.878184199333191,
+      1.5703132152557373,
+      1.8005433082580566
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Reed",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 119020,
+    "fbx_sha256": "27a2eadac2180a8a59cd5d0bb1ccce30c2f5369ac9d2312ae15550571d238aa4"
+  },
+  "SM_LF_Shore_Straight": {
+    "status": "PASS",
+    "tris": 66,
+    "bounds_min_m": [
+      -4.000000476837158,
+      -3.0000007152557373,
+      -1.25
+    ],
+    "bounds_max_m": [
+      4.000000476837158,
+      3.0000007152557373,
+      0.6000000238418579
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Rope",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 17820,
+    "fbx_sha256": "0751cf72e5c95594ba7f56ac1e964337c8e850a8bd1ccd85c47929fb6d7dd440"
+  },
+  "SM_LF_Shore_CornerOut": {
+    "status": "PASS",
+    "tris": 122,
+    "bounds_min_m": [
+      -1.140444737757207e-06,
+      1.6292068494294654e-07,
+      -1.25
+    ],
+    "bounds_max_m": [
+      7.0,
+      7.0,
+      0.6000000238418579
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Rope",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 19516,
+    "fbx_sha256": "5b6d3c2d8745f097810b2b1dafda7217991c41c884717a6fa6bb0a8260971780"
+  },
+  "SM_LF_Shore_CornerIn": {
+    "status": "PASS",
+    "tris": 122,
+    "bounds_min_m": [
+      -1.140444737757207e-06,
+      1.6292068494294654e-07,
+      -1.25
+    ],
+    "bounds_max_m": [
+      7.0,
+      7.0,
+      0.6000000238418579
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Rope",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 19484,
+    "fbx_sha256": "1bad8972cf891c38ca5a678533e00c6347bdc6eedf45899f5506bd0743b0fdf5"
+  },
+  "SM_LF_Island_S": {
+    "status": "PASS",
+    "tris": 126,
+    "bounds_min_m": [
+      -3.0,
+      -2.6761701107025146,
+      -1.0
+    ],
+    "bounds_max_m": [
+      3.0,
+      2.6943345069885254,
+      0.5199999809265137
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Reed",
+      "M_LF_Rope",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 21452,
+    "fbx_sha256": "9d23edd088cfe5accd1090070374bfd104b0cd84dfd63e2db9142c1dd97962fa"
+  },
+  "SM_LF_Island_M": {
+    "status": "PASS",
+    "tris": 158,
+    "bounds_min_m": [
+      -7.0,
+      -6.3657708168029785,
+      -1.0
+    ],
+    "bounds_max_m": [
+      7.0,
+      6.386654853820801,
+      0.7799999713897705
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Reed",
+      "M_LF_Rope",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 22396,
+    "fbx_sha256": "7003369236992ac2e468a9e4bf5dcce93b0cc233582bb6bc2cdbfe65fcd09b3f"
+  },
+  "SM_LF_LilyPads": {
+    "status": "PASS",
+    "tris": 280,
+    "bounds_min_m": [
+      -1.1770024299621582,
+      -0.9085478186607361,
+      0.0
+    ],
+    "bounds_max_m": [
+      1.1770024299621582,
+      0.9085477590560913,
+      0.09800000488758087
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_PaintCream",
+      "M_LF_PaintOrange",
+      "M_LF_Reed"
+    ],
+    "fbx_bytes": 23820,
+    "fbx_sha256": "26bfec887ffe21ce690e986c3c7d26a5fd1e64f4e5904c20948f1becba9bf449"
+  },
+  "SM_LF_Stump": {
+    "status": "PASS",
+    "tris": 184,
+    "bounds_min_m": [
+      -0.8657439947128296,
+      -0.8386584520339966,
+      -0.7187897562980652
+    ],
+    "bounds_max_m": [
+      0.8657439947128296,
+      0.8386584520339966,
+      0.6600000262260437
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Rope",
+      "M_LF_Wood",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 21980,
+    "fbx_sha256": "f8c1dd355b7d4d691e48f9f9a0469a053d1e04c2c7b4852570130e36094b08da"
+  },
+  "SM_LF_Tree_Pine": {
+    "status": "PASS",
+    "tris": 138,
+    "bounds_min_m": [
+      -1.2613565921783447,
+      -1.3648990392684937,
+      0.0
+    ],
+    "bounds_max_m": [
+      1.399999976158142,
+      1.3648990392684937,
+      5.059999942779541
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Reed",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 20876,
+    "fbx_sha256": "5f95946c7d1fa6ef0d8f331e221a4ed69006938f436db89039a8dc655d61e393"
+  },
+  "SM_LF_Tree_Round": {
+    "status": "PASS",
+    "tris": 332,
+    "bounds_min_m": [
+      -1.8584637641906738,
+      -1.6680872440338135,
+      0.0
+    ],
+    "bounds_max_m": [
+      2.1843979358673096,
+      2.0441744327545166,
+      5.409506320953369
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Moss",
+      "M_LF_Wood",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 27100,
+    "fbx_sha256": "58aa1180a133c260caa79503cf4a999e594ea9dfb36477de3c1634949b791e86"
+  },
+  "SM_LF_Paddle": {
+    "status": "PASS",
+    "tris": 204,
+    "bounds_min_m": [
+      -1.3196575388008114e-08,
+      -0.18849976360797882,
+      -0.032499998807907104
+    ],
+    "bounds_max_m": [
+      1.600000023841858,
+      0.18850024044513702,
+      0.032499998807907104
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Wood",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 19468,
+    "fbx_sha256": "841af904ebcea5df45ed010fb23382b963c7603edd80fdc9a66b34ccacbcc32f"
+  },
+  "SM_LF_Reeds": {
+    "status": "PASS",
+    "tris": 396,
+    "bounds_min_m": [
+      -0.4389379024505615,
+      -0.4238094687461853,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.4389379024505615,
+      0.4238095283508301,
+      1.2000000476837158
+    ],
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "smooth_faces": 0,
+    "palette": [
+      "M_LF_Reed",
+      "M_LF_WoodDark"
+    ],
+    "fbx_bytes": 26492,
+    "fbx_sha256": "f7ee3ea5e6233a920cc543a21da2a0148c40118f0f63fac3a97a65e7c7d3ee57"
+  }
+}

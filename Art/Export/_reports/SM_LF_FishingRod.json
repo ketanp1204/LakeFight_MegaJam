@@ -1,0 +1,85 @@
+{
+  "asset": "SM_LF_FishingRod",
+  "tris": 324,
+  "limit_exclusive": 600,
+  "bounds_min_m": [
+    -0.07800000160932541,
+    -0.09375,
+    -0.1274999976158142
+  ],
+  "bounds_max_m": [
+    0.19499999284744263,
+    0.017249999567866325,
+    1.4632083177566528
+  ],
+  "size_m": [
+    0.27299999445676804,
+    0.11099999956786633,
+    1.590708315372467
+  ],
+  "origin": "assumed hand_r pivot; baked offset",
+  "attachment": {
+    "bone": "hand_r",
+    "proxy_pivot_m": [
+      0.037500000000000006,
+      0.3525,
+      0.705
+    ],
+    "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+    "preview_relative_location_cm": [
+      0,
+      0,
+      0
+    ],
+    "preview_relative_rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "baked_mesh_offset": "Origin at middle of grip; butt Z=-12.75cm, rod tip Z=+146.25cm. Align socket local +Z along rod; review holds it 25deg forward.",
+    "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+    "authored_size_scale": 0.75,
+    "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+  },
+  "palette": [
+    "M_LF_Black",
+    "M_LF_Metal",
+    "M_LF_Rope",
+    "M_LF_Wood",
+    "M_LF_WoodDark"
+  ],
+  "material_linear": {
+    "M_LF_WoodDark": [
+      0.2800000011920929,
+      0.17000000178813934,
+      0.09000000357627869
+    ],
+    "M_LF_Wood": [
+      0.44999998807907104,
+      0.2800000011920929,
+      0.15000000596046448
+    ],
+    "M_LF_Metal": [
+      0.550000011920929,
+      0.5699999928474426,
+      0.6000000238418579
+    ],
+    "M_LF_Rope": [
+      0.699999988079071,
+      0.6000000238418579,
+      0.4000000059604645
+    ],
+    "M_LF_Black": [
+      0.029999999329447746,
+      0.029999999329447746,
+      0.029999999329447746
+    ]
+  },
+  "team": null,
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "e8f6eb877c9e62c8033fa13a3f2be26fca7a085ec45e432e9a085c20a5a43a41",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_FishingRod.fbx",
+  "notes": "Tapered wood shaft, dark grip, solid reel/crank, three guide eyes and static black fishing line. No animation/line simulation."
+}

@@ -1,0 +1,62 @@
+{
+  "SM_LF_Hat_Bucket_Red": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_Hat_Bucket_Blue": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_Hat_Bucket_Green": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_Hat_Bucket_Yellow": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_LifeVest_Red": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_LifeVest_Blue": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_LifeVest_Green": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_LifeVest_Yellow": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_Hat_Captain": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_Beard": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_Moustache": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  },
+  "SM_LF_FishingRod": {
+    "existed": false,
+    "tris": 0,
+    "bounds": null
+  }
+}

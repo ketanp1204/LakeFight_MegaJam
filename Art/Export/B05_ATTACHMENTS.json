@@ -1,0 +1,146 @@
+{
+  "dock_origin": "walking surface centre; deck Z=0",
+  "flag_holder": {
+    "location_m": [
+      1.82,
+      1.08,
+      0.7
+    ],
+    "rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "inner_tray_size_m": [
+      0.24,
+      0.24
+    ],
+    "flag_base_size_m": [
+      0.22,
+      0.22
+    ],
+    "clearance_per_side_m": 0.01,
+    "instructions": "Place existing SM_LF_TeamFlag_<Colour> origin at this local transform. No UE socket was created by this Blender-only task."
+  },
+  "logo_alignment": {
+    "main": "SM_LF_Logo_LakeFight",
+    "ribbon": "SM_LF_Logo_DirectorsCut",
+    "relative_location_m": [
+      0,
+      0,
+      0
+    ],
+    "relative_rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "relative_scale": [
+      1,
+      1,
+      1
+    ],
+    "front": "-Y",
+    "up": "+Z",
+    "ribbon_centre_z_m": -0.99
+  },
+  "hats": {
+    "SM_LF_Hat_Bucket_Red": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.1925000000000001
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+      "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+      "authored_size_scale": 0.75,
+      "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+    },
+    "SM_LF_Hat_Bucket_Blue": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.1925000000000001
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+      "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+      "authored_size_scale": 0.75,
+      "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+    },
+    "SM_LF_Hat_Bucket_Green": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.1925000000000001
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+      "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+      "authored_size_scale": 0.75,
+      "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+    },
+    "SM_LF_Hat_Bucket_Yellow": {
+      "bone": "head",
+      "proxy_pivot_m": [
+        0.0,
+        0.0,
+        1.1925000000000001
+      ],
+      "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+      "preview_relative_location_cm": [
+        0,
+        0,
+        0
+      ],
+      "preview_relative_rotation_deg": [
+        0,
+        0,
+        0
+      ],
+      "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+      "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+      "authored_size_scale": 0.75,
+      "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+    }
+  }
+}

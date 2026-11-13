@@ -1,0 +1,6 @@
+{
+  "asset_double_runs": true,
+  "review_double_runs": true,
+  "validation_double_runs": true,
+  "fbx_roundtrip_assets": 13
+}

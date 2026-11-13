@@ -1,0 +1,73 @@
+{
+  "asset": "SM_LF_Hat_Bucket_Red",
+  "tris": 304,
+  "limit_exclusive": 600,
+  "bounds_min_m": [
+    -0.19987499713897705,
+    -0.1706250011920929,
+    0.056984998285770416
+  ],
+  "bounds_max_m": [
+    0.19987499713897705,
+    0.1706250011920929,
+    0.2084999978542328
+  ],
+  "size_m": [
+    0.3997499942779541,
+    0.3412500023841858,
+    0.15151499956846237
+  ],
+  "origin": "assumed head pivot; baked offset",
+  "attachment": {
+    "bone": "head",
+    "proxy_pivot_m": [
+      0.0,
+      0.0,
+      1.1925000000000001
+    ],
+    "axes": "aligned socket: +X forward, +Y right, +Z up; raw Manny bone axes not verified",
+    "preview_relative_location_cm": [
+      0,
+      0,
+      0
+    ],
+    "preview_relative_rotation_deg": [
+      0,
+      0,
+      0
+    ],
+    "baked_mesh_offset": "Brim opening centre unchanged at +10.125cm Z from head pivot; outer crown now +20.85cm Z; no separate UE translation assumed.",
+    "target": "UE5 Manny component scaled 0.75; nominal 135cm tall",
+    "authored_size_scale": 0.75,
+    "ue_scale_rule": "Already authored at target size. Use absolute world scale 1 on prop, or relative scale 1.333333 under a 0.75-scaled mesh, to avoid double shrinking."
+  },
+  "palette": [
+    "M_LF_PaintCream",
+    "M_LF_PaintRed",
+    "M_LF_WoodDark"
+  ],
+  "material_linear": {
+    "M_LF_PaintRed": [
+      0.6000000238418579,
+      0.05000000074505806,
+      0.03999999910593033
+    ],
+    "M_LF_PaintCream": [
+      0.9200000166893005,
+      0.8600000143051147,
+      0.699999988079071
+    ],
+    "M_LF_WoodDark": [
+      0.2800000011920929,
+      0.17000000178813934,
+      0.09000000357627869
+    ]
+  },
+  "team": "Red",
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "a85932764ced5d9ce9a4be759ca074e9c932604086ed736f7a55e0686c8b6327",
+  "fbx": "D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Hat_Bucket_Red.fbx",
+  "notes": "B05: 1.3x B04 dimensions around the brim-opening centre; wider brim, taller crown. Same head-origin and seating height, updated crew palette, 135cm Manny target."
+}
