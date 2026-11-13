@@ -8,8 +8,9 @@ import importlib
 import math
 import json
 import hashlib
+from pathlib import Path
 
-sys.path.insert(0, r"D:\Projects\LakeFight\Art\BlenderScripts")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lf_common as lf
 importlib.reload(lf)
 
@@ -250,6 +251,19 @@ def build(name, paint):
               "collision_piece_count": 12, "collision_segments": collision_segments,
               "max_ucx_vertices": max(len(o.data.vertices) for o in col.objects if o.name.startswith("UCX_"))}
     print("[B01.1] " + json.dumps(report, sort_keys=True))
+    # B09: exact visible pin tips; mesh geometry/materials/UCX remain untouched.
+    # Names repeat across variants: rename previous socket datablocks before building
+    # the next boat, then restore exact FBX helper names for each selected export.
+    sockets=[]
+    for side,y in [('L',-.672),('R',.672)]:
+        socket_name='SOCKET_Oarlock_'+side
+        old=bpy.data.objects.get(socket_name)
+        if old: old.name=socket_name+'_'+old.parent.name
+        socket=bpy.data.objects.new(socket_name,None);col.objects.link(socket)
+        socket.parent=hull;socket.location=(-.12,y,.33)
+        socket.empty_display_type='ARROWS';socket.empty_display_size=.10
+        sockets.append({'name':socket_name,'location_m':list(socket.location),'rotation':list(socket.rotation_euler),'scale':list(socket.scale)})
+    report['oarlock_sockets']=sockets
     lf.export_fbx(col, name)
     return report
 

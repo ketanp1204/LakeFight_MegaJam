@@ -1,0 +1,212 @@
+{
+  "blender": "5.3.0",
+  "two_runs_identical": true,
+  "boats": {
+    "SM_LF_Rowboat": {
+      "render_and_ucx_unchanged": true,
+      "sockets": [
+        {
+          "name": "SOCKET_Oarlock_L",
+          "parent": "SM_LF_Rowboat",
+          "location_m": [
+            -0.12,
+            -0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "SOCKET_Oarlock_R",
+          "parent": "SM_LF_Rowboat",
+          "location_m": [
+            -0.12,
+            0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "mesh_count": 13
+    },
+    "SM_LF_Rowboat_Blue": {
+      "render_and_ucx_unchanged": true,
+      "sockets": [
+        {
+          "name": "SOCKET_Oarlock_L",
+          "parent": "SM_LF_Rowboat_Blue",
+          "location_m": [
+            -0.12,
+            -0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "SOCKET_Oarlock_R",
+          "parent": "SM_LF_Rowboat_Blue",
+          "location_m": [
+            -0.12,
+            0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "mesh_count": 13
+    },
+    "SM_LF_Rowboat_Green": {
+      "render_and_ucx_unchanged": true,
+      "sockets": [
+        {
+          "name": "SOCKET_Oarlock_L",
+          "parent": "SM_LF_Rowboat_Green",
+          "location_m": [
+            -0.12,
+            -0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "SOCKET_Oarlock_R",
+          "parent": "SM_LF_Rowboat_Green",
+          "location_m": [
+            -0.12,
+            0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "mesh_count": 13
+    },
+    "SM_LF_Rowboat_Yellow": {
+      "render_and_ucx_unchanged": true,
+      "sockets": [
+        {
+          "name": "SOCKET_Oarlock_L",
+          "parent": "SM_LF_Rowboat_Yellow",
+          "location_m": [
+            -0.12,
+            -0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "SOCKET_Oarlock_R",
+          "parent": "SM_LF_Rowboat_Yellow",
+          "location_m": [
+            -0.12,
+            0.672,
+            0.33
+          ],
+          "rotation": [
+            0.0,
+            -0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "mesh_count": 13
+    }
+  },
+  "oar": {
+    "meshes": {
+      "SM_LF_Oar": [
+        "8e0c9f13d6029f2b36e38f69aa74e97edb1473d805cbcaaecb730c3b6bf6102d",
+        216
+      ]
+    },
+    "sockets": [
+      {
+        "name": "SOCKET_Grip",
+        "parent": "SM_LF_Oar",
+        "location_m": [
+          -0.7,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "pose": "Both collar origins exactly at pin-tip sockets; yaw +/-108 deg, pitch 16 deg, blade roll 90 deg. Staging only."
+}
