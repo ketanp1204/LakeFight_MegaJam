@@ -444,6 +444,7 @@ private:
 	float GrabDistanceTo(const ALFBoat* B, FVector2D* OutLocal = nullptr) const;
 
 	TWeakObjectPtr<ALFBoat> HomeBoat;
+	float StandFallTime = 0.f;  // how long a Standing brawler has been falling (safety re-snap)
 	FVector SwimTarget = FVector::ZeroVector;
 	bool bHasSwimTarget = false;
 	double SwimStartTime = 0.0;

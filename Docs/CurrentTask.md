@@ -195,3 +195,10 @@ blend to upright. If he flies too far/near: `OverboardHorizSpeedMin/Max`; too hi
 
 **Please test:** swim feel (speed, bob height), the climb look, the heist time (target < 10 s), knocking a climber back off.
 **Known:** a stealer and a non-driving owner can stand on top of each other at the seat; climb/swim are placeholder poses (no anims).
+
+**Step 3 fix (director, mid-review: "the other player is halfway through the boat falling constantly")** - most likely cause: after a steal the
+driver is attached at the seat where the non-driving owner stands; brawler capsules blocked each other, so the owner's CMC was pushed
+into the hull, lost the floor and kept falling. Fix: brawler capsules ignore ECC_Pawn (paddle sweeps query by object type - unaffected),
+plus a safety net: a Standing brawler falling > 0.8 s is re-snapped onto the floor at his spot (or set swimming if outside the outline),
+logged as `[brawler] ... fell ... -> re-snap/swim`. Re-ran the heist: after the steal the owner stands on the floor next to the driver
+(capsule z 49 = floor + half-height), no `fell` log. If you still see it, tell me what happened just before - the log line will show where.

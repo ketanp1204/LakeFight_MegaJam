@@ -60,6 +60,9 @@ ALFBrawler::ALFBrawler()
 	// QUERY-ONLY: the CMC still sweeps against (and stands on) hulls, and paddles can hit it, but the capsule never makes
 	// physics contact, so a character can't push, weigh down or launch any boat.
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	// Brawlers don't block each other's movement (two at one seat pushed one into the hull). Paddle sweeps query by
+	// object type, so hits are unaffected.
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> MannyMesh(TEXT("/Game/Characters/Mannequins/Meshes/SKM_Manny_Simple.SKM_Manny_Simple"));
 	if (MannyMesh.Succeeded())
@@ -328,6 +331,7 @@ void ALFBrawler::StandInBoatAt(ALFBoat* InBoat, const FVector& LocalSpot)
 	State = ELFBrawlerState::Standing;
 	bInWater = false;
 	bHasSwimTarget = false;
+	StandFallTime = 0.f;
 	SetBoatMovementRules(true);
 
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
@@ -409,6 +413,27 @@ void ALFBrawler::Tick(float DeltaSeconds)
 	if (State == ELFBrawlerState::Standing)
 	{
 		UpdateSway(DeltaSeconds);
+		// Safety net: a standing brawler should never fall for long (knockback hops last ~0.3 s). If he does - pushed into
+		// the hull, boat yanked away - put him back on the floor where he is, or into the water if he is outside the boat.
+		StandFallTime = GetCharacterMovement()->IsFalling() ? StandFallTime + DeltaSeconds : 0.f;
+		if (StandFallTime > 0.8f && Boat.IsValid())
+		{
+			ALFBoat* B = Boat.Get();
+			FVector2D Unused;
+			const float D = B->GunwaleDistance(GetActorLocation(), Unused);
+			const FVector Local = B->GetHull()->GetComponentTransform().InverseTransformPosition(GetActorLocation());
+			UE_LOG(LogLF, Display, TEXT("[brawler] %s fell %.1f s while standing in %s (local %.0f, %.0f, %.0f; gunwale dist %.0f) -> %s"),
+				*GetName(), StandFallTime, *B->GetName(), Local.X, Local.Y, Local.Z, D, D < 0.f ? TEXT("re-snap to the floor") : TEXT("swim"));
+			StandFallTime = 0.f;
+			if (D < 0.f)
+			{
+				StandInBoatAt(B, FVector(FMath::Clamp(float(Local.X), -100.f, 75.f), FMath::Clamp(float(Local.Y), -14.f, 14.f), B->DriverSeatLocal.Z));
+			}
+			else
+			{
+				EnterSwimming();
+			}
+		}
 	}
 	else if (State == ELFBrawlerState::Ragdoll)
 	{
