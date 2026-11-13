@@ -21,6 +21,7 @@ public class LakeFight : ModuleRules
 			"Slate",
 			"ProceduralMeshComponent",
 			"PhysicsCore",
+			"AnimationCore",
 			"Niagara"
 		});
 

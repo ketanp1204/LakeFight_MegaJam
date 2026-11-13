@@ -344,6 +344,10 @@ public:
 
 	UStaticMeshComponent* GetHull() const { return HullMesh; }
 
+	/** Debug console while driving (the controller possesses the boat): leave the seat (same as Interact). */
+	UFUNCTION(Exec)
+	void LFDrive() { OnInteract(); }
+
 	/** Drive input from an AI captain (same path as the player's Throttle/Steer actions): throttle -1..1, steer -1..1. */
 	UFUNCTION(BlueprintCallable, Category="LF|Crew")
 	void SetDriveInput(float Throttle, float Steer)

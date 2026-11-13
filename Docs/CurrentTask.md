@@ -83,3 +83,40 @@ Grip_R / Grip_L sockets on SM_LF_Paddle, paddle placement per state, ragdoll pad
   >= `CameraWaterClearance` 40 cm above the wave crest at the pivot (boat: 850 cm arm + 10 deg max put the lens ~28 cm under). Free-look also
   clamps the controller pitch (no dead zone looking back down).
 - Build OK; PIE 63 s clean. Not testable through MCP (held keys / mouse) - please check both.
+
+**Director: stage 1 accepted. Order: T02 step 5 first, then T03 stage 2. Keep Manny + Codex's gear (option 1).**
+
+## T02 step 5 - hooks, crew gear, paddle grip, character look (Claude Code, 13 Nov evening)
+
+**Files**
+- New `Source/LakeFight/Brawler/LFBrawlerAnimInstance.h/.cpp` - native `ULFBrawlerAnimInstance` (replaces ABP_Unarmed on the brawler;
+  MCP can't author AnimGraphs): plays the director's retargeted clips by state with a 0.2 s crossfade - idle/walk (template) by speed,
+  `Sitting_Rowing` when driving, `Treading_Water` <-> `Swimming` by swim speed, `Swimming_To_Edge` scrubbed over the climb, `Dizzy_Idle`
+  while stunned, `Great_Sword_Slash` as the swing base (wind-up held while charging, strike over the swing, rest over the recover) -
+  then **Two Bone IK on both arms** (`AnimationCore::SolveTwoBoneIK`, pole = current elbow) onto the paddle grips while standing.
+- `Source/LakeFight/Brawler/LFBrawler.h/.cpp`:
+  - Hooks (BlueprintImplementableEvent, empty): `OnPaddleHit`, `OnSplashIn` (existed), new `OnClimbAboard(Boat)`, `OnSteal(Boat)`,
+    `OnSwimStroke()` (~every 0.7 s while swimming and moving).
+  - Crew gear: `Vest` (SM_LF_LifeVest_<Team>, spine_03) and `Hat` (SM_LF_Hat_Bucket_<Team>, head) + `Face` piece slot; absolute scale 1,
+    NoCollision, attached to the bones (they follow the ragdoll), aligned from the reference pose (the meshes are authored in character
+    space around the bone pivots). Personality overrides for T03 stage 2: `HatOverride`, `FacePiece`. Player = Red, LF_Crew_Blue = Blue.
+  - Paddle by state: Standing = in the hands (pivot moved to the right-front of the waist so both arms reach; idle held diagonally,
+    blade low front-left); Driving / Swimming / Climbing = stowed diagonally on the back (`PaddleBack`); Ragdoll = on `PaddleGrip_R`
+    (hand), NoCollision. `PaddleScale` 0.85 absolute. Grip points `GripROffset` (4 cm, T-grip) / `GripLOffset` (59 cm down the shaft).
+  - Manny materials: slot 0 = `MI_LF_Char_Body` (cream/skin neutral), slot 1 = `MI_LF_Char_Joints` (WoodDark) - component overrides.
+  - Debug: `LFCam <yawOffset> <pitch>` (camera angle for screenshots).
+- `Source/LakeFight/Boat/LFBoat.h`: debug `LFDrive` while driving (the controller possesses the boat then).
+- `LakeFight.Build.cs`: + AnimationCore.
+- Assets: `SKM_Manny_Simple` + sockets `PaddleGrip_R` (hand_r) and `PaddleBack` (spine_03) (identity transforms; the aligned offsets are
+  applied in C++); new `Materials/M_LF_CharacterFlat` (BaseColor vector param, Roughness 0.9, Metallic 0, faceted normal
+  `normalize(cross(ddx(P), ddy(P)))` with Tangent Space Normal OFF, used with skeletal meshes) + `MI_LF_Char_Body`, `MI_LF_Char_Joints`.
+
+**Deviations:** Grip_R / Grip_L are C++ offsets, not sockets on SM_LF_Paddle - static-mesh sockets can't be added through MCP (Codex
+could add `SOCKET_Grip_R/L` empties in `SM_LF_Paddle.py`; I'd then read them). The anim instance replaces ABP_Unarmed (no jump/fall
+clips - jumping isn't in the game yet).
+
+**Screenshots** (`Docs/Shots/`): `T025_before_manny_default.png` (old grey Manny, shoulder-held paddle) -> `T025_idle_front.png`,
+`T025_idle_side.png` (flat material, both hands on the paddle, held diagonally), `T025_swing.png`, `T025_drive.png` (seated rowing),
+`T025_drive_paddle_on_back.png`, `T025_swim.png` (treading water). Ragdoll unchanged from 2.1 (paddle rides the hand) - the ragdoll shot
+missed him (he flew out of frame). Builds Succeeded; PIE runs clean (no warnings/errors).
+**Known:** hands are positioned on the shaft by IK but not rotated to wrap it; the swing reads as the sword slash + paddle arc - check feel.

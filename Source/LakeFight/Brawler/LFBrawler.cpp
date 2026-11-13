@@ -1,5 +1,10 @@
 #include "Brawler/LFBrawler.h"
 
+#include "Brawler/LFBrawlerAnimInstance.h"
+#include "AnimationRuntime.h"
+#include "Engine/SkinnedAsset.h"
+#include "Materials/MaterialInterface.h"
+
 #include "Boat/LFBoat.h"
 #include "Input/LFInput.h"
 #include "Water/LFWater.h"
@@ -38,7 +43,7 @@ namespace
 	constexpr float CapsuleHalfHeight = 88.f * BrawlerScale;
 
 	// Paddle poses (pivot yaw/pitch, deg; pivot at the right shoulder, blade along +X).
-	const FRotator PoseIdle(-60.f, 75.f, 0.f);
+	const FRotator PoseIdle(-50.f, -35.f, 0.f); // diagonal across the body, blade low front-left
 	const FRotator PoseWindup(15.f, 140.f, 0.f);
 	const FRotator PoseFollow(0.f, -90.f, 0.f);
 	constexpr float RecoverTime = 0.3f;
@@ -69,14 +74,22 @@ ALFBrawler::ALFBrawler()
 	{
 		GetMesh()->SetSkeletalMesh(MannyMesh.Object);
 	}
-	static ConstructorHelpers::FClassFinder<UAnimInstance> UnarmedAnim(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/ABP_Unarmed"));
-	if (UnarmedAnim.Succeeded())
-	{
-		GetMesh()->SetAnimInstanceClass(UnarmedAnim.Class);
-	}
+	// Native anim instance: idle/walk + Two Bone IK of both arms onto the paddle (T02 step 5).
+	GetMesh()->SetAnimInstanceClass(ULFBrawlerAnimInstance::StaticClass());
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -CapsuleHalfHeight), MeshBaseRotation);
 	GetMesh()->SetRelativeScale3D(FVector(BrawlerScale));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// Flat low-poly look (M_LF_CharacterFlat): body = cream/skin neutral, joints = WoodDark. Team identity is on hats + vests.
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> BodyMat(TEXT("/Game/LakeFight/Materials/MI_LF_Char_Body.MI_LF_Char_Body"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> JointMat(TEXT("/Game/LakeFight/Materials/MI_LF_Char_Joints.MI_LF_Char_Joints"));
+	if (BodyMat.Succeeded())
+	{
+		GetMesh()->SetMaterial(0, BodyMat.Object);
+	}
+	if (JointMat.Succeeded())
+	{
+		GetMesh()->SetMaterial(1, JointMat.Object);
+	}
 	// Same custom stencil as hulls (ALFBoat::HullStencil = 2): the lake treats water in front of a submerged body as deep,
 	// so a swimmer's legs don't show through as a pale ghost. (Lake material/stencil value unchanged.)
 	GetMesh()->SetRenderCustomDepth(true);
@@ -100,13 +113,15 @@ ALFBrawler::ALFBrawler()
 
 	PaddlePivot = CreateDefaultSubobject<USceneComponent>(TEXT("PaddlePivot"));
 	PaddlePivot->SetupAttachment(RootComponent);
-	PaddlePivot->SetRelativeLocation(FVector(0.f, 18.f, 55.f) * BrawlerScale); // right shoulder
+	PaddlePivot->SetRelativeLocation(FVector(22.f, 12.f, 12.f)); // right-front of the waist: two-handed hold reachable by both arms
 	PaddlePivot->SetRelativeRotation(PoseIdle);
 
 	Paddle = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Paddle"));
 	Paddle->SetupAttachment(PaddlePivot);
 	Paddle->SetRelativeLocation(FVector(-10.f, 0.f, 0.f)); // held near the grip end: ~130 cm reach to the blade centre
 	Paddle->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Paddle->SetUsingAbsoluteScale(true);
+	Paddle->SetWorldScale3D(FVector(PaddleScale));
 	Paddle->SetRenderCustomDepth(true);
 	Paddle->SetCustomDepthStencilValue(2);
 	Paddle->SetCastShadow(true);
@@ -116,6 +131,21 @@ ALFBrawler::ALFBrawler()
 		Paddle->SetStaticMesh(PaddleMesh.Object);
 	}
 	PaddleRot = PoseIdle;
+
+	// Crew gear (meshes authored for the 0.75 Manny: absolute scale 1, attached to bones so they follow the ragdoll).
+	auto MakeGear = [this](const TCHAR* Name)
+	{
+		UStaticMeshComponent* G = CreateDefaultSubobject<UStaticMeshComponent>(Name);
+		G->SetupAttachment(GetMesh());
+		G->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		G->SetUsingAbsoluteScale(true);
+		G->SetRenderCustomDepth(true);
+		G->SetCustomDepthStencilValue(2);
+		return G;
+	};
+	Vest = MakeGear(TEXT("Vest"));
+	Hat = MakeGear(TEXT("Hat"));
+	Face = MakeGear(TEXT("Face"));
 
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
 	CameraArm->SetupAttachment(RootComponent);
@@ -158,6 +188,8 @@ void ALFBrawler::BeginPlay()
 {
 	Super::BeginPlay();
 	BaseFov = Camera->FieldOfView;
+	ApplyCrewLook();
+	Paddle->SetWorldScale3D(FVector(PaddleScale));
 	if (!Paddle->GetStaticMesh())
 	{
 		UE_LOG(LogLF, Warning, TEXT("ALFBrawler %s: SM_LF_Paddle missing - paddle invisible (hits still work)."), *GetName());
@@ -166,6 +198,101 @@ void ALFBrawler::BeginPlay()
 	{
 		StandInBoat(StartBoat);
 	}
+}
+
+void ALFBrawler::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	ApplyCrewLook(); // also in the editor, so placed crews show their gear
+}
+
+void ALFBrawler::AttachAligned(USceneComponent* Comp, FName Socket, FName Bone, const FVector& ActorOffset, const FRotator& ActorRot)
+{
+	// Gear/paddle authored in character space (X forward, Z up): attach to the bone (socket if present) with a relative
+	// transform computed from the reference pose, so it sits aligned with the character and then rides the bone.
+	USkeletalMeshComponent* M = GetMesh();
+	const USkinnedAsset* Asset = M->GetSkinnedAsset();
+	if (!Asset)
+	{
+		return;
+	}
+	const FReferenceSkeleton& RS = Asset->GetRefSkeleton();
+	const int32 Idx = RS.FindBoneIndex(Bone);
+	if (Idx == INDEX_NONE)
+	{
+		return;
+	}
+	const FTransform BoneCS = FAnimationRuntime::GetComponentSpaceTransformRefPose(RS, Idx);
+	const FTransform BoneActor = BoneCS * M->GetRelativeTransform();
+	const FTransform Want(ActorRot.Quaternion(), BoneActor.GetLocation() + ActorOffset, FVector::OneVector);
+	FTransform Rel = Want.GetRelativeTransform(BoneActor);
+	Rel.SetScale3D(FVector::OneVector);
+	const FName Attach = M->DoesSocketExist(Socket) ? Socket : Bone;
+	Comp->AttachToComponent(M, FAttachmentTransformRules::KeepRelativeTransform, Attach);
+	Comp->SetRelativeLocationAndRotation(Rel.GetLocation(), Rel.GetRotation());
+}
+
+void ALFBrawler::ApplyCrewLook()
+{
+	static const TCHAR* TeamNames[] = { TEXT("Red"), TEXT("Blue"), TEXT("Green"), TEXT("Yellow") };
+	const TCHAR* T = TeamNames[FMath::Clamp(int32(Team), 0, 3)];
+	UStaticMesh* VestMesh = LoadObject<UStaticMesh>(nullptr, *FString::Printf(TEXT("/Game/LakeFight/Meshes/SM_LF_LifeVest_%s.SM_LF_LifeVest_%s"), T, T));
+	UStaticMesh* HatMesh = HatOverride ? HatOverride.Get() : LoadObject<UStaticMesh>(nullptr, *FString::Printf(TEXT("/Game/LakeFight/Meshes/SM_LF_Hat_Bucket_%s.SM_LF_Hat_Bucket_%s"), T, T));
+	Vest->SetStaticMesh(VestMesh);
+	Hat->SetStaticMesh(HatMesh);
+	Face->SetStaticMesh(FacePiece);
+	AttachAligned(Vest, NAME_None, TEXT("spine_03"), FVector::ZeroVector, FRotator::ZeroRotator);
+	AttachAligned(Hat, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
+	AttachAligned(Face, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
+	Vest->SetWorldScale3D(FVector::OneVector);
+	Hat->SetWorldScale3D(FVector::OneVector);
+	Face->SetWorldScale3D(FVector::OneVector);
+}
+
+void ALFBrawler::GetAnimView(FLFBrawlerAnimView& Out) const
+{
+	Out.State = State;
+	Out.SwingPhase = uint8(SwingPhase);
+	Out.SwingAlpha = SwingPhase == ELFSwingPhase::Swinging ? FMath::Clamp(SwingAge / FMath::Max(SwingDuration, 0.01f), 0.f, 1.f)
+		: (SwingPhase == ELFSwingPhase::Recover ? FMath::Clamp(SwingAge / RecoverTime, 0.f, 1.f) : 0.f);
+	Out.bStunned = IsStunned();
+	Out.ClimbAlpha = FMath::Clamp(ClimbAge / FMath::Max(ClimbTime, 0.01f), 0.f, 1.f);
+}
+
+bool ALFBrawler::GetPaddleGripTargets(FVector& OutRight, FVector& OutLeft) const
+{
+	if (PaddleMount != EPaddleMount::Hands || State != ELFBrawlerState::Standing || !Paddle->GetStaticMesh())
+	{
+		return false;
+	}
+	const FTransform& P = Paddle->GetComponentTransform();
+	OutRight = P.TransformPosition(GripROffset);
+	OutLeft = P.TransformPosition(GripLOffset);
+	return true;
+}
+
+void ALFBrawler::UpdatePaddleStow()
+{
+	// Standing: in the hands (pivot + IK). Driving / swimming / climbing: stowed on the back. Ragdoll: right hand (set in StartRagdoll).
+	const EPaddleMount Want = State == ELFBrawlerState::Standing ? EPaddleMount::Hands
+		: (State == ELFBrawlerState::Ragdoll ? EPaddleMount::Hand : EPaddleMount::Back);
+	if (Want == PaddleMount || Want == EPaddleMount::Hand)
+	{
+		return;
+	}
+	PaddleMount = Want;
+	if (Want == EPaddleMount::Hands)
+	{
+		Paddle->AttachToComponent(PaddlePivot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		Paddle->SetRelativeLocationAndRotation(FVector(-10.f, 0.f, 0.f), FRotator::ZeroRotator);
+	}
+	else
+	{
+		// Diagonal across the back: T-grip over the right shoulder, blade low on the left.
+		const FVector Dir = FVector(0.f, -0.55f, -0.83f).GetSafeNormal();
+		AttachAligned(Paddle, TEXT("PaddleBack"), TEXT("spine_03"), FVector(-17.f, 16.f, 22.f), Dir.Rotation());
+	}
+	Paddle->SetWorldScale3D(FVector(PaddleScale));
 }
 
 void ALFBrawler::PossessedBy(AController* NewController)
@@ -396,6 +523,7 @@ bool ALFBrawler::TryDrive()
 	if (B != HomeBoat.Get())
 	{
 		UE_LOG(LogLF, Display, TEXT("[steal] %s steals %s"), *GetName(), *B->GetName());
+		OnSteal(B);
 	}
 	State = ELFBrawlerState::Driving;
 	SwingPhase = ELFSwingPhase::Idle;
@@ -481,6 +609,7 @@ void ALFBrawler::Tick(float DeltaSeconds)
 		UpdateClimb(DeltaSeconds);
 	}
 	UpdateFakeWeight(DeltaSeconds);
+	UpdatePaddleStow();
 	UpdatePaddle(DeltaSeconds);
 	if (IsLocallyControlled())
 	{
@@ -622,6 +751,14 @@ void ALFBrawler::LFOverboard(float Side)
 	if (State == ELFBrawlerState::Standing)
 	{
 		StartRagdoll(GetActorRightVector().GetSafeNormal2D() * (Side >= 0.f ? 1.f : -1.f), 0.3f);
+	}
+}
+
+void ALFBrawler::LFCam(float YawOffset, float Pitch)
+{
+	if (Controller)
+	{
+		Controller->SetControlRotation(FRotator(Pitch, GetActorRotation().Yaw + YawOffset, 0.f));
 	}
 }
 
@@ -826,7 +963,8 @@ void ALFBrawler::StartRagdoll(const FVector& Out, float Strength)
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	// Paddle stays in the right hand for now.
-	Paddle->AttachToComponent(M, FAttachmentTransformRules::KeepWorldTransform, TEXT("hand_r"));
+	Paddle->AttachToComponent(M, FAttachmentTransformRules::KeepWorldTransform, M->DoesSocketExist(TEXT("PaddleGrip_R")) ? FName(TEXT("PaddleGrip_R")) : FName(TEXT("hand_r")));
+	PaddleMount = EPaddleMount::Hand;
 
 	// Ragdoll: Manny's physics asset (PA_Mannequin on the mesh), Ragdoll profile, light bodies so a flailing ragdoll can't
 	// shove a 180 kg hull while it is still allowed to touch it.
@@ -979,8 +1117,8 @@ void ALFBrawler::EndRagdoll()
 	// Simulating may have detached the mesh: put it back on the capsule.
 	M->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	M->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()), MeshBaseRotation);
+	PaddleMount = EPaddleMount::Hands; // force a re-mount by UpdatePaddleStow (-> back while swimming)
 	Paddle->AttachToComponent(PaddlePivot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	Paddle->SetRelativeLocationAndRotation(FVector(-10.f, 0.f, 0.f), FRotator::ZeroRotator);
 	SwayQuat = FQuat::Identity;
 	UE_LOG(LogLF, Display, TEXT("[overboard] %s upright in the water"), *GetName());
 }
@@ -1147,6 +1285,17 @@ void ALFBrawler::UpdateSwim(float DeltaSeconds)
 	SetActorLocation(L);
 	GetCharacterMovement()->Velocity.Z = 0.f;
 
+	// Swim stroke hook (audio later): about every 0.7 s while moving.
+	if (GetVelocity().Size2D() > 30.f)
+	{
+		SwimStrokeAccum += DeltaSeconds;
+		if (SwimStrokeAccum >= 0.7f)
+		{
+			SwimStrokeAccum = 0.f;
+			OnSwimStroke();
+		}
+	}
+
 	// Placeholder swim pose: lean forward with speed.
 	const float Speed01 = FMath::Clamp(float(GetVelocity().Size2D()) / FMath::Max(SwimSpeed, 1.f), 0.f, 1.f);
 	const FQuat Lean(GetActorRightVector(), FMath::DegreesToRadians(SwimLeanDeg * Speed01));
@@ -1201,6 +1350,7 @@ void ALFBrawler::FinishClimb()
 	}
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	StandInBoatAt(B, ClimbTargetLocal - FVector(0.f, 0.f, HalfHeight + 3.f));
+	OnClimbAboard(B);
 	UE_LOG(LogLF, Display, TEXT("[climb] %s aboard %s%s"), *GetName(), *B->GetName(),
 		B == HomeBoat.Get() ? TEXT(" (home)") : (B->HasDriver() ? TEXT(" (someone is driving - knock them out)") : TEXT(" (seat empty: steal it!)")));
 }

@@ -11,6 +11,7 @@ class UInputAction;
 class UInputMappingContext;
 class UNiagaraSystem;
 class UStaticMeshComponent;
+class UStaticMesh;
 struct FInputActionValue;
 
 UENUM(BlueprintType)
@@ -31,6 +32,16 @@ enum class ELFTeam : uint8
 	Blue,
 	Green,
 	Yellow
+};
+
+/** What the anim instance needs from the brawler each frame. SwingPhase: 0 idle, 1 charging, 2 swinging, 3 recover. */
+struct FLFBrawlerAnimView
+{
+	ELFBrawlerState State = ELFBrawlerState::None;
+	uint8 SwingPhase = 0;
+	float SwingAlpha = 0.f;
+	bool bStunned = false;
+	float ClimbAlpha = 0.f;
 };
 
 UENUM()
@@ -62,6 +73,32 @@ public:
 	/** Crew. Same team = friends (AI won't target them). Player = Red. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Brawler")
 	ELFTeam Team = ELFTeam::Red;
+
+	// --- Crew look (T02 step 5) ---
+	/** Hat mesh override (personality). Null = SM_LF_Hat_Bucket_<Team>. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Look")
+	TObjectPtr<UStaticMesh> HatOverride;
+
+	/** Face piece (beard / moustache) on the head, or null. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Look")
+	TObjectPtr<UStaticMesh> FacePiece;
+
+	/** Paddle absolute scale (slightly oversized reads as comedy on a 135 cm brawler). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.1"))
+	float PaddleScale = 0.85f;
+
+	/** Grip points in the paddle's local space (cm, before scale; origin = T-grip, blade along +X). Stand-ins for Grip_R / Grip_L
+	 *  sockets on SM_LF_Paddle (static-mesh sockets can't be added through MCP). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	FVector GripROffset = FVector(4.f, 0.f, 0.f);
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	FVector GripLOffset = FVector(59.f, 0.f, 0.f);
+
+	/** IK targets for both hands on the paddle (world). False when the paddle isn't in the hands (stowed / ragdoll). */
+	bool GetPaddleGripTargets(FVector& OutRight, FVector& OutLeft) const;
+
+	void GetAnimView(FLFBrawlerAnimView& Out) const;
 
 	// --- Boat ---
 	/** Player-controlled brawlers without a boat spawn one of these under them on possession. */
@@ -338,6 +375,10 @@ public:
 	UFUNCTION(Exec)
 	void LFOverboard(float Side = 1.f);
 
+	/** Debug console: set the camera's yaw/pitch relative to the brawler's facing (for screenshots). */
+	UFUNCTION(Exec)
+	void LFCam(float YawOffset = 180.f, float Pitch = -15.f);
+
 	/** Debug console: toggle drive/stand (same as Interact). */
 	UFUNCTION(Exec)
 	void LFDrive();
@@ -394,6 +435,18 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category="LF|Brawler")
 	void OnPaddleHit(ALFBrawler* Victim, float Strength, bool bOverboard);
 
+	/** Audio/FX hook: we climbed aboard a boat. */
+	UFUNCTION(BlueprintImplementableEvent, Category="LF|Brawler")
+	void OnClimbAboard(ALFBoat* Aboard);
+
+	/** Audio/FX hook: we took the seat of a boat that isn't ours. */
+	UFUNCTION(BlueprintImplementableEvent, Category="LF|Brawler")
+	void OnSteal(ALFBoat* Stolen);
+
+	/** Audio/FX hook: a swim stroke while moving in the water (~every SwimStrokeInterval). */
+	UFUNCTION(BlueprintImplementableEvent, Category="LF|Brawler")
+	void OnSwimStroke();
+
 	/** Audio/FX hook: we hit the water. */
 	UFUNCTION(BlueprintImplementableEvent, Category="LF|Brawler")
 	void OnSplashIn(FVector Location);
@@ -406,6 +459,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category="LF|Camera")
@@ -417,6 +471,15 @@ private:
 	/** Shoulder pivot the paddle swings around (procedural placeholder animation). */
 	UPROPERTY(VisibleAnywhere, Category="LF|Paddle")
 	TObjectPtr<USceneComponent> PaddlePivot;
+
+	UPROPERTY(VisibleAnywhere, Category="LF|Look")
+	TObjectPtr<UStaticMeshComponent> Vest;
+
+	UPROPERTY(VisibleAnywhere, Category="LF|Look")
+	TObjectPtr<UStaticMeshComponent> Hat;
+
+	UPROPERTY(VisibleAnywhere, Category="LF|Look")
+	TObjectPtr<UStaticMeshComponent> Face;
 
 	/** SM_LF_Paddle: origin at the grip, blade along +X. */
 	UPROPERTY(VisibleAnywhere, Category="LF|Paddle")
@@ -470,6 +533,12 @@ private:
 	double LaunchTime = 0.0;
 
 	void StartRagdoll(const FVector& Out, float Strength);
+	void ApplyCrewLook();
+	void AttachAligned(USceneComponent* Comp, FName Socket, FName Bone, const FVector& ActorOffset, const FRotator& ActorRot);
+	void UpdatePaddleStow();
+	enum class EPaddleMount : uint8 { Hands, Back, Hand };
+	EPaddleMount PaddleMount = EPaddleMount::Hands;
+	float SwimStrokeAccum = 0.f;
 	void EnterSwimming();
 	void UpdateSwim(float DeltaSeconds);
 	void UpdateClimb(float DeltaSeconds);
