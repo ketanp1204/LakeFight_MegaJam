@@ -1,15 +1,55 @@
 #include "AI/LFCaptainAI.h"
 
+#include "AI/LFCaptainPersonality.h"
+#include "AI/LFSpectatorCamera.h"
 #include "Boat/LFBoat.h"
 #include "Brawler/LFBrawler.h"
 #include "Water/LFWater.h"
+#include "Camera/CameraActor.h"
 #include "Components/StaticMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "GameFramework/PlayerController.h"
 #include "HAL/IConsoleManager.h"
 
 static TAutoConsoleVariable<int32> CVarLFAIDebug(TEXT("lf.ai.debug"), 0, TEXT("1 = show each AI captain's state above its head."));
+
+// lf.ai.spectate: take the player out of the fight (hidden, untargetable) and watch the AI crews from an overview camera.
+static FAutoConsoleCommandWithWorldAndArgs CmdLFAISpectate(TEXT("lf.ai.spectate"),
+	TEXT("lf.ai.spectate - remove the player from the fight and watch the AI crews from above."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		if (!World)
+		{
+			return;
+		}
+		APlayerController* PC = World->GetFirstPlayerController();
+		if (!PC)
+		{
+			return;
+		}
+		ALFBrawler* Player = Cast<ALFBrawler>(PC->GetPawn());
+		if (!Player)
+		{
+			if (const ALFBoat* B = Cast<ALFBoat>(PC->GetPawn()))
+			{
+				Player = B->GetDriver();
+			}
+		}
+		if (Player)
+		{
+			Player->SetSpectating();
+		}
+		FActorSpawnParameters P;
+		P.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		ACameraActor* Cam = World->SpawnActor<ALFSpectatorCamera>(FVector(0.f, -4200.f, 2600.f), FRotator(-38.f, 90.f, 0.f), P);
+		if (Cam)
+		{
+			PC->SetViewTargetWithBlend(Cam, 0.5f);
+		}
+		UE_LOG(LogLF, Display, TEXT("[ai] spectate: player removed from the fight, overview camera"));
+	}));
 
 namespace
 {
@@ -27,9 +67,9 @@ namespace
 		}
 	}
 
-	bool InPlay(const ALFBrawler* B)
+	bool InBoat(const ALFBrawler* B)
 	{
-		return B && B->GetBrawlerState() != ELFBrawlerState::Ragdoll && B->GetBrawlerState() != ELFBrawlerState::None;
+		return B && (B->GetBrawlerState() == ELFBrawlerState::Standing || B->GetBrawlerState() == ELFBrawlerState::Driving);
 	}
 }
 
@@ -39,11 +79,38 @@ ALFCaptainAI::ALFCaptainAI()
 	bWantsPlayerState = false;
 }
 
+void ALFCaptainAI::ApplyPersonality(const ULFCaptainPersonality* P)
+{
+	if (!P)
+	{
+		PersonalityName = TEXT("default");
+		return;
+	}
+	PersonalityName = P->DisplayName.ToString();
+	ReactionDelay = P->ReactionDelay;
+	AimErrorDeg = P->AimErrorDeg;
+	SwingCooldown = P->SwingCooldown;
+	ChargedSwingChance = P->ChargedSwingChance;
+	FightEnterRange = P->FightEnterRange;
+	FightExitRange = P->FightExitRange;
+	FightGiveUpTime = P->FightGiveUpTime;
+	BoardRange = P->BoardRange;
+	RamRange = P->RamRange;
+	RamAngleDeg = P->RamAngleDeg;
+	DriverTargetWeight = P->DriverTargetWeight;
+	EmptySeatTargetWeight = P->EmptySeatTargetWeight;
+	OwnBoatRecoverWeight = P->OwnBoatRecoverWeight;
+	FleeHits = P->FleeHits;
+	FleeTime = P->FleeTime;
+}
+
 void ALFCaptainAI::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	NextDecision = GetWorld()->GetTimeSeconds() + FMath::FRandRange(0.2f, 0.6f);
-	UE_LOG(LogLF, Display, TEXT("[ai] %s captains %s"), *GetName(), InPawn ? *InPawn->GetName() : TEXT("none"));
+	const ALFBrawler* B = Cast<ALFBrawler>(InPawn);
+	ApplyPersonality(B ? B->Personality.Get() : nullptr);
+	UE_LOG(LogLF, Display, TEXT("[ai] %s captains %s (%s)"), *GetName(), InPawn ? *InPawn->GetName() : TEXT("none"), *PersonalityName);
 }
 
 ALFBrawler* ALFCaptainAI::Me() const
@@ -53,22 +120,59 @@ ALFBrawler* ALFCaptainAI::Me() const
 
 ALFBrawler* ALFCaptainAI::PickTarget() const
 {
+	// Nearest / most tempting enemy IN A BOAT (swimmers are out of the fight). Any other team - AIs fight each other too.
 	const ALFBrawler* Self = Me();
 	ALFBrawler* Best = nullptr;
-	float BestD = TNumericLimits<float>::Max();
+	float BestScore = TNumericLimits<float>::Max();
 	for (TActorIterator<ALFBrawler> It(GetWorld()); It; ++It)
 	{
 		ALFBrawler* B = *It;
-		if (B == Self || B->Team == Self->Team || !InPlay(B))
+		if (B == Self || B->Team == Self->Team || !InBoat(B))
 		{
 			continue;
 		}
-		if (B->GetBrawlerState() == ELFBrawlerState::Swimming || B->GetBrawlerState() == ELFBrawlerState::Climbing)
+		float Score = float(FVector::Dist2D(B->GetActorLocation(), Self->GetActorLocation()));
+		if (B->GetBrawlerState() == ELFBrawlerState::Driving)
 		{
-			continue; // out of the fight: paddling swimmers isn't a useful strategy
+			Score *= DriverTargetWeight;
+		}
+		if (B->GetBoat() && !B->GetBoat()->HasDriver())
+		{
+			Score *= EmptySeatTargetWeight;
+		}
+		if (B == Target.Get())
+		{
+			Score *= 0.8f; // stickiness: don't flip targets every decision
+		}
+		if (Score < BestScore)
+		{
+			BestScore = Score;
+			Best = B;
+		}
+	}
+	return Best;
+}
+
+ALFBoat* ALFCaptainAI::PickCrewlessBoat() const
+{
+	// A boat whose crew is all overboard (nobody standing or driving in it) and isn't ours: ram it.
+	const ALFBrawler* Self = Me();
+	ALFBoat* Best = nullptr;
+	float BestD = TNumericLimits<float>::Max();
+	for (TActorIterator<ALFBoat> It(GetWorld()); It; ++It)
+	{
+		ALFBoat* B = *It;
+		if (B == Self->GetBoat() || B == Self->GetHomeBoat())
+		{
+			continue;
+		}
+		bool bCrewed = false;
+		for (TActorIterator<ALFBrawler> BI(GetWorld()); BI; ++BI)
+		{
+			bCrewed |= InBoat(*BI) && BI->GetBoat() == B;
 		}
 		const float D = float(FVector::Dist2D(B->GetActorLocation(), Self->GetActorLocation()));
-		if (D < BestD)
+		if (!bCrewed && D < BestD && D < RamRange * 2.f)
 		{
 			BestD = D;
 			Best = B;
@@ -92,7 +196,7 @@ ALFBoat* ALFCaptainAI::PickRecoverBoat() const
 		float Score = float(FVector::Dist2D(B->GetActorLocation(), Self->GetActorLocation()));
 		if (B == Self->GetHomeBoat())
 		{
-			Score *= 0.6f; // prefer our own
+			Score *= OwnBoatRecoverWeight; // < 1 prefers our own, > 1 prefers stealing (Thief)
 		}
 		if (Score < BestScore)
 		{
@@ -121,8 +225,9 @@ void ALFCaptainAI::Tick(float DeltaSeconds)
 	{
 		if (PendingState != State)
 		{
-			UE_LOG(LogLF, Display, TEXT("[ai] %s: %s -> %s%s%s"), *Self->GetName(), CaptainStateName(State), CaptainStateName(PendingState),
-				PendingTarget.IsValid() ? TEXT(" target ") : TEXT(""), PendingTarget.IsValid() ? *PendingTarget->GetName() : TEXT(""));
+			UE_LOG(LogLF, Display, TEXT("[ai] %s (%s): %s -> %s%s%s"), *Self->GetName(), *PersonalityName, CaptainStateName(State), CaptainStateName(PendingState),
+				PendingTarget.IsValid() ? TEXT(" target ") : (GoalBoat.IsValid() ? TEXT(" boat ") : TEXT("")),
+				PendingTarget.IsValid() ? *PendingTarget->GetName() : (GoalBoat.IsValid() ? *GoalBoat->GetName() : TEXT("")));
 		}
 		State = PendingState;
 		Target = PendingTarget;
@@ -130,7 +235,8 @@ void ALFCaptainAI::Tick(float DeltaSeconds)
 	}
 	Execute(DeltaSeconds);
 
-	Self->DebugState = FString::Printf(TEXT("%s%s"), CaptainStateName(State), Target.IsValid() ? *FString::Printf(TEXT(" > %s"), *Target->GetName()) : TEXT(""));
+	const FString Who = Target.IsValid() ? Target->GetName() : (GoalBoat.IsValid() ? GoalBoat->GetName() : FString());
+	Self->DebugState = FString::Printf(TEXT("%s: %s%s%s"), *PersonalityName, CaptainStateName(State), Who.IsEmpty() ? TEXT("") : TEXT(" > "), *Who);
 	if (CVarLFAIDebug.GetValueOnGameThread() > 0)
 	{
 		DrawDebugString(GetWorld(), Self->GetActorLocation() + FVector(0.f, 0.f, 110.f), Self->DebugState, nullptr, FColor::Yellow, 0.f, true, 1.3f);
@@ -159,34 +265,50 @@ void ALFCaptainAI::Decide()
 	else if (S == ELFBrawlerState::Standing || S == ELFBrawlerState::Driving)
 	{
 		ALFBoat* MyBoat = Self->GetBoat();
-		const bool bTargetInBoat = T && (T->GetBrawlerState() == ELFBrawlerState::Standing || T->GetBrawlerState() == ELFBrawlerState::Driving);
 		const float TDist = T ? float(FVector::Dist2D(T->GetActorLocation(), Self->GetActorLocation())) : TNumericLimits<float>::Max();
 		FVector2D Unused;
-		const bool bHullsClose = T && MyBoat && MyBoat->GunwaleDistance(T->GetActorLocation(), Unused) < BoardRange;
+		const bool bHullsClose = T && MyBoat && BoardRange > 0.f && MyBoat->GunwaleDistance(T->GetActorLocation(), Unused) < BoardRange;
+		if (TDist <= SwingRange)
+		{
+			LastInReach = Now;
+		}
+		// Fight hysteresis: enter close, stay until clearly apart or out of reach for a while.
+		const bool bStayFighting = State == ELFCaptainState::Fight && T && T == Target.Get()
+			&& TDist < FightExitRange && (Now - LastInReach) < FightGiveUpTime;
 
 		if (Now < FleeUntil && T)
 		{
 			Want = ELFCaptainState::Flee;
 		}
-		else if (T && (TDist < SwingRange * 1.15f || (bTargetInBoat && bHullsClose)))
+		else if (T && (TDist < FightEnterRange || bHullsClose || bStayFighting))
 		{
-			Want = ELFCaptainState::Fight; // board/fight: stand and paddle
+			Want = ELFCaptainState::Fight;
+			if (State != ELFCaptainState::Fight)
+			{
+				LastInReach = Now;
+			}
 		}
 		else if (S == ELFBrawlerState::Standing && MyBoat && MyBoat != Self->GetHomeBoat() && !MyBoat->HasDriver())
 		{
 			Want = ELFCaptainState::Steal; // in someone else's empty boat: take the seat
 		}
-		else if (T)
+		else
 		{
-			Want = ELFCaptainState::Chase;
-			if (S == ELFBrawlerState::Driving && MyBoat && T->GetBoat() && T->GetBoat() != MyBoat)
+			// Chase / ram an enemy boat - or ram a boat whose crew is all overboard.
+			ALFBoat* Crewless = T ? nullptr : PickCrewlessBoat();
+			const AActor* Goal = T ? static_cast<const AActor*>(T->GetBoat()) : static_cast<const AActor*>(Crewless);
+			GoalBoat = Crewless;
+			if (Goal)
 			{
-				const FVector To = (T->GetBoat()->GetActorLocation() - MyBoat->GetActorLocation()) * FVector(1, 1, 0);
-				const float Ang = FMath::Abs(FMath::FindDeltaAngleDegrees(MyBoat->GetActorRotation().Yaw, To.Rotation().Yaw));
-				const float Speed = MyBoat->GetForwardSpeed();
-				if (Ang < RamAngleDeg && To.Size() < RamRange && Speed > 150.f)
+				Want = ELFCaptainState::Chase;
+				if (S == ELFBrawlerState::Driving && MyBoat && Goal != MyBoat)
 				{
-					Want = ELFCaptainState::Ram;
+					const FVector To = (Goal->GetActorLocation() - MyBoat->GetActorLocation()) * FVector(1, 1, 0);
+					const float Ang = FMath::Abs(FMath::FindDeltaAngleDegrees(MyBoat->GetActorRotation().Yaw, To.Rotation().Yaw));
+					if (Ang < RamAngleDeg && To.Size() < RamRange && MyBoat->GetForwardSpeed() > 150.f)
+					{
+						Want = ELFCaptainState::Ram;
+					}
 				}
 			}
 		}
@@ -227,22 +349,24 @@ void ALFCaptainAI::Execute(float DeltaSeconds)
 		return;
 	}
 
+	// What we're driving at: the target's boat (or the target), or a crew-less boat.
+	const AActor* DriveGoal = T ? (T->GetBoat() ? static_cast<const AActor*>(T->GetBoat()) : static_cast<const AActor*>(T))
+		: static_cast<const AActor*>(GoalBoat.Get());
+
 	if (S == ELFBrawlerState::Driving && MyBoat)
 	{
 		switch (State)
 		{
 		case ELFCaptainState::Chase:
-			if (T)
+			if (DriveGoal)
 			{
-				const AActor* Goal = T->GetBoat() ? static_cast<const AActor*>(T->GetBoat()) : static_cast<const AActor*>(T);
-				DriveToward(Goal->GetActorLocation() + Goal->GetVelocity() * LookaheadTime, 1.f);
+				DriveToward(DriveGoal->GetActorLocation() + DriveGoal->GetVelocity() * LookaheadTime, 1.f);
 			}
 			break;
 		case ELFCaptainState::Ram:
-			if (T)
+			if (DriveGoal)
 			{
-				const AActor* Goal = T->GetBoat() ? static_cast<const AActor*>(T->GetBoat()) : static_cast<const AActor*>(T);
-				DriveToward(Goal->GetActorLocation(), 1.f);
+				DriveToward(DriveGoal->GetActorLocation(), 1.f);
 			}
 			break;
 		case ELFCaptainState::Flee:
@@ -341,7 +465,6 @@ float ALFCaptainAI::AvoidShore(float Steer) const
 	{
 		return Steer;
 	}
-	// Turn toward the freer side, harder the closer the wall.
 	const float Urgency = 1.f - FMath::Min3(FC, FL, FR);
 	const float Away = FL < FR ? 1.f : -1.f;
 	return FMath::Clamp(Steer * (1.f - Urgency) + Away * FMath::Max(Urgency, bC ? 0.7f : 0.4f), -1.f, 1.f);
@@ -353,8 +476,8 @@ void ALFCaptainAI::FaceAndSwing(ALFBrawler* T)
 	const FVector To = (T->GetActorLocation() - Self->GetActorLocation()) * FVector(1, 1, 0);
 	const float Yaw = To.Rotation().Yaw + FMath::FRandRange(-AimErrorDeg, AimErrorDeg);
 	SetControlRotation(FRotator(0.f, Yaw, 0.f));
-	const float Strength = T->IsNearGunwale() ? FMath::FRandRange(0.8f, 1.f) : -1.f; // charged if they're near the gunwale
-	Self->Swing(Strength);
+	const bool bCharged = T->IsNearGunwale() || FMath::FRand() < ChargedSwingChance;
+	Self->Swing(bCharged ? FMath::FRandRange(0.8f, 1.f) : -1.f);
 	LastSwing = GetWorld()->GetTimeSeconds();
 }
 

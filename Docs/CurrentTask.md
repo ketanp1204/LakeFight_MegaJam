@@ -120,3 +120,39 @@ clips - jumping isn't in the game yet).
 `T025_drive_paddle_on_back.png`, `T025_swim.png` (treading water). Ragdoll unchanged from 2.1 (paddle rides the hand) - the ragdoll shot
 missed him (he flew out of frame). Builds Succeeded; PIE runs clean (no warnings/errors).
 **Known:** hands are positioned on the shaft by IK but not rotated to wrap it; the swing reads as the sword slash + paddle arc - check feel.
+
+## T03 stage 2 - three crews, personalities, AIs fight each other (Claude Code, 13 Nov evening)
+
+**Files**
+- New `Source/LakeFight/AI/LFCaptainPersonality.h/.cpp` - `ULFCaptainPersonality` (UPrimaryDataAsset): look (Hat, FacePiece) + behaviour
+  (reaction delay, aim error, swing cooldown, charged-swing chance, fight enter/exit range + give-up time, board range, ram range/angle,
+  target weights for drivers / empty seats, own-boat weight when swimming, flee hits/time).
+- `Source/LakeFight/AI/LFCaptainAI.h/.cpp` - reads the brawler's `Personality` on possess; **fight hysteresis** (enter within
+  `FightEnterRange` 1.9 m, leave only beyond `FightExitRange` 3.5 m or after `FightGiveUpTime` 2 s out of reach); targets = any OTHER
+  team in a boat (nearest/most tempting by personality weights, with stickiness) - AIs fight each other and the player; swimmers are
+  never paddle targets, but a boat whose crew is all overboard is a **ram target**; a swimming Thief prefers enemy empty boats (steal);
+  `lf.ai.spectate` console command.
+- New `Source/LakeFight/AI/LFSpectatorCamera.h/.cpp` - spectate camera following the centroid of the crews still in play.
+- `Source/LakeFight/Brawler/LFBrawler.h/.cpp` - `Personality` property (its hat/face piece override the team look), `SetSpectating()`;
+  a stolen boat becomes the thief's home (re-taking its seat isn't another steal).
+- Assets: `AI/DA_LF_Personality_Bully` (captain hat + beard), `_Thief` (team bucket hat + moustache), `_Hothead` (team bucket hat);
+  `L_Lake01`: three crews spread around the lake, each in a home boat in its team colour - **LF_Crew_Blue = Bully** (boat at 30, 22 m),
+  **LF_Crew_Green = Thief** (-30, 22 m), **LF_Crew_Yellow = Hothead** (0, -30 m); the player (Red) starts at the centre.
+
+**Personalities (DataAsset values)**
+| | Bully (Blue) | Thief (Green) | Hothead (Yellow) |
+| --- | --- | --- | --- |
+| Look | captain hat + beard | bucket hat + moustache | bucket hat |
+| Ram | range 30 m, 35 deg | 5 m, 12 deg | 12 m, 20 deg |
+| Fight | enter 1.5 m, never boards | 1.7 m, boards 1 m | 2.3 m, boards 2.2 m, exits 4.2 m |
+| Swing | 1.2 s cd, 30 % charged | 1.3 s, 15 % | 0.6 s, 60 %, sloppy aim 20 deg |
+| Targets | drivers x0.6 | empty seats x0.5; own boat x1.8 when swimming (steals) | nearest |
+| Flee | after 3 hits | after 1 hit | never |
+
+**Acceptance run** (`lf.ai.spectate`, AI-only, 12:18:57-12:21:12 UTC = 134 s, **0 warnings/errors**): **1 steal** (Thief swam to the abandoned
+player boat, climbed in, `[steal] ... steals BP_LF_Boat_C_3`), **8 overboards**, 23 rams, 15 paddle hits, 7 climbs back aboard.
+Per personality (first 2-min run): Bully 16 Ram decisions / 10 rams landed / 1 swing; Hothead 13 Fight decisions / 12 swings;
+Thief 7 Steal + 2 Flee decisions. Screenshots: `Docs/Shots/T03_spectate_1.png`, `_2.png` (follow camera).
+**Please check:** whether the personalities read without debug text (the Bully's captain hat + beard and constant ramming, the Thief's
+moustache and stolen boats, the Hothead standing and swinging early); `lf.ai.spectate` (restart PIE to play again).
+**Known:** steals happen only via swimming (no boat-to-boat jump until step 4); spectate is one-way per PIE session.

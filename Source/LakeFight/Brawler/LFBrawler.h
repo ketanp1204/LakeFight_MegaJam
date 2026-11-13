@@ -12,6 +12,7 @@ class UInputMappingContext;
 class UNiagaraSystem;
 class UStaticMeshComponent;
 class UStaticMesh;
+class ULFCaptainPersonality;
 struct FInputActionValue;
 
 UENUM(BlueprintType)
@@ -73,6 +74,13 @@ public:
 	/** Crew. Same team = friends (AI won't target them). Player = Red. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Brawler")
 	ELFTeam Team = ELFTeam::Red;
+
+	/** AI personality (behaviour + hat / face piece). Read by ALFCaptainAI; its look overrides HatOverride / FacePiece. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Brawler")
+	TObjectPtr<ULFCaptainPersonality> Personality;
+
+	/** Take this brawler out of the fight (lf.ai.spectate): hidden, untargetable, no collision. */
+	void SetSpectating();
 
 	// --- Crew look (T02 step 5) ---
 	/** Hat mesh override (personality). Null = SM_LF_Hat_Bucket_<Team>. */

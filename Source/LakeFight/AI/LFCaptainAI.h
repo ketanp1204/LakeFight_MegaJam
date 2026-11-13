@@ -6,6 +6,7 @@
 
 class ALFBrawler;
 class ALFBoat;
+class ULFCaptainPersonality;
 
 UENUM(BlueprintType)
 enum class ELFCaptainState : uint8
@@ -22,7 +23,8 @@ enum class ELFCaptainState : uint8
 /**
  * T03 AI captain. Possesses an ALFBrawler and plays with the player's rules: it only uses the brawler/boat actions
  * (StartSwimTo, TryGrabHull, TryDriveBoat, Swing, AddMovementInput, ALFBoat::SetDriveInput) - no teleports, no extra forces.
- * Decisions are re-evaluated every DecisionInterval (with a small reaction delay); steering/aim run every tick.
+ * Decisions every DecisionInterval (+ a reaction delay); steering/aim every tick. Behaviour weights come from the brawler's
+ * ULFCaptainPersonality (Bully / Thief / Hothead) when set; otherwise the defaults below.
  */
 UCLASS()
 class LAKEFIGHT_API ALFCaptainAI : public AAIController
@@ -32,15 +34,12 @@ class LAKEFIGHT_API ALFCaptainAI : public AAIController
 public:
 	ALFCaptainAI();
 
-	/** Re-evaluate the state this often (s). */
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0.1"))
 	float DecisionInterval = 0.5f;
 
-	/** A new decision takes effect after a random delay in this range (s) - beatable. */
 	UPROPERTY(EditAnywhere, Category="LF|AI")
 	FVector2D ReactionDelay = FVector2D(0.15f, 0.35f);
 
-	/** Random yaw error (deg) applied when aiming a paddle swing. */
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float AimErrorDeg = 12.f;
 
@@ -48,33 +47,40 @@ public:
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float SwingRange = 165.f;
 
-	/** Minimum time between swings (s). */
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float SwingCooldown = 1.1f;
 
-	/** Leave the seat to fight when our hull is within this distance (cm, gunwale to target) of an enemy standing in a boat. */
+	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0", ClampMax="1"))
+	float ChargedSwingChance = 0.2f;
+
+	/** Fight hysteresis: enter within FightEnterRange, leave beyond FightExitRange or after FightGiveUpTime out of reach. */
+	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
+	float FightEnterRange = 190.f;
+
+	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
+	float FightExitRange = 350.f;
+
+	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
+	float FightGiveUpTime = 2.f;
+
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float BoardRange = 120.f;
 
-	/** Ram when lined up within this angle (deg) and closer than RamRange (cm). */
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float RamAngleDeg = 20.f;
 
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float RamRange = 1500.f;
 
-	/** Chase lookahead on the target's velocity (s). */
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float LookaheadTime = 0.8f;
 
-	/** Shore avoidance trace length (cm) + speed x this (s). */
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float AvoidBaseLength = 500.f;
 
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float AvoidSpeedTime = 1.5f;
 
-	/** Flee for FleeTime (s) after FleeHits paddle hits within FleeWindow (s). */
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="1"))
 	int32 FleeHits = 2;
 
@@ -83,6 +89,15 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="LF|AI", meta=(ClampMin="0"))
 	float FleeTime = 4.f;
+
+	UPROPERTY(EditAnywhere, Category="LF|AI")
+	float DriverTargetWeight = 1.f;
+
+	UPROPERTY(EditAnywhere, Category="LF|AI")
+	float EmptySeatTargetWeight = 1.f;
+
+	UPROPERTY(EditAnywhere, Category="LF|AI")
+	float OwnBoatRecoverWeight = 0.6f;
 
 	UFUNCTION(BlueprintPure, Category="LF|AI")
 	ELFCaptainState GetCaptainState() const { return State; }
@@ -95,7 +110,9 @@ protected:
 private:
 	ALFBrawler* Me() const;
 	ALFBrawler* PickTarget() const;
+	ALFBoat* PickCrewlessBoat() const;
 	ALFBoat* PickRecoverBoat() const;
+	void ApplyPersonality(const ULFCaptainPersonality* P);
 	void Decide();
 	void Execute(float DeltaSeconds);
 	void DriveToward(const FVector& Point, float Throttle);
@@ -107,9 +124,11 @@ private:
 	ELFCaptainState PendingState = ELFCaptainState::Idle;
 	TWeakObjectPtr<ALFBrawler> Target;
 	TWeakObjectPtr<ALFBrawler> PendingTarget;
-	TWeakObjectPtr<ALFBoat> GoalBoat;
+	TWeakObjectPtr<ALFBoat> GoalBoat;      // RecoverBoat goal, or the crew-less boat we're ramming
 	double NextDecision = 0.0;
 	double ApplyAt = -1.0;
 	double LastSwing = -100.0;
 	double FleeUntil = -1.0;
+	double LastInReach = -100.0;           // fight hysteresis
+	FString PersonalityName;
 };

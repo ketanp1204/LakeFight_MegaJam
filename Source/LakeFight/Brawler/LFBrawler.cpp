@@ -1,6 +1,7 @@
 #include "Brawler/LFBrawler.h"
 
 #include "Brawler/LFBrawlerAnimInstance.h"
+#include "AI/LFCaptainPersonality.h"
 #include "AnimationRuntime.h"
 #include "Engine/SkinnedAsset.h"
 #include "Materials/MaterialInterface.h"
@@ -237,10 +238,12 @@ void ALFBrawler::ApplyCrewLook()
 	static const TCHAR* TeamNames[] = { TEXT("Red"), TEXT("Blue"), TEXT("Green"), TEXT("Yellow") };
 	const TCHAR* T = TeamNames[FMath::Clamp(int32(Team), 0, 3)];
 	UStaticMesh* VestMesh = LoadObject<UStaticMesh>(nullptr, *FString::Printf(TEXT("/Game/LakeFight/Meshes/SM_LF_LifeVest_%s.SM_LF_LifeVest_%s"), T, T));
-	UStaticMesh* HatMesh = HatOverride ? HatOverride.Get() : LoadObject<UStaticMesh>(nullptr, *FString::Printf(TEXT("/Game/LakeFight/Meshes/SM_LF_Hat_Bucket_%s.SM_LF_Hat_Bucket_%s"), T, T));
+	UStaticMesh* PHat = Personality ? Personality->Hat.Get() : nullptr;
+	UStaticMesh* PFace = Personality ? Personality->FacePiece.Get() : nullptr;
+	UStaticMesh* HatMesh = PHat ? PHat : HatOverride ? HatOverride.Get() : LoadObject<UStaticMesh>(nullptr, *FString::Printf(TEXT("/Game/LakeFight/Meshes/SM_LF_Hat_Bucket_%s.SM_LF_Hat_Bucket_%s"), T, T));
 	Vest->SetStaticMesh(VestMesh);
 	Hat->SetStaticMesh(HatMesh);
-	Face->SetStaticMesh(FacePiece);
+	Face->SetStaticMesh(PFace ? PFace : FacePiece.Get());
 	AttachAligned(Vest, NAME_None, TEXT("spine_03"), FVector::ZeroVector, FRotator::ZeroRotator);
 	AttachAligned(Hat, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
 	AttachAligned(Face, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
@@ -257,6 +260,21 @@ void ALFBrawler::GetAnimView(FLFBrawlerAnimView& Out) const
 		: (SwingPhase == ELFSwingPhase::Recover ? FMath::Clamp(SwingAge / RecoverTime, 0.f, 1.f) : 0.f);
 	Out.bStunned = IsStunned();
 	Out.ClimbAlpha = FMath::Clamp(ClimbAge / FMath::Max(ClimbTime, 0.01f), 0.f, 1.f);
+}
+
+void ALFBrawler::SetSpectating()
+{
+	if (State == ELFBrawlerState::Driving)
+	{
+		LeaveDriving();
+	}
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	State = ELFBrawlerState::None; // not InBoat: AIs ignore us; our boat counts as crew-less
+	Boat = nullptr;
+	GetCharacterMovement()->DisableMovement();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetActorHiddenInGame(true);
+	SetActorLocation(GetActorLocation() + FVector(0.f, 0.f, 5000.f));
 }
 
 bool ALFBrawler::GetPaddleGripTargets(FVector& OutRight, FVector& OutLeft) const
@@ -524,6 +542,8 @@ bool ALFBrawler::TryDrive()
 	{
 		UE_LOG(LogLF, Display, TEXT("[steal] %s steals %s"), *GetName(), *B->GetName());
 		OnSteal(B);
+		HomeBoat = B; // it's ours now: re-taking the seat later isn't another steal
+
 	}
 	State = ELFBrawlerState::Driving;
 	SwingPhase = ELFSwingPhase::Idle;
