@@ -278,3 +278,12 @@ the wake needs a real trail (ribbon/decal history) if the straight V reads wrong
   from MPC Boat0..3). Water outside the hull is never clipped, so it covers the submerged hull. Source: `Docs/T013_LF_HullMask.hlsl`.
   Limits: hull pitch/roll ignored (a few cm of leak at big rolls); assumes every ALFBoat uses the rowboat outline.
 - Foam: outer flecks fade to `FoamOuterAlpha` 0.35 so water shows through and between them; `FoamFragDensity` 0.56 (more gaps).
+
+**T01.3 review fixes, round 3 (`border lines.png`: hull bottom edges, far boat's bottom and shore-wall bottoms visible/flickering underwater)**
+- Cause: the depth-based effects (shallow tint, contact foam) react to any submerged geometry. At low camera angles the water hiding a
+  submerged hull stretches metres out (so the 80 cm "deep near hull" capsule could not cover it), and at depth discontinuities
+  (hull bottom, shore-wall bottom, lake-bed edge) `fwidth` spiked and the soft foam threshold drew thin flickering lines.
+- Fix 1 (C++): `ALFBoat::HullMesh` now renders custom depth with stencil `HullStencil` = 2. M_LF_Lake (param `HullStencil` 2) treats
+  water in front of any hull as deep with no depth foam: exact at any angle and distance.
+- Fix 2 (material): `aaF = clamp(fwidth(WDv), 0.5, 3)`: depth jumps no longer draw lines.
+- Build: Succeeded (editor closed/reopened). PIE chase shot updated: no hull edges, no far-boat bottom, no far line.

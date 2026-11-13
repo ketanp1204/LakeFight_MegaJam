@@ -59,6 +59,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hull", meta=(ClampMin="1", ClampMax="255"))
 	int32 WaterMaskStencil = 1;
 
+	/** Custom stencil value written by the hull mesh. M_LF_Lake treats water in front of a hull as deep (no shallow tint, no
+	 *  depth foam), so submerged hull edges never show through the water. Must match the material (2). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Hull", meta=(ClampMin="1", ClampMax="255"))
+	int32 HullStencil = 2;
+
 	/** PM_LF_Hull. If unset, a runtime material is built from HullFriction / HullRestitution. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Hull")
 	TObjectPtr<UPhysicalMaterial> HullPhysMaterial;

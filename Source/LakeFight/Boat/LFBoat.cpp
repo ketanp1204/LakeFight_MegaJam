@@ -119,6 +119,8 @@ void ALFBoat::BuildWaterMask()
 	}
 	WaterMask->CreateMeshSection(0, Verts, Tris, {}, {}, {}, {}, /*bCreateCollision*/ false);
 	WaterMask->SetCustomDepthStencilValue(WaterMaskStencil);
+	HullMesh->SetRenderCustomDepth(true);
+	HullMesh->SetCustomDepthStencilValue(HullStencil);
 }
 
 void ALFBoat::BeginPlay()

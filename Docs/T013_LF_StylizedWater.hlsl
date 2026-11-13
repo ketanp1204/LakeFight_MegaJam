@@ -23,7 +23,10 @@ for (int k = 0; k < 4; k++)
     float dk = length(float2(max(abs(l2.x) - (BoatHalfLength - BoatRadius), 0.0), l2.y)) - BoatRadius;
     boatNear = max(boatNear, 1.0 - smoothstep(BoatDeepMargin * 0.75, max(BoatDeepMargin, 1.0), dk));
 }
-float d01 = max(saturate(WDv / max(DeepDepth, 1.0)), boatNear);
+// Water in front of a hull (custom stencil == HullStencil, written by ALFBoat::HullMesh) ignores scene depth entirely:
+// deep colour and no depth foam, so submerged hull edges never show through at any angle or distance.
+float hullBehind = abs(HS.r - HullStencil) < 0.5 ? 1.0 : 0.0;
+float d01 = max(max(saturate(WDv / max(DeepDepth, 1.0)), boatNear), hullBehind);
 float3 albedo = lerp(ShallowColor, DeepColor, d01);
 
 // 7. Toon light: 3 bands. Measured relative to a flat surface so the facets read at any sun height.
@@ -61,9 +64,12 @@ float frag = fragA * 0.65 + fragB * 0.35;
 // 8. Contact foam: depth-fade band with a noisy, wobbling edge.
 float wob = sin(T * FoamWobbleSpeed * 2.0 + noise * 6.2831853) * 0.5 + 0.5;
 float edge = FoamWidth * (1.0 - FoamNoiseAmount * (noise * 0.7 + wob * 0.3));
-float aaF = max(fwidth(WDv), 0.5);
+// Clamped: at depth discontinuities (hull bottoms, shore walls, lake-bed edge) fwidth spikes and the soft threshold drew
+// thin flickering lines tracing the hidden geometry.
+float aaF = clamp(fwidth(WDv), 0.5, 3.0);
 float thF = lerp(FoamFragDensity, 1.02, saturate(WDv / max(edge, 1.0)));
 float foam = max(1.0 - smoothstep(FoamSolidCore - aaF, FoamSolidCore + aaF, WDv), smoothstep(thF - 0.03, thF + 0.03, frag) * (1.0 - smoothstep(edge - aaF, edge + aaF, WDv)) * lerp(1.0, FoamOuterAlpha, saturate(WDv / max(edge, 1.0)))) * FoamOpacity;
+foam *= 1.0 - hullBehind;
 
 // 8b. Boat contact foam + 11. wake. The hull water mask clips depth-fade foam at the hull, so boats get a world-space
 // noisy ring around a capsule hull outline, from Boat0..3 in MPC_LF_Water (X, Y, yaw rad, speed cm/s; pushed by
