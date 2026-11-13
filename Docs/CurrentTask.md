@@ -188,3 +188,8 @@ Items 3+4 share LFBoat/LFBrawler edits, so they're one commit.
 
 **Item 2 - paddle grip: not started** (out of time before 19:15 IST). The re-imported SM_LF_Paddle (Grip_R/Grip_L) is left uncommitted
 for that step.
+
+**T03.1 status at the machine move.** Item 1 (rowing anim follows the throttle) is DONE and committed in `29499aa`. Items 3+4 are done
+in `d1d7ec0` (hang/tow not yet seen in PIE). The re-imported SM_LF_Paddle (B07 Grip_R/Grip_L sockets) and the four rowboats (B06 UCX)
+are committed separately ("Import B06 rowboat UCX + B07 paddle sockets"). **Item 2 (paddle grip) is not started: it's the first task on
+the laptop.**
