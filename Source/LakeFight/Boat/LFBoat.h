@@ -158,6 +158,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera")
 	float CameraMaxPitch = 10.f;
 
+	/** The camera stays at least this far (cm) above the water: looking up from low is limited so the lens never dips under. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0"))
+	float CameraWaterClearance = 40.f;
+
 	/** How fast the camera pivot follows the boat's position (1/s). Replaces the spring arm's built-in lag so it runs
 	 *  on REAL (undilated) time: hitstop never freezes-then-snaps the camera. All camera feedback uses real time too. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0.1"))
@@ -363,6 +367,8 @@ private:
 	void OnThrottleReleased();
 	void OnSteerReleased();
 	void OnInteract();
+	struct FEnhancedInputActionValueBinding* ThrottleValue = nullptr; // valid while possessed by a player
+	struct FEnhancedInputActionValueBinding* SteerValue = nullptr;
 	void OnLook(const FInputActionValue& Value);
 	double LastLookRealTime = -100.0;
 

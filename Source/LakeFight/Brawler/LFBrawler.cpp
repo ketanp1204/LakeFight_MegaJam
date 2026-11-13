@@ -1278,6 +1278,21 @@ void ALFBrawler::UpdateCamera(float RealDelta)
 	CameraPivot = FMath::Lerp(CameraPivot, Target, 1.f - FMath::Exp(-CameraLagSpeed * RealDelta));
 	CameraArm->SetWorldLocation(CameraPivot);
 
+	// Keep the lens above the water (camera Z ~= pivot + socket - arm * sin(pitch)): clamp the control pitch.
+	if (Controller)
+	{
+		const float Water = LF::Water::GetHeightAt(CameraPivot, GetWorld()->GetTimeSeconds()) + 12.5f;
+		const float Room = float(CameraPivot.Z + CameraArm->SocketOffset.Z) - Water - CameraWaterClearance;
+		const float MaxPitch = FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(Room / FMath::Max(CameraArm->TargetArmLength, 1.f), -1.f, 1.f)));
+		FRotator C = Controller->GetControlRotation();
+		const float Pitch = FRotator::NormalizeAxis(C.Pitch);
+		if (Pitch > MaxPitch)
+		{
+			C.Pitch = MaxPitch;
+			Controller->SetControlRotation(C);
+		}
+	}
+
 	FVector ShakeOffset = FVector::ZeroVector;
 	if (ShakeAge >= 0.f)
 	{

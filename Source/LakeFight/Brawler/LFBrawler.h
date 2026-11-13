@@ -285,6 +285,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0.1"))
 	float CameraLagSpeed = 6.f;
 
+	/** The camera stays at least this far (cm) above the water (limits looking up from low, e.g. while swimming). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Camera", meta=(ClampMin="0"))
+	float CameraWaterClearance = 40.f;
+
 	// --- Input (template assets for move/look/jump; Interact/Swing are runtime actions in LF::Input) ---
 	UPROPERTY(EditDefaultsOnly, Category="LF|Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;

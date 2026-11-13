@@ -3,6 +3,7 @@
 ## Third-party assets (licensed)
 | Asset | Source URL | Licence | Used for |
 | --- | --- | --- | --- |
+Mixamo (Adobe), retargeted to UE5 Manny
 
 ## AI-generated content
 | What | Tool | Notes |

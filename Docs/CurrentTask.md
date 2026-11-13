@@ -76,3 +76,10 @@ Grip_R / Grip_L sockets on SM_LF_Paddle, paddle placement per state, ragdoll pad
   overlapping any hull outline is now pushed out to the edge; a boat moving > `RunOverSpeed` 250 cm/s toward him runs him over (small ragdoll
   launch, `[swim] ... run over` log). Verified the push-out (boat teleported onto the swimmer -> pushed to the hull edge + capsule radius);
   the run-over needs a moving boat - please test.
+- "Holding W/S/A/D while pressing E keeps the boat moving": the boat's input came only from Triggered/Completed events, and a key already held
+  when the boat's mapping context is added never sends Completed on release. While a player drives, the boat now polls the live action
+  values every tick (`BindActionValue`), so releasing the key always stops it; AI input (SetDriveInput) is untouched.
+- "Pitching the camera low takes it under the water (white bottom)": both cameras now clamp pitch from the arm geometry so the lens stays
+  >= `CameraWaterClearance` 40 cm above the wave crest at the pivot (boat: 850 cm arm + 10 deg max put the lens ~28 cm under). Free-look also
+  clamps the controller pitch (no dead zone looking back down).
+- Build OK; PIE 63 s clean. Not testable through MCP (held keys / mouse) - please check both.

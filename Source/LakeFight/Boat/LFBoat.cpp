@@ -202,6 +202,13 @@ void ALFBoat::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	PreStepVelocity = HullMesh->GetPhysicsLinearVelocity();
 
+	// Player driving: the live action values are the truth (AI drives through SetDriveInput instead).
+	if (IsPlayerControlled() && ThrottleValue && SteerValue)
+	{
+		ThrottleInput = FMath::Clamp(ThrottleValue->GetValue().Get<float>(), -1.f, 1.f);
+		SteerInput = FMath::Clamp(SteerValue->GetValue().Get<float>(), -1.f, 1.f);
+	}
+
 	// Throttle spool: rise toward a larger demand, fall toward a smaller one / reversal.
 	const bool bRising = FMath::Abs(ThrottleInput) > FMath::Abs(SpooledThrottle) && ThrottleInput * SpooledThrottle >= 0.f;
 	const float SpoolRate = 1.f / (bRising ? ThrottleRiseTime : ThrottleFallTime);
@@ -286,6 +293,19 @@ void ALFBoat::UpdateCamera(float RealDelta)
 		}
 	}
 	CameraRot.Roll = 0.f;
+	{
+		// Keep the lens above the water: camera Z ~= pivot + socket - arm * sin(pitch). Waves add up to ~12.5 cm.
+		const float Water = LF::Water::GetHeightAt(CameraPivot, GetWorld()->GetTimeSeconds()) + 12.5f;
+		const float Room = float(CameraPivot.Z + CameraArm->SocketOffset.Z) - Water - CameraWaterClearance;
+		const float MaxPitch = FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(Room / FMath::Max(CameraArm->TargetArmLength, 1.f), -1.f, 1.f)));
+		CameraRot.Pitch = FMath::Min(FRotator::NormalizeAxis(CameraRot.Pitch), MaxPitch);
+		if (Controller && FRotator::NormalizeAxis(Controller->GetControlRotation().Pitch) > CameraRot.Pitch)
+		{
+			FRotator C = Controller->GetControlRotation();
+			C.Pitch = CameraRot.Pitch; // no dead zone when looking back down
+			Controller->SetControlRotation(C);
+		}
+	}
 	CameraArm->SetWorldRotation(CameraRot);
 
 	// Ram shake (player only): one smooth decaying sine, mostly vertical. Starts at 0 (sin), envelope (1-t)^2 -> no pops.
@@ -567,6 +587,8 @@ void ALFBoat::UnPossessed()
 	}
 	ThrottleInput = 0.f;
 	SteerInput = 0.f;
+	ThrottleValue = nullptr; // the input component goes away with the controller
+	SteerValue = nullptr;
 	Super::UnPossessed();
 }
 
@@ -632,6 +654,9 @@ void ALFBoat::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		UE_LOG(LogLF, Warning, TEXT("ALFBoat %s: Enhanced Input component or Throttle/Steer actions missing - no input."), *GetName());
 		return;
 	}
+	// Polled every tick (see Tick): a key held before this mapping was added never sends Completed on release.
+	ThrottleValue = &EIC->BindActionValue(ThrottleAction);
+	SteerValue = &EIC->BindActionValue(SteerAction);
 	EIC->BindAction(ThrottleAction, ETriggerEvent::Triggered, this, &ALFBoat::OnThrottle);
 	EIC->BindAction(ThrottleAction, ETriggerEvent::Completed, this, &ALFBoat::OnThrottleReleased);
 	EIC->BindAction(SteerAction, ETriggerEvent::Triggered, this, &ALFBoat::OnSteer);
