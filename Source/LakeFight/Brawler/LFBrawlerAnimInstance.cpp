@@ -145,7 +145,10 @@ void ULFBrawlerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			Rate = FMath::Sign(V.DriveThrottle) * FMath::Clamp(FMath::Max(RowMinStrokeRate * FMath::Abs(V.DriveThrottle),
 				V.BoatSpeed / RowStrokeSpeedPerRate), 0.f, RowMaxStrokeRate);
 		}
-		RowStrokePhase = FMath::Fmod(RowStrokePhase + Rate * DeltaSeconds + 1.f, 1.f);
+		// Director (14 Nov): forward throttle = PUSH stroke (the cycle runs backward: handles pushed out with the blades in, drawn
+		// back with them lifted - the blades sweep sternward, the boat moves where he faces); reverse throttle = PULL stroke.
+		// The torso lean follows the hands' fore-aft position, so it reverses with the stroke (he leans into the push).
+		RowStrokePhase = FMath::Fmod(RowStrokePhase - Rate * DeltaSeconds + 1.f, 1.f);
 		RowStrokeWeight = FMath::FInterpConstantTo(RowStrokeWeight, Rate != 0.f ? 1.f : 0.f, DeltaSeconds, 1.f / RowBlendTime);
 		const float P = RowStrokePhase;
 		float X, Z;

@@ -310,3 +310,7 @@ sitting/rowing clips); the life vest sits low on the hips in the shots (spine_03
 
 **T03.1 item 2 status at commit (14 Nov):** committed as reviewed in PIE by the director ("looks great" for rowing). Not measured:
 close-range hit rate with the 3-point sweep, walk-in-place feel. Next task: A02 audio.
+- Director (14 Nov): forward throttle = PUSH stroke (handles pushed out with the blades in, drawn back with them lifted - blades
+  sweep sternward, the boat moves where he faces), reverse throttle = PULL stroke; the torso lean follows the hands, so it reverses
+  with the stroke. Verified: PIE `LFRow 1`, slomo 0.1 - submerged blades move sternward, lifted on the return (blades 5-26 cm under
+  water on the push); shot `Docs/Shots/T031_rowing_push_stroke.png`.

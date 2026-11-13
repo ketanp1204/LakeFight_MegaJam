@@ -14,3 +14,4 @@
 | 2026-11-14 00:30 | Procedural rowing (torso + hand IK), both oars together; Wheelbarrow_Walk as the walk (made in-place in code) | No usable rowing clip; MF walk looked feminine |
 | 2026-11-14 01:20 | Rower faces the bow (stern-facing tried and reverted) | W must move the boat where the player faces |
 | 2026-11-14 01:20 | Boat camera never auto-recentres | Disliked the automatic reset |
+| 2026-11-14 | Rowing: push stroke for forward throttle, pull stroke for reverse; torso lean follows | Controls, facing and oar physics all agree |
