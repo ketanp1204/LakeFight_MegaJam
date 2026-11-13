@@ -2,6 +2,10 @@
 
 #include "Brawler/LFBrawler.h"
 #include "Input/LFInput.h"
+#include "EngineUtils.h"
+#include "HAL/IConsoleManager.h"
+
+
 #include "Water/LFWater.h"
 #include "Water/LFBuoyancyComponent.h"
 #include "Camera/CameraComponent.h"
@@ -24,6 +28,22 @@
 #include "ProceduralMeshComponent.h"
 #include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h"
+
+// lf.debug.capsize [index]: kick boat #index (actor iteration order) over - for testing the capsize rule.
+static FAutoConsoleCommandWithWorldAndArgs CmdLFCapsize(TEXT("lf.debug.capsize"), TEXT("lf.debug.capsize [index] - roll a boat over."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		const int32 Want = Args.Num() ? FCString::Atoi(*Args[0]) : 0;
+		int32 I = 0;
+		for (TActorIterator<ALFBoat> It(World); It; ++It, ++I)
+		{
+			if (I == Want)
+			{
+				It->DebugCapsizeKick();
+				UE_LOG(LogLF, Display, TEXT("[capsize] debug kick on %s"), *It->GetName());
+			}
+		}
+	}));
 
 namespace
 {
@@ -207,6 +227,12 @@ void ALFBoat::Tick(float DeltaSeconds)
 	{
 		ThrottleInput = FMath::Clamp(ThrottleValue->GetValue().Get<float>(), -1.f, 1.f);
 		SteerInput = FMath::Clamp(SteerValue->GetValue().Get<float>(), -1.f, 1.f);
+	}
+	UpdateCapsize(DeltaSeconds);
+	if (bCapsized)
+	{
+		ThrottleInput = 0.f; // no driving while capsized
+		SteerInput = 0.f;
 	}
 
 	// Throttle spool: rise toward a larger demand, fall toward a smaller one / reversal.
@@ -590,6 +616,96 @@ void ALFBoat::UnPossessed()
 	ThrottleValue = nullptr; // the input component goes away with the controller
 	SteerValue = nullptr;
 	Super::UnPossessed();
+}
+
+float ALFBoat::GetTiltDeg() const
+{
+	const FVector Up = HullMesh->GetComponentTransform().GetUnitAxis(EAxis::Z);
+	return FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(float(Up.Z), -1.f, 1.f)));
+}
+
+void ALFBoat::UpdateCapsize(float DeltaSeconds)
+{
+	if (!HullMesh->IsSimulatingPhysics())
+	{
+		return;
+	}
+	const float Tilt = GetTiltDeg();
+	const double Now = GetWorld()->GetTimeSeconds();
+	if (!bCapsized)
+	{
+		CapsizeTimer = Tilt > CapsizeRollDeg ? CapsizeTimer + DeltaSeconds : 0.f;
+		if (CapsizeTimer >= CapsizeHoldTime)
+		{
+			Capsize();
+		}
+		return;
+	}
+	const float Since = float(Now - CapsizedAt);
+	if (Since < CapsizedTime)
+	{
+		return; // lies capsized
+	}
+	if (Since < CapsizedTime + RightingTime)
+	{
+		// Deliberate righting: torque toward upright (proportional to the tilt) with angular damping.
+		const FVector Up = HullMesh->GetComponentTransform().GetUnitAxis(EAxis::Z);
+		FVector Axis = FVector::CrossProduct(Up, FVector::UpVector);
+		if (Axis.IsNearlyZero())
+		{
+			Axis = HullMesh->GetComponentTransform().GetUnitAxis(EAxis::X); // upside down exactly: roll about the keel
+		}
+		const float Angle = FMath::DegreesToRadians(Tilt);
+		const FVector W = HullMesh->GetPhysicsAngularVelocityInRadians();
+		HullMesh->AddTorqueInRadians(Axis.GetSafeNormal() * (Angle * RightingAccel) - W * RightingDamping, NAME_None, /*bAccelChange*/ true);
+		return;
+	}
+	if (Tilt < 25.f)
+	{
+		bCapsized = false;
+		CapsizeTimer = 0.f;
+		UE_LOG(LogLF, Display, TEXT("[capsize] %s righted itself (tilt %.0f deg, %.1f s after capsizing)"), *GetName(), Tilt, Since);
+		if (SplashSystem)
+		{
+			if (UNiagaraComponent* NC = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SplashSystem, GetActorLocation(), FRotator::ZeroRotator, FVector(2.5f)))
+			{
+				NC->SetVariableFloat(TEXT("Strength"), 1.f);
+			}
+		}
+		OnSplash(GetActorLocation(), 1.f);
+	}
+	else if (Since > CapsizedTime + RightingTime * 3.f)
+	{
+		CapsizedAt = Now - CapsizedTime; // still over: push again
+	}
+}
+
+void ALFBoat::Capsize()
+{
+	bCapsized = true;
+	CapsizedAt = GetWorld()->GetTimeSeconds();
+	ThrottleInput = 0.f;
+	SteerInput = 0.f;
+	int32 Thrown = 0;
+	for (TActorIterator<ALFBrawler> It(GetWorld()); It; ++It)
+	{
+		ALFBrawler* B = *It;
+		if (B->GetBoat() == this && B->KnockOverboard((B->GetActorLocation() - GetActorLocation()).GetSafeNormal2D(), 0.5f))
+		{
+			++Thrown;
+		}
+	}
+	Driver = nullptr;
+	UE_LOG(LogLF, Display, TEXT("[capsize] %s CAPSIZED (tilt %.0f deg) - %d aboard thrown overboard, driving disabled for %.1f s"),
+		*GetName(), GetTiltDeg(), Thrown, CapsizedTime);
+}
+
+void ALFBoat::DebugCapsizeKick()
+{
+	// Roll the hull 150 deg about its keel (teleport) - the capsize rule then has to take over.
+	const FRotator R = HullMesh->GetComponentRotation();
+	HullMesh->SetWorldLocationAndRotation(HullMesh->GetComponentLocation() + FVector(0.f, 0.f, 30.f), FRotator(0.f, R.Yaw, 150.f), false, nullptr, ETeleportType::TeleportPhysics);
+	HullMesh->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
 }
 
 float ALFBoat::GunwaleDistance(const FVector& WorldPos, FVector2D& OutLocalNearest) const

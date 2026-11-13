@@ -168,3 +168,23 @@ crossfade. Same path for AI drivers (they drive through SetDriveInput -> the sam
 Verified: builds; PIE with the player seated at idle + 25 s of AI spectate, no warnings/errors; screenshots show seated drivers (too small
 to judge the stroke rate - please check rowing speed vs throttle and reverse). Also committed: the director's saved BP_LF_Brawler and
 L_Lake01 changes.
+
+**Item 3 - climb relative to the hull.** The climb was already a hull-local lerp (moving boats carry you). New: the boat's speed at the
+grab picks the climb: < 150 cm/s keeps `ClimbTime` 0.8 s; 150-350 cm/s takes `ClimbTimeMoving` 1.2 s; > 350 cm/s (`HangSpeed`) you HANG
+on the gunwale in hull space, facing the boat, and get towed until it drops below 350, then climb from the rail (1.2 s). A paddle hit
+knocks a hanger off (the existing Climbing branch of ReceivePaddleHit -> ragdoll); Interact lets go (-> swimming); a capsize drops you.
+Logs `[climb] ... HANGING` / `slowed down - climbing in` / `lets go`. Verified: normal climbs in PIE (AI re-boarding after the capsize
+test). The hang/tow path compiles but was NOT seen in PIE - please try grabbing a fast boat.
+
+**Item 4 - capsize as a rule.** `ALFBoat`: tilt > `CapsizeRollDeg` 70 deg for `CapsizeHoldTime` 0.3 s = Capsized: `[capsize]` log,
+everyone aboard thrown overboard via the new `ALFBrawler::KnockOverboard` (ragdoll, driver leaves first), throttle/steer forced to 0,
+TryDrive refuses, no drive/climb prompts, grabbing a capsized hull refused, AI skips capsized boats when recovering. After
+`CapsizedTime` 3 s a righting torque (proportional to tilt, damped) over `RightingTime` 1.2 s; upright (< 25 deg) ends it with a big
+splash (2.5x Niagara + OnSplash). If still over it pushes again. The pontoon buoyancy already self-rights; it's left as is (a boat
+that pops upright early still counts as capsized for the 3 s). Debug: `lf.debug.capsize [i]` rolls boat i 150 deg. Verified with
+AI spectate: all four boats capsized (1 crew thrown each, 0 for the empty player boat), each righted at 4.2 s, AIs swam back and
+climbed aboard, no warnings. Shots: `Docs/Shots/T031_capsize_over.png`, `T031_capsize_righted.png`.
+Items 3+4 share LFBoat/LFBrawler edits, so they're one commit.
+
+**Item 2 - paddle grip: not started** (out of time before 19:15 IST). The re-imported SM_LF_Paddle (Grip_R/Grip_L) is left uncommitted
+for that step.

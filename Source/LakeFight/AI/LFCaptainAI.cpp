@@ -189,9 +189,9 @@ ALFBoat* ALFCaptainAI::PickRecoverBoat() const
 	for (TActorIterator<ALFBoat> It(GetWorld()); It; ++It)
 	{
 		ALFBoat* B = *It;
-		if (B->HasDriver())
+		if (B->HasDriver() || B->IsCapsized())
 		{
-			continue; // nearest EMPTY boat
+			continue; // nearest EMPTY, upright boat
 		}
 		float Score = float(FVector::Dist2D(B->GetActorLocation(), Self->GetActorLocation()));
 		if (B == Self->GetHomeBoat())

@@ -218,6 +218,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
 	float RunOverSpeed = 250.f;
 
+	/** Grabbing a boat moving faster than ClimbSlowSpeed (cm/s) makes the climb take ClimbTimeMoving. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float ClimbSlowSpeed = 150.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0.1"))
+	float ClimbTimeMoving = 1.2f;
+
+	/** Above this boat speed (cm/s) you HANG on the gunwale and get towed until it slows (or a hit / Interact lets you go). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float HangSpeed = 350.f;
+
 	/** Can grab a hull when within this distance (cm) of its gunwale outline. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
 	float GrabRange = 150.f;
@@ -438,6 +449,9 @@ public:
 	/** Debug text drawn above the head when lf.ai.debug is on (set by the AI). */
 	FString DebugState;
 
+	/** Thrown overboard by something other than a paddle (capsize): ragdoll away along Dir. Returns true if it happened. */
+	bool KnockOverboard(const FVector& Dir, float Strength);
+
 	/** Paddle hit received. Dir = horizontal direction from the attacker. Returns true if it knocked us overboard. */
 	bool ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, float Strength);
 
@@ -567,6 +581,9 @@ private:
 	FVector ClimbStartLocal = FVector::ZeroVector;
 	FVector ClimbTargetLocal = FVector::ZeroVector;
 	float ClimbAge = 0.f;
+	float ClimbDuration = 0.8f;
+	bool bHanging = false;
+	FVector ClimbHangLocal = FVector::ZeroVector;
 	void UpdateWaterForces(float DeltaSeconds);
 	void EndRagdoll();
 

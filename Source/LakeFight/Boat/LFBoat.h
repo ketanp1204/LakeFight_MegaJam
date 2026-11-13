@@ -344,6 +344,37 @@ public:
 
 	UStaticMeshComponent* GetHull() const { return HullMesh; }
 
+	// --- Capsize (T03.1) ---
+	/** Tilt beyond this (deg) for CapsizeHoldTime = Capsized: everyone aboard goes overboard, no driving. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Capsize", meta=(ClampMin="10", ClampMax="180"))
+	float CapsizeRollDeg = 70.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Capsize", meta=(ClampMin="0"))
+	float CapsizeHoldTime = 0.3f;
+
+	/** Time (s) capsized before the boat rights itself. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Capsize", meta=(ClampMin="0"))
+	float CapsizedTime = 3.f;
+
+	/** Righting: torque toward upright over RightingTime (s). Accel per radian of tilt (1/s^2) and angular damping (1/s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Capsize", meta=(ClampMin="0.1"))
+	float RightingTime = 1.2f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Capsize", meta=(ClampMin="0"))
+	float RightingAccel = 14.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Capsize", meta=(ClampMin="0"))
+	float RightingDamping = 4.f;
+
+	UFUNCTION(BlueprintPure, Category="LF|Capsize")
+	bool IsCapsized() const { return bCapsized; }
+
+	/** Tilt of the hull from upright (deg). */
+	float GetTiltDeg() const;
+
+	/** Debug: kick the boat over (lf.debug.capsize). */
+	void DebugCapsizeKick();
+
 	/** Throttle the motor actually delivers (-1..1, spooled). */
 	float GetThrottleOutput() const { return SpooledThrottle; }
 
@@ -413,4 +444,10 @@ private:
 	TMap<TWeakObjectPtr<ALFBoat>, FPairContact> PairContacts;
 
 	TWeakObjectPtr<ALFBrawler> Driver;
+
+	bool bCapsized = false;
+	float CapsizeTimer = 0.f;
+	double CapsizedAt = 0.0;
+	void UpdateCapsize(float DeltaSeconds);
+	void Capsize();
 };
