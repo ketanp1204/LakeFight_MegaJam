@@ -294,3 +294,44 @@ the wake needs a real trail (ribbon/decal history) if the straight V reads wrong
 - Fix: boat foam and the near-hull deep colour now use the signed distance to the real gunwale polygon (same 15-point RowboatPlan
   as the hull mask). Only flecks remain, hugging the hull with water between them. MI: `BoatFoamWidth` 60, `FoamFragDensity` 0.5.
   `BoatHalfLength`/`BoatRadius` are now unused (kept, harmless).
+
+## T01.4 - look baseline: manual exposure (Claude Code, 13 Nov ~12:01-12:10 IST)
+
+**Asked:** lock exposure (manual PPV + project default), 45-degree warm sun, verify boat colours vs `lf_common.py` PALETTE (MIs only if
+import changed them), rebalance MI_LF_Lake, three switchable look presets A/B/C with chase shots, leave A active. No lake graph/stencil changes.
+
+**Files / assets changed** (MCP, saved): `L_Lake01`, `MI_LF_Lake` (Brightness 0.2 -> 1.1 only), `Config/DefaultEngine.ini`
+(`r.DefaultFeature.AutoExposure=False` under RendererSettings). No C++ change, no build needed. Lake shader graph and hull stencil untouched.
+
+**1. Exposure** - `PPV_LF_Exposure` (unbound, priority 0): Metering Mode Manual, Min Brightness = Max Brightness = 1,
+Apply Physical Camera Exposure OFF, Exposure Compensation -1.0 (fallback if no look volume is enabled).
+
+**2. Lighting** - DirectionalLight_0: rotation (pitch -45, yaw 30, roll 0) = 45 deg elevation, sun behind/left of the chase camera;
+Intensity 6 -> 8 lux; Temperature 6500 -> 5300 K (warm late morning); Atmosphere Sun Light stays on.
+SkyLight unchanged (intensity 1, real-time capture ON). SkyAtmosphere Sky Luminance Factor 1 -> 2.5 (the sky read dark navy under
+manual exposure; it only partly helped - see Notes).
+
+**3. Boat colours** - the imported M_LF_* are Interchange MIs of `FBXLegacyPhongSurfaceMaterial`; their DiffuseColor values are
+EXACTLY the PALETTE linear values (Wood 0.45/0.28/0.15, WoodDark 0.28/0.17/0.09, PaintRed 0.75/0.18/0.14, PaintBlue 0.16/0.36/0.70,
+Metal checked too). Import did not change them, so per spec no M_LF_Flat / palette MIs were made. The washed-out look was exposure:
+at auto exposure (and at bias 0) the wood rendered light orange; at -1 EV it reads wood brown.
+**The stripe still reads salmon/orange-red, and that is the palette:** linear (0.75, 0.18, 0.14) displays as about sRGB (225, 118, 105).
+For a true red, PaintRed needs lower G/B, e.g. linear (0.60, 0.05, 0.04) - an Art/BlenderScripts change (Codex / your call).
+
+**4. Lake** - MI_LF_Lake `Brightness` 0.2 -> 1.1 (the water is emissive x sun illuminance, so it needed +2.5 EV to sit at the
+accepted T013 turquoise under -1 EV manual exposure). No other lake params changed.
+
+**5. Look presets** - three unbound PostProcessVolumes, priority 1; switch by ticking **Enabled** on exactly one
+(Outliner: `PPV_LF_Look_A/B/C`). Shots from the same PIE chase camera with both boats:
+| Preset | Volume | Settings | Shot |
+| --- | --- | --- | --- |
+| A neutral (ACTIVE) | PPV_LF_Look_A | Exposure Compensation -1.0 | `Docs/Shots/T014_A.png` |
+| B brighter/sunnier | PPV_LF_Look_B | Exposure Compensation -0.4, White Temp 7000 K (warmer), Saturation 1.05 | `Docs/Shots/T014_B.png` |
+| C moodier/saturated | PPV_LF_Look_C | Exposure Compensation -1.4, Saturation 1.25, Contrast 1.1 | `Docs/Shots/T014_C.png` |
+
+**Notes / for you to judge:** clouds and sky read grey-blue/stormy under manual exposure (they are lit by the same 8 lux sun as the
+boats; auto exposure used to brighten everything to compensate). The Sky Luminance Factor helped the sky band a little, not the
+volumetric clouds. Options later: brighter cloud material / fewer clouds, or a stylized sky. Preset B is the sunniest.
+
+**Commands / results:** no build needed (no C++). PIE: see DirectorsLog line.
+**Follow-ups:** PaintRed palette value (above); sky/clouds; the bigger natural lake (director, not a priority).
