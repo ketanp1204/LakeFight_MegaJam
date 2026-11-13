@@ -12,16 +12,34 @@ float3 v = normalize(V);
 // read as deep (not as pale shallow 'reflections' hanging under them).
 // Clamped: at grazing angles |V.z| -> 0 collapses the estimate and far water turns into dashed false foam.
 float WDv = WD * max(abs(v.z), 0.25);
-// Near a boat hull the depth difference only measures the hull itself (not the lake), which painted a pale shallow
-// slab under each boat. Treat water within BoatDeepMargin of a hull outline as deep.
-float boatNear = 0.0;
+// Signed distance (cm) from this water point to each boat's real gunwale outline (RowboatPlan in LFBoat.cpp x .958/.91,
+// same polygon as the hull mask; boat pos + yaw from MPC Boat0..3). Negative = inside the hull. Used for boat foam and the
+// near-hull deep colour. (A capsule was used before: it is ~30 cm wider than the pointed bow/stern and its solid-foam fill
+// read as a white shadow under the flecks.)
+const float2 PL[15] = { float2(-151.4, -34.6), float2(-121.7, -51.9), float2(-71.8, -59.1), float2(-14.4, -61.0), float2(46.0, -57.3), float2(93.9, -41.0), float2(129.3, -18.2), float2(151.4, 0.0), float2(129.3, 18.2), float2(93.9, 41.0), float2(46.0, 57.3), float2(-14.4, 61.0), float2(-71.8, 59.1), float2(-121.7, 51.9), float2(-151.4, 34.6) };
 float4 BN[4] = { B0, B1, B2, B3 };
+float dP[4];
+float boatNear = 0.0;
 for (int k = 0; k < 4; k++)
 {
     float2 r = P.xy - BN[k].xy;
     float2 l2 = float2(cos(BN[k].z) * r.x + sin(BN[k].z) * r.y, -sin(BN[k].z) * r.x + cos(BN[k].z) * r.y);
-    float dk = length(float2(max(abs(l2.x) - (BoatHalfLength - BoatRadius), 0.0), l2.y)) - BoatRadius;
-    boatNear = max(boatNear, 1.0 - smoothstep(BoatDeepMargin * 0.75, max(BoatDeepMargin, 1.0), dk));
+    float dmin = 1e9;
+    bool inPoly = false;
+    int jj = 14;
+    for (int ii = 0; ii < 15; ii++)
+    {
+        float2 a = PL[jj];
+        float2 e = PL[ii] - a;
+        float2 w = l2 - a;
+        float2 pr = w - e * saturate(dot(w, e) / dot(e, e));
+        dmin = min(dmin, dot(pr, pr));
+        if (((PL[ii].y > l2.y) != (a.y > l2.y)) && (l2.x < e.x * (l2.y - a.y) / e.y + a.x)) inPoly = !inPoly;
+        jj = ii;
+    }
+    dP[k] = (inPoly ? -1.0 : 1.0) * sqrt(dmin);
+    // Near a hull the depth difference only measures the hull, which painted a pale slab: treat as deep.
+    boatNear = max(boatNear, 1.0 - smoothstep(BoatDeepMargin * 0.75, max(BoatDeepMargin, 1.0), dP[k]));
 }
 // Water in front of a hull (custom stencil == HullStencil, written by ALFBoat::HullMesh) ignores scene depth entirely:
 // deep colour and no depth foam, so submerged hull edges never show through at any angle or distance.
@@ -83,8 +101,7 @@ for (int b = 0; b < 4; b++)
     float sy = sin(BS[b].z);
     float2 lp = float2(cy * rel.x + sy * rel.y, -sy * rel.x + cy * rel.y);
     float sp01 = saturate(BS[b].w / max(WakeFullSpeed, 1.0));
-    float2 q = float2(max(abs(lp.x) - (BoatHalfLength - BoatRadius), 0.0), lp.y);
-    float dB = length(q) - BoatRadius;
+    float dB = dP[b];
     float edgeB = BoatFoamWidth * (1.0 + sp01) * (1.0 - FoamNoiseAmount * (noise * 0.7 + wob * 0.3));
     float aaB = max(fwidth(dB), 0.5);
     float thB = lerp(FoamFragDensity, 1.02, saturate(dB / max(edgeB, 1.0)));

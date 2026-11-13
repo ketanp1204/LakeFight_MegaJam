@@ -287,3 +287,10 @@ the wake needs a real trail (ribbon/decal history) if the straight V reads wrong
   water in front of any hull as deep with no depth foam: exact at any angle and distance.
 - Fix 2 (material): `aaF = clamp(fwidth(WDv), 0.5, 3)`: depth jumps no longer draw lines.
 - Build: Succeeded (editor closed/reopened). PIE chase shot updated: no hull edges, no far-boat bottom, no far line.
+
+**T01.3 review fixes, round 4 ("the ring around the boat feels like a white shadow under the minute foam")**
+- Cause: boat foam was measured from a capsule ~30 cm wider than the pointed bow/stern; its solid-core fill covered the whole
+  capsule-minus-hull area = a smooth white halo under the flecks.
+- Fix: boat foam and the near-hull deep colour now use the signed distance to the real gunwale polygon (same 15-point RowboatPlan
+  as the hull mask). Only flecks remain, hugging the hull with water between them. MI: `BoatFoamWidth` 60, `FoamFragDensity` 0.5.
+  `BoatHalfLength`/`BoatRadius` are now unused (kept, harmless).
