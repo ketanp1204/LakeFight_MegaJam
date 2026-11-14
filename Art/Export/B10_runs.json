@@ -1,0 +1,838 @@
+{
+  "SM_LF_GroundPatch_01": {
+    "runs": [
+      {
+        "name": "SM_LF_GroundPatch_01",
+        "triangles": 288,
+        "dimensions_m": [
+          40.0,
+          40.0,
+          1.11495
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.11495
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 48,
+        "boundary_z_max_abs_m": 0.0,
+        "flat_shaded": true,
+        "geometry_sha256": "8ec4323692e0f72d91f3709da38edde86a70a450c33c86e2dfd79a787ac1fc3d",
+        "budget_exclusive": 800
+      },
+      {
+        "name": "SM_LF_GroundPatch_01",
+        "triangles": 288,
+        "dimensions_m": [
+          40.0,
+          40.0,
+          1.11495
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.11495
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 48,
+        "boundary_z_max_abs_m": 0.0,
+        "flat_shaded": true,
+        "geometry_sha256": "8ec4323692e0f72d91f3709da38edde86a70a450c33c86e2dfd79a787ac1fc3d",
+        "budget_exclusive": 800
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_GroundPatch_02": {
+    "runs": [
+      {
+        "name": "SM_LF_GroundPatch_02",
+        "triangles": 288,
+        "dimensions_m": [
+          40.0,
+          40.0,
+          0.97846
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          0.978459
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 48,
+        "boundary_z_max_abs_m": 0.0,
+        "flat_shaded": true,
+        "geometry_sha256": "1ff775e16ce3933a36952ddd8c757ad01699b4f4c3cfd55f50e9874484de4b65",
+        "budget_exclusive": 800
+      },
+      {
+        "name": "SM_LF_GroundPatch_02",
+        "triangles": 288,
+        "dimensions_m": [
+          40.0,
+          40.0,
+          0.97846
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          0.978459
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 48,
+        "boundary_z_max_abs_m": 0.0,
+        "flat_shaded": true,
+        "geometry_sha256": "1ff775e16ce3933a36952ddd8c757ad01699b4f4c3cfd55f50e9874484de4b65",
+        "budget_exclusive": 800
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Hill_Far_01": {
+    "runs": [
+      {
+        "name": "SM_LF_Hill_Far_01",
+        "triangles": 94,
+        "dimensions_m": [
+          130.0,
+          105.0,
+          24.0
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          24.0
+        ],
+        "materials": [
+          "M_LF_Cloth"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "eb9a2a019376791bfbbad19ade45714c8aa7cf0515fad2cec54833835e5577e9",
+        "budget_exclusive": 300
+      },
+      {
+        "name": "SM_LF_Hill_Far_01",
+        "triangles": 94,
+        "dimensions_m": [
+          130.0,
+          105.0,
+          24.0
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          24.0
+        ],
+        "materials": [
+          "M_LF_Cloth"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "eb9a2a019376791bfbbad19ade45714c8aa7cf0515fad2cec54833835e5577e9",
+        "budget_exclusive": 300
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Hill_Far_02": {
+    "runs": [
+      {
+        "name": "SM_LF_Hill_Far_02",
+        "triangles": 94,
+        "dimensions_m": [
+          170.0,
+          120.0,
+          33.0
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          33.0
+        ],
+        "materials": [
+          "M_LF_Cloth"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "a387e1899202e75e98239b80d7c9335af4dba85f33dc60123019ea6c9e6b194e",
+        "budget_exclusive": 300
+      },
+      {
+        "name": "SM_LF_Hill_Far_02",
+        "triangles": 94,
+        "dimensions_m": [
+          170.0,
+          120.0,
+          33.0
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          33.0
+        ],
+        "materials": [
+          "M_LF_Cloth"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "a387e1899202e75e98239b80d7c9335af4dba85f33dc60123019ea6c9e6b194e",
+        "budget_exclusive": 300
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Hill_Far_03": {
+    "runs": [
+      {
+        "name": "SM_LF_Hill_Far_03",
+        "triangles": 94,
+        "dimensions_m": [
+          195.0,
+          145.0,
+          39.0
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          39.0
+        ],
+        "materials": [
+          "M_LF_Cloth"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "92040119fbb60fd423a3b002a1592f93909432242e391bb608819e35fb005ece",
+        "budget_exclusive": 300
+      },
+      {
+        "name": "SM_LF_Hill_Far_03",
+        "triangles": 94,
+        "dimensions_m": [
+          195.0,
+          145.0,
+          39.0
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          39.0
+        ],
+        "materials": [
+          "M_LF_Cloth"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "92040119fbb60fd423a3b002a1592f93909432242e391bb608819e35fb005ece",
+        "budget_exclusive": 300
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Bush_01": {
+    "runs": [
+      {
+        "name": "SM_LF_Bush_01",
+        "triangles": 140,
+        "dimensions_m": [
+          1.42613,
+          1.01046,
+          1.25
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.25
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "538506b6bfb90fa0fb59e5f38c4c5ecda1a2c179b0bf743556859a0bfa62e879",
+        "budget_exclusive": 300
+      },
+      {
+        "name": "SM_LF_Bush_01",
+        "triangles": 140,
+        "dimensions_m": [
+          1.42613,
+          1.01046,
+          1.25
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.25
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "538506b6bfb90fa0fb59e5f38c4c5ecda1a2c179b0bf743556859a0bfa62e879",
+        "budget_exclusive": 300
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Bush_02": {
+    "runs": [
+      {
+        "name": "SM_LF_Bush_02",
+        "triangles": 144,
+        "dimensions_m": [
+          1.42158,
+          1.06963,
+          1.3
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.3
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "57b1851c0c8124e5307d153274e24022c37b6f70ec0a1d13440e52833684564c",
+        "budget_exclusive": 300
+      },
+      {
+        "name": "SM_LF_Bush_02",
+        "triangles": 144,
+        "dimensions_m": [
+          1.42158,
+          1.06963,
+          1.3
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.3
+        ],
+        "materials": [
+          "M_LF_Moss",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "57b1851c0c8124e5307d153274e24022c37b6f70ec0a1d13440e52833684564c",
+        "budget_exclusive": 300
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Log": {
+    "runs": [
+      {
+        "name": "SM_LF_Log",
+        "triangles": 136,
+        "dimensions_m": [
+          2.64,
+          0.5104,
+          0.72388
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          0.72388
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Wood"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "6229f9df254d2911f94bbe635959d7c041bb12de9e531abde0d04b102219d86e",
+        "budget_exclusive": 200
+      },
+      {
+        "name": "SM_LF_Log",
+        "triangles": 136,
+        "dimensions_m": [
+          2.64,
+          0.5104,
+          0.72388
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          0.72388
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_Rope",
+          "M_LF_Wood"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "6229f9df254d2911f94bbe635959d7c041bb12de9e531abde0d04b102219d86e",
+        "budget_exclusive": 200
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Fence_Section": {
+    "runs": [
+      {
+        "name": "SM_LF_Fence_Section",
+        "triangles": 140,
+        "dimensions_m": [
+          2.0535,
+          0.207,
+          1.25417
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.254169
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_Wood",
+          "M_LF_Metal"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "6aa29e95c8b4b3d4756d12f8fa2cd5ea270dab07424b09f745d45881ffc44b97",
+        "budget_exclusive": 200
+      },
+      {
+        "name": "SM_LF_Fence_Section",
+        "triangles": 140,
+        "dimensions_m": [
+          2.0535,
+          0.207,
+          1.25417
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.254169
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_Wood",
+          "M_LF_Metal"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "6aa29e95c8b4b3d4756d12f8fa2cd5ea270dab07424b09f745d45881ffc44b97",
+        "budget_exclusive": 200
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_TreeCluster_01": {
+    "runs": [
+      {
+        "name": "SM_LF_TreeCluster_01",
+        "triangles": 942,
+        "dimensions_m": [
+          14.5645,
+          10.82693,
+          7.40612
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          7.406116
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_Moss",
+          "M_LF_Cloth",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "9bf66c59281367fdafc6fca6cd8f9ce4deeffc01ba8633b2828b41532e0b04b3",
+        "budget_exclusive": 3000
+      },
+      {
+        "name": "SM_LF_TreeCluster_01",
+        "triangles": 942,
+        "dimensions_m": [
+          14.5645,
+          10.82693,
+          7.40612
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          7.406116
+        ],
+        "materials": [
+          "M_LF_WoodDark",
+          "M_LF_Moss",
+          "M_LF_Cloth",
+          "M_LF_Reed"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "9bf66c59281367fdafc6fca6cd8f9ce4deeffc01ba8633b2828b41532e0b04b3",
+        "budget_exclusive": 3000
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_Paddle": {
+    "runs": [
+      {
+        "name": "ICON_LF_Paddle",
+        "triangles": 148,
+        "dimensions_m": [
+          2.392,
+          0.09891,
+          0.46
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          -0.23,
+          0.23
+        ],
+        "materials": [
+          "M_LF_Rope"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "dda8191139ad1cf5be0693ccd7e7aaa63b14957dac878324b4bdde594288b48c",
+        "budget_exclusive": 1000,
+        "png_sha256": "531b82f629fe52e84ecb49b553f756e385762ec5f908dd02cda98a60a90ded71"
+      },
+      {
+        "name": "ICON_LF_Paddle",
+        "triangles": 148,
+        "dimensions_m": [
+          2.392,
+          0.09891,
+          0.46
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          -0.23,
+          0.23
+        ],
+        "materials": [
+          "M_LF_Rope"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "dda8191139ad1cf5be0693ccd7e7aaa63b14957dac878324b4bdde594288b48c",
+        "budget_exclusive": 1000,
+        "png_sha256": "531b82f629fe52e84ecb49b553f756e385762ec5f908dd02cda98a60a90ded71"
+      }
+    ],
+    "identical": true
+  },
+  "ICON_LF_FishGold": {
+    "runs": [
+      {
+        "name": "ICON_LF_FishGold",
+        "triangles": 432,
+        "dimensions_m": [
+          1.995,
+          0.39512,
+          1.235
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          -0.47,
+          0.765
+        ],
+        "materials": [
+          "M_LF_PaintYellow",
+          "M_LF_PaintOrange",
+          "M_LF_PaintCream",
+          "M_LF_Black"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "b1d8be1c2a068bfd7ac339dd1adafac255ed98f9416c2ea2119b73ec5c49675b",
+        "budget_exclusive": 1000,
+        "png_sha256": "87009ae0dd7ebac5e3893b4d35c0dab11f2a7ddca8162aa35e5e6a79a4931219"
+      },
+      {
+        "name": "ICON_LF_FishGold",
+        "triangles": 432,
+        "dimensions_m": [
+          1.995,
+          0.39512,
+          1.235
+        ],
+        "origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "z_range_m": [
+          -0.47,
+          0.765
+        ],
+        "materials": [
+          "M_LF_PaintYellow",
+          "M_LF_PaintOrange",
+          "M_LF_PaintCream",
+          "M_LF_Black"
+        ],
+        "boundary_edges": 0,
+        "boundary_z_max_abs_m": 0,
+        "flat_shaded": true,
+        "geometry_sha256": "b1d8be1c2a068bfd7ac339dd1adafac255ed98f9416c2ea2119b73ec5c49675b",
+        "budget_exclusive": 1000,
+        "png_sha256": "87009ae0dd7ebac5e3893b4d35c0dab11f2a7ddca8162aa35e5e6a79a4931219"
+      }
+    ],
+    "identical": true
+  }
+}

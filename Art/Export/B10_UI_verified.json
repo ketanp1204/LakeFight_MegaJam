@@ -1,0 +1,70 @@
+{
+  "order": [
+    "ICON_LF_Fish",
+    "ICON_LF_FishGold",
+    "ICON_LF_Clock",
+    "ICON_LF_Paddle",
+    "ICON_LF_Crew_Red",
+    "ICON_LF_Crew_Blue",
+    "ICON_LF_Crew_Green",
+    "ICON_LF_Crew_Yellow"
+  ],
+  "checks": [
+    {
+      "name": "ICON_LF_Fish",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "752c603dd6a640993c8e7042781ea8122e14047e6cfcce3790cf29274ca599da"
+    },
+    {
+      "name": "ICON_LF_FishGold",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "87009ae0dd7ebac5e3893b4d35c0dab11f2a7ddca8162aa35e5e6a79a4931219"
+    },
+    {
+      "name": "ICON_LF_Clock",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "ec3bfd807a5137156396da3472aeebddab2daea70494e9d4419d0a48f856e3b0"
+    },
+    {
+      "name": "ICON_LF_Paddle",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "531b82f629fe52e84ecb49b553f756e385762ec5f908dd02cda98a60a90ded71"
+    },
+    {
+      "name": "ICON_LF_Crew_Red",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "9541e9172fcdbed4e6615830dd3cae285b4b29b3be5622aa4a1bceede07a4578"
+    },
+    {
+      "name": "ICON_LF_Crew_Blue",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "ff0b7c14bd0309f883e08328adba790123a18c9527c6de4b29294a1fbd789c21"
+    },
+    {
+      "name": "ICON_LF_Crew_Green",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "e7d8b702cd89feb3e4d68d017d49c7cb3b5e90177ddd65bafb044f5c14af829b"
+    },
+    {
+      "name": "ICON_LF_Crew_Yellow",
+      "rgba_256": true,
+      "transparent": true,
+      "unclipped": true,
+      "sha256": "b4196d62620b925bd7540eb78975ad0d65653ce55ca937afda498a820b95a8b0"
+    }
+  ]
+}

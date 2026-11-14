@@ -1,0 +1,107 @@
+{
+  "blender": "5.1.0",
+  "two_runs_identical": true,
+  "fbx": [
+    {
+      "asset": "SM_LF_GroundPatch_01",
+      "triangles": 288,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 24092
+    },
+    {
+      "asset": "SM_LF_GroundPatch_02",
+      "triangles": 288,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 24156
+    },
+    {
+      "asset": "SM_LF_Hill_Far_01",
+      "triangles": 94,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 16652
+    },
+    {
+      "asset": "SM_LF_Hill_Far_02",
+      "triangles": 94,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 16668
+    },
+    {
+      "asset": "SM_LF_Hill_Far_03",
+      "triangles": 94,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 16668
+    },
+    {
+      "asset": "SM_LF_Bush_01",
+      "triangles": 140,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 18380
+    },
+    {
+      "asset": "SM_LF_Bush_02",
+      "triangles": 144,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 18284
+    },
+    {
+      "asset": "SM_LF_Log",
+      "triangles": 136,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 19036
+    },
+    {
+      "asset": "SM_LF_Fence_Section",
+      "triangles": 140,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 18732
+    },
+    {
+      "asset": "SM_LF_TreeCluster_01",
+      "triangles": 942,
+      "fbx_geometry_materials_match_0.1mm": true,
+      "origin_zero": true,
+      "scale_identity": true,
+      "single_mesh": true,
+      "flat_shaded": true,
+      "bytes": 35692
+    }
+  ],
+  "note": "FBX binary timestamps vary; geometry and per-face palette compared after actual FBX reimport."
+}
