@@ -1,0 +1,31 @@
+{
+  "name": "SM_LF_Hill_Far_02",
+  "triangles": 94,
+  "dimensions_m": [
+    170.0,
+    120.0,
+    33.0
+  ],
+  "origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "z_range_m": [
+    0.0,
+    33.0
+  ],
+  "materials": [
+    "M_LF_Cloth"
+  ],
+  "boundary_edges": 0,
+  "boundary_z_max_abs_m": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "a387e1899202e75e98239b80d7c9335af4dba85f33dc60123019ea6c9e6b194e",
+  "budget_exclusive": 300
+}
