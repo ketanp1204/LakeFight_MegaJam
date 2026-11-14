@@ -27,6 +27,45 @@
   "boundary_edges": 48,
   "boundary_z_max_abs_m": 0.0,
   "flat_shaded": true,
-  "geometry_sha256": "1ff775e16ce3933a36952ddd8c757ad01699b4f4c3cfd55f50e9874484de4b65",
-  "budget_exclusive": 800
+  "geometry_sha256": "db177efb3507b0edeb2a9a9fe8d8cd734448aa8bfec9c4d5ff56231340c67c89",
+  "budget_exclusive": 800,
+  "top_faces_positive_z_percent": 100.0,
+  "B10_1_validation": {
+    "blender_version": "5.1.0",
+    "cause": "Shared recalc_face_normals flipped the open GroundPatch_02 heightfield; authored triangle winding was already +Z.",
+    "fix": "Preserve authored winding for ground patches; assert every generated top face has normal.z > 0.",
+    "script_runs_per_asset": 2,
+    "repeat_geometry_and_reports_identical": true,
+    "repeat_geometry_sha256": {
+      "SM_LF_GroundPatch_01": [
+        "8ec4323692e0f72d91f3709da38edde86a70a450c33c86e2dfd79a787ac1fc3d",
+        "8ec4323692e0f72d91f3709da38edde86a70a450c33c86e2dfd79a787ac1fc3d"
+      ],
+      "SM_LF_GroundPatch_02": [
+        "db177efb3507b0edeb2a9a9fe8d8cd734448aa8bfec9c4d5ff56231340c67c89",
+        "db177efb3507b0edeb2a9a9fe8d8cd734448aa8bfec9c4d5ff56231340c67c89"
+      ]
+    },
+    "fbx_note": "Binary FBX hashes vary between exports; repeatability is verified from geometry/material reports and actual FBX reimport. GroundPatch_01 original bytes retained after validation.",
+    "triangle_count_change_percent": 0.0,
+    "reimport": {
+      "SM_LF_GroundPatch_01": {
+        "faces": 288,
+        "normal_z_positive_faces": 288,
+        "normal_z_positive_percent": 100.0,
+        "corner_normals_positive_z": true,
+        "fbx_matches_generated_geometry_materials": true,
+        "original_surface_geometry_materials_unchanged": true,
+        "original_fbx_and_report_preserved_byte_for_byte": true
+      },
+      "SM_LF_GroundPatch_02": {
+        "faces": 288,
+        "normal_z_positive_faces": 288,
+        "normal_z_positive_percent": 100.0,
+        "corner_normals_positive_z": true,
+        "fbx_matches_generated_geometry_materials": true,
+        "original_surface_geometry_materials_unchanged": true
+      }
+    }
+  }
 }

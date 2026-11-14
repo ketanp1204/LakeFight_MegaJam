@@ -211,7 +211,13 @@ def build(name):
     for p,colour in zip(me.polygons,g.m): p.material_index=colours.index(colour)
     bm=bmesh.new(); bm.from_mesh(me)
     if 'Hill_Far' in name: bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=1e-5)
-    bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces)); bm.to_mesh(me); bm.free()
+    # Ground tiles are open heightfields, not closed volumes. Their authored
+    # winding is +Z; recalc_face_normals can choose the underside as outside.
+    if 'GroundPatch' not in name:
+        bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
+    bm.to_mesh(me); bm.free()
+    if 'GroundPatch' in name:
+        assert all(p.normal.z > 0 for p in me.polygons), 'Ground top faces must point +Z'
     ob=bpy.data.objects.new(name,me); col.objects.link(ob); lf.flat_shade(ob)
     bpy.context.view_layer.update(); report=inspect(ob)
     limit=800 if 'GroundPatch' in name else 3000 if 'Cluster' in name else 200 if name in ['SM_LF_Log','SM_LF_Fence_Section'] else 1000 if name.startswith('ICON') else 300
