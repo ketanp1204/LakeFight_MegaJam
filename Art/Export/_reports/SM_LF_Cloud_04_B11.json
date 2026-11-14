@@ -1,0 +1,44 @@
+{
+  "asset": "SM_LF_Cloud_04",
+  "triangles": 392,
+  "budget_exclusive": 400,
+  "dimensions_m": [
+    58.0,
+    31.387455,
+    27.435852
+  ],
+  "z_range_m": [
+    0.0,
+    27.435852
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Cloud_04",
+      "triangles": 392,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_Metal"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "a460f5436bf0e9493c06e17c2f13317590e7c49ac451965a92978682dde492d0"
+    }
+  ]
+}
