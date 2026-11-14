@@ -4,7 +4,7 @@
 #   ModelContextProtocol.GenerateClientConfig All
 # and merge the file it writes.
 [mcp_servers.unreal-mcp]
-url = "http://127.0.0.1:8000/mcp"
+url = "http://127.0.0.1:9500/mcp"
 
 [mcp_servers.blender]
 command = "uvx"

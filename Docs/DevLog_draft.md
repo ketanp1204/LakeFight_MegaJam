@@ -4,25 +4,25 @@
 
 ## The shelved idea, uncut
 
-Lake Fight is a physical-comedy boat brawler on a small fishing lake. You can paddle someone, fall overboard, swim back, climb into a boat and steal it. The larger plan is a four-crew fight over fish, with enough wobble and bad decisions to stop it becoming a tidy race around some buoys.
+Lake Fight is a physical-comedy boat brawler on a small fishing lake. You can fight someone with a paddle, fall overboard, swim back, climb into a boat and steal it. The larger plan is a four-crew fight over fish, with enough wobble and bad decisions to stop it becoming a tidy race around some buoys.
 
-I'm reading Director's Cut as “the shelved idea, uncut.” The old Unity P0 shipped boats on a lake, but deferred combat and boarding. Paddle fights, overboard ragdolls, swimming, boarding, stealing boats and the four-crew fight over fish never got built. This is my chance to return to those parts of the idea.
+I'm reading the jam's theme 'Director's Cut' as “the shelved idea, uncut.” The old Lake Fight was a Unity prototype with two boats on a lake in split-screen co-op. Combat and boarding were deferred. Paddle fights, overboard ragdolls, swimming, boarding, stealing boats and the four-crew fight over fish never got built. This is my chance to return to those parts of the idea.
 
-TODO(director): why it was shelved
+I shelved the project because I'd built the prototype as a local split-screen co-op. That felt like a small audience, and making couch multiplayer feel right looked like a long job, so I moved on to other projects. The jam version flips that: it's single-player against three AI crews from the start, and split-screen becomes an extra rather than the foundation. That's a big part of why the cut features finally fit. 
 
-The old project is off limits to the agents. My rules forbid opening it or copying its code, models or textures. The jam project has its own work, starting from the declared jam boundary. Returning to an idea should not quietly turn into importing an old implementation.
+The old project is off limits to the agents. My rules forbid opening it or copying its code, models or textures. The jam project has its own work, starting from the declared jam boundary. 
 
 ![Image slot: the scripted rowboat, side view](../Art/Export/_shots/SM_LF_Rowboat_B011_Side.png)
 
 ## Who did what
 
-I'm Ketan, the director. I choose the design, review what comes back, play it and make the final calls. An agent can tell me something builds or produce a clean log. I still have to decide whether steering, hitting someone or climbing aboard feels right.
+I'm Ketan, the director. I choose the design, review what comes back, play it and make the final calls. An agent can tell me something builds or produce a clean log. I still have to decide whether steering, hitting someone or climbing aboard feels right. I like to watch my agents working and steer them a lot as they go to nudge the work in the direction that I want.
 
-Claude Code handles Unreal C++ and Unreal MCP work. Codex handles scripted Blender MCP assets, the audio processing pipeline and documentation. Claude in chat is my producer: task prompts, reviews and scheduling. That division is the working arrangement for this draft, as set out in my brief.
+Claude Code handles Unreal C++ and Unreal MCP work. Codex handles scripted Blender MCP assets, the audio processing pipeline and documentation. Claude in chat is my producer: task prompts, reviews and scheduling. 
 
 The intended loop is simple: put one bounded task in `CurrentTask.md`, give the agent an acceptance check and a stopping point, inspect its report, then keep, change or cut the result. Nearby problems become follow-ups. The agent doesn't get to expand the game just because it found another thing to build.
 
-In practice, some art reports say that `CurrentTask.md` still described another agent's work, so my explicit art brief supplied their scope. That is worth showing too. The written process and the actual handoff were not always perfectly aligned.
+In practice, some art reports say that `CurrentTask.md` still described another agent's work, so my explicit art brief supplied their scope. The written process and the actual handoff were not always perfectly aligned.
 
 For art, the useful deliverable is the script as well as the mesh. We run it twice, compare the generated geometry, then reimport the FBX and check what survived export. A pretty screenshot alone cannot tell me whether a shoulder pivot moved or collision filled the cockpit.
 
