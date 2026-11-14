@@ -7,7 +7,7 @@
 6. [DONE 141de62] Re-package + smoke + zip
 7. [DONE d9683ce] Sky
 8. [DONE 30f6a19] Final package + report + DirectorsLog
-9. [IN PROGRESS] Stretch: ambient life
+9. [DONE 35c7baa] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
 
 ## N1 item 9 (stretch) - ambient life (14 Nov ~22:31-22:45 IST, unreviewed - director away)
@@ -24,14 +24,16 @@
   direction NOT verified up close (Blender -Y -> Unreal +Y assumed) - director to look up during a round.
 
 ## N1 report (Claude Code, 14 Nov 21:37-22:30 IST) - unreviewed, director away
-**Build:** `Builds/LakeFight_N1_final_20261114_2229.zip` (382 MB; unzipped copy in `Build/Windows/LakeFight.exe`). Earlier zips:
+**Latest build (item 9 included):** `Builds/LakeFight_N1_ambient_20261114_2241.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
+Shipping smoke: 3 zones / 4 banks -> menu -> Play -> 65 catches -> "Yellow WINS!" 35/20/9/0 -> quit.
+**Item 8 build (no ambient life):** `Builds/LakeFight_N1_final_20261114_2229.zip` (382 MB). Earlier zips:
 `LakeFight_N1_safety_20261114_2152.zip` (before the bug pass; no hats/vests), `LakeFight_N1_menu_20261114_2223.zip` (before the sky).
 **Final smoke (Shipping, `-LFSmoke`):** fish ready 3 zones / 4 banks -> menu -> Play -> 44 AI catches -> results "Yellow WINS!"
 36/8/5/1 -> quit, no crash. Mid-round capture: Saved/n1/pkg4_t60.png. Smoke flag writes %LOCALAPPDATA%/LakeFight/Saved/LFSmoke.txt.
 
 Done (details per item below): 1 tags + AI fishing + AI fish API | 2 safety build | 3 bug pass a-e | 4 AI GoFish/ReturnToDock +
 2 AI-only rounds | 5 main menu + credits | 6 re-package (found + fixed missing hats/vests in packages) | 7 gradient sky | 8 this.
-Not done: stretch items 9-10 (see checklist).
+Stretch: 9 ambient life done (see its section; gull wings not checked up close); 10 see checklist.
 
 **Director check list (PIE or the zip):**
 1. Menu: logo position, Play/Options/Credits/Quit with mouse, keyboard AND a real gamepad (pad untested); volume sliders
@@ -47,6 +49,8 @@ Not done: stretch items 9-10 (see checklist).
 8. AI: crews fish, hold station on spots, bank, chase gold and loaded boats; can you tell Bully / Thief / Hothead apart?
    AI-only rounds had no steals (T03's >= 1 steal isn't met there; normal rounds with the player had 0-2).
 9. Hats/vests now visible in packaged builds (they were missing in every earlier package).
+10. Ambient life: ducks/swans/junk on the waves, gulls circling (look up - check the wings flap the right way and sit on the
+    body), dragonflies at the reeds. Too busy / too few? Counts are tunables on ALFAmbientLife.
 
 ## N1 item 7 - sky (14 Nov 22:12-22:23 IST, unreviewed - director away)
 - `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):
