@@ -453,3 +453,64 @@ idle + steering bias, vest height, the light-swing start (not filmed - needs a p
 - Verified (player, `LFRow 1` then `-1`, AIs frozen; 1 build Succeeded each step): forward 25 samples - hand target -> grip 0.0 cm,
   grips 13.3-41.2 cm apart, largest grip step 3.1 cm/frame, wrists within 1.8; blades L -18..+7 (under in 17/25), R -15..+6 (19/25).
   Reverse 16 samples - 0.0 cm, 13.5-41.2 apart, step 1.0 cm/frame. 0 LogLF warnings. Strip: `Docs/Shots/T032_fix_rowing_strip.png`.
+
+## L01 - lake layout (Claude Code, 14 Nov 11:22-11:55 IST)
+Brief: replace the walled "pool" with a natural ~160 x 120 m lake for a 4-crew brawl (shore modules, B10 surroundings, docks,
+islands/channels, reeds, dressing, FishZones, collision, evidence), then B11 extras. Lake material / hull stencil untouched.
+
+**How it was built.** All placement over Unreal MCP from `Tools/L01_layout.py` (idempotent per pass: clears its outliner
+folder `L01/<pass>` and re-places; one `SCALE`, the base ellipse `A_ELL/B_ELL`, `DOCK_R`, points/bays/islands at the top -
+re-scale or reshape in a later pass by editing those and re-running). Outline = ellipse 86 x 58 m + noise + Gaussian
+bumps solved so each dock sits in a bay at exactly 73.5 m shoreline radius, headlands frame each bay, E/W/S points.
+Note: the 6cf172d rule (Claude commits Source/Config/Content/Docs) landed after I had committed `Tools/L01_layout.py` in
+9e65fdb / e2b678d - tell me if it should move (e.g. to Docs/) or stay.
+
+**Numbers**
+- Outline 150 x 116 m (bbox), shoreline 453 m; water plane 171 x 139 m (LF_Lake Size), lake bed resized to match.
+- Boat top speed (player, PIE, full throttle): **6.98 m/s** measured (code limit ThrustAccel/ForwardDrag = 7.33).
+- Docks: all four **70.0 m** from the centre (water end) = **10.0 s** at top speed; measured from a standstill at the Red
+  spawn (66 m out at the time) to the centre: **~11.5 s** (reached 14 m out at 9.5 s, 7.1 m/s).
+- Spawns: 58 m out, 12 m in front of each dock, bow to the centre (was 4 m off the dock - the chase camera sat over the dock,
+  director's report; fixed in 5820e17).
+- Centre open water: clear radius 28.5 m (57 m across). Channels (island waterline -> shoreline): **N 17.0 m, E 19.5 m,
+  W 19.5 m**. Tightest concave bay radius 7.1 m (boats 3.2 m).
+- FishZones (TargetPoints): FishZone_Centre (72 m from the nearest dock), FishZone_ChannelN (57.7 m), FishZone_ChannelE (43.3 m).
+- Actors (L01 folders): Shore 74 (69 Straight, 3 CornerOut, 2 CornerIn), Ground 226, Forest 177 (57 trees + 120
+  TreeCluster), Clumps 46, Hills 9, Docks 8 (4 Dock_Team + 4 TeamFlag), Islands 11 (3 islands + dressing), Reeds 4, Dressing 32
+  (logs, bushes, fences, 6 lily pads, 4 stumps, 6 buoys), Shack 8, FishZones 3, Sky 10, Wildlife 1 -> **609 L01 actors**,
+  635 in the level.
+- GPU (`ProfileGPU`, PIE, editor viewport): **3.41 ms -> 3.70 ms**, draws 307 -> 645, prims 418k -> 603k (before: player at the
+  old centre start; after: player at the Red dock looking across the lake - not the identical view).
+
+**Collision** (asset defaults over MCP - placed components use `bUseDefaultCollision`, so no per-actor overrides):
+NoCollision on SM_LF_Hill_Far_01..03, Bush_01..02, TreeCluster_01, ReedBed, ReedBed_v1, Reeds, LilyPads, GroundPatch_01..02,
+Logo_LakeFight, Logo_DirectorsCut (+ step 6: the 19 imported B11 meshes). Docks, shore, islands, rocks, stumps, logs, buoys,
+crates, shack, fence, trees keep their default (BlockAll). Verified in PIE: player boat driven through reed bed 0 at speed ->
+straight through (y 42.9 -> 55.0 m, reed at 48.1); driven at island N -> stopped at its waterline (28.9 vs 28.5 m) and deflected
+(yaw 90 -> 138). Not driven: the shore and a rock (they block by the same asset default; the AI run bounced off nothing).
+
+**AI**: no code change needed - its 3-trace WorldStatic avoidance sees shore/islands and ignores the NoCollision reeds. AI-only
+run (`lf.ai.spectate`, ~42 s logged): 28 state changes, 10 rams, 3 fights, 2 capsizes, 3 climbs back aboard, 0 shore
+wash-backs, 0 "fell" snaps, 0 warnings; all AI boats in open water 43-52 m inside the shoreline. Spectate camera fixed
+(director: "way too high"): follows the closest pair of brawlers, 16-45 m (c466aa7). Earlier "everything is standstill" =
+`lf.ai.freeze 1` left on from my tests (cvars persist across PIE sessions) - reset.
+
+**Deviations / findings**
+- **SM_LF_BankZone is not imported** (nor SM_LF_FishSpot, SM_LF_Swan_HeadNeck) - "imported assets only", so no BankZones.
+- **SM_LF_GroundPatch_02 renders invisible from above** (holes showing the water plane / void; faces likely point down) -
+  all ground uses _01 (105 tiles swapped). For Codex.
+- Ground tiles sit at +0.36..0.42 m (local edges at Z=0), just under the shore crest, so the water plane (max wave 12.5 cm)
+  can't show through. GroundPatch is NoCollision as asked: a brawler knocked far onto land would fall through it to the
+  lake bed (the shore pieces keep collision 3 m inland).
+- Editor-viewport dock shots (Blue/Green/Yellow) show editor icons (PlayerStart billboard, capsule cages); Red is a real PIE
+  frame.
+
+**Shots** (`Docs/Shots/`): `L01_top.png` (labelled: docks, islands, channels, reeds, FishZones, shack), `L01_dock_Red.png` (PIE
+start view, with clouds), `L01_dock_Blue/Green/Yellow.png`, `L01_spectate.png`, `L01_heron.png`.
+
+**Step 6 (B11):** NoCollision on all 19 imported B11 meshes; 10 clouds (Cloud_01..04) 252-372 m out, 95-136 m up, scale
+1.3-2.3, random yaw - read from the chase cam, above the hills; SM_LF_Heron at the lake-side edge of reed bed 0, feet at the
+waterline. No ducks/swans/junk/gulls/insects.
+
+**Please review:** overall size and feel (one SCALE knob), the bays/points shape, channel widths, island dressing, spawn
+distance, cloud sizes, the spectate camera.
