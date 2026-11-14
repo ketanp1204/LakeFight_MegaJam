@@ -48,6 +48,13 @@ public:
 	/** N1 item 5: the main menu shows over the paused lake on the first load only; Play starts the round. */
 	bool IsInMenu() const { return bInMenu; }
 	void StartFromMenu();
+	/** N2 item 12: pause menu (Esc / P / gamepad Start during a running round). The world pauses; the widget stays live. */
+	bool CanPause() const;
+	bool IsPauseMenuOpen() const { return PauseMenu != nullptr; }
+	void OpenPauseMenu();
+	void ResumeFromPause();
+	/** Reloads the map with the main menu shown again (also in PIE). */
+	void QuitToMenu();
 
 private:
 	float Remaining = 240.f;
@@ -73,6 +80,12 @@ private:
 	bool bInMenu = false;
 	float MenuTime = 0.f;
 	static bool bMenuDone; // process lifetime: Restart (map reload) goes straight back into a round
+	static bool bForceMenu; // set by QuitToMenu for the next load
+	UPROPERTY()
+	TObjectPtr<ULFMenuWidget> PauseMenu;
+	TSharedPtr<class IInputProcessor> PauseKeys;
+	bool bSmokePauseDone = false;
+	float RoundTime = 0.f;
 	UPROPERTY()
 	TObjectPtr<USoundWave> GoldSound;
 	UPROPERTY()

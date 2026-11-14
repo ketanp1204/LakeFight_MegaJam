@@ -8,6 +8,8 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/Image.h"
+#include "Components/Overlay.h"
+#include "Components/OverlaySlot.h"
 #include "Components/ScaleBox.h"
 #include "Components/SizeBox.h"
 #include "Components/Slider.h"
@@ -32,6 +34,18 @@ static FAutoConsoleCommand CmdLFMenuPage(TEXT("lf.menu.page"), TEXT("lf.menu.pag
 		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Index](float)
 		{
 			for (TObjectIterator<ULFMenuWidget> It; It; ++It) if (It->IsInViewport()) It->DebugShowPage(Index);
+			return false;
+		}), FMath::Max(Delay, 0.01f));
+	}));
+// lf.menu.item <index> [delay s]: press a main-page item on the open menu / pause menu (real-time delay).
+static FAutoConsoleCommand CmdLFMenuItem(TEXT("lf.menu.item"), TEXT("lf.menu.item <index> [delay s]"),
+	FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args)
+	{
+		const int32 Index = Args.Num() ? FCString::Atoi(*Args[0]) : 0;
+		const float Delay = Args.Num() > 1 ? FCString::Atof(*Args[1]) : 0.01f;
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Index](float)
+		{
+			for (TObjectIterator<ULFMenuWidget> It; It; ++It) if (It->IsInViewport()) { It->DebugActivate(Index); break; }
 			return false;
 		}), FMath::Max(Delay, 0.01f));
 	}));
@@ -119,9 +133,19 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 {
 	if (Canvas) return Super::RebuildWidget();
 	SetIsFocusable(true);
+	// Root: full-screen backdrop (dims the frozen round in pause mode; empty for the main menu) under the scaled design canvas.
+	UOverlay* Root = WidgetTree->ConstructWidget<UOverlay>();
+	WidgetTree->RootWidget = Root;
+	UBorder* Backdrop = WidgetTree->ConstructWidget<UBorder>();
+	Backdrop->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, bPauseMode ? 0.55f : 0.f));
+	UOverlaySlot* BackdropSlot = Root->AddChildToOverlay(Backdrop);
+	BackdropSlot->SetHorizontalAlignment(HAlign_Fill);
+	BackdropSlot->SetVerticalAlignment(VAlign_Fill);
 	UScaleBox* Scale = WidgetTree->ConstructWidget<UScaleBox>();
 	Scale->SetStretch(EStretch::ScaleToFit);
-	WidgetTree->RootWidget = Scale;
+	UOverlaySlot* ScaleSlot = Root->AddChildToOverlay(Scale);
+	ScaleSlot->SetHorizontalAlignment(HAlign_Fill);
+	ScaleSlot->SetVerticalAlignment(VAlign_Fill);
 	USizeBox* Design = WidgetTree->ConstructWidget<USizeBox>();
 	Design->SetWidthOverride(1280.f);
 	Design->SetHeightOverride(720.f);
@@ -129,6 +153,14 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	Canvas = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Design->AddChild(Canvas);
 
+	if (bPauseMode)
+	{
+		// Pause: no logo (the round is behind it), a title instead.
+		UTextBlock* Title = Text(Canvas, TEXT("PAUSED"), FVector2D(390.f, 198.f), FVector2D(500.f, 80.f), 50, MenuCream); // between the HUD timer and the buttons
+		Title->SetJustification(ETextJustify::Center);
+	}
+	else
+	{
 	// Logo: B12a title lockup PNG (editor: Art/Export/KeyArt, packaged: LFUI next to the executable - see LakeFight.Build.cs).
 	FString LogoPath = FPaths::ProjectDir() / TEXT("Art/Export/KeyArt/LF_TitleLockup_960x300_Light.png");
 	if (!FPaths::FileExists(LogoPath)) LogoPath = FString(FPlatformProcess::BaseDir()) / TEXT("LFUI/LF_TitleLockup_960x300_Light.png");
@@ -140,25 +172,28 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	MenuPlace(Logo, FVector2D(395.f, -10.f), FVector2D(1000.f, 312.5f));
 	if (LogoTexture) Logo->SetBrushFromTexture(LogoTexture);
 	else Text(Canvas, TEXT("LAKE FIGHT"), FVector2D(380.f, 90.f), FVector2D(520.f, 90.f), 56, MenuCream);
+	}
 
 	// Main page.
 	MainPage = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Canvas->AddChild(MainPage);
 	MenuPlace(MainPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
-	const TCHAR* Labels[] = { TEXT("PLAY"), TEXT("OPTIONS"), TEXT("CREDITS"), TEXT("QUIT") };
+	const TCHAR* MenuLabels[] = { TEXT("PLAY"), TEXT("OPTIONS"), TEXT("CREDITS"), TEXT("QUIT") };
+	const TCHAR* PauseLabels[] = { TEXT("RESUME"), TEXT("RESTART"), TEXT("OPTIONS"), TEXT("QUIT TO MENU") };
 	for (int32 I = 0; I < 4; ++I)
 	{
-		MainButtons.Add(MakeButton(MainPage, Labels[I], FVector2D(480.f, 290.f + I * 82.f), FVector2D(320.f, 64.f)));
+		MainButtons.Add(MakeButton(MainPage, bPauseMode ? PauseLabels[I] : MenuLabels[I], FVector2D(480.f, 290.f + I * 82.f), FVector2D(320.f, 64.f)));
 	}
-	MainButtons[0]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnPlay);
-	MainButtons[1]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnOptions);
-	MainButtons[2]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnCredits);
-	MainButtons[3]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnQuit);
+	MainButtons[0]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnMain0);
+	MainButtons[1]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnMain1);
+	MainButtons[2]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnMain2);
+	MainButtons[3]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnMain3);
 	MainButtons[0]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverPlay);
 	MainButtons[1]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverOptions);
 	MainButtons[2]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverCredits);
 	MainButtons[3]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverQuit);
-	Text(MainPage, TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / B back"), FVector2D(340.f, 640.f), FVector2D(700.f, 30.f), 14, MenuCream);
+	Text(MainPage, bPauseMode ? TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / Start / B resume")
+		: TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / B back"), bPauseMode ? FVector2D(510.f, 650.f) : FVector2D(340.f, 640.f), FVector2D(720.f, 30.f), 14, MenuCream); // pause: clear of the HUD boat panel
 
 	// Options page: two rows (label + slider), Back.
 	OptionsPage = WidgetTree->ConstructWidget<UCanvasPanel>();
@@ -211,7 +246,7 @@ void ULFMenuWidget::ShowPage(EPage NewPage)
 	CreditsPage->SetVisibility(Page == EPage::Credits ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	if (LogoImage) LogoImage->SetVisibility(Page == EPage::Credits ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible);
 	Select(0);
-	LF::Smoke(FString::Printf(TEXT("menu page %s"), Page == EPage::Main ? TEXT("main") : Page == EPage::Options ? TEXT("options") : TEXT("credits")));
+	LF::Smoke(FString::Printf(TEXT("%s page %s"), bPauseMode ? TEXT("pause") : TEXT("menu"), Page == EPage::Main ? TEXT("main") : Page == EPage::Options ? TEXT("options") : TEXT("credits")));
 }
 
 int32 ULFMenuWidget::ItemCount() const
@@ -233,13 +268,7 @@ void ULFMenuWidget::Activate()
 {
 	if (Page == EPage::Main)
 	{
-		switch (Selection)
-		{
-		case 0: OnPlay(); break;
-		case 1: OnOptions(); break;
-		case 2: OnCredits(); break;
-		default: OnQuit(); break;
-		}
+		ActivateMain(Selection);
 	}
 	else if (Page == EPage::Options && Selection < 2)
 	{
@@ -251,9 +280,33 @@ void ULFMenuWidget::Activate()
 	}
 }
 
+void ULFMenuWidget::ActivateMain(int32 Index)
+{
+	ULFRoundSubsystem* Round = GetWorld() ? GetWorld()->GetSubsystem<ULFRoundSubsystem>() : nullptr;
+	if (bPauseMode)
+	{
+		switch (Index)
+		{
+		case 0: if (Round) Round->ResumeFromPause(); break;
+		case 1: if (Round) { LF::Smoke(TEXT("pause -> Restart")); Round->Restart(); } break;
+		case 2: ShowPage(EPage::Options); break;
+		default: if (Round) Round->QuitToMenu(); break;
+		}
+		return;
+	}
+	switch (Index)
+	{
+	case 0: if (Round) Round->StartFromMenu(); break;
+	case 1: ShowPage(EPage::Options); break;
+	case 2: ShowPage(EPage::Credits); break;
+	default: if (Round) Round->Quit(); break;
+	}
+}
+
 void ULFMenuWidget::Back()
 {
 	if (Page != EPage::Main) ShowPage(EPage::Main);
+	else if (bPauseMode) ActivateMain(0); // Esc / Start / B on the pause menu's main page resumes
 }
 
 void ULFMenuWidget::Nudge(float Delta)
@@ -314,19 +367,19 @@ FReply ULFMenuWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const 
 	if (bLeft || bRight) { Nudge(bRight ? 0.05f : -0.05f); return FReply::Handled(); }
 	if (Key == TEXT("Enter") || Key == TEXT("SpaceBar") || Key == TEXT("Gamepad_FaceButton_Bottom")) { Activate(); return FReply::Handled(); }
 	if (Key == TEXT("Escape") || Key == TEXT("BackSpace") || Key == TEXT("Gamepad_FaceButton_Right")) { Back(); return FReply::Handled(); }
+	if (bPauseMode && (Key == TEXT("Gamepad_Special_Right") || Key == TEXT("P")))
+	{
+		// The pause keys close the pause menu from any page.
+		ActivateMain(0);
+		return FReply::Handled();
+	}
 	return Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
 }
 
-void ULFMenuWidget::OnPlay()
-{
-	if (ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) Round->StartFromMenu();
-}
-void ULFMenuWidget::OnOptions() { ShowPage(EPage::Options); }
-void ULFMenuWidget::OnCredits() { ShowPage(EPage::Credits); }
-void ULFMenuWidget::OnQuit()
-{
-	if (ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) Round->Quit();
-}
+void ULFMenuWidget::OnMain0() { ActivateMain(0); }
+void ULFMenuWidget::OnMain1() { ActivateMain(1); }
+void ULFMenuWidget::OnMain2() { ActivateMain(2); }
+void ULFMenuWidget::OnMain3() { ActivateMain(3); }
 void ULFMenuWidget::OnBack() { Back(); }
 void ULFMenuWidget::OnSliderChanged(float) { ApplyVolumes(); }
 void ULFMenuWidget::OnHoverPlay() { if (Page == EPage::Main) Select(0); }

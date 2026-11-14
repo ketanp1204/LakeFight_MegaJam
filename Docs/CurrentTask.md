@@ -10,13 +10,33 @@
 9. [DONE 35c7baa] Stretch: ambient life
 10. [DONE f9bb938] Stretch: spectators + foliage sway
 N2 (added by the director to Docs/N1.md during the run; package + smoke after 13 and at the end):
-11. [DONE see git log "N2.11"] AI banking check (7c)
-12. [ ] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
+11. [DONE bf1bf6a] AI banking check (7c)
+12. [DONE pending] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
 13. [ ] How-to-play: controls card in pause + round-start hints; re-package + smoke
 14. [ ] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
 15. [ ] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
 16. [ ] Hero shots (Docs/Shots/Hero/)
 17. [ ] ItchPage controls + how-to-play; final package + smoke
+
+## N2 item 12 - pause menu (15 Nov 02:55-03:05 IST, unreviewed - director away; resumed session)
+- `ULFMenuWidget` gets a pause mode (same widget, `SetPauseMode(true)`): RESUME / RESTART / OPTIONS (the shared music/SFX
+  page, saved as before) / QUIT TO MENU over a 55% black backdrop with a "PAUSED" title; HUD stays visible behind it.
+  Same mouse / keyboard / gamepad navigation as the main menu; Esc, Backspace, B, Start or P on its main page resumes
+  (Esc / B on the Options page go back to the pause list; Start / P close the menu from any page).
+- `ULFRoundSubsystem`: `OpenPauseMenu` / `ResumeFromPause` / `QuitToMenu` / `CanPause` (only in a running round - not in
+  the main menu or on the results screen). Pausing flushes held keys and `SetPause(true)` (physics, AI, clock, scoring
+  freeze; the subsystem doesn't tick). Restart = the existing map reload straight into a round. Quit to menu reloads
+  with the main menu forced on (works in PIE too). Keys come from a Slate input pre-processor (Esc / P / gamepad Start),
+  so it works whichever pawn (boat or brawler) has input and needs no input assets. **In editor PIE, Esc is left to the
+  editor (stops PIE) - use P or Start there.** Ignored while the dev console is open.
+- `-LFSmoke` runs now pause 6 s into the round and resume 2 s later (proves the clock stops). Dev: `lf.pause [delay]`,
+  `lf.menu.item <i> [delay]` (press a main-page item).
+- Evidence (editor `-game`, Development): rendered Saved/Screenshots/N2_pause_main.png, N2_pause_options.png,
+  N2_pause_quitmenu.png (main menu after Quit to menu; log Saved/n1/pause1.log). Restart from pause -> new round, no menu
+  (pause2.log). Smoke (pause_smoke.log, Saved/LFSmoke.txt): menu -> Play -> "pause menu shown at 19.0 s remaining" ->
+  "Resume at 19.0 s remaining" -> round END -> quit. Real key presses into a visible window (SendKeys, pause_keys.log):
+  Esc paused at 231.7 -> Down, Down, Enter (Options) -> Esc (back) -> Esc resumed at 231.7 (12 s later, clock held);
+  P paused 229.3 -> P resumed 229.3. **Gamepad Start / B NOT tested (no pad).** Not packaged yet (item 13 packages).
 
 ## N1 item 10 (stretch) - shore spectators + foliage sway (14 Nov 22:42-23:00 IST, unreviewed - director away)
 - New `World/LFShoreCrowd.h/.cpp` (spawned with the ambient life): 2 Manny spectators (flat character materials, 0.85 scale)

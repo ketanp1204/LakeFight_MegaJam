@@ -14,6 +14,8 @@ class UTexture2D;
  * N1 item 5: main menu over the paused lake - logo, Play, Options (music / SFX volume through LFAudio), Credits, Quit.
  * Native UMG on a fixed 1280x720 design canvas (like ULFRoundWidget). Mouse (click / hover / drag sliders), keyboard
  * (arrows, Enter, Esc) and gamepad (D-pad / left stick, A, B) all drive the same selection.
+ * N2 item 12: the same widget in pause mode (SetPauseMode before AddToViewport) is the in-round pause menu - Resume,
+ * Restart, Options (shared page), Quit to menu; dimmed backdrop, "PAUSED" title; Esc / Start / B on its main page resumes.
  */
 UCLASS()
 class LAKEFIGHT_API ULFMenuWidget : public UUserWidget
@@ -26,7 +28,11 @@ public:
 	/** Saved volumes (GameUserSettings [LakeFight.Audio]) -> LFAudio. Called once at startup by the round subsystem. */
 	static void LoadAudioSettings(UObject* WorldContext);
 	/** Dev evidence (lf.menu.page): 0 main, 1 options, 2 credits. */
-	void DebugShowPage(int32 Index) { ShowPage(Index == 1 ? EPage::Options : Index == 2 ? EPage::Credits : EPage::Main); }
+	void DebugShowPage(int32 Index) { ShowPage(Index == 1 ? EPage::Options : Index == 2 && !bPauseMode ? EPage::Credits : EPage::Main); }
+	void SetPauseMode(bool bPause) { bPauseMode = bPause; }
+	/** Dev evidence (lf.menu.item): press main-page item Index (pause: 0 resume, 1 restart, 2 options, 3 quit to menu). */
+	void DebugActivate(int32 Index) { ActivateMain(Index); }
+	bool IsPauseMode() const { return bPauseMode; }
 
 private:
 	enum class EPage : uint8 { Main, Options, Credits };
@@ -46,6 +52,7 @@ private:
 	UPROPERTY() TObjectPtr<UTexture2D> LogoTexture;
 	UPROPERTY() TObjectPtr<class UImage> LogoImage;
 
+	bool bPauseMode = false;
 	EPage Page = EPage::Main;
 	int32 Selection = 0;
 
@@ -56,14 +63,15 @@ private:
 	int32 ItemCount() const;
 	void Select(int32 Index);
 	void Activate();
+	void ActivateMain(int32 Index);
 	void Back();
 	void Nudge(float Delta);
 	void ApplyVolumes();
 
-	UFUNCTION() void OnPlay();
-	UFUNCTION() void OnOptions();
-	UFUNCTION() void OnCredits();
-	UFUNCTION() void OnQuit();
+	UFUNCTION() void OnMain0();
+	UFUNCTION() void OnMain1();
+	UFUNCTION() void OnMain2();
+	UFUNCTION() void OnMain3();
 	UFUNCTION() void OnBack();
 	UFUNCTION() void OnSliderChanged(float Value);
 	UFUNCTION() void OnHoverPlay();

@@ -21,6 +21,9 @@
 #include "Misc/FileHelper.h"
 #include "Misc/DateTime.h"
 #include "Containers/Ticker.h"
+#include "Engine/Console.h"
+#include "Framework/Application/IInputProcessor.h"
+#include "Framework/Application/SlateApplication.h"
 #include "Sound/SoundWave.h"
 #include "UnrealClient.h"
 #include "UObject/ConstructorHelpers.h"
@@ -34,9 +37,52 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFRoundTime(TEXT("lf.round.remaini
 		}
 	}));
 
+#if !UE_BUILD_SHIPPING
+// lf.pause [delay s]: open the pause menu (evidence screenshots; real-time delay).
+static FAutoConsoleCommandWithWorldAndArgs CmdLFPause(TEXT("lf.pause"), TEXT("lf.pause [delay s] - open the pause menu."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		TWeakObjectPtr<ULFRoundSubsystem> Round = World ? World->GetSubsystem<ULFRoundSubsystem>() : nullptr;
+		const float Delay = Args.Num() ? FCString::Atof(*Args[0]) : 0.01f;
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Round](float)
+		{
+			if (Round.IsValid() && Round->CanPause()) Round->OpenPauseMenu();
+			return false;
+		}), FMath::Max(Delay, 0.01f));
+	}));
+#endif
+
 namespace
 {
 	const TCHAR* Teams[] = { TEXT("Red"), TEXT("Blue"), TEXT("Green"), TEXT("Yellow") };
+
+	/** Opens the pause menu on Esc / P / gamepad Start, whichever pawn (boat or brawler) holds input. Slate pre-processor so it
+	 *  needs no input assets. Closing is the pause widget's own key handling. In editor PIE, Esc is left to the editor
+	 *  (stops PIE) - use P or Start there. */
+	class FLFPauseKeys : public IInputProcessor
+	{
+	public:
+		explicit FLFPauseKeys(ULFRoundSubsystem* InRound) : Round(InRound) {}
+		virtual void Tick(const float, FSlateApplication&, TSharedRef<ICursor>) override {}
+		virtual const TCHAR* GetDebugName() const override { return TEXT("LFPauseKeys"); }
+		virtual bool HandleKeyDownEvent(FSlateApplication&, const FKeyEvent& Event) override
+		{
+			if (Event.IsRepeat() || !Round.IsValid()) return false;
+			const FKey Key = Event.GetKey();
+			if (Key != EKeys::Escape && Key != EKeys::P && Key != EKeys::Gamepad_Special_Right) return false;
+			UWorld* World = Round->GetWorld();
+			if (!World || (Key == EKeys::Escape && World->WorldType == EWorldType::PIE)) return false;
+			if (const UGameViewportClient* Viewport = World->GetGameViewport())
+			{
+				if (Viewport->ViewportConsole && Viewport->ViewportConsole->ConsoleState != NAME_None) return false; // typing in the console
+			}
+			if (!Round->CanPause()) return false;
+			Round->OpenPauseMenu();
+			return true;
+		}
+	private:
+		TWeakObjectPtr<ULFRoundSubsystem> Round;
+	};
 }
 
 ULFRoundSubsystem::ULFRoundSubsystem()
@@ -77,6 +123,7 @@ void LF::Smoke(const FString& Line)
 }
 
 bool ULFRoundSubsystem::bMenuDone = false;
+bool ULFRoundSubsystem::bForceMenu = false;
 
 void ULFRoundSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
@@ -94,7 +141,13 @@ void ULFRoundSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 		bAudioLoaded = true;
 		ULFMenuWidget::LoadAudioSettings(this);
 	}
-	bInMenu = !bMenuDone && !bTest && !InWorld.IsPlayInEditor() && !FParse::Param(FCommandLine::Get(), TEXT("LFNoMenu"));
+	bInMenu = bForceMenu || (!bMenuDone && !bTest && !InWorld.IsPlayInEditor() && !FParse::Param(FCommandLine::Get(), TEXT("LFNoMenu")));
+	bForceMenu = false;
+	if (FSlateApplication::IsInitialized())
+	{
+		PauseKeys = MakeShared<FLFPauseKeys>(this);
+		FSlateApplication::Get().RegisterInputPreProcessor(PauseKeys);
+	}
 	UE_LOG(LogLF, Display, TEXT("[round] started %.0f s; gold at %.0f remaining, final at %.0f"), Remaining, GoldRemaining, FinalRemaining);
 }
 
@@ -166,6 +219,53 @@ void ULFRoundSubsystem::StartFromMenu()
 	LF::Smoke(TEXT("menu -> Play: round starts"));
 }
 
+bool ULFRoundSubsystem::CanPause() const
+{
+	const APlayerController* PC = GetWorld() ? GetWorld()->GetFirstPlayerController() : nullptr;
+	return bStarted && !bEnded && !bInMenu && !PauseMenu && Widget && PC && !PC->IsPaused();
+}
+
+void ULFRoundSubsystem::OpenPauseMenu()
+{
+	if (!CanPause()) return;
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	PC->FlushPressedKeys(); // no throttle / punch held through the pause
+	PauseMenu = CreateWidget<ULFMenuWidget>(PC, ULFMenuWidget::StaticClass());
+	PauseMenu->SetPauseMode(true);
+	PauseMenu->AddToViewport(70);
+	FInputModeUIOnly Mode;
+	Mode.SetWidgetToFocus(PauseMenu->TakeWidget());
+	PC->SetInputMode(Mode);
+	PC->bShowMouseCursor = true;
+	PC->SetPause(true); // freezes physics, AI, timer and scoring (this subsystem doesn't tick while paused)
+	UE_LOG(LogLF, Display, TEXT("[round] paused at %.1f remaining"), Remaining);
+	LF::Smoke(FString::Printf(TEXT("pause menu shown at %.1f s remaining"), Remaining));
+}
+
+void ULFRoundSubsystem::ResumeFromPause()
+{
+	if (!PauseMenu) return;
+	PauseMenu->RemoveFromParent();
+	PauseMenu = nullptr;
+	if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
+	{
+		PC->SetPause(false);
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->bShowMouseCursor = false;
+	}
+	UE_LOG(LogLF, Display, TEXT("[round] resumed at %.1f remaining"), Remaining);
+	LF::Smoke(FString::Printf(TEXT("pause -> Resume at %.1f s remaining"), Remaining));
+}
+
+void ULFRoundSubsystem::QuitToMenu()
+{
+	UE_LOG(LogLF, Display, TEXT("[round] quit to menu"));
+	LF::Smoke(TEXT("pause -> Quit to menu"));
+	bMenuDone = false;
+	bForceMenu = true;
+	Restart();
+}
+
 void ULFRoundSubsystem::Tick(float DeltaTime)
 {
 	if (!bStarted || bEnded) return;
@@ -211,6 +311,15 @@ void ULFRoundSubsystem::Tick(float DeltaTime)
 	}
 	GoldBanner = FMath::Max(0.f, GoldBanner - DeltaTime);
 	Remaining = FMath::Max(0.f, Remaining - DeltaTime);
+	RoundTime += DeltaTime;
+	if (LF::SmokeEnabled() && !bSmokePauseDone && RoundTime > 6.f && CanPause())
+	{
+		// Smoke runs pause once 6 s in, then resume after 2 s real time (the world is paused): proves pause stops the clock.
+		bSmokePauseDone = true;
+		OpenPauseMenu();
+		TWeakObjectPtr<ULFRoundSubsystem> Self(this);
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Self](float) { if (Self.IsValid()) Self->ResumeFromPause(); return false; }), 2.f);
+	}
 	for (TActorIterator<ALFBrawler> It(GetWorld()); It; ++It)
 	{
 		float& Swim = SwimTimes.FindOrAdd(*It);
@@ -331,6 +440,10 @@ void ULFRoundSubsystem::Quit()
 
 void ULFRoundSubsystem::Deinitialize()
 {
+	if (PauseKeys && FSlateApplication::IsInitialized()) FSlateApplication::Get().UnregisterInputPreProcessor(PauseKeys);
+	PauseKeys.Reset();
+	if (PauseMenu) PauseMenu->RemoveFromParent();
+	PauseMenu = nullptr;
 	if (FinalTick) { FinalTick->Stop(); FinalTick->DestroyComponent(); }
 	if (Widget) Widget->RemoveFromParent();
 	bStarted = false;
