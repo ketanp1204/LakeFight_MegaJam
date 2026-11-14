@@ -393,3 +393,49 @@ submix; finer shore probe rings (now 3/6/10/15 m steps).
   - fixed and re-verified above; the raw-percent diagnostic stays at Verbose.
 **Please check by ear:** the crossfades (esp. Main -> Final at bar length), the -4 dB duck depth on rams, music vs SFX balance.
 **Known:** the crossfade starts immediately, not on the next bar line of the outgoing track (no beat sync).
+
+## T03.2 - rowing polish (Claude Code, 14 Nov 10:35-11:00 IST; director: ignore the 10:30 limit)
+Brief: 1 real oars (SM_LF_Oar at Oarlock_L/R, pivot = collar, aim at the hand, light two-bone IK onto Grip, push stroke kept, shipped
+when nobody drives, flip with capsize); 2 seat height measured from the mesh + two-bone foot IK onto the floor boards (AI too); 3 head:
+per-bone layered blend on neck_01/neck_02/head, look-around fades out with rowing (0.3 s), looks ahead + steering bias, idle returns;
+4 vest higher on spine_03, light-swing first frame blends in over 0.08 s, .gitignore += .mcp.json .cursor/ .gemini/ .vscode/.
+
+**Files**
+- `Boat/LFBoat.h/.cpp`: oars = SM_LF_Oar (C++ default, unscaled), attached at `Oarlock_L` / `Oarlock_R`, collar at the socket. Rowing:
+  `AimOars(L, R)` (called by the driver's anim instance each update) turns each oar so its handle points from the oarlock at the hand
+  target, blade squared; `GetOarGrip` = the oar's `Grip` socket (70 cm inboard), `GetOarGripReach`. Shipped (no driver / capsized):
+  blade aft along the gunwale, 5 deg inboard, collar slid 8 cm in / 2 cm up; 0.3 s blend. Everything hull-local -> flips with a capsize.
+  The stretched-paddle placeholder is gone. `FloorTopZ` -9.35 / `ThwartTopZ` 18.25 (from SM_LF_Rowboat.py, traced in PIE: identical).
+- `Brawler/LFBrawlerAnimInstance.h/.cpp`: stroke path unchanged (push stroke), but each hand goal is put at the oar's reach (its sideways
+  offset from the oarlock solved for 70 cm), the oar aims at it, the arm IK pulls the hand onto Grip. Left hand rows 14 cm (mesh) above the
+  right (`RowHandStagger`) - the handles meet at the centreline. `PlantFeet`: per foot, sole (ankle/ball minus their ref-pose heights) moved
+  onto the floor plane, two-bone IK thigh->calf->foot, foot rotation kept (`bSitFootIK`). `ApplyHeadLook`: neck_01/neck_02/head local
+  rotations blend toward the ref pose by `HeadLookWeight`, then the head is turned (30/30/40 %) to look level ahead, -5 deg, + steer x 12 deg
+  (`LF|Anim|Head`); weight eases 0.3 s with stroke intensity, 0 when the boat is idle. Swing: torso yaw/pitch/lean blend from the release.
+- `Brawler/LFBrawler.h/.cpp`: driver placed so the backside rests on the thwart (`SitButtHeight` 37.7, measured); `VestOffset` (0, 0, 8);
+  `SwingBlendInTime` 0.08 (paddle pivot blends from its pose at release; was snapped to the wind-up); anim view + `DriveSteer`,
+  `SwingBlendIn`; `lf.measure` (editor builds): CPU-skins LOD0 with the current pose and logs backside vs the traced thwart, soles vs the
+  traced floor, vest extent vs the spine bones.
+- `.gitignore`: + .mcp.json, .cursor/, .gemini/, .vscode/.
+
+**Verification** (2 full builds Succeeded with the editor closed; PIE + Simulate, editor started with `-nosound` per the director)
+- Seat (lf.measure, 3 AI drivers): before - backside 37.36 / 37.53 / 38.15 cm above the capsule bottom = 10.1-10.9 cm ABOVE the thwart;
+  after - 0.36 / 0.38 cm above the traced thwart top (18.25). Feet: soles -0.10..-0.20 cm vs the traced floor; foot IK lifts them
+  6.7-12.4 cm (knees bend more). Sitting1's feet hovered 2-4 cm before.
+- Oars: `[oars] ... oarlock sockets found ... grip socket found (X -70.0)` on all 4 boats. Hand target -> grip: first version (fixed
+  hand spread) 0.2-24 cm; with goals solved onto the oar's reach 102 of 122 hand samples < 1 cm, the rest ~21 cm at the stroke extremes
+  (out of reach - the IK takes it up) or during the 0.3 s ship->row blend. `[ik]` palm -> grip 0.0 cm (one 1.3 cm sample).
+- Vest (standing player): bottom -16.4 -> -10.1 cm, top 37.2 -> 44.3 cm vs the pelvis bone (shoulder line 47.0).
+- 0 LogLF warnings/errors. Shots: `Docs/Shots/T032_rowing_side_midstroke.png`, `T032_rowing_front_midstroke.png`, `T032_seated_idle.png`
+  (look-around back, hands resting on the handles), `T032_rowing_side_two_crews.png`.
+**Please check in PIE:** rowing look/feel with real oars (hands crossing at the centreline, stagger), seat + knees, head while rowing vs
+idle + steering bias, vest height, the light-swing start (not filmed - needs a player swing).
+**Known / follow-ups (not done):**
+- The B09 socket names are mirrored: `Oarlock_L` imports at hull +Y (starboard). Code pairs hands to oars by distance, so nothing
+  depends on the names; the rowboat script's "Port"/"Starboard" labels are also swapped (Codex, if it matters).
+- Blade depth: during simultaneous full-throttle launches the blades read 40-74 cm under water for ~2 s (oars angled far aft + hull pitch);
+  otherwise -30..+20. The session before these changes had a similar share (~10 % of readings below -30). Not tuned here.
+- `.mcp.json`, `.cursor/mcp.json`, `.gemini/settings.json`, `.vscode/mcp.json` are already TRACKED (f0cbf0c), so .gitignore doesn't
+  affect them. `git rm --cached` would stop tracking them but deletes them on the other machine at its next pull - your call.
+- Audio during my test runs: the editor ran with `-nosound`. A music on/off option in a menu = separate task (ULFMusicSubsystem::
+  SetMusicState(Off) / SetCategoryVolume already exist for it).
