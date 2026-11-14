@@ -32,6 +32,8 @@ public:
 	float FinalRemaining = 30.f;
 
 	float GetRemaining() const { return Remaining; }
+	/** Seconds of play since the round started (pauses and the menu excluded). */
+	float GetRoundTime() const { return RoundTime; }
 	bool HasEnded() const { return bEnded; }
 	bool GoldAlert() const { return GoldBanner > 0.f; }
 	ALFGoldFish* GetGoldSpot() const { return GoldSpot.Get(); }

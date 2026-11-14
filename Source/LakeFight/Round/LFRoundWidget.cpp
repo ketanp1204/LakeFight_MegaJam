@@ -113,6 +113,16 @@ TSharedRef<SWidget> ULFRoundWidget::RebuildWidget()
 	GoldIcon = Icon(TEXT("ICON_LF_FishGold"), FVector2D(1020.f, 616.f), 60.f);
 	Direction = Text(Canvas, TEXT(""), FVector2D(830.f, 644.f), FVector2D(410.f, 50.f), 20, Colours[3]);
 	Direction->SetJustification(ETextJustify::Right);
+	// N2 item 13: non-blocking first-round hints, low centre (clear of the boat panel and the gold arrow).
+	HintCard = WidgetTree->ConstructWidget<UBorder>();
+	Canvas->AddChild(HintCard);
+	Place(HintCard, FVector2D(390.f, 532.f), FVector2D(500.f, 58.f));
+	HintCard->SetBrushColor(FLinearColor(.025f, .055f, .065f, .85f));
+	HintCard->SetVisibility(ESlateVisibility::HitTestInvisible);
+	HintCard->SetRenderOpacity(0.f);
+	HintText = Text(Canvas, TEXT(""), FVector2D(390.f, 544.f), FVector2D(500.f, 40.f), 22, Cream);
+	HintText->SetJustification(ETextJustify::Center);
+	HintText->SetRenderOpacity(0.f);
 	for (int32 I = ScoreChildren; I < Canvas->GetChildrenCount(); ++I) GameplayWidgets.Add(Canvas->GetChildAt(I));
 	return Super::RebuildWidget();
 }
@@ -148,6 +158,25 @@ void ULFRoundWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 	Direction->SetText(FText::FromString(bResults ? TEXT("") : Arrow));
 	GoldIcon->SetVisibility(!bResults && Round->GetGoldSpot() ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Hidden);
+
+	// N2 item 13: three hints, 5 s each from 0.5 s into the round, fading in/out over 0.4 s (round time - freezes in pause).
+	static const TCHAR* Hints[] = { TEXT("Stop on a fish spot to catch"), TEXT("Bank at your dock"), TEXT("Ram boats to spill their fish") };
+	const float HintTime = Round->GetRoundTime() - 0.5f;
+	const int32 HintIndex = HintTime >= 0.f && !bResults ? FMath::FloorToInt(HintTime / 5.f) : -1;
+	float HintAlpha = 0.f;
+	if (HintIndex >= 0 && HintIndex < 3)
+	{
+		const float Local = HintTime - HintIndex * 5.f;
+		HintAlpha = FMath::Clamp(FMath::Min(Local, 5.f - Local) / 0.4f, 0.f, 1.f);
+		if (HintIndex != HintShown)
+		{
+			HintShown = HintIndex;
+			HintText->SetText(FText::FromString(Hints[HintIndex]));
+			LF::Smoke(FString::Printf(TEXT("hint %d: %s"), HintIndex + 1, Hints[HintIndex]));
+		}
+	}
+	HintCard->SetRenderOpacity(HintAlpha);
+	HintText->SetRenderOpacity(HintAlpha);
 }
 
 void ULFRoundWidget::ShowResults()

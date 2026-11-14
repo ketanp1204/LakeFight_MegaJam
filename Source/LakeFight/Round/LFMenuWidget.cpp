@@ -84,6 +84,17 @@ namespace
 		TEXT("License code: TBK6NUHLZIDMPKOK\n")
 		TEXT("\n")
 		TEXT("Made for the Epic Games MegaJam 2026 with Unreal Engine 5.8.");
+
+	// N2 item 13: how-to-play card (pause menu). Controls match Docs/ItchPage.md.
+	const TCHAR* HowToGoal =
+		TEXT("Stop on a fish spot to catch fish, then bank them at your team's dock for points. Ram or whack other boats to ")
+		TEXT("spill their catch - or knock the driver out and steal the boat. Most points after 4 minutes wins; at 2:00 a gold ")
+		TEXT("fish spot appears and every gold fish banks for 5.");
+	const TCHAR* HowToActions =
+		TEXT("Row forward / reverse (driving)\nSteer (driving)\nMove, swim\nLook, aim the paddle\nTake an empty seat / stand up\n")
+		TEXT("Grab a boat / let go (swimming)\nPaddle swing (hold to charge)\nPause");
+	const TCHAR* HowToKeys = TEXT("W / S\nA / D\nWASD\nMouse\nE\nE\nLeft mouse\nEsc");
+	const TCHAR* HowToPad = TEXT("RT / LT\nLeft stick\nLeft stick\nRight stick\nY\nY\nRT\nStart");
 }
 
 UTextBlock* ULFMenuWidget::Text(UCanvasPanel* Parent, const FString& Value, FVector2D At, FVector2D Size, int32 FontSize, FLinearColor Colour)
@@ -156,7 +167,7 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	if (bPauseMode)
 	{
 		// Pause: no logo (the round is behind it), a title instead.
-		UTextBlock* Title = Text(Canvas, TEXT("PAUSED"), FVector2D(390.f, 198.f), FVector2D(500.f, 80.f), 50, MenuCream); // between the HUD timer and the buttons
+		UTextBlock* Title = Text(Canvas, TEXT("PAUSED"), FVector2D(390.f, 196.f), FVector2D(500.f, 64.f), 42, MenuCream); // between the HUD timer and the buttons
 		Title->SetJustification(ETextJustify::Center);
 	}
 	else
@@ -179,10 +190,16 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	Canvas->AddChild(MainPage);
 	MenuPlace(MainPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
 	const TCHAR* MenuLabels[] = { TEXT("PLAY"), TEXT("OPTIONS"), TEXT("CREDITS"), TEXT("QUIT") };
-	const TCHAR* PauseLabels[] = { TEXT("RESUME"), TEXT("RESTART"), TEXT("OPTIONS"), TEXT("QUIT TO MENU") };
-	for (int32 I = 0; I < 4; ++I)
+	const TCHAR* PauseLabels[] = { TEXT("RESUME"), TEXT("HOW TO PLAY"), TEXT("RESTART"), TEXT("OPTIONS"), TEXT("QUIT TO MENU") };
+	for (int32 I = 0; I < (bPauseMode ? 5 : 4); ++I)
 	{
-		MainButtons.Add(MakeButton(MainPage, bPauseMode ? PauseLabels[I] : MenuLabels[I], FVector2D(480.f, 290.f + I * 82.f), FVector2D(320.f, 64.f)));
+		MainButtons.Add(bPauseMode ? MakeButton(MainPage, PauseLabels[I], FVector2D(480.f, 266.f + I * 66.f), FVector2D(320.f, 56.f), 22)
+			: MakeButton(MainPage, MenuLabels[I], FVector2D(480.f, 290.f + I * 82.f), FVector2D(320.f, 64.f)));
+	}
+	if (bPauseMode)
+	{
+		MainButtons[4]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnMain4);
+		MainButtons[4]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverMain4);
 	}
 	MainButtons[0]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnMain0);
 	MainButtons[1]->OnClicked.AddDynamic(this, &ULFMenuWidget::OnMain1);
@@ -233,6 +250,26 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	CreditsBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
 	CreditsBack->OnClicked.AddDynamic(this, &ULFMenuWidget::OnBack);
 
+	// How-to-play page (pause only): goal paragraph + a three-column controls table, Back.
+	HowToPage = WidgetTree->ConstructWidget<UCanvasPanel>();
+	Canvas->AddChild(HowToPage);
+	MenuPlace(HowToPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
+	UBorder* HowToCard = WidgetTree->ConstructWidget<UBorder>();
+	HowToPage->AddChild(HowToCard);
+	MenuPlace(HowToCard, FVector2D(190.f, 266.f), FVector2D(900.f, 322.f));
+	HowToCard->SetBrushColor(MenuPanel);
+	UTextBlock* Goal = Text(HowToPage, HowToGoal, FVector2D(215.f, 276.f), FVector2D(850.f, 70.f), 14, MenuCream);
+	Goal->SetAutoWrapText(true);
+	Text(HowToPage, TEXT("ACTION"), FVector2D(215.f, 354.f), FVector2D(380.f, 22.f), 13, MenuGold);
+	Text(HowToPage, TEXT("KEYBOARD + MOUSE"), FVector2D(615.f, 354.f), FVector2D(220.f, 22.f), 13, MenuGold);
+	Text(HowToPage, TEXT("GAMEPAD"), FVector2D(855.f, 354.f), FVector2D(220.f, 22.f), 13, MenuGold);
+	Text(HowToPage, HowToActions, FVector2D(215.f, 378.f), FVector2D(390.f, 236.f), 15, MenuCream);
+	Text(HowToPage, HowToKeys, FVector2D(615.f, 378.f), FVector2D(230.f, 236.f), 15, MenuCream);
+	Text(HowToPage, HowToPad, FVector2D(855.f, 378.f), FVector2D(220.f, 236.f), 15, MenuCream);
+	HowToBack = MakeButton(HowToPage, TEXT("BACK"), FVector2D(500.f, 604.f), FVector2D(280.f, 52.f), 22); // clear of the HUD boat panel
+	HowToBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
+	HowToBack->OnClicked.AddDynamic(this, &ULFMenuWidget::OnBack);
+
 	ShowPage(EPage::Main);
 	ApplyVolumes();
 	return Super::RebuildWidget();
@@ -244,14 +281,16 @@ void ULFMenuWidget::ShowPage(EPage NewPage)
 	MainPage->SetVisibility(Page == EPage::Main ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	OptionsPage->SetVisibility(Page == EPage::Options ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	CreditsPage->SetVisibility(Page == EPage::Credits ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+	HowToPage->SetVisibility(Page == EPage::HowTo ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	if (LogoImage) LogoImage->SetVisibility(Page == EPage::Credits ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible);
 	Select(0);
-	LF::Smoke(FString::Printf(TEXT("%s page %s"), bPauseMode ? TEXT("pause") : TEXT("menu"), Page == EPage::Main ? TEXT("main") : Page == EPage::Options ? TEXT("options") : TEXT("credits")));
+	LF::Smoke(FString::Printf(TEXT("%s page %s"), bPauseMode ? TEXT("pause") : TEXT("menu"),
+		Page == EPage::Main ? TEXT("main") : Page == EPage::Options ? TEXT("options") : Page == EPage::HowTo ? TEXT("how to play") : TEXT("credits")));
 }
 
 int32 ULFMenuWidget::ItemCount() const
 {
-	return Page == EPage::Main ? 4 : Page == EPage::Options ? 3 : 1;
+	return Page == EPage::Main ? MainButtons.Num() : Page == EPage::Options ? 3 : 1;
 }
 
 void ULFMenuWidget::Select(int32 Index)
@@ -262,6 +301,7 @@ void ULFMenuWidget::Select(int32 Index)
 	SfxRow->SetBackgroundColor(Page == EPage::Options && Selection == 1 ? MenuGold : MenuCream);
 	OptionsBack->SetBackgroundColor(Page == EPage::Options && Selection == 2 ? MenuGold : MenuCream);
 	CreditsBack->SetBackgroundColor(Page == EPage::Credits ? MenuGold : MenuCream);
+	HowToBack->SetBackgroundColor(Page == EPage::HowTo ? MenuGold : MenuCream);
 }
 
 void ULFMenuWidget::Activate()
@@ -288,8 +328,9 @@ void ULFMenuWidget::ActivateMain(int32 Index)
 		switch (Index)
 		{
 		case 0: if (Round) Round->ResumeFromPause(); break;
-		case 1: if (Round) { LF::Smoke(TEXT("pause -> Restart")); Round->Restart(); } break;
-		case 2: ShowPage(EPage::Options); break;
+		case 1: ShowPage(EPage::HowTo); break;
+		case 2: if (Round) { LF::Smoke(TEXT("pause -> Restart")); Round->Restart(); } break;
+		case 3: ShowPage(EPage::Options); break;
 		default: if (Round) Round->QuitToMenu(); break;
 		}
 		return;
@@ -380,6 +421,8 @@ void ULFMenuWidget::OnMain0() { ActivateMain(0); }
 void ULFMenuWidget::OnMain1() { ActivateMain(1); }
 void ULFMenuWidget::OnMain2() { ActivateMain(2); }
 void ULFMenuWidget::OnMain3() { ActivateMain(3); }
+void ULFMenuWidget::OnMain4() { ActivateMain(4); }
+void ULFMenuWidget::OnHoverMain4() { if (Page == EPage::Main) Select(4); }
 void ULFMenuWidget::OnBack() { Back(); }
 void ULFMenuWidget::OnSliderChanged(float) { ApplyVolumes(); }
 void ULFMenuWidget::OnHoverPlay() { if (Page == EPage::Main) Select(0); }
@@ -388,4 +431,4 @@ void ULFMenuWidget::OnHoverCredits() { if (Page == EPage::Main) Select(2); }
 void ULFMenuWidget::OnHoverQuit() { if (Page == EPage::Main) Select(3); }
 void ULFMenuWidget::OnHoverMusic() { if (Page == EPage::Options) Select(0); }
 void ULFMenuWidget::OnHoverSfx() { if (Page == EPage::Options) Select(1); }
-void ULFMenuWidget::OnHoverBack() { if (Page == EPage::Options) Select(2); else if (Page == EPage::Credits) Select(0); }
+void ULFMenuWidget::OnHoverBack() { if (Page == EPage::Options) Select(2); else if (Page != EPage::Main) Select(0); }

@@ -31,6 +31,9 @@ private:
 	UPROPERTY() TObjectPtr<UTextBlock> Cargo;
 	UPROPERTY() TObjectPtr<UTextBlock> Banner;
 	UPROPERTY() TObjectPtr<UTextBlock> Direction;
+	UPROPERTY() TObjectPtr<UBorder> HintCard; // N2 item 13: round-start hints, first ~15 s
+	UPROPERTY() TObjectPtr<UTextBlock> HintText;
+	int32 HintShown = -1;
 	UPROPERTY() TObjectPtr<UBorder> Results;
 	UPROPERTY() TObjectPtr<UButton> RestartButton;
 	UPROPERTY() TObjectPtr<UButton> QuitButton;

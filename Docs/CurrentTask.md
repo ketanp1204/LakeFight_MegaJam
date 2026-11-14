@@ -11,8 +11,8 @@
 10. [DONE f9bb938] Stretch: spectators + foliage sway
 N2 (added by the director to Docs/N1.md during the run; package + smoke after 13 and at the end):
 11. [DONE bf1bf6a] AI banking check (7c)
-12. [DONE pending] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
-13. [ ] How-to-play: controls card in pause + round-start hints; re-package + smoke
+12. [DONE 60d24c6] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
+13. [IN PROGRESS] How-to-play: controls card in pause + round-start hints; re-package + smoke
 14. [ ] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
 15. [ ] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
 16. [ ] Hero shots (Docs/Shots/Hero/)

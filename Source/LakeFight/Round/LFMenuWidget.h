@@ -27,19 +27,24 @@ public:
 
 	/** Saved volumes (GameUserSettings [LakeFight.Audio]) -> LFAudio. Called once at startup by the round subsystem. */
 	static void LoadAudioSettings(UObject* WorldContext);
-	/** Dev evidence (lf.menu.page): 0 main, 1 options, 2 credits. */
-	void DebugShowPage(int32 Index) { ShowPage(Index == 1 ? EPage::Options : Index == 2 && !bPauseMode ? EPage::Credits : EPage::Main); }
+	/** Dev evidence (lf.menu.page): 0 main, 1 options, 2 credits (menu only), 3 how to play (pause only). */
+	void DebugShowPage(int32 Index)
+	{
+		ShowPage(Index == 1 ? EPage::Options : Index == 2 && !bPauseMode ? EPage::Credits : Index == 3 && bPauseMode ? EPage::HowTo : EPage::Main);
+	}
 	void SetPauseMode(bool bPause) { bPauseMode = bPause; }
 	/** Dev evidence (lf.menu.item): press main-page item Index (pause: 0 resume, 1 restart, 2 options, 3 quit to menu). */
 	void DebugActivate(int32 Index) { ActivateMain(Index); }
 	bool IsPauseMode() const { return bPauseMode; }
 
 private:
-	enum class EPage : uint8 { Main, Options, Credits };
+	enum class EPage : uint8 { Main, Options, Credits, HowTo };
 	UPROPERTY() TObjectPtr<UCanvasPanel> Canvas;
 	UPROPERTY() TObjectPtr<UCanvasPanel> MainPage;
 	UPROPERTY() TObjectPtr<UCanvasPanel> OptionsPage;
 	UPROPERTY() TObjectPtr<UCanvasPanel> CreditsPage;
+	UPROPERTY() TObjectPtr<UCanvasPanel> HowToPage; // N2 item 13 (pause only): goal + controls card
+	UPROPERTY() TObjectPtr<UButton> HowToBack;
 	UPROPERTY() TArray<TObjectPtr<UButton>> MainButtons;
 	UPROPERTY() TObjectPtr<USlider> MusicSlider;
 	UPROPERTY() TObjectPtr<USlider> SfxSlider;
@@ -72,6 +77,8 @@ private:
 	UFUNCTION() void OnMain1();
 	UFUNCTION() void OnMain2();
 	UFUNCTION() void OnMain3();
+	UFUNCTION() void OnMain4();
+	UFUNCTION() void OnHoverMain4();
 	UFUNCTION() void OnBack();
 	UFUNCTION() void OnSliderChanged(float Value);
 	UFUNCTION() void OnHoverPlay();

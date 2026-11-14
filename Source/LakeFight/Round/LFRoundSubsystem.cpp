@@ -314,11 +314,12 @@ void ULFRoundSubsystem::Tick(float DeltaTime)
 	RoundTime += DeltaTime;
 	if (LF::SmokeEnabled() && !bSmokePauseDone && RoundTime > 6.f && CanPause())
 	{
-		// Smoke runs pause once 6 s in, then resume after 2 s real time (the world is paused): proves pause stops the clock.
+		// Smoke runs pause once 6 s in, show How to play at +1 s, resume at +2.5 s real time (the world is paused): proves pause stops the clock.
 		bSmokePauseDone = true;
 		OpenPauseMenu();
 		TWeakObjectPtr<ULFRoundSubsystem> Self(this);
-		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Self](float) { if (Self.IsValid()) Self->ResumeFromPause(); return false; }), 2.f);
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Self](float) { if (Self.IsValid() && Self->PauseMenu) Self->PauseMenu->DebugShowPage(3); return false; }), 1.f);
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Self](float) { if (Self.IsValid()) Self->ResumeFromPause(); return false; }), 2.5f);
 	}
 	for (TActorIterator<ALFBrawler> It(GetWorld()); It; ++It)
 	{
