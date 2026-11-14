@@ -13,12 +13,35 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 11. [DONE bf1bf6a] AI banking check (7c)
 12. [DONE 60d24c6] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
 13. [DONE 3f8b0b5] How-to-play: controls card in pause + round-start hints; re-package + smoke
-14. [IN PROGRESS] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
-15. [ ] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
+14. [DONE 6de8c7a] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
+15. [IN PROGRESS] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
 16. [ ] Hero shots (Docs/Shots/Hero/)
 17. [ ] ItchPage controls + how-to-play; final package + smoke
 
-## N2 item 13 - how-to-play (15 Nov 03:05-03:14 IST, unreviewed - director away)
+## N2 item 14 - graphics quality + pile-up frame time (15 Nov 03:15-03:22 IST, unreviewed - director away)
+- Options page (main menu and pause): new **GRAPHICS** row `< LOW / MEDIUM / HIGH >` - left/right or click cycles. Maps to
+  `UGameUserSettings::SetOverallScalabilityLevel` **Low = 1 (engine Medium), Medium = 2 (High), High = 3 (Epic)**: Epic is
+  what the game was built and shot at, and engine level 0 drops Lumen/shadows so far that the look breaks - my call, easy
+  to remap (`ULFMenuWidget::SetGraphicsQuality`). Applied at once (ApplyNonResolutionSettings) and saved
+  (GameUserSettings.ini `sg.*`, which the engine re-applies at startup). A mixed/custom setup shows as HIGH.
+- Measurement tool (works in Shipping): `LakeFight.exe -LFSmoke -LFBench [-LFQuality=0|1|2]` - smoke presses Play, then at
+  3 / 8 / 13 s of play the 4 boats are put on a 9 m ring round the lake centre heading in at 5 m/s (AIs keep brawling), frames
+  are sampled 4-19 s (frame delta, game thread, render thread, GPU), written to LFSmoke.txt, then the game quits.
+  Screenshot at 9.8 s: Saved/n1/bench_high_shipping.png (all four boats colliding in front of the player).
+- **Results, this laptop, Shipping, default window = 1707x1067 viewport (borderless at desktop DPI), 15 s of pile-up:**
+
+  | Quality | frame avg / p95 | GPU avg / p95 | game thread avg | render thread avg |
+  | --- | --- | --- | --- | --- |
+  | Low | 3.9 / 4.3 ms (~255 fps) | 3.1 / 3.3 ms | 1.7 ms | 2.0 ms |
+  | Medium | 5.4 / 6.0 ms (~185 fps) | 4.8 / 5.1 ms | 1.9 ms | 2.5 ms |
+  | **High** | **8.2 / 8.8 ms (~120 fps)** | **7.6 / 8.1 ms** | 1.8 ms | 2.3 ms |
+
+  GPU-bound at every level; no vsync cap. Each run had **one hitch of 230-265 ms** (game thread ~200 ms) - most likely the
+  first staging teleport (physics/AI reacting to 4 boats dropped on top of each other) or a first-use shader/PSO; a real
+  round has no teleport, so not chased. Dev editor -game at 1280x720 High: 6.2 ms avg (Saved/n1/bench_dev.log).
+- Evidence: Saved/Screenshots/N2_options_graphics.png (pause > Options with the new row). Saved setting left at High after the
+  runs. The packaged build in Build/Windows is now this commit (6de8c7a); not zipped (next zip at item 17).
+ (15 Nov 03:05-03:14 IST, unreviewed - director away)
 - Pause menu gets a 5th item, **HOW TO PLAY** (2nd in the list): a card with the goal in three lines (catch on spots, bank at
   your dock, ram / whack to spill, steal boats, 4 min, gold at 2:00 = 5 each) and a three-column controls table (action /
   keyboard + mouse / gamepad, same bindings as Docs/ItchPage.md, plus Pause = Esc / Start). Back / Esc / B return.
@@ -127,6 +150,7 @@ Stretch: 9 ambient life and 10 shore spectators + foliage sway done (see their s
 13. Pause (N2.12): Esc / Start in a round -> RESUME / HOW TO PLAY / RESTART / OPTIONS / QUIT TO MENU. In PIE use P or Start
     (Esc stops PIE). Check a real gamepad (Start opens/closes, B backs out, D-pad + A navigate) - untested.
 14. How to play (N2.13): the controls card wording/accuracy, and the three round-start hints (timing 5 s each - too fast?).
+15. Graphics (N2.14): does LOW (engine Medium) still look acceptable? Remap if you want engine Low in the list.
 
 ## N1 item 7 - sky (14 Nov 22:12-22:23 IST, unreviewed - director away)
 - `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):
