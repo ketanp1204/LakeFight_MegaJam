@@ -1,0 +1,33 @@
+{
+  "name": "SM_LF_Fence_Section",
+  "triangles": 140,
+  "dimensions_m": [
+    2.0535,
+    0.207,
+    1.25417
+  ],
+  "origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "z_range_m": [
+    0.0,
+    1.254169
+  ],
+  "materials": [
+    "M_LF_WoodDark",
+    "M_LF_Wood",
+    "M_LF_Metal"
+  ],
+  "boundary_edges": 0,
+  "boundary_z_max_abs_m": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "6aa29e95c8b4b3d4756d12f8fa2cd5ea270dab07424b09f745d45881ffc44b97",
+  "budget_exclusive": 200
+}
