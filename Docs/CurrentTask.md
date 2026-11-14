@@ -363,3 +363,33 @@ UI_*, Final30, EndCheer, Win, Fish* are not referenced (T04).
 (soft, every blade entry - maybe too frequent?); the shore loop fading in when you swim to a bank; stealing a boat (taunt + whistle).
 **Follow-ups:** real SoundClass/SoundMix assets if the options menu wants them (subsystem has `SetCategoryVolume` now); a master limiter
 submix; finer shore probe rings (now 3/6/10/15 m steps).
+
+## A02.1 - music states + ducking (Claude Code, 14 Nov ~09:16-09:25 IST)
+
+**Files**
+- `Source/LakeFight/Audio/LFAudio.h/.cpp`: new `ULFMusicSubsystem` (game-instance subsystem = one per session).
+  - `SetMusicState(Off | Menu | Main | Final)` (BlueprintCallable). One 2D UAudioComponent per track, created once, persistent across
+    level transitions, never auto-destroyed, `bIsUISound` (keeps playing when paused). Nothing in gameplay touches it, so respawn /
+    overboard / capsize can't restart it. The first game world to begin play starts **Main** (PIE default until T04 / the menu).
+  - State change: equal-power crossfade (`FadeOut` / `FadeIn` with the Sin curve) over one 4/4 bar of the incoming track (Main/Menu
+    106.893 BPM = 2.25 s, Final 110 BPM = 2.18 s - from AUDIO_REPORT.md; 2.0 s fallback); the incoming track starts at 0 s (the WAVs are
+    pre-looped, whole-file loop).
+  - Ducking `Duck(Why)`: -4 dB, attack 0.05 s, hold 0.4 s, release 0.6 s (real time, so hitstop doesn't stretch it); a duck during an
+    active one only extends the hold. Called from `ALFBoat` on Ram-tier impacts and on capsize.
+  - Category volumes moved here (they now survive level changes); `ULFAudioSubsystem::SetCategoryVolume/GetCategoryVolume` forward to
+    it, Music = Master x Music x duck.
+  - `lf.music <menu|main|final|off>`; `[music]` log: state changes, loop wraps (from the component's playback-percent callback - for a
+    looping wave UE counts past 1.0, so a wrap = crossing a whole number), duck start/extend/release.
+- `Source/LakeFight/Boat/LFBoat.cpp`: `Duck("ram")` in the Ram tier, `Duck("capsize")` in Capsize().
+
+**Verification** (builds Succeeded with the editor closed; PIE, AIs playing, `lf.music` typed into the editor console box via MCP):
+- Main started with play (`Off -> Main, 2.25 s`), looped 6 times at 18.00 / 35.98 / 53.93 / 71.90 / 89.85 / 107.82 s (wave 17.962 s:
+  a steady 17.95-17.98 s cadence, i.e. no gap or restart) - straight through a capsize (39.9 s) and 7 overboards.
+- `lf.music final` -> `Main -> Final (2.18 s = 1 bar at 110 BPM)`, Final looped at 17.50 s (wave 17.455 s); `menu` -> Menu looped at
+  9.00 s (wave 8.981 s); `off`, then `main` -> Main again, looped at 17.99 s.
+- Ducking: 27 ducks (ram + one capsize) in the run; a lone duck releases 1.03 s after it starts (= 0.05 + 0.4 + 0.6); overlapping
+  rams/capsize extended the hold (e.g. 4 ducks inside 1.7 s -> one duck, released after 2.68 s), never deeper. No new warnings/errors.
+- First run found the loop-wrap log broken (it expected the percent to drop back to 0; UE keeps counting past 1.0 for looping waves)
+  - fixed and re-verified above; the raw-percent diagnostic stays at Verbose.
+**Please check by ear:** the crossfades (esp. Main -> Final at bar length), the -4 dB duck depth on rams, music vs SFX balance.
+**Known:** the crossfade starts immediately, not on the next bar line of the outgoing track (no beat sync).

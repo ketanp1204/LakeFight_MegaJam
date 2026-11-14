@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Tickable.h"
 #include "LFAudio.generated.h"
 
 class USoundWave;
@@ -24,6 +26,86 @@ enum class ELFSound : uint8
 	PaddleWood, PaddleHit, PaddleCharged, Stun, Overboard, Surface, BoatCreak, RamWood, RamBass, HitCreak, OarDip,
 	VO_Attack, VO_Yell, VO_Pant, VO_Taunt, VO_Whistle,
 	Count UMETA(Hidden)
+};
+
+UENUM(BlueprintType)
+enum class ELFMusicState : uint8
+{
+	Off, Menu, Main, Final
+};
+
+/**
+ * A02.1 music player + category volumes, one per game session (game instance), so music never restarts on respawn, overboard,
+ * capsize or a level change. One 2D audio component per track (persistent across level transitions); state changes crossfade
+ * equal-power over one bar of the incoming track (BPM from AUDIO_REPORT.md), each track starting from its loop start (0 s - the
+ * WAVs are pre-looped). Ducking: Duck() = -4 dB, attack 0.05 s, hold 0.4 s, release 0.6 s; overlapping ducks extend the hold.
+ * Debug: `lf.music <menu|main|final|off>`; [music] log for state changes and loop wraps.
+ */
+UCLASS()
+class LAKEFIGHT_API ULFMusicSubsystem : public UGameInstanceSubsystem, public FTickableGameObject
+{
+	GENERATED_BODY()
+
+public:
+	static ULFMusicSubsystem* Get(const UObject* WorldContext);
+
+	UFUNCTION(BlueprintCallable, Category="LF|Audio")
+	void SetMusicState(ELFMusicState NewState);
+
+	UFUNCTION(BlueprintPure, Category="LF|Audio")
+	ELFMusicState GetMusicState() const { return State; }
+
+	/** Called when a game world begins play: the first one starts Main (PIE default until T04 drives it). */
+	void OnGameWorldStarted(UWorld* World);
+
+	/** Ram-tier impact / capsize: duck the music. */
+	void Duck(const TCHAR* Why);
+
+	/** Category volumes live here so they survive level changes (ULFAudioSubsystem forwards to these). */
+	void SetCategoryVolume(ELFSoundCategory Category, float Volume);
+	float GetCategoryVolume(ELFSoundCategory Category) const { return CategoryVolume[int32(Category)]; }
+	float CategoryGain(ELFSoundCategory C) const;
+
+	// USubsystem / FTickableGameObject
+	virtual void Deinitialize() override;
+	virtual void Tick(float DeltaTime) override;
+	virtual TStatId GetStatId() const override;
+	virtual bool IsTickable() const override { return !IsTemplate(); }
+	virtual ETickableTickType GetTickableTickType() const override { return IsTemplate() ? ETickableTickType::Never : ETickableTickType::Always; }
+	virtual bool IsTickableWhenPaused() const override { return true; }
+
+private:
+	struct FTrack
+	{
+		const TCHAR* Asset;
+		float Bpm;
+	};
+	static const FTrack& TrackDef(ELFMusicState S);
+
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<UAudioComponent>> Players; // indexed by ELFMusicState (Off unused)
+
+	UAudioComponent* GetPlayer(ELFMusicState S);
+
+	UFUNCTION()
+	void OnPlaybackPercent(const USoundWave* PlayingWave, const float PlaybackPercent);
+
+	void ApplyVolume();
+
+	ELFMusicState State = ELFMusicState::Off;
+	bool bEverStarted = false;
+	TWeakObjectPtr<UWorld> MusicWorld;
+	float LastPercent[4] = { 0.f, 0.f, 0.f, 0.f };
+	int32 Wraps[4] = { 0, 0, 0, 0 };
+	double StateStart = 0.0;
+
+	float CategoryVolume[6] = { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f };
+
+	// Ducking (real time, so hitstop doesn't stretch it)
+	double DuckStart = -100.0;    // start of the current attack
+	double DuckHoldUntil = -100.0;
+	float DuckDb = 0.f;           // current attenuation (0 .. -4)
+	double LastTickTime = 0.0;
 };
 
 /**
@@ -87,7 +169,6 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<USoundAttenuation> Attenuation3D;
 
-	float CategoryVolume[6] = { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f };
 	TArray<double> RecentPlays; // real time of recent one-shots (burst ducking)
 	float CategoryGain(ELFSoundCategory C) const;
 

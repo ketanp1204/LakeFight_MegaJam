@@ -541,6 +541,10 @@ void ALFBoat::ResolveContact(ALFBoat* Target, const FVector& TargetDir, float Cl
 		Audio->Play(ELFSound::RamWood, Contact, FMath::Lerp(0.7f, 1.f, Strength), 1.f, TEXT("ram"));
 		Audio->Play(ELFSound::RamBass, Contact, FMath::Lerp(0.6f, 1.f, Strength), 1.f, TEXT("ram"));
 	}
+	if (ULFMusicSubsystem* Music = ULFMusicSubsystem::Get(this))
+	{
+		Music->Duck(TEXT("ram"));
+	}
 
 	ApplyRamTo(Target, TargetDir, Contact, Strength);
 
@@ -789,6 +793,10 @@ void ALFBoat::Capsize()
 	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
 	{
 		Audio->Play(ELFSound::RamBass, GetActorLocation(), 1.f, 1.f, TEXT("capsize (Overboard per person follows on splash-in)"));
+	}
+	if (ULFMusicSubsystem* Music = ULFMusicSubsystem::Get(this))
+	{
+		Music->Duck(TEXT("capsize"));
 	}
 	UE_LOG(LogLF, Display, TEXT("[capsize] %s CAPSIZED (tilt %.0f deg) - %d aboard thrown overboard, driving disabled for %.1f s"),
 		*GetName(), GetTiltDeg(), Thrown, CapsizedTime);

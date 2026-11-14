@@ -5,6 +5,7 @@
 #include "Water/LFWater.h"
 #include "Components/AudioComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/PlayerController.h"
@@ -138,6 +139,11 @@ void ULFAudioSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 
 	StartAmbience();
 	bStarted = true;
+
+	if (ULFMusicSubsystem* M = ULFMusicSubsystem::Get(this))
+	{
+		M->OnGameWorldStarted(&InWorld);
+	}
 }
 
 void ULFAudioSubsystem::Deinitialize()
@@ -156,19 +162,23 @@ void ULFAudioSubsystem::Deinitialize()
 
 float ULFAudioSubsystem::CategoryGain(ELFSoundCategory C) const
 {
-	return CategoryVolume[int32(ELFSoundCategory::Master)] * (C == ELFSoundCategory::Master ? 1.f : CategoryVolume[int32(C)]);
+	const ULFMusicSubsystem* M = ULFMusicSubsystem::Get(this);
+	return M ? M->CategoryGain(C) : 1.f;
 }
 
 void ULFAudioSubsystem::SetCategoryVolume(ELFSoundCategory Category, float Volume)
 {
-	CategoryVolume[int32(Category)] = FMath::Max(Volume, 0.f);
-	UE_LOG(LogLF, Display, TEXT("[audio] %s volume = %.2f"), CategoryName(Category), CategoryVolume[int32(Category)]);
+	if (ULFMusicSubsystem* M = ULFMusicSubsystem::Get(this))
+	{
+		M->SetCategoryVolume(Category, Volume);
+	}
 	UpdateAmbience(0.f);
 }
 
 float ULFAudioSubsystem::GetCategoryVolume(ELFSoundCategory Category) const
 {
-	return CategoryVolume[int32(Category)];
+	const ULFMusicSubsystem* M = ULFMusicSubsystem::Get(this);
+	return M ? M->GetCategoryVolume(Category) : 1.f;
 }
 
 bool ULFAudioSubsystem::Play(ELFSound Event, const FVector& Location, float VolumeScale, float PitchScale, const TCHAR* Why)
@@ -386,4 +396,253 @@ void ULFAudioSubsystem::Tick(float DeltaTime)
 	}
 	UpdateAmbience(DeltaTime);
 	UpdateBoats();
+}
+
+// ---------------------------------------------------------------- Music (A02.1)
+
+namespace
+{
+	constexpr float DuckDepthDb = -4.f;
+	constexpr double DuckAttack = 0.05;
+	constexpr double DuckHold = 0.4;
+	constexpr double DuckRelease = 0.6;
+	constexpr float FallbackBarSeconds = 2.f;
+
+	const TCHAR* MusicStateName(ELFMusicState S)
+	{
+		switch (S)
+		{
+		case ELFMusicState::Menu: return TEXT("Menu");
+		case ELFMusicState::Main: return TEXT("Main");
+		case ELFMusicState::Final: return TEXT("Final");
+		default: return TEXT("Off");
+		}
+	}
+}
+
+static FAutoConsoleCommandWithWorldAndArgs GLFMusicCmd(
+	TEXT("lf.music"), TEXT("lf.music <menu|main|final|off> - switch the music state (crossfades over one bar)."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		ULFMusicSubsystem* M = ULFMusicSubsystem::Get(World);
+		if (!M || Args.Num() == 0)
+		{
+			UE_LOG(LogLF, Display, TEXT("[music] usage: lf.music <menu|main|final|off>%s"), M ? TEXT("") : TEXT(" (no game instance)"));
+			return;
+		}
+		const FString A = Args[0].ToLower();
+		const ELFMusicState S = A == TEXT("menu") ? ELFMusicState::Menu : A == TEXT("main") ? ELFMusicState::Main
+			: A == TEXT("final") ? ELFMusicState::Final : ELFMusicState::Off;
+		M->SetMusicState(S);
+	}));
+
+const ULFMusicSubsystem::FTrack& ULFMusicSubsystem::TrackDef(ELFMusicState S)
+{
+	// BPM from Audio/AUDIO_REPORT.md (A03); 0 = unknown -> FallbackBarSeconds.
+	static const FTrack Tracks[4] = {
+		{ nullptr, 0.f },
+		{ TEXT("MUS_LF_Menu"), 106.893f },
+		{ TEXT("MUS_LF_Main_Loop"), 106.893f },
+		{ TEXT("MUS_LF_Final_Loop"), 110.f },
+	};
+	return Tracks[FMath::Clamp(int32(S), 0, 3)];
+}
+
+ULFMusicSubsystem* ULFMusicSubsystem::Get(const UObject* WorldContext)
+{
+	const UWorld* World = WorldContext ? WorldContext->GetWorld() : nullptr;
+	const UGameInstance* GI = World ? World->GetGameInstance() : nullptr;
+	return GI ? GI->GetSubsystem<ULFMusicSubsystem>() : nullptr;
+}
+
+TStatId ULFMusicSubsystem::GetStatId() const
+{
+	RETURN_QUICK_DECLARE_CYCLE_STAT(ULFMusicSubsystem, STATGROUP_Tickables);
+}
+
+float ULFMusicSubsystem::CategoryGain(ELFSoundCategory C) const
+{
+	return CategoryVolume[int32(ELFSoundCategory::Master)] * (C == ELFSoundCategory::Master ? 1.f : CategoryVolume[int32(C)]);
+}
+
+void ULFMusicSubsystem::SetCategoryVolume(ELFSoundCategory Category, float Volume)
+{
+	CategoryVolume[int32(Category)] = FMath::Max(Volume, 0.f);
+	UE_LOG(LogLF, Display, TEXT("[audio] %s volume = %.2f"), CategoryName(Category), CategoryVolume[int32(Category)]);
+	ApplyVolume();
+}
+
+UAudioComponent* ULFMusicSubsystem::GetPlayer(ELFMusicState S)
+{
+	if (S == ELFMusicState::Off)
+	{
+		return nullptr;
+	}
+	Players.SetNum(4);
+	if (UAudioComponent* Existing = Players[int32(S)])
+	{
+		return Existing;
+	}
+	UWorld* World = MusicWorld.Get();
+	if (!World)
+	{
+		return nullptr;
+	}
+	const TCHAR* Name = TrackDef(S).Asset;
+	const FString Path = FString::Printf(TEXT("%s%s.%s"), AudioRoot, Name, Name);
+	USoundWave* W = LoadObject<USoundWave>(nullptr, *Path, nullptr, LOAD_NoWarn | LOAD_Quiet);
+	if (!W)
+	{
+		UE_LOG(LogLF, Warning, TEXT("[music] %s missing"), Name);
+		return nullptr;
+	}
+	W->bLooping = true; // pre-looped WAV: the whole file is the loop
+	// 2D, survives level transitions, never auto-destroyed: one instance per track for the whole session.
+	UAudioComponent* C = UGameplayStatics::CreateSound2D(World, W, 1.f, 1.f, 0.f, nullptr, /*bPersistAcrossLevelTransition*/ true, /*bAutoDestroy*/ false);
+	if (C)
+	{
+		C->bIsUISound = true; // keeps playing while the game is paused
+		C->OnAudioPlaybackPercent.AddDynamic(this, &ULFMusicSubsystem::OnPlaybackPercent);
+		Players[int32(S)] = C;
+	}
+	return C;
+}
+
+void ULFMusicSubsystem::OnGameWorldStarted(UWorld* World)
+{
+	if (!MusicWorld.IsValid())
+	{
+		MusicWorld = World;
+	}
+	if (!bEverStarted)
+	{
+		bEverStarted = true;
+		SetMusicState(ELFMusicState::Main); // PIE default until T04 / the menu drive it
+	}
+}
+
+void ULFMusicSubsystem::SetMusicState(ELFMusicState NewState)
+{
+	if (NewState == State)
+	{
+		return;
+	}
+	const ELFMusicState Old = State;
+	const float Bpm = TrackDef(NewState == ELFMusicState::Off ? Old : NewState).Bpm;
+	const float Fade = Bpm > 0.f ? 240.f / Bpm : FallbackBarSeconds; // one 4/4 bar
+	if (UAudioComponent* Out = Old != ELFMusicState::Off ? GetPlayer(Old) : nullptr)
+	{
+		Out->FadeOut(Fade, 0.f, EAudioFaderCurve::Sin); // equal-power pair with the Sin fade-in
+	}
+	if (UAudioComponent* In = GetPlayer(NewState))
+	{
+		LastPercent[int32(NewState)] = 0.f;
+		Wraps[int32(NewState)] = 0;
+		In->FadeIn(Fade, 1.f, 0.f, EAudioFaderCurve::Sin); // from the loop start
+	}
+	State = NewState;
+	StateStart = FPlatformTime::Seconds();
+	ApplyVolume();
+	UE_LOG(LogLF, Display, TEXT("[music] %s -> %s (equal-power crossfade %.2f s = 1 bar at %.1f BPM)"),
+		MusicStateName(Old), MusicStateName(NewState), Fade, Bpm);
+}
+
+void ULFMusicSubsystem::OnPlaybackPercent(const USoundWave* PlayingWave, const float PlaybackPercent)
+{
+	for (int32 i = 1; i < 4; ++i)
+	{
+		const UAudioComponent* C = Players.IsValidIndex(i) ? Players[i].Get() : nullptr;
+		if (!C || C->Sound.Get() != PlayingWave)
+		{
+			continue;
+		}
+		static double LastDiag = 0.0;
+		const double NowDiag = FPlatformTime::Seconds();
+		if (NowDiag - LastDiag > 2.0)
+		{
+			LastDiag = NowDiag;
+			UE_LOG(LogLF, Verbose, TEXT("[music] diag %s percent=%.4f (last %.4f), %.2f s after the state started"),
+				*PlayingWave->GetName(), PlaybackPercent, LastPercent[i], NowDiag - StateStart);
+		}
+		// A wrap = the percent crosses a whole cycle: for a looping wave UE keeps counting past 1.0 (measured in PIE: 1.0072 at
+		// 18.13 s on the 17.962 s Main loop); the jump-back test covers a restart from 0.
+		const bool bWrapped = PlaybackPercent + 0.5f < LastPercent[i] || FMath::FloorToInt(PlaybackPercent) > FMath::FloorToInt(LastPercent[i]);
+		if (bWrapped && ELFMusicState(i) == State && NowDiag - StateStart > 1.0)
+		{
+			++Wraps[i];
+			UE_LOG(LogLF, Display, TEXT("[music] %s looped (wrap %d, %.2f s after the state started, wave %.3f s)"),
+				MusicStateName(ELFMusicState(i)), Wraps[i], FPlatformTime::Seconds() - StateStart, PlayingWave->Duration);
+		}
+		LastPercent[i] = PlaybackPercent;
+	}
+}
+
+void ULFMusicSubsystem::Duck(const TCHAR* Why)
+{
+	const double Now = FPlatformTime::Seconds();
+	const bool bAlreadyDucked = Now < DuckHoldUntil + DuckRelease && DuckDb < -0.01f;
+	if (!bAlreadyDucked)
+	{
+		DuckStart = Now;
+	}
+	// Overlapping ducks extend the hold, never go deeper.
+	DuckHoldUntil = FMath::Max(DuckHoldUntil, (bAlreadyDucked ? Now : DuckStart + DuckAttack) + DuckHold);
+	UE_LOG(LogLF, Display, TEXT("[music] duck %.0f dB (%s)%s, hold until +%.2f s"), DuckDepthDb, Why,
+		bAlreadyDucked ? TEXT(" - extends the current duck") : TEXT(""), DuckHoldUntil - Now);
+}
+
+void ULFMusicSubsystem::Tick(float DeltaTime)
+{
+	const double Now = FPlatformTime::Seconds();
+	float Target = 0.f;
+	if (Now < DuckHoldUntil)
+	{
+		Target = DuckDepthDb;
+	}
+	const float PrevDb = DuckDb;
+	const double Dt = LastTickTime > 0.0 ? FMath::Min(Now - LastTickTime, 0.1) : 0.0;
+	LastTickTime = Now;
+	if (Target < DuckDb)
+	{
+		DuckDb = FMath::Max(Target, DuckDb + float(DuckDepthDb * Dt / DuckAttack)); // attack: 0 -> -4 dB in 0.05 s
+	}
+	else if (Target > DuckDb)
+	{
+		DuckDb = FMath::Min(Target, DuckDb - float(DuckDepthDb * Dt / DuckRelease)); // release: -4 -> 0 dB in 0.6 s
+		if (DuckDb > -0.01f && PrevDb <= -0.01f)
+		{
+			DuckDb = 0.f;
+			UE_LOG(LogLF, Display, TEXT("[music] duck released (%.2f s after it started)"), Now - DuckStart);
+		}
+	}
+	if (DuckDb != PrevDb)
+	{
+		ApplyVolume();
+	}
+}
+
+void ULFMusicSubsystem::ApplyVolume()
+{
+	const float Gain = CategoryGain(ELFSoundCategory::Music) * FMath::Pow(10.f, DuckDb / 20.f);
+	for (UAudioComponent* C : Players)
+	{
+		if (C)
+		{
+			C->SetVolumeMultiplier(FMath::Max(Gain, 0.001f));
+		}
+	}
+}
+
+void ULFMusicSubsystem::Deinitialize()
+{
+	for (UAudioComponent* C : Players)
+	{
+		if (C)
+		{
+			C->Stop();
+			C->DestroyComponent();
+		}
+	}
+	Players.Reset();
+	Super::Deinitialize();
 }
