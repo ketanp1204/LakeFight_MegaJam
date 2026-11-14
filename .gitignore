@@ -36,3 +36,6 @@ Tools/audio/.tmp/
 .cursor/
 .gemini/
 .vscode/
+
+# N1: zipped packaged builds
+Builds/

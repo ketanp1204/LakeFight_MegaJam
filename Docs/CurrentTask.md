@@ -1,6 +1,6 @@
 # N1 progress (Claude Code, unattended night run 14-15 Nov; spec: Docs/N1.md)
 1. [DONE f927b8c] T04 review/normalize, #1 tags, #2 AI fishing, #14 API
-2. [IN PROGRESS] Safety package + smoke + zip
+2. [DONE see git log "N1.2"] Safety package + smoke + zip
 3. [ ] Bug pass a-e
 4. [ ] T04 stage 3 AI goals + 2 AI-only rounds
 5. [ ] Credits + main menu
@@ -9,6 +9,15 @@
 8. [ ] Final package + report + DirectorsLog
 9. [ ] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 2 - safety package (14 Nov ~21:43-21:53 IST, unreviewed - director away)
+- `Tools/ue.ps1 -Action package -Project C:/Unreal/Projects/LakeFight_MegaJam/LakeFight.uproject -EngineDir D:/Unreal/UE_EpicGames/UE_5.8`
+  (Shipping, Win64): BUILD SUCCESSFUL in 4:46 -> `Build/Windows/LakeFight.exe` (533 MB). Source = commit f927b8c.
+- Smoke: ran the .exe windowed 1280x720 untouched for a full round. Game-window captures (Saved/n1/pkg1_t60.png,
+  pkg1_end.png): HUD/timer live at 3:25 with AIs fighting (the idle player got knocked in), results screen at 0:00
+  ("DRAW", 8 overboards Yellow, 2 steals, Restart/Quit). No crash. Shipping has no log, so zone/bank discovery is NOT
+  proven in this build (AIs didn't fish yet - no stage 3 goals); the next package adds `-LFSmoke` evidence for that.
+- Zip: `Builds/LakeFight_N1_safety_20261114_2152.zip` (391 MB). `Builds/` added to .gitignore.
 
 ## N1 item 1 - T04 review follow-ups (Claude Code, 14 Nov night, unreviewed - director away)
 - The R-T04.1 list itself was not on disk; worked from N1's descriptions of #1/#2/#14.
