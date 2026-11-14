@@ -3,12 +3,23 @@
 2. [DONE bcf332b] Safety package + smoke + zip
 3. [DONE 61dca4d] Bug pass a-e
 4. [DONE 8dcba09] T04 stage 3 AI goals + 2 AI-only rounds
-5. [IN PROGRESS] Credits + main menu
-6. [ ] Re-package + smoke + zip
+5. [DONE 739cea9] Credits + main menu
+6. [IN PROGRESS] Re-package + smoke + zip
 7. [ ] Sky
 8. [ ] Final package + report + DirectorsLog
 9. [ ] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 6 - re-package + smoke (14 Nov ~23:10-23:25 IST, unreviewed - director away)
+- 1st package attempt FAILED: the Shipping unity build merged LFMenuWidget.cpp with LFRoundWidget.cpp and both had
+  anonymous-namespace helpers (Cream, Place, ...). The editor's adaptive build had hidden it. Menu helpers renamed (Menu*).
+- 2nd package OK. `-LFSmoke` Shipping run (LFSmoke.txt in %LOCALAPPDATA%/LakeFight/Saved): **"fish ready - 3 zones, 4 banks"**
+  (tags work in a cooked build), menu shown -> Play -> 39 catches -> results "Yellow WINS!" 22/7/6, 2 steals -> quit, no crash.
+- BUT the crew had no hats or vests in the packaged game (also true of the 21:52 safety build): SM_LF_LifeVest_<Team> /
+  SM_LF_Hat_Bucket_<Team> are loaded by string path at runtime, so the map cook never included them. Fix:
+  `+DirectoriesToAlwaysCook=(Path="/Game/LakeFight/Meshes")` in DefaultGame.ini (Audio was already listed).
+- 3rd package OK (cook only, 1:03). Smoke: hat + vest visible (Saved/n1/pkg3_start.png), "3 zones, 4 banks", menu -> Play ->
+  50 catches -> "Green WINS!" 23/22/12 -> quit. Zip: `Builds/LakeFight_N1_menu_20261114_2223.zip` (393 MB).
 
 ## N1 item 5 - main menu + credits (14 Nov ~22:45-23:10 IST, unreviewed - director away)
 - New `Round/LFMenuWidget.h/.cpp` (native UMG, 1280x720 design canvas like the round HUD): B12a title lockup

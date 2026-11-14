@@ -39,13 +39,13 @@ static FAutoConsoleCommand CmdLFMenuPage(TEXT("lf.menu.page"), TEXT("lf.menu.pag
 
 namespace
 {
-	const FLinearColor Cream(1.f, .95f, .8f, 1.f);
-	const FLinearColor Gold(1.f, .85f, .25f, 1.f);
-	const FLinearColor Ink(.02f, .04f, .05f, 1.f);
-	const FLinearColor Panel(.018f, .035f, .045f, .9f);
-	const TCHAR* Section = TEXT("LakeFight.Audio");
+	const FLinearColor MenuCream(1.f, .95f, .8f, 1.f);
+	const FLinearColor MenuGold(1.f, .85f, .25f, 1.f);
+	const FLinearColor MenuInk(.02f, .04f, .05f, 1.f);
+	const FLinearColor MenuPanel(.018f, .035f, .045f, .9f);
+	const TCHAR* MenuSection = TEXT("LakeFight.Audio");
 
-	void Place(UWidget* Widget, FVector2D At, FVector2D Size)
+	void MenuPlace(UWidget* Widget, FVector2D At, FVector2D Size)
 	{
 		UCanvasPanelSlot* Slot = CastChecked<UCanvasPanelSlot>(Widget->Slot);
 		Slot->SetPosition(At);
@@ -53,7 +53,7 @@ namespace
 	}
 
 	// Credits: the director-approved list from Docs/ItchPage.md; the Uppbeat lines are verbatim from Docs/ASSETS.md.
-	const TCHAR* CreditsText =
+	const TCHAR* MenuCreditsText =
 		TEXT("Ketan Patel - design, direction, playtesting and final creative decisions.\n")
 		TEXT("Claude Code - Unreal gameplay and editor implementation, plus code review.\n")
 		TEXT("Codex - original scripted Blender art and icons, audio processing, documentation, T04 fish/round work.\n")
@@ -76,7 +76,7 @@ UTextBlock* ULFMenuWidget::Text(UCanvasPanel* Parent, const FString& Value, FVec
 {
 	UTextBlock* Label = WidgetTree->ConstructWidget<UTextBlock>();
 	Parent->AddChild(Label);
-	Place(Label, At, Size);
+	MenuPlace(Label, At, Size);
 	Label->SetText(FText::FromString(Value));
 	FSlateFontInfo Font = Label->GetFont();
 	Font.Size = FontSize;
@@ -91,10 +91,10 @@ UButton* ULFMenuWidget::MakeButton(UCanvasPanel* Parent, const FString& Label, F
 {
 	UButton* Button = WidgetTree->ConstructWidget<UButton>();
 	Parent->AddChild(Button);
-	Place(Button, At, Size);
+	MenuPlace(Button, At, Size);
 	UTextBlock* Text = WidgetTree->ConstructWidget<UTextBlock>();
 	Text->SetText(FText::FromString(Label));
-	Text->SetColorAndOpacity(Ink);
+	Text->SetColorAndOpacity(MenuInk);
 	FSlateFontInfo Font = Text->GetFont();
 	Font.Size = FontSize;
 	Text->SetFont(Font);
@@ -106,11 +106,11 @@ USlider* ULFMenuWidget::MakeSlider(UCanvasPanel* Parent, FVector2D At, FVector2D
 {
 	USlider* Slider = WidgetTree->ConstructWidget<USlider>();
 	Parent->AddChild(Slider);
-	Place(Slider, At, Size);
+	MenuPlace(Slider, At, Size);
 	Slider->SetValue(Value);
 	Slider->SetStepSize(0.05f);
-	Slider->SetSliderBarColor(Cream);
-	Slider->SetSliderHandleColor(Gold);
+	Slider->SetSliderBarColor(MenuCream);
+	Slider->SetSliderHandleColor(MenuGold);
 	Slider->OnValueChanged.AddDynamic(this, &ULFMenuWidget::OnSliderChanged);
 	return Slider;
 }
@@ -137,14 +137,14 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	LogoImage = Logo;
 	Canvas->AddChild(Logo);
 	// The lettering fills roughly the left 45% of the 960x300 lockup canvas: offset so it sits centred above the buttons.
-	Place(Logo, FVector2D(395.f, -10.f), FVector2D(1000.f, 312.5f));
+	MenuPlace(Logo, FVector2D(395.f, -10.f), FVector2D(1000.f, 312.5f));
 	if (LogoTexture) Logo->SetBrushFromTexture(LogoTexture);
-	else Text(Canvas, TEXT("LAKE FIGHT"), FVector2D(380.f, 90.f), FVector2D(520.f, 90.f), 56, Cream);
+	else Text(Canvas, TEXT("LAKE FIGHT"), FVector2D(380.f, 90.f), FVector2D(520.f, 90.f), 56, MenuCream);
 
 	// Main page.
 	MainPage = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Canvas->AddChild(MainPage);
-	Place(MainPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
+	MenuPlace(MainPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
 	const TCHAR* Labels[] = { TEXT("PLAY"), TEXT("OPTIONS"), TEXT("CREDITS"), TEXT("QUIT") };
 	for (int32 I = 0; I < 4; ++I)
 	{
@@ -158,16 +158,16 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	MainButtons[1]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverOptions);
 	MainButtons[2]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverCredits);
 	MainButtons[3]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverQuit);
-	Text(MainPage, TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / B back"), FVector2D(340.f, 640.f), FVector2D(700.f, 30.f), 14, Cream);
+	Text(MainPage, TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / B back"), FVector2D(340.f, 640.f), FVector2D(700.f, 30.f), 14, MenuCream);
 
 	// Options page: two rows (label + slider), Back.
 	OptionsPage = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Canvas->AddChild(OptionsPage);
-	Place(OptionsPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
+	MenuPlace(OptionsPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
 	UBorder* OptionsCard = WidgetTree->ConstructWidget<UBorder>();
 	OptionsPage->AddChild(OptionsCard);
-	Place(OptionsCard, FVector2D(300.f, 270.f), FVector2D(680.f, 330.f));
-	OptionsCard->SetBrushColor(Panel);
+	MenuPlace(OptionsCard, FVector2D(300.f, 270.f), FVector2D(680.f, 330.f));
+	OptionsCard->SetBrushColor(MenuPanel);
 	const ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this);
 	const float Music = Audio ? Audio->GetCategoryVolume(ELFSoundCategory::Music) : 1.f;
 	const float Sfx = Audio ? Audio->GetCategoryVolume(ELFSoundCategory::SFX) : 1.f;
@@ -175,24 +175,24 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	SfxRow = MakeButton(OptionsPage, TEXT("SOUND FX"), FVector2D(330.f, 380.f), FVector2D(200.f, 60.f), 22);
 	MusicSlider = MakeSlider(OptionsPage, FVector2D(560.f, 310.f), FVector2D(300.f, 40.f), FMath::Clamp(Music, 0.f, 1.f));
 	SfxSlider = MakeSlider(OptionsPage, FVector2D(560.f, 390.f), FVector2D(300.f, 40.f), FMath::Clamp(Sfx, 0.f, 1.f));
-	MusicValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 312.f), FVector2D(90.f, 40.f), 20, Cream);
-	SfxValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 392.f), FVector2D(90.f, 40.f), 20, Cream);
+	MusicValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 312.f), FVector2D(90.f, 40.f), 20, MenuCream);
+	SfxValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 392.f), FVector2D(90.f, 40.f), 20, MenuCream);
 	OptionsBack = MakeButton(OptionsPage, TEXT("BACK"), FVector2D(480.f, 500.f), FVector2D(320.f, 64.f));
 	MusicRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverMusic);
 	SfxRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverSfx);
 	OptionsBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
 	OptionsBack->OnClicked.AddDynamic(this, &ULFMenuWidget::OnBack);
-	Text(OptionsPage, TEXT("Left / right to change"), FVector2D(330.f, 450.f), FVector2D(600.f, 30.f), 14, Cream);
+	Text(OptionsPage, TEXT("Left / right to change"), FVector2D(330.f, 450.f), FVector2D(600.f, 30.f), 14, MenuCream);
 
 	// Credits page.
 	CreditsPage = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Canvas->AddChild(CreditsPage);
-	Place(CreditsPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
+	MenuPlace(CreditsPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
 	UBorder* CreditsCard = WidgetTree->ConstructWidget<UBorder>();
 	CreditsPage->AddChild(CreditsCard);
-	Place(CreditsCard, FVector2D(90.f, 200.f), FVector2D(1100.f, 420.f));
-	CreditsCard->SetBrushColor(Panel);
-	UTextBlock* Credits = Text(CreditsPage, CreditsText, FVector2D(120.f, 214.f), FVector2D(1040.f, 400.f), 13, Cream);
+	MenuPlace(CreditsCard, FVector2D(90.f, 200.f), FVector2D(1100.f, 420.f));
+	CreditsCard->SetBrushColor(MenuPanel);
+	UTextBlock* Credits = Text(CreditsPage, MenuCreditsText, FVector2D(120.f, 214.f), FVector2D(1040.f, 400.f), 13, MenuCream);
 	Credits->SetAutoWrapText(true);
 	CreditsBack = MakeButton(CreditsPage, TEXT("BACK"), FVector2D(480.f, 636.f), FVector2D(320.f, 60.f));
 	CreditsBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
@@ -222,11 +222,11 @@ int32 ULFMenuWidget::ItemCount() const
 void ULFMenuWidget::Select(int32 Index)
 {
 	Selection = (Index + ItemCount()) % ItemCount();
-	for (int32 I = 0; I < MainButtons.Num(); ++I) MainButtons[I]->SetBackgroundColor(Page == EPage::Main && I == Selection ? Gold : Cream);
-	MusicRow->SetBackgroundColor(Page == EPage::Options && Selection == 0 ? Gold : Cream);
-	SfxRow->SetBackgroundColor(Page == EPage::Options && Selection == 1 ? Gold : Cream);
-	OptionsBack->SetBackgroundColor(Page == EPage::Options && Selection == 2 ? Gold : Cream);
-	CreditsBack->SetBackgroundColor(Page == EPage::Credits ? Gold : Cream);
+	for (int32 I = 0; I < MainButtons.Num(); ++I) MainButtons[I]->SetBackgroundColor(Page == EPage::Main && I == Selection ? MenuGold : MenuCream);
+	MusicRow->SetBackgroundColor(Page == EPage::Options && Selection == 0 ? MenuGold : MenuCream);
+	SfxRow->SetBackgroundColor(Page == EPage::Options && Selection == 1 ? MenuGold : MenuCream);
+	OptionsBack->SetBackgroundColor(Page == EPage::Options && Selection == 2 ? MenuGold : MenuCream);
+	CreditsBack->SetBackgroundColor(Page == EPage::Credits ? MenuGold : MenuCream);
 }
 
 void ULFMenuWidget::Activate()
@@ -281,8 +281,8 @@ void ULFMenuWidget::ApplyVolumes()
 	SfxValue->SetText(FText::FromString(FString::Printf(TEXT("%d%%"), FMath::RoundToInt(Sfx * 100.f))));
 	if (GConfig)
 	{
-		GConfig->SetFloat(Section, TEXT("Music"), Music, GGameUserSettingsIni);
-		GConfig->SetFloat(Section, TEXT("SFX"), Sfx, GGameUserSettingsIni);
+		GConfig->SetFloat(MenuSection, TEXT("Music"), Music, GGameUserSettingsIni);
+		GConfig->SetFloat(MenuSection, TEXT("SFX"), Sfx, GGameUserSettingsIni);
 		GConfig->Flush(false, GGameUserSettingsIni);
 	}
 }
@@ -290,8 +290,8 @@ void ULFMenuWidget::ApplyVolumes()
 void ULFMenuWidget::LoadAudioSettings(UObject* WorldContext)
 {
 	float Music = 1.f, Sfx = 1.f;
-	if (!GConfig || !GConfig->GetFloat(Section, TEXT("Music"), Music, GGameUserSettingsIni)) return;
-	GConfig->GetFloat(Section, TEXT("SFX"), Sfx, GGameUserSettingsIni);
+	if (!GConfig || !GConfig->GetFloat(MenuSection, TEXT("Music"), Music, GGameUserSettingsIni)) return;
+	GConfig->GetFloat(MenuSection, TEXT("SFX"), Sfx, GGameUserSettingsIni);
 	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(WorldContext))
 	{
 		Audio->SetCategoryVolume(ELFSoundCategory::Music, FMath::Clamp(Music, 0.f, 1.f));
