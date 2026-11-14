@@ -439,3 +439,17 @@ idle + steering bias, vest height, the light-swing start (not filmed - needs a p
   affect them. `git rm --cached` would stop tracking them but deletes them on the other machine at its next pull - your call.
 - Audio during my test runs: the editor ran with `-nosound`. A music on/off option in a menu = separate task (ULFMusicSubsystem::
   SetMusicState(Off) / SetCategoryVolume already exist for it).
+
+**Playtest 007 fix (director: "the left arm and the oar are glitching", `Playtest/videos/007 - rowing bug.mp4`)**
+- Cause (mine, T03.2): the rower sits ~60 cm aft of the oarlocks; at the finish the hand goal's fore-aft/height offset from its oarlock
+  reached ~65 of the oar's 70 cm, so the sideways solve collapsed (oar swung fore-aft, hand flung to the gunwale) and past 70 cm it
+  switched off (hand snapped back). His left hand (Oarlock_R side) rowed 7 cm higher (stagger), so it hit the edge first. The playtest
+  log shows it: grips 13 <-> 94 cm apart between samples, wrists out to 3.7 shoulder half-widths, hand target 21 cm off the grip.
+- Fix: that offset is soft-clamped (tanh knee at 0.55 of the reach, limit 0.75 - `RowReachKneeFrac` / `RowMaxReachFrac`), continuous;
+  "inboard" from the boat's centreline. The hand stagger is now fore-aft (12, left hand ahead) instead of vertical - the vertical
+  stagger tilted the oars opposite ways (one blade mostly out of the water: L +3..+22 cm vs R -16). Stroke heights +6 mesh units
+  (`RowDriveZ` -8, `RowRecoverZ` -18, `RowRestZ` -20) to undo the blade lift from the 10.4 cm seat drop. New in the `[oars]` log:
+  largest frame-to-frame grip jump.
+- Verified (player, `LFRow 1` then `-1`, AIs frozen; 1 build Succeeded each step): forward 25 samples - hand target -> grip 0.0 cm,
+  grips 13.3-41.2 cm apart, largest grip step 3.1 cm/frame, wrists within 1.8; blades L -18..+7 (under in 17/25), R -15..+6 (19/25).
+  Reverse 16 samples - 0.0 cm, 13.5-41.2 apart, step 1.0 cm/frame. 0 LogLF warnings. Strip: `Docs/Shots/T032_fix_rowing_strip.png`.
