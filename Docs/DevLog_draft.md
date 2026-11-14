@@ -6,9 +6,9 @@
 
 Lake Fight is a physical-comedy boat brawler on a small fishing lake. You can paddle someone, fall overboard, swim back, climb into a boat and steal it. The larger plan is a four-crew fight over fish, with enough wobble and bad decisions to stop it becoming a tidy race around some buoys.
 
-I'm reading Director's Cut as “the shelved idea, uncut.” There was an older Unity Lake Fight prototype. This is my chance to return to the parts I wanted: paddle fights, overboard, swimming, boarding, stealing boats and that four-crew scramble over fish.
+I'm reading Director's Cut as “the shelved idea, uncut.” The old Unity P0 shipped boats on a lake, but deferred combat and boarding. Paddle fights, overboard ragdolls, swimming, boarding, stealing boats and the four-crew fight over fish never got built. This is my chance to return to those parts of the idea.
 
-TODO(verify): Confirm which of those features existed in the Unity prototype, which were cut, and why. This framing comes from my D01 brief; the available project rules confirm the older project but do not document its feature history.
+TODO(director): why it was shelved
 
 The old project is off limits to the agents. My rules forbid opening it or copying its code, models or textures. The jam project has its own work, starting from the declared jam boundary. Returning to an idea should not quietly turn into importing an old implementation.
 
@@ -80,31 +80,27 @@ The log crosses midnight, and some entries were written out of order. I'm groupi
 
 **B10:** Ten environment meshes extended the ground and distant hills beyond the shore. The paddle icon also became horizontal with an oval blade, and the bonus fish gained a pale highlight and sparkles.
 
-**B11:** Clouds, birds, floating junk and insects were delivered and kept. The log records clouds and one static heron placed in L01. I deferred moving wildlife until T04 works, and enlarged the duck and bottle in Unreal for chase-camera readability.
+**B11:** Clouds, birds, floating junk and insects were delivered and kept. Clouds and one static heron are planned for L01. I deferred moving wildlife until T04 works, and enlarged the duck and bottle in Unreal for chase-camera readability.
 
 ![Image slot: ambient birds at their authored relative scales](../Art/Export/_shots/B11_birds.png)
 
 ## What the AI got wrong, and how we caught it
 
-**Water that needed repeated direction.** My reviews rejected moving facets, a straight wake and heavy foam. T01.3 records fragmented foam, depth-colour corrections and foam following the actual hull outline. Those are documented changes, with some look approval still pending.
+**The mirror lake.** The first T01 water rendered as a mirror with black holes in it. I caught that in my first screenshot review. We replaced it with custom summed-sine water and a toon lake material.
 
-TODO(verify): Find the original “mirror lake” symptom and how I spotted it. The available log supports the later water revisions, but not that exact before-state or its cause.
+Later reviews rejected moving facets, a straight wake and heavy foam. T01.3 records fragmented foam, depth-colour corrections and foam following the actual hull outline. Those are documented changes, with some look approval still pending.
 
-**Boat handling.** T01.1 records rudder force, spool and yaw momentum, with feel acceptance left to me. That is the supported correction, not evidence that the agent's first boat already handled well.
-
-TODO(verify): Add the original “car-like boat” playtest note and the specific behaviour that prompted the handling changes.
+**Boat handling.** My T01 playtest notes were “feels like a car” and “not enough oomph”. That led to rudder force at the stern, throttle spool and yaw momentum in T01.1. The implementation report still left feel acceptance to me.
 
 **Water inside the hull.** T01.2 introduced the hull water mask and checked it in screenshots at zero and fifteen degrees of roll. Later review still found submerged hull edges, bottom lines and an unwanted foam halo. The fixes used the hull stencil and real outline. The lake also became translucent because of a material limitation, which the report disclosed.
 
 ![Image slot: water treatment from the chase view](Shots/T013_chase.png)
 
-**Camera-shake jank.** The T01.3 correction moved camera, shake and FOV timing onto real time, using one decaying vertical shake and a pair cooldown. The report could verify a clean run, but could not drive a ram through MCP.
+**Camera-shake jank.** I called it “janky”. Hitstop was fighting camera lag. The T01.3 fix moved the shake onto real time, along with camera and FOV timing, using one decaying vertical shake and a pair cooldown. The report could verify a clean run, but could not drive a ram through MCP.
 
-TODO(verify): Add my original description of the shake jank and the final ram-feel verdict. The log documents the implementation change, not a completed human acceptance test.
+TODO(director): Add my camera-shake acceptance verdict after testing the real-time fix in a ram.
 
-**The paddle hold.** I rejected the first shoulder-pivot grip. It moved towards the waist, then later iterations settled on a level chest-centred hold with hand alignment and finger curl. Playtests also caught the right hand drifting across the chest during a swing; the paddle pivot needed to turn with the torso twist.
-
-TODO(verify): Match the “floating paddle” anecdote to its original screenshot or playtest note. The grip corrections are documented; I shouldn't silently rename one of them as that exact incident.
+**The paddle hold.** On Friday the paddle floated in front of the brawler's hands instead of being held. The fix added `Grip_R` and `Grip_L` sockets on the paddle and two-hand IK. I also rejected the first shoulder-pivot grip. It moved towards the waist, then later iterations settled on a level chest-centred hold with hand alignment and finger curl. Playtests caught the right hand drifting across the chest during a swing; the paddle pivot needed to turn with the torso twist.
 
 ![Image slot: the earlier diagonal hold for comparison](Shots/T031_grip_v1_diagonal_front.png)
 
@@ -120,13 +116,9 @@ TODO(verify): Match the “floating paddle” anecdote to its original screensho
 
 ![Image slot: the revised team palette on boats and flags](../Art/Export/_shots/B04_TeamPalette_BoatsFlags.png)
 
-**The reeds needed another pass.** B03 records a new bed of narrow blades and cattails, without rows. A geometry test caught root gaps; the agent changed blade construction and added coverage. It reported near-total concealment from one fixed broadside test, while leaving other angles to human review.
+**The reeds needed another pass.** The first reed beds didn't read as reeds in review. B03 v2 rebuilt them as narrow blades and cattails, without rows. A geometry test caught root gaps; the agent changed blade construction and added coverage. It reported near-total concealment from one fixed broadside test, while leaving other angles to human review.
 
-TODO(verify): Locate my “lettuce-field reeds” review and the matching before image. The report proves the redesign and audit, but doesn't establish that phrase or who first identified that visual problem.
-
-**An instruction violation needs evidence too.**
-
-TODO(verify): Identify the agent, task, forbidden commit and corrective action for the no-git incident. Several art reports explicitly say no Git was used, while later tasks permit commits. A commit's existence alone cannot prove it broke the instruction active at the time.
+**An agent crossed the no-git boundary.** Codex committed during an art task while the rule was “no git”. I resolved that by allowing art-task commits only for explicitly listed `Art/` paths, one commit per item. That rule is now in [AGENTS.md](../AGENTS.md), alongside the task boundaries. Finishing the asset did not excuse ignoring the instruction.
 
 ## Calls I made
 
@@ -159,11 +151,13 @@ The game uses Unreal Engine, with Blender scripts producing the original meshes.
 
 The music is **Boardwalk Jaunt — Sky Toes**, used for main/menu, and **Funk Formula — Nick Petrov**, used for final music, from Uppbeat. Credit is required. The recorded codes are `TBK6NUHLZIDMPKOK` and `ILNEZRJIJP1DSTBI`, respectively. The final credits need to retain the attribution recorded in [ASSETS.md](ASSETS.md).
 
-TODO(verify): Locate PRE_JAM_DECLARATION.md before publishing the exact tooling declaration. It was not found in this checkout or the searched Git paths. Also complete the empty AI-content/tool tables in ASSETS.md and confirm the submission wording for Mixamo and Manny.
+My [pre-jam declaration](../PRE_JAM_DECLARATION.md) is committed at the repository root and belongs with the process record.
+
+TODO(verify): Complete the empty AI-content/tool tables in ASSETS.md and confirm the submission wording for Mixamo and Manny.
 
 ## TODO(director): Saturday afternoon — L01 lake layout
 
-Add the finished layout, camera/readability decisions and what changed after the currently logged clouds and heron placement.
+Add the finished layout and camera/readability decisions, including what happened to the clouds and static heron planned for L01.
 
 ## TODO(director): T04 round loop
 
