@@ -9,6 +9,7 @@
 #include "TwoBoneIK.h"
 #include "Animation/AnimNodeBase.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "HAL/IConsoleManager.h"
 #include "UObject/ConstructorHelpers.h"
@@ -109,6 +110,23 @@ void ULFBrawlerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			WantYaw = FMath::Lerp(SwingTwistFollowDeg, 0.f, Alpha);
 			bExact = true;
 		}
+		// The strike blends in from the torso at the release over SwingBlendInTime (same curve as the paddle): a light tap
+		// released before the wind-up used to snap to the full wind-up twist on the first frame.
+		const uint8 Phase = bSwinging ? V.SwingPhase : 0;
+		if (Phase == 2 && LastSwingPhase != 2)
+		{
+			StrikeStartYaw = TorsoYaw;
+			StrikeStartPitch = TorsoPitch;
+			StrikeStartLean = PelvisForward;
+		}
+		LastSwingPhase = Phase;
+		if (Phase == 2 && V.SwingBlendIn < 1.f)
+		{
+			const float In = FMath::SmoothStep(0.f, 1.f, V.SwingBlendIn);
+			WantYaw = FMath::Lerp(StrikeStartYaw, WantYaw, In);
+			WantPitch = FMath::Lerp(StrikeStartPitch, WantPitch, In);
+			WantLean = FMath::Lerp(StrikeStartLean, WantLean, In);
+		}
 		TorsoYaw = bExact ? WantYaw : FMath::Lerp(TorsoYaw, WantYaw, Ease);
 		TorsoPitch = bExact ? WantPitch : FMath::Lerp(TorsoPitch, WantPitch, Ease);
 		PelvisForward = bExact ? WantLean : FMath::Lerp(PelvisForward, WantLean, Ease);
@@ -136,7 +154,8 @@ void ULFBrawlerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	// Procedural oar rowing while driving: both hands together on the handles, torso lean with the stroke.
 	bRowIK = false;
-	const ALFBoat* RowBoat = V.State == ELFBrawlerState::Driving ? B->GetBoat() : nullptr;
+	bFootIK = false;
+	ALFBoat* RowBoat = V.State == ELFBrawlerState::Driving ? B->GetBoat() : nullptr;
 	if (RowBoat)
 	{
 		float Rate = 0.f;
@@ -176,23 +195,65 @@ void ULFBrawlerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		const float S = float(C.GetScale3D().X);
 		const FVector Mid = (Mesh->GetBoneLocation(TEXT("upperarm_r")) + Mesh->GetBoneLocation(TEXT("upperarm_l"))) * 0.5f;
 		const FVector F = B->GetActorForwardVector(), Rt = B->GetActorRightVector(), U = B->GetActorUpVector();
-		const FVector LockL = RowBoat->GetOarlockWorld(true), LockR = RowBoat->GetOarlockWorld(false);
+		// T03.2: the stroke path gives each hand a goal; each oar (pivot = collar in its oarlock) aims from the oarlock toward its
+		// hand's goal, and the hand is then pulled onto the oar's Grip (70 cm inboard of the collar, on the same line) by the arm IK.
+		FVector Goal[2]; // 0 = right hand, 1 = left hand
 		for (int32 Side = 0; Side < 2; ++Side)
 		{
 			const bool bRight = Side == 0;
-			const FVector Goal = Mid + (F * X + Rt * ((bRight ? 1.f : -1.f) * RowHandSpread) + U * Z) * S;
-			const FVector Lock = FVector::DistSquared(Goal, LockL) < FVector::DistSquared(Goal, LockR) ? LockL : LockR;
-			FTransform T(FRotationMatrix::MakeFromX((Lock - Goal).GetSafeNormal()).ToQuat(), Goal);
-			T = T.GetRelativeTransform(C);
+			const float Stagger = (bRight ? -0.5f : 0.5f) * RowHandStagger; // left hand over the right where the handles meet
+			Goal[Side] = Mid + (F * X + Rt * ((bRight ? 1.f : -1.f) * RowHandSpread) + U * (Z + Stagger)) * S;
+		}
+		// Pair hands with oars by distance (the hull's Oarlock_L / _R names don't say which side is which; nearest wins).
+		const FVector LockL = RowBoat->GetOarlockWorld(true), LockR = RowBoat->GetOarlockWorld(false);
+		const bool bRightOnR = FVector::DistSquared(Goal[0], LockR) <= FVector::DistSquared(Goal[0], LockL);
+		// Keep the stroke's fore-aft / height path but put each goal at the oar's reach (collar -> Grip) by solving its sideways
+		// offset from the oarlock: the hand target then lies where the grip will be, so the arm IK only takes up what's left
+		// (out of reach at the extremes of the stroke).
+		const float Reach = RowBoat->GetOarGripReach();
+		for (int32 Side = 0; Side < 2; ++Side)
+		{
+			const bool bOarLeft = (Side == 0) ? !bRightOnR : bRightOnR;
+			const FVector Lock = bOarLeft ? LockL : LockR;
+			const FVector D = Goal[Side] - Lock;
+			const float Lat = float(FVector::DotProduct(D, Rt));
+			const FVector Rest = D - Rt * Lat;
+			const float Rest2 = float(Rest.SizeSquared());
+			if (Rest2 < Reach * Reach)
+			{
+				Goal[Side] = Lock + Rest + Rt * (FMath::Sign(Lat) * FMath::Sqrt(Reach * Reach - Rest2));
+			}
+		}
+		RowBoat->AimOars(bRightOnR ? Goal[1] : Goal[0], bRightOnR ? Goal[0] : Goal[1]);
+		for (int32 Side = 0; Side < 2; ++Side)
+		{
+			const bool bRight = Side == 0;
+			const bool bOarLeft = bRight ? !bRightOnR : bRightOnR;
+			FTransform T = RowBoat->GetOarGrip(bOarLeft).GetRelativeTransform(C); // X = shaft toward the blade
 			T.SetScale3D(FVector::OneVector);
 			(bRight ? RightTargetCS : LeftTargetCS) = T;
 		}
 		bArmIK = true;
 		bRowIK = true;
+
+		// Head (T03.2): the sitting-idle look-around fades out as rowing intensity rises and comes back when the boat is idle;
+		// while rowing the head looks ahead with a small bias toward the steering.
+		const float Intensity = Rate != 0.f ? FMath::Clamp(FMath::Abs(Rate) / FMath::Max(RowMinStrokeRate, 0.05f), 0.f, 1.f) : 0.f;
+		HeadLookWeight = FMath::FInterpConstantTo(HeadLookWeight, Intensity, DeltaSeconds, 1.f / HeadLookFadeTime);
+		HeadYaw = FMath::FInterpConstantTo(HeadYaw, V.DriveSteer * HeadSteerBiasDeg, DeltaSeconds,
+			FMath::Max(HeadSteerBiasDeg, 1.f) / HeadLookFadeTime);
+
+		// Feet (T03.2): the floor boards' plane in mesh component space (unscaled Manny units) for the foot IK.
+		const FTransform& H = RowBoat->GetHull()->GetComponentTransform();
+		FloorPointCS = C.InverseTransformPosition(H.TransformPosition(FVector(0.f, 0.f, RowBoat->FloorTopZ)));
+		FloorNormalCS = C.InverseTransformVectorNoScale(H.GetUnitAxis(EAxis::Z)).GetSafeNormal();
+		bFootIK = bSitFootIK;
 	}
 	else
 	{
 		RowStrokeWeight = 0.f;
+		HeadLookWeight = 0.f;
+		HeadYaw = 0.f;
 	}
 }
 
@@ -357,7 +418,14 @@ void FLFBrawlerAnimProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSe
 	FreeHandOut = I->FreeHandOut;
 	FreeHandForward = I->FreeHandForward;
 	FreeHandUp = I->FreeHandUp;
-	bDebugIK = CVarLFDebugIK.GetValueOnGameThread() != 0;
+	HeadLookWeight = I->HeadLookWeight;
+	HeadYaw = I->HeadYaw;
+	HeadLookPitchDeg = I->HeadLookPitchDeg;
+	HeadSplit = I->HeadSplit;
+	bFootIK = I->bFootIK;
+	FloorPointCS = I->FloorPointCS;
+	FloorNormalCS = I->FloorNormalCS;
+	bDebugIK =CVarLFDebugIK.GetValueOnGameThread() != 0;
 	MeshScale = I->GetSkelMeshComponent() ? float(I->GetSkelMeshComponent()->GetComponentScale().X) : 1.f;
 	OwnerName = GetNameSafe(I->GetOwningActor());
 }
@@ -367,6 +435,7 @@ void FLFBrawlerAnimProxy::Update(float DeltaSeconds)
 	FAnimInstanceProxy::Update(DeltaSeconds);
 	LoopTime += DeltaSeconds;
 	IKLogClock += DeltaSeconds;
+	FootLogClock += DeltaSeconds;
 	RowTime += DeltaSeconds * RowRate;
 	LastDelta = DeltaSeconds;
 	if (!bArmIK)
@@ -798,6 +867,158 @@ void FLFBrawlerAnimProxy::ApplySwingTorso(FCSPose<FCompactPose>& CS, const FBone
 	}
 }
 
+namespace
+{
+	/** Body forward in mesh space from the hips (thigh_l -> thigh_r = right, forward = right x up). */
+	bool BodyAxes(const FVector& ThighR, const FVector& ThighL, FVector& OutRight, FVector& OutFwd)
+	{
+		OutRight = ThighR - ThighL;
+		OutRight.Z = 0.f;
+		if (!OutRight.Normalize())
+		{
+			return false;
+		}
+		OutFwd = FVector::CrossProduct(OutRight, FVector::UpVector);
+		return true;
+	}
+}
+
+void FLFBrawlerAnimProxy::ApplyHeadLook(FCompactPose& Pose) const
+{
+	const FBoneContainer& Bones = Pose.GetBoneContainer();
+	const FReferenceSkeleton& Ref = Bones.GetReferenceSkeleton();
+	static const TCHAR* Chain[] = { TEXT("neck_01"), TEXT("neck_02"), TEXT("head") };
+	FCompactPoseBoneIndex Idx[3] = { FCompactPoseBoneIndex(INDEX_NONE), FCompactPoseBoneIndex(INDEX_NONE), FCompactPoseBoneIndex(INDEX_NONE) };
+	for (int32 I = 0; I < 3; ++I)
+	{
+		Idx[I] = FindBone(Bones, Ref, Chain[I]);
+		if (Idx[I] == INDEX_NONE)
+		{
+			return;
+		}
+	}
+	const FCompactPoseBoneIndex ThighR = FindBone(Bones, Ref, TEXT("thigh_r"));
+	const FCompactPoseBoneIndex ThighL = FindBone(Bones, Ref, TEXT("thigh_l"));
+	if (ThighR == INDEX_NONE || ThighL == INDEX_NONE)
+	{
+		return;
+	}
+	const float W = FMath::Clamp(HeadLookWeight, 0.f, 1.f);
+
+	// 1) Per-bone layered blend: the clip's look-around on the neck/head fades toward the reference pose (head in line with the spine).
+	for (int32 I = 0; I < 3; ++I)
+	{
+		const FQuat RefRot = Bones.GetRefPoseTransform(Idx[I]).GetRotation();
+		Pose[Idx[I]].SetRotation(FQuat::Slerp(Pose[Idx[I]].GetRotation(), RefRot, W).GetNormalized());
+	}
+
+	// 2) Look ahead (level, a little down, biased toward the steering) - the torso's rowing lean no longer tips the gaze.
+	// The head's own "forward" axis comes from the reference pose (head forward = body forward there).
+	const int32 HeadRef = Ref.FindBoneIndex(TEXT("head"));
+	const int32 TRRef = Ref.FindBoneIndex(TEXT("thigh_r"));
+	const int32 TLRef = Ref.FindBoneIndex(TEXT("thigh_l"));
+	FVector RefRight, RefFwd;
+	if (HeadRef == INDEX_NONE || TRRef == INDEX_NONE || TLRef == INDEX_NONE
+		|| !BodyAxes(FAnimationRuntime::GetComponentSpaceTransformRefPose(Ref, TRRef).GetLocation(),
+			FAnimationRuntime::GetComponentSpaceTransformRefPose(Ref, TLRef).GetLocation(), RefRight, RefFwd))
+	{
+		return;
+	}
+	const FVector HeadLocalFwd = FAnimationRuntime::GetComponentSpaceTransformRefPose(Ref, HeadRef).GetRotation().UnrotateVector(RefFwd);
+
+	FCSPose<FCompactPose> CS;
+	CS.InitPose(Pose);
+	FVector Right, Fwd;
+	if (!BodyAxes(CS.GetComponentSpaceTransform(ThighR).GetLocation(), CS.GetComponentSpaceTransform(ThighL).GetLocation(), Right, Fwd))
+	{
+		return;
+	}
+	// + yaw about Up turns Forward toward Right; + angle about Right tips Forward down.
+	const FVector Desired = FQuat(FVector::UpVector, FMath::DegreesToRadians(HeadYaw))
+		* FQuat(Right, FMath::DegreesToRadians(-HeadLookPitchDeg)) * Fwd;
+	const FVector Cur0 = CS.GetComponentSpaceTransform(Idx[2]).GetRotation().RotateVector(HeadLocalFwd).GetSafeNormal();
+	const FVector Target = (FQuat::Slerp(FQuat::Identity, FQuat::FindBetweenNormals(Cur0, Desired), W) * Cur0).GetSafeNormal();
+	float Remaining = float(HeadSplit.X + HeadSplit.Y + HeadSplit.Z);
+	for (int32 I = 0; I < 3; ++I)
+	{
+		const float Share = float(HeadSplit[I]);
+		const float Frac = Remaining > KINDA_SMALL_NUMBER ? FMath::Clamp(Share / Remaining, 0.f, 1.f) : 1.f;
+		Remaining -= Share;
+		const FVector Cur = CS.GetComponentSpaceTransform(Idx[2]).GetRotation().RotateVector(HeadLocalFwd).GetSafeNormal();
+		const FQuat D = FQuat::Slerp(FQuat::Identity, FQuat::FindBetweenNormals(Cur, Target), Frac);
+		FTransform T = CS.GetComponentSpaceTransform(Idx[I]);
+		T.SetRotation((D * T.GetRotation()).GetNormalized());
+		SetCS(CS, Idx[I], T);
+	}
+	FCSPose<FCompactPose>::ConvertComponentPosesToLocalPoses(MoveTemp(CS), Pose);
+}
+
+void FLFBrawlerAnimProxy::PlantFeet(FCSPose<FCompactPose>& CS, const FBoneContainer& Bones, const FReferenceSkeleton& Ref)
+{
+	// Seated on the (low) thwart: each foot is moved along the floor normal until its sole touches the floor boards, then the leg is
+	// solved with two-bone IK (thigh -> calf -> foot, knee in its animated bend plane), the foot keeps its animated orientation.
+	// Sole = ankle / ball minus their height above the ground in the reference pose (Manny stands on Z = 0).
+	const FVector N = FloorNormalCS.GetSafeNormal();
+	if (N.IsNearlyZero())
+	{
+		return;
+	}
+	float Shift[2] = { 0.f, 0.f };
+	for (int32 Side = 0; Side < 2; ++Side)
+	{
+		const bool bRight = Side == 0;
+		const FCompactPoseBoneIndex U = FindBone(Bones, Ref, LFGrip::Bone(TEXT("thigh"), bRight));
+		const FCompactPoseBoneIndex L = FindBone(Bones, Ref, LFGrip::Bone(TEXT("calf"), bRight));
+		const FCompactPoseBoneIndex Ft = FindBone(Bones, Ref, LFGrip::Bone(TEXT("foot"), bRight));
+		const FCompactPoseBoneIndex Ball = FindBone(Bones, Ref, LFGrip::Bone(TEXT("ball"), bRight));
+		const int32 FootRef = Ref.FindBoneIndex(LFGrip::Bone(TEXT("foot"), bRight));
+		const int32 BallRef = Ref.FindBoneIndex(LFGrip::Bone(TEXT("ball"), bRight));
+		if (U == INDEX_NONE || L == INDEX_NONE || Ft == INDEX_NONE || Ball == INDEX_NONE || FootRef == INDEX_NONE || BallRef == INDEX_NONE)
+		{
+			continue;
+		}
+		const float AnkleH = float(FAnimationRuntime::GetComponentSpaceTransformRefPose(Ref, FootRef).GetLocation().Z);
+		const float BallH = float(FAnimationRuntime::GetComponentSpaceTransformRefPose(Ref, BallRef).GetLocation().Z);
+		FTransform UT = CS.GetComponentSpaceTransform(U);
+		FTransform LT = CS.GetComponentSpaceTransform(L);
+		FTransform FT = CS.GetComponentSpaceTransform(Ft);
+		const FVector BallP = CS.GetComponentSpaceTransform(Ball).GetLocation();
+		const float Heel = float(FVector::DotProduct(FT.GetLocation() - FloorPointCS, N)) - AnkleH;
+		const float Toe = float(FVector::DotProduct(BallP - FloorPointCS, N)) - BallH;
+		const float Move = -FMath::Min(Heel, Toe); // + = up
+		Shift[Side] = Move;
+		if (FMath::IsNearlyZero(Move, 0.1f))
+		{
+			continue;
+		}
+		const FVector Goal = FT.GetLocation() + N * Move;
+		FVector OutJoint, OutEnd;
+		AnimationCore::SolveTwoBoneIK(UT.GetLocation(), LT.GetLocation(), FT.GetLocation(), LT.GetLocation(), Goal,
+			OutJoint, OutEnd, /*bAllowStretching*/ false, 1.f, 1.f);
+		const FQuat FootRot = FT.GetRotation();
+		const FQuat DU = FQuat::FindBetweenNormals((LT.GetLocation() - UT.GetLocation()).GetSafeNormal(), (OutJoint - UT.GetLocation()).GetSafeNormal());
+		const FVector L1 = UT.GetLocation() + DU.RotateVector(LT.GetLocation() - UT.GetLocation());
+		const FVector F1 = UT.GetLocation() + DU.RotateVector(FT.GetLocation() - UT.GetLocation());
+		UT.SetRotation(DU * UT.GetRotation());
+		const FQuat DL = FQuat::FindBetweenNormals((F1 - L1).GetSafeNormal(), (OutEnd - OutJoint).GetSafeNormal());
+		LT.SetLocation(OutJoint);
+		LT.SetRotation(DL * DU * LT.GetRotation());
+		FT.SetLocation(OutEnd);
+		FT.SetRotation(FootRot);
+		TArray<FBoneTransform> Tr;
+		Tr.Add(FBoneTransform(U, UT));
+		Tr.Add(FBoneTransform(L, LT));
+		Tr.Add(FBoneTransform(Ft, FT));
+		CS.LocalBlendCSBoneTransforms(Tr, 1.f);
+	}
+	if (bDebugIK && FootLogClock >= 2.f)
+	{
+		FootLogClock = 0.f;
+		UE_LOG(LogLF, Log, TEXT("[ik] %s feet planted on the floor boards: R moved %.1f cm, L %.1f cm (+ = up, world)"), *OwnerName,
+			Shift[0] * MeshScale, Shift[1] * MeshScale);
+	}
+}
+
 void FLFBrawlerAnimProxy::LogGrip(FCSPose<FCompactPose>& CS, const FBoneContainer& Bones, const FReferenceSkeleton& Ref)
 {
 	// Measured on the solved pose itself (exact; a game-thread check would mix frames during a fast swing).
@@ -937,13 +1158,23 @@ bool FLFBrawlerAnimProxy::Evaluate(FPoseContext& Output)
 		FCSPose<FCompactPose>::ConvertComponentPosesToLocalPoses(MoveTemp(CS), Output.Pose);
 	}
 
-	// Seated: hands rest on the thighs, not inside them.
+	// Rowing: the sitting clip's look-around fades out on the neck/head, the head looks ahead (after the torso lean).
+	if (Clip == ELFBrawlerClip::Sit && HeadLookWeight > KINDA_SMALL_NUMBER)
+	{
+		ApplyHeadLook(Output.Pose);
+	}
+
+	// Seated: hands rest on the thighs, not inside them; feet planted on the floor boards (the driver sits low on the thwart).
 	if (Clip == ELFBrawlerClip::Sit || Clip == ELFBrawlerClip::Row)
 	{
 		const FBoneContainer& Bones = Output.Pose.GetBoneContainer();
 		FCSPose<FCompactPose> CS;
 		CS.InitPose(Output.Pose);
 		PushHandsOffThighs(CS, Bones, Bones.GetReferenceSkeleton(), SitThighRadius + SitHandClearance);
+		if (bFootIK)
+		{
+			PlantFeet(CS, Bones, Bones.GetReferenceSkeleton());
+		}
 		FCSPose<FCompactPose>::ConvertComponentPosesToLocalPoses(MoveTemp(CS), Output.Pose);
 	}
 

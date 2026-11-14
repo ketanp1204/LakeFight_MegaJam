@@ -38,6 +38,10 @@
 #include "NiagaraSystem.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Audio/LFAudio.h"
+#if WITH_EDITOR
+#include "Rendering/SkeletalMeshModel.h"
+#include "Rendering/SkeletalMeshLODModel.h"
+#endif
 
 namespace
 {
@@ -251,7 +255,7 @@ void ALFBrawler::ApplyCrewLook()
 	Vest->SetStaticMesh(VestMesh);
 	Hat->SetStaticMesh(HatMesh);
 	Face->SetStaticMesh(PFace ? PFace : FacePiece.Get());
-	AttachAligned(Vest, NAME_None, TEXT("spine_03"), FVector::ZeroVector, FRotator::ZeroRotator);
+	AttachAligned(Vest, NAME_None, TEXT("spine_03"), VestOffset, FRotator::ZeroRotator);
 	AttachAligned(Hat, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
 	AttachAligned(Face, NAME_None, TEXT("head"), FVector::ZeroVector, FRotator::ZeroRotator);
 	Vest->SetWorldScale3D(FVector(GearScale));
@@ -270,9 +274,11 @@ void ALFBrawler::GetAnimView(FLFBrawlerAnimView& Out) const
 	Out.bChargeHeld = SwingPhase == ELFSwingPhase::Charging && GetWorld() && GetWorld()->GetTimeSeconds() - ChargeStartTime >= ChargeMinTime;
 	Out.bStunned = IsStunned();
 	Out.ClimbAlpha = bHanging ? 0.15f : FMath::Clamp(ClimbAge / FMath::Max(ClimbDuration, 0.01f), 0.f, 1.f);
+	Out.SwingBlendIn = SwingPhase == ELFSwingPhase::Swinging && SwingBlendInTime > 0.f ? FMath::Clamp(SwingAge / SwingBlendInTime, 0.f, 1.f) : 1.f;
 	if (State == ELFBrawlerState::Driving && Boat.IsValid())
 	{
 		Out.DriveThrottle = Boat->GetThrottleOutput();
+		Out.DriveSteer = Boat->GetSteerInput();
 		Out.BoatSpeed = float(Boat->GetVelocity().Size2D());
 	}
 }
@@ -582,9 +588,12 @@ bool ALFBrawler::TryDrive()
 	// Query-only stays on so a driver can still be paddled out of the seat.
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
+	// Seated: the backside (SitButtHeight above the capsule bottom in Sitting1) rests on the thwart top; the feet are planted on
+	// the floor boards by the anim instance's foot IK.
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const FTransform& Hull = B->GetHull()->GetComponentTransform();
-	SetActorLocationAndRotation(B->GetDriverSeatWorld() + Hull.GetUnitAxis(EAxis::Z) * HalfHeight,
+	const FVector SeatTop = Hull.TransformPosition(FVector(B->DriverSeatLocal.X, B->DriverSeatLocal.Y, B->ThwartTopZ));
+	SetActorLocationAndRotation(SeatTop + Hull.GetUnitAxis(EAxis::Z) * (HalfHeight - SitButtHeight),
 		FRotator(0.f, B->GetActorRotation().Yaw + (B->bDriverFacesStern ? 180.f : 0.f), 0.f), false, nullptr, ETeleportType::TeleportPhysics);
 	AttachToComponent(B->GetHull(), FAttachmentTransformRules::KeepWorldTransform);
 	GetMesh()->SetRelativeRotation(MeshBaseRotation);
@@ -766,7 +775,8 @@ void ALFBrawler::OnSwingReleased()
 	{
 		SetActorRotation(FRotator(0.f, Controller->GetControlRotation().Yaw, 0.f));
 	}
-	PaddlePivot->SetRelativeRotation(PoseWindup);
+	SwingStartRot = PaddleRot; // the strike blends in from here (a quick tap is still near the hold pose)
+	PaddlePivot->SetRelativeRotation(PaddleRot);
 	PrevBladePoint = GetBladePoint();
 	ResetSweepPoints();
 	UE_LOG(LogLF, Display, TEXT("[paddle] %s swing %s strength=%.2f (held %.2f s)"), *GetName(), bCharged ? TEXT("CHARGED") : TEXT("light"), SwingStrength, Held);
@@ -868,6 +878,10 @@ void ALFBrawler::UpdatePaddle(float DeltaSeconds)
 		SwingAge += DeltaSeconds;
 		const float A = FMath::Clamp(SwingAge / SwingDuration, 0.f, 1.f);
 		PaddleRot = LerpRot(PoseWindup, PoseFollow, FMath::SmoothStep(0.f, 1.f, A));
+		if (SwingBlendInTime > 0.f && SwingAge < SwingBlendInTime)
+		{
+			PaddleRot = LerpRot(SwingStartRot, PaddleRot, FMath::SmoothStep(0.f, 1.f, SwingAge / SwingBlendInTime));
+		}
 		PaddlePivot->SetRelativeRotation(PaddleRot);
 		FollowTorsoTwist();
 		if (A > 0.1f && A < 0.95f)
@@ -1757,4 +1771,147 @@ void ALFBrawler::UpdateCamera(float RealDelta)
 		}
 	}
 	Camera->SetFieldOfView(Fov);
+}
+
+// ---------------------------------------------------------------- Measurements (T03.2, debug)
+
+// lf.measure: seated backside / feet vs the thwart / floor boards, and the vest vs the spine, for every brawler.
+static FAutoConsoleCommandWithWorld CmdLFMeasure(TEXT("lf.measure"),
+	TEXT("Log seat (backside -> thwart), feet (soles -> floor boards) and vest (extent vs spine bones) measurements for every brawler."),
+	FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World)
+	{
+		for (TActorIterator<ALFBrawler> It(World); It; ++It)
+		{
+			It->LogMeasurements();
+		}
+	}));
+
+void ALFBrawler::LogMeasurements() const
+{
+#if WITH_EDITOR
+	const USkeletalMeshComponent* M = GetMesh();
+	const USkeletalMesh* SkelMesh = M ? Cast<USkeletalMesh>(M->GetSkinnedAsset()) : nullptr;
+	const FSkeletalMeshModel* Model = SkelMesh ? SkelMesh->GetImportedModel() : nullptr;
+	if (!Model || Model->LODModels.Num() == 0)
+	{
+		UE_LOG(LogLF, Warning, TEXT("[measure] %s: no imported mesh model (editor data)"), *GetName());
+		return;
+	}
+	// CPU linear-blend skinning of LOD0 with the current pose: world position + dominant bone per vertex.
+	const FSkeletalMeshLODModel& LOD = Model->LODModels[0];
+	const TArray<FTransform>& CS = M->GetComponentSpaceTransforms();
+	const TArray<FMatrix44f>& InvRef = SkelMesh->GetRefBasesInvMatrix();
+	const FTransform& C = M->GetComponentTransform();
+	const FReferenceSkeleton& RS = SkelMesh->GetRefSkeleton();
+	struct FV { FVector P; int32 Bone; };
+	TArray<FV> Verts;
+	for (const FSkelMeshSection& Sec : LOD.Sections)
+	{
+		for (const FSoftSkinVertex& V : Sec.SoftVertices)
+		{
+			FVector P = FVector::ZeroVector;
+			float WSum = 0.f, Best = 0.f;
+			int32 Dom = INDEX_NONE;
+			for (int32 I = 0; I < MAX_TOTAL_INFLUENCES; ++I)
+			{
+				const float W = float(V.InfluenceWeights[I]);
+				if (W <= 0.f || !Sec.BoneMap.IsValidIndex(V.InfluenceBones[I]))
+				{
+					continue;
+				}
+				const int32 Bone = Sec.BoneMap[V.InfluenceBones[I]];
+				if (!CS.IsValidIndex(Bone) || !InvRef.IsValidIndex(Bone))
+				{
+					continue;
+				}
+				const FMatrix Skin = FMatrix(InvRef[Bone]) * CS[Bone].ToMatrixWithScale();
+				P += Skin.TransformPosition(FVector(V.Position)) * W;
+				WSum += W;
+				if (W > Best)
+				{
+					Best = W;
+					Dom = Bone;
+				}
+			}
+			if (WSum > 0.f)
+			{
+				Verts.Add({ C.TransformPosition(P / WSum), Dom });
+			}
+		}
+	}
+	auto BoneIs = [&RS](int32 Bone, std::initializer_list<const TCHAR*> Names)
+	{
+		if (Bone == INDEX_NONE) { return false; }
+		const FName N = RS.GetBoneName(Bone);
+		for (const TCHAR* Name : Names) { if (N == FName(Name)) { return true; } }
+		return false;
+	};
+	auto BoneZ = [M](const TCHAR* Bone) { return float(M->GetBoneLocation(Bone).Z); };
+
+	const ALFBoat* B = Boat.Get();
+	if (State == ELFBrawlerState::Driving && B)
+	{
+		UStaticMeshComponent* Hull = B->GetHull(); // LineTraceComponent is non-const
+		const FTransform& H = Hull->GetComponentTransform();
+		auto TraceTopZ = [Hull, &H](float X, float Y, float& OutZ)
+		{
+			FHitResult Hit;
+			FCollisionQueryParams Q(SCENE_QUERY_STAT(LFMeasure), /*bTraceComplex*/ true);
+			const bool bHit = Hull->LineTraceComponent(Hit, H.TransformPosition(FVector(X, Y, 80.f)), H.TransformPosition(FVector(X, Y, -60.f)), Q);
+			OutZ = bHit ? float(H.InverseTransformPosition(Hit.ImpactPoint).Z) : 0.f;
+			return bHit;
+		};
+		// Backside: lowest pelvis/thigh vertex within 15 cm (fore-aft) of the pelvis bone - the part that sits.
+		const FVector Pelvis = H.InverseTransformPosition(M->GetBoneLocation(TEXT("pelvis")));
+		FVector Butt(0.f, 0.f, 1e9f);
+		FVector Sole[2] = { FVector(0.f, 0.f, 1e9f), FVector(0.f, 0.f, 1e9f) };
+		for (const FV& V : Verts)
+		{
+			const FVector L = H.InverseTransformPosition(V.P);
+			if (BoneIs(V.Bone, { TEXT("pelvis"), TEXT("thigh_l"), TEXT("thigh_r") }) && FMath::Abs(L.X - Pelvis.X) < 15.f && L.Z < Butt.Z)
+			{
+				Butt = L;
+			}
+			for (int32 S = 0; S < 2; ++S)
+			{
+				if (BoneIs(V.Bone, S == 0 ? std::initializer_list<const TCHAR*>{ TEXT("foot_l"), TEXT("ball_l") } : std::initializer_list<const TCHAR*>{ TEXT("foot_r"), TEXT("ball_r") })
+					&& L.Z < Sole[S].Z)
+				{
+					Sole[S] = L;
+				}
+			}
+		}
+		float Thwart = 0.f, Floor[2] = { 0.f, 0.f };
+		const bool bThwart = TraceTopZ(float(Butt.X), float(Butt.Y), Thwart);
+		const bool bFloorL = TraceTopZ(float(Sole[0].X), float(Sole[0].Y), Floor[0]);
+		const bool bFloorR = TraceTopZ(float(Sole[1].X), float(Sole[1].Y), Floor[1]);
+		const float CapsuleBottom = float(H.InverseTransformPosition(GetActorLocation()).Z) - GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+		UE_LOG(LogLF, Display, TEXT("[measure] %s seated in %s (hull-local cm): backside lowest point (%.1f, %.1f, %.2f), %.2f above the capsule bottom (%.2f); thwart top there %s %.2f (ThwartTopZ %.2f) -> backside %.2f cm %s the thwart"),
+			*GetName(), *B->GetName(), Butt.X, Butt.Y, Butt.Z, Butt.Z - CapsuleBottom, CapsuleBottom, bThwart ? TEXT("traced") : TEXT("NOT HIT"), Thwart,
+			B->ThwartTopZ, FMath::Abs(Butt.Z - Thwart), Butt.Z >= Thwart ? TEXT("above") : TEXT("INSIDE"));
+		UE_LOG(LogLF, Display, TEXT("[measure] %s feet: sole L (%.1f, %.1f, %.2f) floor %s %.2f -> %.2f; sole R (%.1f, %.1f, %.2f) floor %s %.2f -> %.2f (FloorTopZ %.2f; + = above the floor)"),
+			*GetName(), Sole[0].X, Sole[0].Y, Sole[0].Z, bFloorL ? TEXT("traced") : TEXT("NOT HIT"), Floor[0], Sole[0].Z - Floor[0],
+			Sole[1].X, Sole[1].Y, Sole[1].Z, bFloorR ? TEXT("traced") : TEXT("NOT HIT"), Floor[1], Sole[1].Z - Floor[1], B->FloorTopZ);
+	}
+	// Vest vs body (world Z, relative to the pelvis bone).
+	if (Vest && Vest->GetStaticMesh())
+	{
+		const FBox Box = Vest->Bounds.GetBox();
+		const float P0 = BoneZ(TEXT("pelvis"));
+		float BodyTop = -1e9f; // highest torso vertex below the neck = shoulder line
+		for (const FV& V : Verts)
+		{
+			if (BoneIs(V.Bone, { TEXT("spine_05"), TEXT("clavicle_l"), TEXT("clavicle_r") }))
+			{
+				BodyTop = FMath::Max(BodyTop, float(V.P.Z));
+			}
+		}
+		UE_LOG(LogLF, Display, TEXT("[measure] %s vest Z %.1f .. %.1f; bones (rel. pelvis): spine_01 %.1f spine_02 %.1f spine_03 %.1f spine_04 %.1f spine_05 %.1f clavicle_l %.1f neck_01 %.1f, torso top (spine_05/clavicle verts) %.1f; vest bottom %.1f top %.1f (rel. pelvis)"),
+			*GetName(), Box.Min.Z, Box.Max.Z, BoneZ(TEXT("spine_01")) - P0, BoneZ(TEXT("spine_02")) - P0, BoneZ(TEXT("spine_03")) - P0,
+			BoneZ(TEXT("spine_04")) - P0, BoneZ(TEXT("spine_05")) - P0, BoneZ(TEXT("clavicle_l")) - P0, BoneZ(TEXT("neck_01")) - P0, BodyTop - P0,
+			Box.Min.Z - P0, Box.Max.Z - P0);
+	}
+#else
+	UE_LOG(LogLF, Display, TEXT("[measure] editor builds only"));
+#endif
 }

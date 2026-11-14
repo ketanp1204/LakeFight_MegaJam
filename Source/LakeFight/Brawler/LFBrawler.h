@@ -47,7 +47,9 @@ struct FLFBrawlerAnimView
 	bool bStunned = false;
 	float ClimbAlpha = 0.f;
 	float DriveThrottle = 0.f; // spooled throttle of the boat we drive
+	float DriveSteer = 0.f;    // steering input of the boat we drive (-1..1)
 	float BoatSpeed = 0.f;     // cm/s
+	float SwingBlendIn = 1.f;  // 0 -> 1 over SwingBlendInTime at the start of the strike (no first-frame snap)
 };
 
 UENUM()
@@ -91,6 +93,14 @@ public:
 	/** Hat mesh override (personality). Null = SM_LF_Hat_Bucket_<Team>. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Look")
 	TObjectPtr<UStaticMesh> HatOverride;
+
+	/** Life vest offset from its spine_03 alignment (cm, character space: X forward, Z up) - it sat too low on the hips. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Look")
+	FVector VestOffset = FVector(0.f, 0.f, 8.f); // lf.measure (standing): bottom 16 cm below the pelvis bone -> 8; top 37 -> 45 (shoulder line 47)
+
+	/** Debug (lf.measure): logs the seated backside / feet vs the thwart / floor boards (skinned LOD0 vertices vs complex traces
+	 *  on the hull) and the vest's vertical extent vs the spine bones. Editor builds only. */
+	void LogMeasurements() const;
 
 	/** Face piece (beard / moustache) on the head, or null. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="LF|Look")
@@ -137,6 +147,12 @@ public:
 	/** Placed brawlers (dummies) stand in this boat at BeginPlay. */
 	UPROPERTY(EditAnywhere, Category="LF|Boat")
 	TObjectPtr<ALFBoat> StartBoat;
+
+	/** Seated (Sitting1, at BrawlerScale): height of the backside's lowest point above the capsule bottom (cm, world). The driver
+	 *  is placed so this point rests on the boat's thwart (ALFBoat::ThwartTopZ). Measured from the skinned mesh with `lf.measure`
+	 *  (T03.2: 37.36 / 37.53 / 38.15 cm on three seated crews; was 27.25 = sitting 10.4 cm above the thwart). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Boat")
+	float SitButtHeight = 37.7f;
 
 	/** Fraction of the boat's roll/pitch the mesh leans with (0 = stays upright). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Boat", meta=(ClampMin="0", ClampMax="1.5"))
@@ -188,6 +204,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0.05"))
 	float ChargedSwingTime = 0.15f; // director: the charged punch fires FASTER than a light one
+
+	/** The strike blends in from the pose at release over this time (s) - a light tap released before the wind-up snapped. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="0"))
+	float SwingBlendInTime = 0.08f;
 
 	/** Blade sweep sphere radius (cm). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle", meta=(ClampMin="1"))
@@ -581,6 +601,7 @@ private:
 	/** Knocked onto the shore: the nearest open water to wash back into (false = none found). */
 	bool FindWaterNear(const FVector& From, FVector& OutWater) const;
 	FRotator PaddleRot = FRotator::ZeroRotator;
+	FRotator SwingStartRot = FRotator::ZeroRotator; // paddle rotation at the release (the strike blends in from it)
 
 	double StunUntil = -1.0;
 	enum class ERagdollPhase : uint8 { Flying, Floating, Recovering, Upright };

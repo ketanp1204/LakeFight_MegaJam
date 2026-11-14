@@ -78,10 +78,12 @@ ALFBoat::ALFBoat()
 	HullMesh->SetSimulatePhysics(true);
 	HullMesh->SetNotifyRigidBodyCollision(true);
 	HullMesh->SetLinearDamping(0.f);   // drag comes from ULFBuoyancyComponent
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> OarAsset(TEXT("/Game/LakeFight/Meshes/SM_LF_Oar.SM_LF_Oar"));
+	OarMesh = OarAsset.Object;
 	for (TObjectPtr<UStaticMeshComponent>* Oar : { &OarL, &OarR })
 	{
 		*Oar = CreateDefaultSubobject<UStaticMeshComponent>(Oar == &OarL ? TEXT("OarL") : TEXT("OarR"));
-		(*Oar)->SetupAttachment(HullMesh);
+		(*Oar)->SetupAttachment(HullMesh, Oar == &OarL ? FName(TEXT("Oarlock_L")) : FName(TEXT("Oarlock_R")));
 		(*Oar)->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		(*Oar)->SetCanEverAffectNavigation(false);
 	}
@@ -161,13 +163,24 @@ void ALFBoat::BeginPlay()
 {
 	Super::BeginPlay();
 	{
-		// Oars: SM_LF_Oar once it is assigned; until then SM_LF_Paddle stretched (placeholder).
-		UStaticMesh* Mesh = OarMesh ? OarMesh.Get() : LoadObject<UStaticMesh>(nullptr, TEXT("/Game/LakeFight/Meshes/SM_LF_Paddle.SM_LF_Paddle"));
-		for (UStaticMeshComponent* Oar : { OarL.Get(), OarR.Get() })
+		// Oars: SM_LF_Oar at the oarlock sockets (pivot = collar), unscaled.
+		UStaticMesh* Mesh = OarMesh ? OarMesh.Get() : LoadObject<UStaticMesh>(nullptr, TEXT("/Game/LakeFight/Meshes/SM_LF_Oar.SM_LF_Oar"));
+		for (int32 Side = 0; Side < 2; ++Side)
 		{
+			UStaticMeshComponent* Oar = Side == 0 ? OarL.Get() : OarR.Get();
+			const FName Socket = Side == 0 ? FName(TEXT("Oarlock_L")) : FName(TEXT("Oarlock_R"));
 			Oar->SetStaticMesh(Mesh);
-			Oar->SetWorldScale3D(OarMesh ? FVector::OneVector : OarPlaceholderScale);
+			Oar->AttachToComponent(HullMesh, FAttachmentTransformRules::KeepRelativeTransform, HullMesh->DoesSocketExist(Socket) ? Socket : NAME_None);
+			Oar->SetWorldScale3D(FVector::OneVector);
 		}
+		const FTransform& H = HullMesh->GetComponentTransform();
+		const FString GripInfo = OarL->DoesSocketExist(TEXT("Grip"))
+			? FString::Printf(TEXT("found (X %.1f)"), OarL->GetSocketTransform(TEXT("Grip"), RTS_Component).GetLocation().X)
+			: FString::Printf(TEXT("MISSING (OarGripX %.0f)"), OarGripX);
+		UE_LOG(LogLF, Display, TEXT("[oars] %s: %s, oarlock sockets %s (L %s, R %s hull-local), grip socket %s"), *GetName(), *GetNameSafe(Mesh),
+			HullMesh->DoesSocketExist(TEXT("Oarlock_L")) && HullMesh->DoesSocketExist(TEXT("Oarlock_R")) ? TEXT("found") : TEXT("MISSING (placeholder positions)"),
+			*H.InverseTransformPosition(GetOarlockWorld(true)).ToCompactString(), *H.InverseTransformPosition(GetOarlockWorld(false)).ToCompactString(),
+			*GripInfo);
 		UpdateOars(1.f);
 	}
 
@@ -242,54 +255,87 @@ FVector ALFBoat::GetOarlockWorld(bool bLeft) const
 		: HullMesh->GetComponentTransform().TransformPosition(bLeft ? OarlockLocalL : OarlockLocalR);
 }
 
-void ALFBoat::UpdateOars(float DeltaSeconds)
+void ALFBoat::ApplyOarPose(bool bLeft)
+{
+	UStaticMeshComponent* Oar = bLeft ? OarL.Get() : OarR.Get();
+	if (!Oar)
+	{
+		return;
+	}
+	// Everything in hull space, then to world: the oars are hull children (they ride and flip with the hull).
+	const FTransform& H = HullMesh->GetComponentTransform();
+	const FVector Lock = H.InverseTransformPosition(GetOarlockWorld(bLeft));
+	const float In = Lock.Y > 0.f ? -1.f : 1.f; // inboard = toward the centreline (by the lock's side, not its socket name)
+	// Shipped: blade aft along the gunwale, turned a little inboard so the blade rests inside it, collar slid in/up a little.
+	const FVector ShipLoc = Lock + FVector(0.f, In * OarShipInboard, OarShipUp);
+	const FQuat ShipRot = FRotator(0.f, 180.f - In * OarShipYawDeg, 0.f).Quaternion();
+	FVector Loc = ShipLoc;
+	FQuat Rot = ShipRot;
+	if (OarRowBlend > 0.f && bOarAimed)
+	{
+		// Rowing: collar in the oarlock, -X (the handle) toward the hand target, blade squared (its width vertical).
+		const FVector X = (Lock - OarAimLocal[bLeft ? 0 : 1]).GetSafeNormal();
+		if (!X.IsNearlyZero())
+		{
+			const FQuat RowRot = FRotationMatrix::MakeFromXY(X, FVector::UpVector).ToQuat();
+			Loc = FMath::Lerp(ShipLoc, Lock, OarRowBlend);
+			Rot = FQuat::Slerp(ShipRot, RowRot, OarRowBlend).GetNormalized();
+		}
+	}
+	Oar->SetWorldLocationAndRotation(H.TransformPosition(Loc), H.TransformRotation(Rot));
+}
+
+void ALFBoat::AimOars(const FVector& AimLWorld, const FVector& AimRWorld)
 {
 	const FTransform& H = HullMesh->GetComponentTransform();
-	const FVector Fwd = H.GetUnitAxis(EAxis::X), Right = H.GetUnitAxis(EAxis::Y), Up = H.GetUnitAxis(EAxis::Z);
+	OarAimLocal[0] = H.InverseTransformPosition(AimLWorld);
+	OarAimLocal[1] = H.InverseTransformPosition(AimRWorld);
+	bOarAimed = true;
+	ApplyOarPose(true);
+	ApplyOarPose(false);
+}
+
+FTransform ALFBoat::GetOarGrip(bool bLeft) const
+{
+	const UStaticMeshComponent* Oar = bLeft ? OarL.Get() : OarR.Get();
+	static const FName Grip(TEXT("Grip"));
+	const FTransform& O = Oar->GetComponentTransform();
+	const FVector Loc = Oar->DoesSocketExist(Grip) ? Oar->GetSocketLocation(Grip) : O.TransformPosition(FVector(OarGripX, 0.f, 0.f));
+	// The socket's own axes come through the FBX empty conversion; the shaft axis is the oar's X.
+	return FTransform(O.GetRotation(), Loc);
+}
+
+float ALFBoat::GetOarGripReach() const
+{
+	static const FName Grip(TEXT("Grip"));
+	const float X = OarL && OarL->DoesSocketExist(Grip) ? float(OarL->GetSocketTransform(Grip, RTS_Component).GetLocation().X) : OarGripX;
+	return FMath::Max(FMath::Abs(X), 1.f); // oars are unscaled
+}
+
+void ALFBoat::UpdateOars(float DeltaSeconds)
+{
 	const ALFBrawler* D = Driver.Get();
 	const bool bRowing = D && D->GetBrawlerState() == ELFBrawlerState::Driving && !bCapsized;
 	OarRowBlend = FMath::FInterpConstantTo(OarRowBlend, bRowing ? 1.f : 0.f, DeltaSeconds, 1.f / OarBlendTime);
-	for (int32 Side = 0; Side < 2; ++Side)
+	if (OarRowBlend <= 0.f)
 	{
-		const bool bLeft = Side == 0;
-		UStaticMeshComponent* Oar = bLeft ? OarL.Get() : OarR.Get();
-		if (!Oar)
-		{
-			continue;
-		}
-		const FVector Lock = GetOarlockWorld(bLeft);
-		// Shipped: along the inside of the gunwale, grip forward, blade aft, flat.
-		const FVector ShipGrip = Lock + Fwd * OarShipForward + Right * ((bLeft ? 1.f : -1.f) * OarShipInboard) + Up * OarShipUp;
-		const FQuat ShipRot = FRotationMatrix::MakeFromXZ(-Fwd, Up).ToQuat();
-		FVector Grip = ShipGrip;
-		FQuat Rot = ShipRot;
-		if (OarRowBlend > 0.f && D)
-		{
-			// Rowing: grip in the NEAREST hand (palm: between the wrist and the middle knuckle; facing the stern his left hand takes
-			// the starboard oar), shaft through the oarlock, blade squared.
-			const USkeletalMeshComponent* M = D->GetMesh();
-			const FVector HandL = (M->GetBoneLocation(TEXT("hand_l")) + M->GetBoneLocation(TEXT("middle_01_l"))) * 0.5f;
-			const FVector HandR = (M->GetBoneLocation(TEXT("hand_r")) + M->GetBoneLocation(TEXT("middle_01_r"))) * 0.5f;
-			const FVector Hand = FVector::DistSquared(HandL, Lock) < FVector::DistSquared(HandR, Lock) ? HandL : HandR;
-			const FVector X = (Lock - Hand).GetSafeNormal();
-			if (!X.IsNearlyZero())
-			{
-				const FQuat RowRot = FRotationMatrix::MakeFromXY(X, Up).ToQuat();
-				Grip = FMath::Lerp(ShipGrip, Hand, OarRowBlend);
-				Rot = FQuat::Slerp(ShipRot, RowRot, OarRowBlend).GetNormalized();
-			}
-		}
-		Oar->SetWorldLocationAndRotation(Grip, Rot);
+		bOarAimed = false; // the next driver aims them afresh
 	}
+	ApplyOarPose(true);
+	ApplyOarPose(false);
 	static const IConsoleVariable* DebugIK = IConsoleManager::Get().FindConsoleVariable(TEXT("lf.debug.ik"));
 	const double Now = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
 	if (DebugIK && DebugIK->GetInt() != 0 && D && bRowing && Now - LastOarLogTime >= 1.0)
 	{
 		LastOarLogTime = Now;
+		const FTransform& H = HullMesh->GetComponentTransform();
 		const float Water = LF::Water::GetHeightAt(H.GetLocation(), float(Now));
-		auto BladeZ = [&](const UStaticMeshComponent* Oar) { return float(Oar->GetComponentTransform().TransformPosition(FVector(140.f, 0.f, 0.f)).Z) - Water; };
-		UE_LOG(LogLF, Log, TEXT("[oars] %s rowing (throttle %.2f): blade centres L %.0f R %.0f cm vs water, grips at the hands"),
-			*GetName(), GetThrottleOutput(), BladeZ(OarL.Get()), BladeZ(OarR.Get()));
+		auto BladeZ = [&](const UStaticMeshComponent* Oar) { return float(Oar->GetComponentTransform().TransformPosition(FVector(117.f, 0.f, 0.f)).Z) - Water; };
+		// How far the hand targets were from the oar grips (the two-bone IK pulls the hands this far), and the gap between the grips.
+		const FVector GL = GetOarGrip(true).GetLocation(), GR = GetOarGrip(false).GetLocation();
+		UE_LOG(LogLF, Log, TEXT("[oars] %s rowing (throttle %.2f): blade centres L %.0f R %.0f cm vs water; hand target -> grip L %.1f R %.1f cm; grips %.1f cm apart"),
+			*GetName(), GetThrottleOutput(), BladeZ(OarL.Get()), BladeZ(OarR.Get()),
+			FVector::Dist(H.TransformPosition(OarAimLocal[0]), GL), FVector::Dist(H.TransformPosition(OarAimLocal[1]), GR), FVector::Dist(GL, GR));
 	}
 }
 

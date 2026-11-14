@@ -383,34 +383,58 @@ public:
 	UFUNCTION(BlueprintPure, Category="LF|Capsize")
 	bool IsCapsized() const { return bCapsized; }
 
-	// --- Oars (T03.1, director): on the boat at the oarlocks. The rowing clip drives the driver's hands; each oar aims from its
-	// oarlock toward the matching hand with its grip in the hand (no hand IK). Nobody driving: shipped along the gunwales. ---
+	// --- Oars (T03.2): SM_LF_Oar attached at the hull's Oarlock_L / Oarlock_R sockets. The oar's origin IS its collar (the pivot in
+	// the oarlock), +X toward the blade, socket Grip at the handle (70 cm inboard). Rowing: the driver's anim instance aims each oar
+	// from its oarlock toward the matching hand (AimOars) and then pulls that hand onto Grip with two-bone IK. Nobody driving (or
+	// capsized): shipped along the inside of the gunwale. Hull children, so they flip with a capsize. ---
 
-	/** Oar mesh: origin at the grip, blade along +X (same convention as SM_LF_Paddle). Empty = placeholder (SM_LF_Paddle stretched
-	 *  by OarPlaceholderScale) until SM_LF_Oar exists - assign it here then. */
+	/** Oar mesh (default SM_LF_Oar): origin at the collar, blade +X, socket "Grip" at the handle. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
 	TObjectPtr<UStaticMesh> OarMesh;
 
+	/** Grip along the oar (cm, oar X) when the mesh has no "Grip" socket. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
-	FVector OarPlaceholderScale = FVector(1.2f, 0.85f, 0.85f);
+	float OarGripX = -70.f;
 
-	/** Oarlock pivots (hull-local cm) used until SM_LF_Rowboat has Oarlock_L / Oarlock_R sockets (from the rowboat script's oarlock
-	 *  forks: 12 cm aft of midships, 67 cm out, 36 cm above the waterline). */
+	/** Oarlock pivots (hull-local cm) used only if SM_LF_Rowboat has no Oarlock_L / Oarlock_R sockets (the imported B09 sockets:
+	 *  note Oarlock_L comes in at +Y = starboard). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
-	FVector OarlockLocalL = FVector(-12.f, -67.2f, 36.f);
+	FVector OarlockLocalL = FVector(-12.f, 67.2f, 33.f);
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
-	FVector OarlockLocalR = FVector(-12.f, 67.2f, 36.f);
+	FVector OarlockLocalR = FVector(-12.f, -67.2f, 33.f);
 
-	/** Shipped oars: grip this far forward of / inboard of / above the oarlock, oar lying along the gunwale with the blade aft. */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
-	float OarShipForward = 75.f;
-
+	/** Shipped oars: the collar slides this far inboard / up from the oarlock, the oar lies along the gunwale with the blade aft,
+	 *  turned inboard by OarShipYawDeg so the blade rests inside the gunwale. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
 	float OarShipInboard = 8.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
 	float OarShipUp = 2.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Oars")
+	float OarShipYawDeg = 5.f;
+
+	/** Rowing: aim each oar (pivot at its oarlock) toward a hand target (world). Called by the driver's anim instance every update,
+	 *  before it reads GetOarGrip. The aim is kept hull-local, so the boat's own tick keeps it while the hull moves. */
+	void AimOars(const FVector& AimLWorld, const FVector& AimRWorld);
+
+	/** The oar's Grip (world): location at the handle, X along the shaft toward the blade. */
+	FTransform GetOarGrip(bool bLeft) const;
+
+	/** Collar (oarlock) -> Grip distance, cm (70 for SM_LF_Oar). */
+	float GetOarGripReach() const;
+
+	/** Floor boards' top and the driver thwart's top (hull-local Z, cm) - from SM_LF_Rowboat.py (planks centre -11.1 cm, 3.5 cm
+	 *  thick; Thwart_01 centre 14.5 cm, 7.5 cm thick); `lf.measure` checks both with a complex trace against the hull. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Crew")
+	float FloorTopZ = -9.35f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Crew")
+	float ThwartTopZ = 18.25f;
+
+	/** Steering input -1..1 (the driver's head looks a little toward it). */
+	float GetSteerInput() const { return SteerInput; }
 
 	/** Blend between shipped and rowing when a driver sits down / leaves (s). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Oars", meta=(ClampMin="0.01"))
@@ -500,7 +524,10 @@ private:
 	bool bCapsized = false;
 	float OarRowBlend = 0.f;
 	double LastOarLogTime = -100.0;
+	FVector OarAimLocal[2] = { FVector::ZeroVector, FVector::ZeroVector }; // hull-local hand targets (0 = L, 1 = R)
+	bool bOarAimed = false;
 	void UpdateOars(float DeltaSeconds);
+	void ApplyOarPose(bool bLeft);
 	float CapsizeTimer = 0.f;
 	double CapsizedAt = 0.0;
 	void UpdateCapsize(float DeltaSeconds);

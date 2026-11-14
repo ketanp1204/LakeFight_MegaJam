@@ -68,7 +68,33 @@ public:
 	float RowRestX = 28.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
-	float RowHandSpread = 22.f;
+	float RowHandSpread = 12.f;
+
+	/** The handles meet near the centreline (70 cm inboard of oarlocks 67 cm out): the left hand rows this much higher than the right
+	 *  (cm, mesh units; split +/- half) so the hands pass over each other instead of through. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
+	float RowHandStagger = 14.f;
+
+	// --- Seated feet (T03.2): two-bone IK plants both feet on the boat's floor boards (knees bend more on the low thwart) ---
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Sit")
+	bool bSitFootIK = true;
+
+	// --- Head while rowing (T03.2): layered blend on neck_01 / neck_02 / head ---
+	/** Time for the sitting-idle look-around to fade out (rowing) / back in (idle boat), s. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Head", meta=(ClampMin="0.01"))
+	float HeadLookFadeTime = 0.3f;
+
+	/** Head yaw toward the steering direction at full steer (deg). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Head")
+	float HeadSteerBiasDeg = 12.f;
+
+	/** Look-ahead pitch (deg, - = down a little toward the water ahead). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Head")
+	float HeadLookPitchDeg = -5.f;
+
+	/** Share of the head turn on neck_01 / neck_02 / head (sums to 1). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Head")
+	FVector HeadSplit = FVector(0.3f, 0.3f, 0.4f);
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
 	float RowDriveZ = -14.f;
@@ -224,6 +250,15 @@ public:
 	float RowStrokeWeight = 0.f;
 	bool bRowIK = false;        // arms on the oar handles (rowing), not the paddle
 	bool bArmIK = false;
+	float HeadLookWeight = 0.f; // 0 = clip's look-around, 1 = look ahead (rowing)
+	float HeadYaw = 0.f;        // deg, + = right (steering bias)
+	bool bFootIK = false;       // seated: plant the feet on the floor plane below
+	FVector FloorPointCS = FVector::ZeroVector;
+	FVector FloorNormalCS = FVector::UpVector;
+	uint8 LastSwingPhase = 0;   // swing blend-in: torso values at the start of the strike
+	float StrikeStartYaw = 0.f;
+	float StrikeStartPitch = 0.f;
+	float StrikeStartLean = 0.f;
 	FTransform RightTargetCS = FTransform::Identity; // Grip_R in mesh component space (X = shaft toward the blade)
 	FTransform LeftTargetCS = FTransform::Identity;
 
@@ -248,6 +283,17 @@ struct FLFBrawlerAnimProxy : public FAnimInstanceProxy
 	void EvalClip(ELFBrawlerClip C, float InScrub, FAnimationPoseData& Out) const;
 	void LogGrip(FCSPose<FCompactPose>& CS, const FBoneContainer& Bones, const FReferenceSkeleton& Ref);
 	void ApplySwingTorso(FCSPose<FCompactPose>& CS, const FBoneContainer& Bones, const FReferenceSkeleton& Ref) const;
+	void ApplyHeadLook(FCompactPose& Pose) const;
+	void PlantFeet(FCSPose<FCompactPose>& CS, const FBoneContainer& Bones, const FReferenceSkeleton& Ref);
+
+	float HeadLookWeight = 0.f;
+	float HeadYaw = 0.f;
+	float HeadLookPitchDeg = -5.f;
+	FVector HeadSplit = FVector(0.3f, 0.3f, 0.4f);
+	bool bFootIK = false;
+	FVector FloorPointCS = FVector::ZeroVector;
+	FVector FloorNormalCS = FVector::UpVector;
+	float FootLogClock = 0.f;
 
 	TObjectPtr<UAnimSequence> Idle, Walk, Row, Sit, Tread, Swim, ClimbSeq, Dizzy;
 	float TorsoYaw = 0.f;
