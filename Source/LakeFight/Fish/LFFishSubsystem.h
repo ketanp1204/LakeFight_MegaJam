@@ -23,6 +23,7 @@ public:
 	virtual TStatId GetStatId() const override;
 
 	void Spill(ALFBoat* Boat, int32 Amount);
+	int32 GetScore(int32 Team) const { return Scores[FMath::Clamp(Team, 0, 3)]; } // T04 hook
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float CatchInterval = 1.5f;

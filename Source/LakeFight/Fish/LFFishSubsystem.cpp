@@ -1,6 +1,8 @@
 #include "Fish/LFFishSubsystem.h"
 
 #include "Fish/LFFishCargoComponent.h"
+#include "Round/LFRoundCargoComponent.h" // T04 hook
+#include "Round/LFRoundSubsystem.h" // T04 hook
 #include "Boat/LFBoat.h"
 #include "Brawler/LFBrawler.h"
 #include "Audio/LFAudio.h"
@@ -205,6 +207,9 @@ void ULFFishSubsystem::Spill(ALFBoat* Boat, int32 Amount)
 
 void ULFFishSubsystem::Tick(float DeltaTime)
 {
+	// T04 hook: the round owns the scoring cutoff.
+	const ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
+	if (Round && Round->HasEnded()) return;
 	if (!bStarted)
 	{
 		return;
@@ -317,7 +322,8 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 	{
 		ULFFishCargoComponent* Cargo = Boat->FindComponentByClass<ULFFishCargoComponent>();
 		if (!Cargo) continue;
-		DrawDebugString(GetWorld(), Boat->GetActorLocation() + FVector(0.f, 0.f, 180.f), FString::Printf(TEXT("Fish: %d"), Cargo->GetCount()), nullptr, FColor::White, 0.f, true);
+		// T04 hook: the round HUD replaces temporary boat text.
+		if (!Round) DrawDebugString(GetWorld(), Boat->GetActorLocation() + FVector(0.f, 0.f, 180.f), FString::Printf(TEXT("Fish: %d"), Cargo->GetCount()), nullptr, FColor::White, 0.f, true);
 		ALFBrawler* Driver = Boat->GetDriver();
 		if (!Driver || Boat->IsCapsized() || Cargo->GetCount() == 0) continue;
 		for (const FBank& B : Banks)
@@ -325,8 +331,11 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 			if (!B.Zone.IsValid() || int32(Driver->Team) != B.Team) continue;
 			const FVector Local = B.Zone->GetActorTransform().InverseTransformPosition(Boat->GetActorLocation());
 			if (FMath::Abs(Local.X) > 238.f || FMath::Abs(Local.Y) > 138.f || FMath::Abs(Local.Z) > 150.f) continue;
+			// T04 hook
+			const int32 Points = ULFRoundCargoComponent::Get(Boat)->GetValue(Cargo->GetCount());
 			const int32 N = Cargo->RemoveFish(Cargo->GetCount());
-			Scores[B.Team] += N;
+			Scores[B.Team] += Points;
+			if (ULFRoundSubsystem* R = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) R->RecordBank(B.Team, Points);
 			Banked += N;
 			PlaySound(BankSound);
 			for (int32 I = 0; I < FMath::Min(N, 8); ++I)
@@ -338,8 +347,8 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 				F.Mesh = MakeMesh(FishMesh, F.Start, 0.6f);
 				Flights.Add(F);
 			}
-			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FString::Printf(TEXT("%s +%d fish!"), TeamNames[B.Team], N));
-			UE_LOG(LogLF, Display, TEXT("[fish] bank %s team=%s +%d score=%d"), *Boat->GetName(), TeamNames[B.Team], N, Scores[B.Team]);
+			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FString::Printf(TEXT("%s +%d points!"), TeamNames[B.Team], Points));
+			UE_LOG(LogLF, Display, TEXT("[fish] bank %s team=%s fish=%d points=%d score=%d"), *Boat->GetName(), TeamNames[B.Team], N, Points, Scores[B.Team]);
 		}
 	}
 	for (int32 I = Flights.Num() - 1; I >= 0; --I)
@@ -354,7 +363,8 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 		}
 		F.Mesh->SetActorLocation(FMath::Lerp(F.Start, F.End, T) + FVector(0.f, 0.f, 240.f * FMath::Sin(T * PI)));
 	}
-	if (GEngine) GEngine->AddOnScreenDebugMessage(40401, 0.f, FColor::White,
+	// T04 hook: the round HUD replaces temporary scores.
+	if (!Round && GEngine) GEngine->AddOnScreenDebugMessage(40401, 0.f, FColor::White,
 		FString::Printf(TEXT("FISH  Red %d | Blue %d | Green %d | Yellow %d"), Scores[0], Scores[1], Scores[2], Scores[3]));
 	if (Now >= NextReport)
 	{

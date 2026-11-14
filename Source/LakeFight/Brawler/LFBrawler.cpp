@@ -1,5 +1,7 @@
 #include "Brawler/LFBrawler.h"
 
+#include "Round/LFRoundSubsystem.h" // T04 hook
+
 #include "Brawler/LFBrawlerAnimInstance.h"
 #include "AI/LFCaptainPersonality.h"
 #include "AnimationRuntime.h"
@@ -571,6 +573,8 @@ bool ALFBrawler::TryDrive()
 	if (B != HomeBoat.Get())
 	{
 		UE_LOG(LogLF, Display, TEXT("[steal] %s steals %s"), *GetName(), *B->GetName());
+		// T04 hook
+		if (ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) Round->RecordSteal(this);
 		OnSteal(B);
 		if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
 		{
@@ -1151,6 +1155,11 @@ void ALFBrawler::StartRagdoll(const FVector& Out, float Strength)
 {
 	UWorld* World = GetWorld();
 	USkeletalMeshComponent* M = GetMesh();
+	// T04 hook
+	if (State == ELFBrawlerState::Standing || State == ELFBrawlerState::Driving)
+	{
+		if (ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) Round->RecordOverboard(this);
+	}
 	State = ELFBrawlerState::Ragdoll;
 	RagdollPhase = ERagdollPhase::Flying;
 	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))

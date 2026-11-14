@@ -646,3 +646,70 @@ Stop here for director acceptance. Stage 2 has NOT started. Visual/audio/feel ac
   Follow-up only: do not expand T04 into toolset/plugin cleanup.
 - Still for human PIE: ripple/pile/flight visibility, catch/bank sound levels, fast-pass rejection,
   enemy-bank rejection, 1/2 fish RAM versus bump, pickup scooping/expiry and loaded-boat theft.
+
+## T04 Stage 2 - authorized 14 Nov (director defers combined PIE test)
+Implement now: 240 s round, gold spot at elapsed 120 s (1-3 fish, each worth 5), sparkles + alert audio/banner;
+last 30 s Final music + Final30 tick + red timer; B08 HUD (four team scores, cargo, timer, gold direction);
+end at zero, freeze gameplay/input, winner/ties, final scores, comedy stats, Restart/Quit.
+Results use Menu music; Restart uses Main. Stage 3 remains blocked on director's go.
+Native new systems + minimal marked T04 hooks; no Unreal MCP; closed-editor build; HUD/results screenshots.
+
+### T04 Stage 2 implementation / STOP for combined Stage 1-2 PIE review
+- New `Round/LFRoundSubsystem.h/.cpp`: single-player 240 s round, one centre gold spot at 120 s
+  remaining, Final music + UI_LF_Final30_Loop at 30 s, paused world/results at zero. EndCheer and
+  Menu music at results; Main on Restart. Restart reloads the current map (fresh scores/cargo/timer);
+  Quit uses Unreal's QuitGame (ends PIE in editor). Audio follows existing Master/UI gains.
+- New `Round/LFGoldFish.h/.cpp`: 1-3 bonus fish worth 5 each, slowly orbiting centre spot, pulsing
+  gold fish glints, 1.5 s catches below 150 cm/s. Depleted gold spot does not respawn. Spilled gold
+  floats for 10 s, any driven upright hull can scoop it, preserving its five-point value.
+- New `Round/LFRoundCargoComponent.h/.cpp`: hull-owned gold portion of total cargo; ordinary fish
+  spill first. Gold survives driver changes and is removed when banked/spilled. Bank score = ordinary
+  count + gold count * 5. Existing fish component/subsystem receive only marked integration hooks.
+- New `Round/LFRoundWidget.h/.cpp`: native UMG HUD (four coloured team scores/B08 portraits,
+  clock/timer, boat fish count + bank value, gold banner and camera-relative directional arrow).
+  Results handle winner and ties, keep final team scores visible, hide gameplay HUD; comedy stats:
+  most overboards, longest continuous swim incl. climbing, total steals, total fish spilled,
+  biggest single bank in points. Mouse buttons and keyboard/D-pad left/right + Enter/A actions.
+- `Brawler/LFBrawler.cpp`: marked hooks for an overboard from Standing/Driving and a successful steal.
+  AI behaviour is unchanged. `LakeFight.Build.cs`: SlateCore + seven RuntimeDependencies for the
+  original B08 PNG exports. HUD loads Art/Export/UI in-editor, executable-adjacent LFUI in packaged
+  builds. No Content assets were imported/edited; no art-generation software needed at runtime.
+- `lf.round.remaining N` is a development shortcut for the director's milestone tests (e.g. 121, 31, 1).
+  Non-shipping launch flag `-LFRoundTest` advances those milestones on a short schedule and captures
+  rendered HUD/gold/results to Saved/Screenshots; it is OFF in normal editor/game launches.
+
+**Verification**
+- All three Stage 2 builds succeeded with the editor CLOSED, through:
+  `Tools/ue.ps1 -Action build -Project D:/Projects/LakeFight/LakeFight.uproject -EngineDir D:/UE_EpicGames/UE_5.8`.
+  Screenshot inspection caught a NativeConstruct widget-tree timing bug (HUD absent); tree creation
+  moved to RebuildWidget. Then removed the gameplay cargo panel from behind the results overlay.
+- Rendered standalone checks: `UnrealEditor.exe LakeFight.uproject /Game/LakeFight/Maps/L_Lake01
+  -game -RenderOffscreen -windowed -ResX=1280 -ResY=720 -unattended -nosplash -seconds=22 -LFRoundTest`.
+  Final run ExecCmds: `lf.ai.freeze 1,LFDrive,lf.fish.give 4,BugItGo -4124.9 -5279.7 0 0 52 0`.
+  Red bank logged fish=4 points=4 score=4; final screen showed Red WINS and biggest bank Red (4 points).
+  Prior centre run logged an actual gold catch; screenshot showed 8 fish / 12 points (seven ordinary + one gold).
+  Logs: `Saved/Logs/T04_Stage2_render2.log`, `Saved/Logs/T04_Stage2_final_render.log`.
+- Full DEFAULT duration check (no -LFRoundTest / no debug time skips): `-game -NullRHI -unattended
+  -nosound -nosplash -benchmark -fps=60 -seconds=245`, ExecCmds `lf.ai.freeze 1,LFDrive,BugItGo 0 0 0 0 0 0`.
+  240 simulated seconds at fixed 60 Hz (faster than wall time). Gold spawned at 119.99 remaining,
+  actual gold catch, Final30 at 30.00, END at zero; Main -> Final -> Menu logged. 62 ordinary catches
+  plus one gold; unbanked cargo did not affect the draw. Log: `Saved/Logs/T04_Stage2_240seconds.log`.
+- Final rendered and full-duration runs: no LogLF warnings/errors; normal exit. Same experimental Epic
+  toolset Python startup errors in standalone game mode as Stage 1 (out of scope).
+- Visually inspected 1280x720 screenshots (Saved artifacts, not committed under the Source-only exception):
+  `Saved/Screenshots/T04_HUD.png`, `Saved/Screenshots/T04_Gold.png`, `Saved/Screenshots/T04_Results.png`.
+  B08 icons, scores, timer, cargo, gold arrow/banner, winner, statistics, Restart/Quit all visible.
+  Existing L01 floating labels and brawler debug prompts remain visible: item 0 belongs to the director.
+- `git diff --check` on task paths passed. No Unreal MCP used. No levels/assets saved.
+
+**Human PIE checklist / remaining verification**
+1. Combined Stage 1 loop: catch, spill, scoop, steal and bank; check chase-cam visibility and sound balance.
+2. Let 4:00 run normally, or `lf.round.remaining 121`: gold banner/SFX, gold spot/glints/arrow;
+   catch gold, spill/scoop it and bank it for five points. Gold theft/spill/bank path needs hands-on verification.
+3. `lf.round.remaining 31`: red timer, Final music, Final30 loop; at zero input/physics stop, scores
+   freeze, results show the correct winner/stats. Check the UI sound/music transition by ear.
+4. Select Restart with mouse, keyboard and gamepad; confirm fresh 4:00, zero scores, cleared cargo and
+   resumed gameplay/Main music. Quit should stop PIE (packaged: exits). Button input/restart/quit have
+   not been exercised through the unavailable desktop-control helper; these remain manual checks.
+5. Packaging dependency entries exist, but a packaged build was not run; verify PNGs ship and load.
+Stage 3 has NOT started. Await the director's combined playtest and explicit Stage 3 go.

@@ -1,6 +1,8 @@
 #include "Fish/LFFishCargoComponent.h"
 
 #include "Fish/LFFishSubsystem.h"
+#include "Round/LFRoundCargoComponent.h" // T04 hook
+#include "Round/LFRoundSubsystem.h" // T04 hook
 #include "Brawler/LFBrawler.h"
 #include "Boat/LFBoat.h"
 #include "Water/LFWater.h"
@@ -25,6 +27,7 @@ void ULFFishCargoComponent::AddFish(int32 Amount)
 int32 ULFFishCargoComponent::RemoveFish(int32 Amount)
 {
 	const int32 Removed = FMath::Clamp(Amount, 0, Count);
+	ULFRoundCargoComponent::Get(GetOwner())->Removing(Removed, Count); // T04 hook
 	Count -= Removed;
 	UpdatePile();
 	return Removed;
@@ -37,7 +40,10 @@ void ULFFishCargoComponent::Spill(int32 Amount)
 	if (Boat && Fish)
 	{
 		const int32 Spilled = RemoveFish(Amount);
-		Fish->Spill(Boat, Spilled);
+		// T04 hook: gold pickups retain their value; statistics count fish, not points.
+		const int32 Gold = ULFRoundCargoComponent::Get(Boat)->SpillGold();
+		if (ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) Round->RecordSpill(Spilled);
+		Fish->Spill(Boat, Spilled - Gold);
 	}
 }
 

@@ -25,7 +25,14 @@ public class LakeFight : ModuleRules
 			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		PrivateDependencyModuleNames.AddRange(new string[] { "SlateCore" }); // T04 hook
+
+		// T04 hook: original B08 PNGs travel with the executable; no runtime art tools required.
+		foreach (string Icon in new string[] { "Clock", "Crew_Red", "Crew_Blue", "Crew_Green", "Crew_Yellow", "Fish", "FishGold" })
+		{
+			RuntimeDependencies.Add("$(TargetOutputDir)/LFUI/ICON_LF_" + Icon + ".png",
+				System.IO.Path.Combine(ModuleDirectory, "../../Art/Export/UI/ICON_LF_" + Icon + ".png"), StagedFileType.NonUFS);
+		}
 
 		PublicIncludePaths.AddRange(new string[] {
 			"LakeFight",
