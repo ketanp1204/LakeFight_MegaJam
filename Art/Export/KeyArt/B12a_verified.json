@@ -1,0 +1,192 @@
+{
+  "blender": "5.1.0",
+  "source_fbx_sha256": {
+    "SM_LF_Logo_LakeFight": "1caab8210147f70f7e8b3820bffc55b578c975333b9d7b411ded7bc2b93c6c8f",
+    "SM_LF_Logo_DirectorsCut": "b60f4ad89d3222c39699f7e485686c851208efe864142f11d25b8d55d21ff8ae"
+  },
+  "outputs": [
+    {
+      "file": "LF_TitleLockup_630x500_Light.png",
+      "size": [
+        630,
+        500
+      ],
+      "rgba_8bit": true,
+      "alpha_range": [
+        0.0,
+        1.0
+      ],
+      "bounds_top_left_px": [
+        84,
+        20,
+        545,
+        229
+      ],
+      "sha256": "4f5843456a4c1bd53d010f7752f200c637bb8594f4dac759b61573cff9854745"
+    },
+    {
+      "file": "LF_TitleLockup_630x500_DarkOutline.png",
+      "size": [
+        630,
+        500
+      ],
+      "rgba_8bit": true,
+      "alpha_range": [
+        0.0,
+        1.0
+      ],
+      "bounds_top_left_px": [
+        84,
+        20,
+        545,
+        229
+      ],
+      "sha256": "de136688bf5a2826b6feefb63fc65ee3689816703419fcb9e791c8c05d6c4a49"
+    },
+    {
+      "file": "LF_TitleLockup_960x300_Light.png",
+      "size": [
+        960,
+        300
+      ],
+      "rgba_8bit": true,
+      "alpha_range": [
+        0.0,
+        1.0
+      ],
+      "bounds_top_left_px": [
+        24,
+        53,
+        445,
+        246
+      ],
+      "sha256": "a0851d90aab2d0057b4b6c016a4e8c7b3d8cfbc49502b68d8a46dba540ad03b4"
+    },
+    {
+      "file": "LF_TitleLockup_960x300_DarkOutline.png",
+      "size": [
+        960,
+        300
+      ],
+      "rgba_8bit": true,
+      "alpha_range": [
+        0.0,
+        1.0
+      ],
+      "bounds_top_left_px": [
+        24,
+        53,
+        445,
+        246
+      ],
+      "sha256": "5357c7652bf0c7728ea87d4d10890bf7d3e351fda1835634139706124374c765"
+    },
+    {
+      "file": "LF_TitleLockup_1920x1080_Light.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "rgba_8bit": true,
+      "alpha_range": [
+        0.0,
+        1.0
+      ],
+      "bounds_top_left_px": [
+        519,
+        34,
+        1400,
+        437
+      ],
+      "sha256": "584bf9c8389fc1a1e87a7ded216f22167feb8a21bd97cf0b420c7930c4dccef3"
+    },
+    {
+      "file": "LF_TitleLockup_1920x1080_DarkOutline.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "rgba_8bit": true,
+      "alpha_range": [
+        0.0,
+        1.0
+      ],
+      "bounds_top_left_px": [
+        519,
+        34,
+        1400,
+        437
+      ],
+      "sha256": "7538decba56fb8477df583ab49f55be0ed8f2f031bb2e58a8daf1395b96863b6"
+    }
+  ],
+  "guides": [
+    {
+      "file": "LF_KeyArt_Layout_630x500.png",
+      "size": [
+        630,
+        500
+      ],
+      "hero_rect_top_left_px": [
+        24,
+        238,
+        582,
+        238
+      ],
+      "title_rect_top_left_px": [
+        32,
+        20,
+        566,
+        210
+      ],
+      "opaque": true,
+      "sha256": "23c55441cb2f6e3b30ab0c72258ad8e87581b3e82eeded56d26c043bf71a5d0e"
+    },
+    {
+      "file": "LF_KeyArt_Layout_960x300.png",
+      "size": [
+        960,
+        300
+      ],
+      "hero_rect_top_left_px": [
+        478,
+        18,
+        464,
+        264
+      ],
+      "title_rect_top_left_px": [
+        22,
+        30,
+        426,
+        240
+      ],
+      "opaque": true,
+      "sha256": "c8e9804521f86409e251427ec474c0d5d0af93523e95c71b5d13869d50b04348"
+    },
+    {
+      "file": "LF_KeyArt_Layout_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "hero_rect_top_left_px": [
+        96,
+        460,
+        1728,
+        566
+      ],
+      "title_rect_top_left_px": [
+        480,
+        36,
+        960,
+        400
+      ],
+      "opaque": true,
+      "sha256": "154dc6a387db4ae3069b3227921e00b52389adbc231682dfa8c1b3252f40df05"
+    }
+  ],
+  "notes": "Original B05 meshes only. Light = cream silhouette outline; DarkOutline = deep blue/charcoal outline. Transparent overlays, not hero renders. Guides are opaque and must not ship as finished art.",
+  "repeat_png_hashes_match": true,
+  "source_fbxs_unchanged": true,
+  "hero_areas_transparent": true
+}
