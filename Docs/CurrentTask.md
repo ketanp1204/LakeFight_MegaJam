@@ -4,11 +4,23 @@
 3. [DONE 61dca4d] Bug pass a-e
 4. [DONE 8dcba09] T04 stage 3 AI goals + 2 AI-only rounds
 5. [DONE 739cea9] Credits + main menu
-6. [IN PROGRESS] Re-package + smoke + zip
-7. [ ] Sky
+6. [DONE 141de62] Re-package + smoke + zip
+7. [IN PROGRESS] Sky
 8. [ ] Final package + report + DirectorsLog
 9. [ ] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 7 - sky (14 Nov ~23:15-23:30 IST, unreviewed - director away)
+- `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):
+  - VolumetricCloud actor removed (1).
+  - Low-poly clouds lifted another 25 m: now 130-200 m up (L01.1 had added 25 m).
+  - `SkyDome` (Engine sphere, 600 m radius, NoCollision, no shadow) in L01/Sky with new `M_LF_SkyGradient`, created by the
+    script: unlit, two-sided, translucent with Apply Fogging OFF, horizon (0.62, 0.86, 0.95) -> zenith (0.05, 0.25, 0.80) by view
+    height, Brightness 2. NOT 'Is Sky', so the real-time SkyLight still captures the SkyAtmosphere: scene lighting unchanged.
+- Iterations (rendered shots, Saved/Screenshots/N1_sky_a.png is the final): opaque Is-Sky dome at 1.5 km -> fog-washed
+  grey-white; brighter + 600 m -> still washed and the SkyLight captured it, tinting the trees blue; translucent unfogged
+  non-sky dome -> clean gradient, lighting as before. The SkyAtmosphere / height fog / sun are untouched.
+- Clouds now read dark grey from below against the bright gradient (sunlit from above) - director to judge.
 
 ## N1 item 6 - re-package + smoke (14 Nov ~23:10-23:25 IST, unreviewed - director away)
 - 1st package attempt FAILED: the Shipping unity build merged LFMenuWidget.cpp with LFRoundWidget.cpp and both had

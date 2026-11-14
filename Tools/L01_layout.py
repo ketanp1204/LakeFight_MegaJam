@@ -605,16 +605,95 @@ def pass_gameplay():
         json.dumps({t: round(shore_r(math.radians(a)), 1) for t, a in DOCK_ANG.items()})))
 
 
+SKY_MAT = "/Game/LakeFight/Materials/M_LF_SkyGradient"
+SKY_HORIZON = (0.62, 0.86, 0.95)   # light cyan haze at the horizon
+SKY_ZENITH = (0.05, 0.25, 0.80)    # saturated blue overhead
+SKY_BRIGHTNESS = 2.0               # emissive gain vs the sunlit scene's exposure (1.0 read as a flat grey-white)
+SKY_DOME_SCALE = 1200.0            # Engine sphere is 100 cm across -> 600 m radius (clouds sit 250-400 m out; less height fog than 1.5 km)
+
+
+def sky_material():
+    """N1 item 7: unlit, two-sided 'Is Sky' gradient, horizon -> zenith by the view direction's height (dome centred at 0)."""
+    if unreal.EditorAssetLibrary.does_asset_exist(SKY_MAT):  # rebuilt every run so the script stays the source of truth
+        unreal.EditorAssetLibrary.delete_asset(SKY_MAT)
+    folder, name = SKY_MAT.rsplit("/", 1)
+    mat = unreal.AssetToolsHelpers.get_asset_tools().create_asset(name, folder, unreal.Material, unreal.MaterialFactoryNew())
+    mat.set_editor_property("shading_model", unreal.MaterialShadingModel.MSM_UNLIT)
+    mat.set_editor_property("two_sided", True)
+    # Purely visual layer: translucent with fogging OFF (opaque/IsSky versions came out fog-washed grey-white), and NOT
+    # 'Is Sky', so the real-time SkyLight keeps capturing the SkyAtmosphere - scene lighting stays exactly as before.
+    mat.set_editor_property("blend_mode", unreal.BlendMode.BLEND_TRANSLUCENT)
+    mat.set_editor_property("use_translucency_vertex_fog", False)
+    mat.set_editor_property("is_sky", False)
+    L = unreal.MaterialEditingLibrary
+    wp = L.create_material_expression(mat, unreal.MaterialExpressionWorldPosition, -900, 0)
+    nrm = L.create_material_expression(mat, unreal.MaterialExpressionNormalize, -760, 0)
+    mask = L.create_material_expression(mat, unreal.MaterialExpressionComponentMask, -620, 0)
+    mask.set_editor_property("r", False)
+    mask.set_editor_property("g", False)
+    mask.set_editor_property("b", True)
+    mul = L.create_material_expression(mat, unreal.MaterialExpressionMultiply, -480, 0)
+    mul.set_editor_property("const_b", 2.2)
+    add_ = L.create_material_expression(mat, unreal.MaterialExpressionAdd, -360, 0)
+    add_.set_editor_property("const_b", 0.03)
+    sat = L.create_material_expression(mat, unreal.MaterialExpressionSaturate, -240, 0)
+    hor = L.create_material_expression(mat, unreal.MaterialExpressionVectorParameter, -360, -220)
+    hor.set_editor_property("parameter_name", "Horizon")
+    hor.set_editor_property("default_value", unreal.LinearColor(SKY_HORIZON[0], SKY_HORIZON[1], SKY_HORIZON[2], 1.0))
+    zen = L.create_material_expression(mat, unreal.MaterialExpressionVectorParameter, -360, -400)
+    zen.set_editor_property("parameter_name", "Zenith")
+    zen.set_editor_property("default_value", unreal.LinearColor(SKY_ZENITH[0], SKY_ZENITH[1], SKY_ZENITH[2], 1.0))
+    lerp = L.create_material_expression(mat, unreal.MaterialExpressionLinearInterpolate, -100, -200)
+    gain = L.create_material_expression(mat, unreal.MaterialExpressionScalarParameter, -100, -60)
+    gain.set_editor_property("parameter_name", "Brightness")
+    gain.set_editor_property("default_value", SKY_BRIGHTNESS)
+    emis = L.create_material_expression(mat, unreal.MaterialExpressionMultiply, 60, -200)
+    L.connect_material_expressions(wp, "", nrm, "")
+    L.connect_material_expressions(nrm, "", mask, "")
+    L.connect_material_expressions(mask, "", mul, "A")
+    L.connect_material_expressions(mul, "", add_, "A")
+    L.connect_material_expressions(add_, "", sat, "")
+    L.connect_material_expressions(hor, "", lerp, "A")
+    L.connect_material_expressions(zen, "", lerp, "B")
+    L.connect_material_expressions(sat, "", lerp, "Alpha")
+    L.connect_material_expressions(lerp, "", emis, "A")
+    L.connect_material_expressions(gain, "", emis, "B")
+    L.connect_material_property(emis, "", unreal.MaterialProperty.MP_EMISSIVE_COLOR)
+    one = L.create_material_expression(mat, unreal.MaterialExpressionConstant, 60, 0)
+    one.set_editor_property("r", 1.0)
+    L.connect_material_property(one, "", unreal.MaterialProperty.MP_OPACITY)
+    L.recompile_material(mat)
+    unreal.EditorAssetLibrary.save_loaded_asset(mat, False)
+    log("sky: created " + SKY_MAT)
+    return mat
+
+
 def pass_sky():
     removed = clear("L01/Sky")
     rng = Rng(1114)
     for i in range(10):
         ang = i * 36.0 + rng.r(-12, 12)
-        r, z, s = rng.r(250, 400), rng.r(80, 150) + 25.0, rng.r(1.3, 3.0)  # L01.1: lifted 25 m
+        r, z, s = rng.r(250, 400), rng.r(80, 150) + 50.0, rng.r(1.3, 3.0)  # L01.1 lifted 25 m, N1 item 7 another 25 m
         m = rng.pick(["SM_LF_Cloud_01", "SM_LF_Cloud_02", "SM_LF_Cloud_03", "SM_LF_Cloud_04"])
         x, y = polar(ang, r)
         add(m, "Cloud_%d" % i, x / SCALE, y / SCALE, z, rng.r(0, 360), (s, s, s), "L01/Sky")
-    log("sky: removed %d, clouds 10 (105-175 m up)" % removed)
+    # N1 item 7 (director): stylized gradient sky instead of the realistic atmosphere look; no volumetric clouds.
+    gone = 0
+    for a in all_actors():
+        if a.get_class().get_name() == "VolumetricCloud":
+            ACTORS.destroy_actor(a)
+            gone += 1
+    dome = ACTORS.spawn_actor_from_object(unreal.EditorAssetLibrary.load_asset("/Engine/BasicShapes/Sphere"), unreal.Vector(0, 0, 0), unreal.Rotator(0, 0, 0))
+    dome.set_actor_scale3d(unreal.Vector(SKY_DOME_SCALE, SKY_DOME_SCALE, SKY_DOME_SCALE))
+    dome.set_actor_label("SkyDome")
+    dome.set_folder_path("L01/Sky")
+    smc = dome.static_mesh_component
+    smc.set_material(0, sky_material())
+    smc.set_collision_profile_name("NoCollision")
+    smc.set_editor_property("cast_shadow", False)
+    smc.set_editor_property("affect_distance_field_lighting", False)
+    STATS["SkyDome"] = 1
+    log("sky: removed %d, clouds 10 (130-200 m up), gradient SkyDome r=%.0f m x%.1f, %d VolumetricCloud removed" % (removed, SKY_DOME_SCALE * 0.5, SKY_BRIGHTNESS, gone))
 
 
 def report():
