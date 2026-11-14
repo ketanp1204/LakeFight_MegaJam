@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A01 deterministic, manifest-driven Sonniss processing. Sources are read-only.
+"""A01/A03 deterministic, manifest-driven audio processing. Sources are read-only.
 
 Run with Tools/audio/.venv/Scripts/python.exe Tools/audio/process_audio.py
      --verify-repro
@@ -23,6 +23,7 @@ import struct
 import subprocess
 import sys
 import wave
+from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
@@ -34,7 +35,7 @@ except ModuleNotFoundError:
     if local_python.exists() and Path(sys.executable).resolve() != local_python.resolve():
         os.execv(str(local_python), [str(local_python), "-B", str(Path(__file__).resolve()), *sys.argv[1:]])
     raise SystemExit("Install Tools/audio/requirements.lock.txt into Tools/audio/.venv first.")
-GROUPS = ["AMBIENCE", "SPLASH", "PADDLE", "RAM", "VOICE", "UI / SCORE"]
+GROUPS = ["AMBIENCE", "SPLASH", "PADDLE", "RAM", "VOICE", "UI / SCORE", "MUSIC"]
 
 
 def sha256(path: Path) -> str:
@@ -83,6 +84,7 @@ class Processor:
             "numpy": np.__version__, "soundfile": sf.__version__,
             "python": ".".join(map(str, sys.version_info[:3])),
         }
+        self.music_grids = {}
         expected = self.config["environment"]
         for key in ["ffmpeg", "numpy", "soundfile"]:
             if self.environment[key] != expected[key]:
@@ -104,15 +106,104 @@ class Processor:
                          "-of", "json", str(path)])
         return json.loads(data.stdout)
 
-    def verify_sources(self):
+    def verify_sources(self, group=None):
         inventory = {}
-        for name, expected in sorted(self.config["source_inventory"].items()):
-            path = inside(self.source_root / name, self.source_root)
-            actual = sha256(path)
-            if actual != expected["sha256"]:
-                raise RuntimeError(f"Read-only source changed: {name}")
-            inventory[name] = {"sha256": actual, "bytes": path.stat().st_size}
+        roots = [(self.source_root, self.config["source_inventory"], "")]
+        if "music" in self.config:
+            roots.append((inside(ROOT / self.config["music"]["source_root"], ROOT / "Audio/Source"),
+                          self.config["music"]["source_inventory"], "Music/"))
+        for root, files, prefix in roots:
+            for name, expected in sorted(files.items()):
+                if group and not any(e['group'] == group and e['source'] == name for e in self.config['events']):
+                    continue
+                path = inside(root / name, root)
+                actual = sha256(path)
+                if actual != expected["sha256"]:
+                    raise RuntimeError(f"Read-only source changed: {prefix}{name}")
+                inventory[prefix + name] = {"sha256": actual, "bytes": path.stat().st_size}
         return inventory
+
+    def process_music(self, entry):
+        from analyze_music import detect_grid
+        settings = self.config['music']['sources'][entry['source']]
+        root = inside(ROOT / self.config['music']['source_root'], ROOT / 'Audio/Source')
+        audio, info, pan = self.decode(inside(root / entry['source'], root), 2)
+        if entry['source'] not in self.music_grids:
+            detected, _, _ = detect_grid(audio, self.rate, settings['beat_analysis'])
+            bpm = settings['grid_bpm']
+            assert abs(detected['bpm'] - bpm) < .02, 'Measured tempo no longer matches approved grid'
+            phase_error = (detected['beat_phase_seconds'] - settings['downbeat_seconds'] + 30 / bpm) % (60 / bpm) - 30 / bpm
+            assert abs(phase_error) < .012, 'Measured beat phase no longer matches grid'
+            self.music_grids[entry['source']] = dict(detected, grid_bpm=bpm, downbeat_seconds=settings['downbeat_seconds'],
+                                   beats_per_bar=settings['beats_per_bar'], phase_error_seconds=phase_error)
+        bar = settings['beats_per_bar'] * 60 / settings['grid_bpm']
+        origin = settings['downbeat_seconds']
+        bars = entry['bars']
+        count = round(bar * self.rate)
+        length = round(bar * bars * self.rate)
+        lo, hi = entry['source_window_seconds']
+        candidates = []
+        for index in range(math.ceil((lo - origin) / bar), math.floor((hi - origin) / bar - bars - 1) + 1):
+            begin = round((origin + index * bar) * self.rate)
+            # One extra source bar is consumed by the overlap; playback stays N bars.
+            segment = audio[begin:begin + length + count]
+            energy = [db(np.sqrt(np.mean(segment[round(i * bar * self.rate):round((i + 1) * bar * self.rate)].astype(float) ** 2)))
+                      for i in range(bars + 1)]
+            drop = float(np.median(energy) - min(energy))
+            head, tail = segment[:count].astype(float), segment[-count:].astype(float)
+            correlation = float(np.sum(head * tail) / max(np.sqrt(np.sum(head ** 2) * np.sum(tail ** 2)), 1e-20))
+            # Compare spectral envelopes over the bar; match arrangement/timbre as
+            # well as waveform. A hard energy floor rejects a hidden breakdown.
+            spectra = []
+            for part in (head, tail):
+                frames = part[:len(part) // 1024 * 1024].mean(axis=1).reshape(-1, 1024)
+                spectra.append(np.log1p(np.abs(np.fft.rfft(frames * np.hanning(1024))).mean(axis=0)))
+            distance = float(np.sqrt(np.mean((spectra[0] - spectra[1]) ** 2)))
+            candidates.append(dict(start_bar_index=index, start_frame=begin, energy_dbfs=energy,
+                                   mean_energy_dbfs=db(np.sqrt(np.mean(segment.astype(float) ** 2))),
+                                   energy_drop_db=drop, correlation=correlation, spectral_distance=distance,
+                                   accepted=drop <= entry['maximum_bar_drop_db'], score=distance + .1 * (1 - correlation)))
+        valid = [c for c in candidates if c['accepted']]
+        if not valid:
+            raise ValueError(f"No steady whole-bar passage for {entry['id']}")
+        if entry.get('selection_mode') in ('energetic', 'calm'):
+            energies = [c['mean_energy_dbfs'] for c in valid]
+            best = max(energies) if entry['selection_mode'] == 'energetic' else min(energies)
+            valid = [c for c in valid if abs(c['mean_energy_dbfs'] - best) <= entry['energy_tie_db']]
+        chosen = min(valid, key=lambda c: (c['score'], c['start_bar_index']))
+        begin = chosen['start_frame']
+        end = begin + length + count
+        segment = audio[begin:end]
+        theta = np.linspace(0, math.pi / 2, count)
+        blend = segment[-count:] * np.cos(theta)[:, None] + segment[:count] * np.sin(theta)[:, None]
+        result = np.concatenate([segment[count:-count], blend]).astype(np.float32)
+        assert len(result) == length
+        # Circular rotation preserves exact whole-bar duration. Restrict to 2ms
+        # around the bar line instead of A01's unrestricted two-second search.
+        mid = result.mean(axis=1)
+        choices = np.flatnonzero(mid * np.roll(mid, 1) <= 0)
+        choices = choices[np.minimum(choices, len(result) - choices) <= round(.002 * self.rate)]
+        if not len(choices):
+            raise ValueError('No mid zero crossing within 2ms of the music bar line')
+        score = np.sum(result[choices] ** 2 + result[(choices - 1) % len(result)] ** 2, axis=1)
+        rotation = int(choices[np.argmin(score)])
+        result = np.roll(result, -rotation, axis=0)
+        metrics = self.normalize(result, entry['output'], entry['target_lufs'], True)
+        loop = dict(crossfade_seconds=count / self.rate, crossfade_bars=1,
+                    crossfade_curve='equal-power cosine/sine tail into head', bars=bars, source_bars=bars + 1,
+                    rotation_samples=rotation if rotation < length / 2 else rotation - length,
+                    zero_crossing_channel='stereo mid; minimum joint L/R energy within 2ms of bar line',
+                    boundary_guard_samples=self.config['loops']['boundary_guard_samples'],
+                    start_sample=0, end_sample_inclusive=length - 1, wav_smpl_chunk=True, endpoint_pcm_frames_zero=True)
+        output = dict(output=entry['output'] + '.wav', source=entry['source'], event=entry['id'], group='MUSIC',
+                      channels=2, sample_rate=self.rate, bits_per_sample=16, duration_seconds=length / self.rate,
+                      source_start_seconds=begin / self.rate, source_end_seconds=end / self.rate,
+                      target_lufs=entry['target_lufs'], bpm=settings['grid_bpm'], beat_grid=self.music_grids[entry['source']],
+                      loop=loop, downmix=pan, slices_kept=None, candidates=None, **metrics)
+        event = dict(id=entry['id'], source=entry['source'], source_info=info,
+                     selection_reason=entry['selection_reason'], candidates=candidates, selected=chosen,
+                     selected_source_ranges_seconds=[[begin / self.rate, end / self.rate]])
+        return [output], event
 
     def decode(self, path, channels):
         info = self.probe(path)
@@ -354,6 +445,8 @@ class Processor:
             trial.unlink(missing_ok=True)
 
     def process_entry(self, entry):
+        if entry['group'] == 'MUSIC':
+            return self.process_music(entry)
         source = inside(self.source_root / entry["source"], self.source_root)
         channels = entry["channels"]
         audio, source_info, pan = self.decode(source, channels)
@@ -420,19 +513,22 @@ class Processor:
                          "short_candidates_dropped": rejected, "kept_count": len(selected),
                          "selected_source_ranges_seconds": [[c["start_frame"] / self.rate, c["end_frame"] / self.rate] for c in selected]}
 
-    def render(self):
-        inventory_before = self.verify_sources()
+    def render(self, group=None):
+        inventory_before = self.verify_sources(group)
+        self.music_grids = {}
         outputs, events = [], []
-        for index, entry in enumerate(self.config["events"], 1):
-            print(f"[{index:02d}/{len(self.config['events'])}] {entry['id']}", flush=True)
+        entries = [e for e in self.config['events'] if group is None or e['group'] == group]
+        for index, entry in enumerate(entries, 1):
+            print(f"[{index:02d}/{len(entries)}] {entry['id']}", flush=True)
             generated, event = self.process_entry(entry)
             outputs.extend(generated)
             events.append(event)
             print("  " + ", ".join(f"{x['output']} {x['lufs']:.1f} LUFS/{x['true_peak_dbtp']:.1f} dBTP" for x in generated), flush=True)
-        inventory_after = self.verify_sources()
+        inventory_after = self.verify_sources(group)
         if inventory_before != inventory_after:
             raise RuntimeError("Source inventory changed during processing")
         return {"manifest_sha256": sha256(self.manifest_path), "environment": self.environment,
+                "render_group": group,
                 "source_inventory_unchanged": True, "source_inventory": inventory_after,
                 "events": events, "outputs": outputs}
 
@@ -459,10 +555,10 @@ class Processor:
         (self.out / "_listen.html").write_text(page, encoding="utf-8")
 
     def write_report(self, report, reproducibility):
-        lines = ["# A01 - audio processing", "", "Backend: **FFmpeg**, with NumPy for deterministic sample operations and SoundFile for float intermediates.",
+        lines = ["# A01 / A03 - audio processing", "", "Backend: **FFmpeg**, with NumPy for deterministic sample operations and SoundFile for float intermediates.",
                  "", f"- {self.environment['ffmpeg']}", f"- Python {self.environment['python']}; NumPy {self.environment['numpy']}; SoundFile {self.environment['soundfile']}",
                  "- Dependencies isolated under Tools/audio/.venv; pinned in Tools/audio/requirements.lock.txt.",
-                 "- Sonniss GDC2026 sources licensed/royalty-free as confirmed by the director. All original source content hashes verified unchanged before and after processing.",
+                 "- Sonniss GDC2026 sources licensed/royalty-free as confirmed by the director. Current render source hashes verified unchanged before/after processing; prior A01 source evidence retained separately when rendering MUSIC only.",
                  "- No git or Unreal commands; deliverables under Audio/ and processing tooling under Tools/audio/.",
                  "", "## Outputs", "", "| Output | Source file | Duration (s) | LUFS-I | True peak (dBTP) | Slices kept |", "|---|---|---:|---:|---:|---|"]
         for group in GROUPS:
@@ -478,7 +574,7 @@ class Processor:
                   "- Silence split starts at -40dBFS, 120ms gap, 5ms blocks, 10ms pre-roll/40ms post-roll; slices shorter than 80ms after any pitch-rate change are dropped. Selection begins with the strongest event then greedily maximizes distance in standardized log spectral-centroid/peak space, keeping at most six; numbering follows source chronology.",
                   "- Non-loop clips are trimmed and faded 5ms in / 20ms out. EndCheer selects the most energetic continuous four-second window, with 50ms in / 700ms out for a natural ending.",
                   "- RamWood +3 semitones uses natural resampling (rate factor 2^(3/12)); decay duration becomes 0.8409 of its source slice. No time stretch or added sustain.",
-                  "- Loops equal-power crossfade two seconds of tail into head and remove that overlap from length. The continuous result is rotated to a quiet stereo-mid zero crossing, then a 64-sample guard anchors both channels to digital zero. RIFF smpl metadata uses loop start 0 and inclusive end N-1. Exact points are in _processing.json; audition players loop those complete WAVs.",
+                  "- A01 loops equal-power crossfade two seconds of tail into head and remove that overlap from length. Music uses the bar-aligned assembly documented below. The continuous result is rotated to a quiet stereo-mid zero crossing, then a 64-sample guard anchors both channels to digital zero. RIFF smpl metadata uses loop start 0 and inclusive end N-1. Exact points are in _processing.json; audition players loop those complete WAVs.",
                   "- A sub-400ms one-shot has insufficient duration for ordinary 400ms integrated gating. Only the metering copy is repeated for whole cycles to at least 1.2s; the delivered file keeps its original trimmed duration. This avoids normalizing a tiny transient against invented silence. Rows use that documented short-event integrated convention; ordinary files use native-duration metering.",
                   "- PCM16 TPDF dither is seeded by manifest seed plus output name. Source hashes, tool versions, processing settings and selection rules are pinned; no timestamp metadata is written into WAVs."]
         short = [o["output"] for o in report["outputs"] if o["short_event_meter_extended"]]
@@ -486,12 +582,29 @@ class Processor:
             lines += ["", "Short-event metering convention applied to: " + ", ".join(short) + "."]
         taunt = next(o for o in report["outputs"] if o["output"] == "VO_LF_Taunt_01.wav")
         lines += ["", f"Police laugh loudness check: prepared source {taunt['source_prepared_lufs']:.2f} LUFS -> delivered {taunt['lufs']:.2f} LUFS, true peak {taunt['true_peak_dbtp']:.2f} dBTP. The notably louder source was attenuated to the voice target."]
+        music = [o for o in report['outputs'] if o['group'] == 'MUSIC']
+        if music:
+            lines += ['', '## A03 - music', '',
+                      "Sources: Boardwalk Jaunt by Sky Toes (Main/Menu) and Funk Formula by Nick Petrov (Final), Uppbeat Basic Licenses (director supplied); credit required, exact credits recorded in Docs/ASSETS.md. Source MP3s are read-only and must not be redistributed. No source links or copies are embedded in the audition page.", '',
+                      '| Output | Source seconds used | BPM | Source / playback bars (4/4) | Duration (s) | LUFS-I | dBTP |',
+                      '|---|---|---:|---:|---:|---:|---:|']
+            for out in music:
+                lines.append(f"| {out['output']} | {out['source_start_seconds']:.6f}-{out['source_end_seconds']:.6f} | {out['bpm']:.3f} | {out['loop']['source_bars']} / {out['loop']['bars']} | {out['duration_seconds']:.6f} | {out['lufs']:.2f} | {out['true_peak_dbtp']:.2f} |")
+            for source in dict.fromkeys(o['source'] for o in music):
+                grid = next(o['beat_grid'] for o in music if o['source'] == source)
+                lines += ['', f"{source}: detected {grid['bpm']:.6f} BPM over {grid['analysis_seconds'][0]}-{grid['analysis_seconds'][1]}s using {grid['method']}; grid {grid['grid_bpm']:.6f} BPM, {grid['beats_per_bar']}/4, first downbeat {grid['downbeat_seconds']:.6f}s. Flux phase {grid['beat_phase_seconds']:.6f}s agrees within {abs(grid['phase_error_seconds']) * 1000:.2f}ms. Bar grouping is inferred from the opening and repeating arrangement; director audition remains required."]
+            lines += ['',
+                      'Music candidates begin/end on bar lines. One extra source bar supplies the one-bar equal-power overlap: N+1 source bars become exactly N playback bars (rounded once to the nearest sample). Boardwalk is scanned across the track for its strongest/quietest sustained passages by mean RMS power; within 0.15dB of the best energy, tail/head spectral distance and waveform correlation select the cleaner match. Per-bar energy floors reject dips. Funk Formula candidates stay in 70-120s and reject a bar more than 3dB below the median, excluding the brief approximately 87-89s dip. No intro, breakdown or outro enters Final.', '',
+                      'Final loop rotation is restricted to a stereo-mid zero crossing within 2ms of the bar line, preserving duration. The A01 64-sample guards anchor both channels to exact zero; this is a stereo-mid crossing plus digital-zero endpoints, not a claim of simultaneous natural L/R crossings. Crossfade, rotation, grid, per-bar source energy and all candidate scores are in _processing.json.', '',
+                      'Targets: main -22 LUFS-I, menu -24 LUFS-I, final -21 LUFS-I; ceiling -1 dBTP. Human check: listen through several repetitions of each MUSIC player for rhythmic/harmonic closure and crossfade swell; approve menu calmness, steady fight energy and final climax. Boardwalk is a live-feeling performance: measured local tempo 106.889-106.908 BPM supports the average grid, but phrase closure still needs an ear. Numeric evidence does not establish audible seamlessness or in-game mix acceptance.', '',
+                      'A03 files: Tools/audio/process_audio.py, analyze_music.py, audio_manifest.json; Audio/Processed/MUS_LF_Main_Loop.wav, MUS_LF_Menu.wav, MUS_LF_Final_Loop.wav, _listen.html, _processing.json, _reproducibility.json, _validation.json; Audio/AUDIO_REPORT.md. Local environment/cache and diagnostic evidence stay under Tools/audio/.', '',
+                      'Director log draft (write restriction): A03 asked, then updated to two sources / three music loops and manifest pipeline delivered / awaiting director audition. No Docs files edited.']
         lines += ["", "## Verification", "", f"- Outputs: {len(report['outputs'])}; source mappings: {len(report['events'])}; source inventory hashes protected: {len(report['source_inventory'])}.",
                   f"- {sum(o['channels'] == 1 for o in report['outputs'])} mono / {sum(o['channels'] == 2 for o in report['outputs'])} stereo; {sum(bool(o['loop']) for o in report['outputs'])} loops. Largest target error {max(abs(o['lufs'] - o['target_lufs']) for o in report['outputs']):.2f} LU; highest true peak {max(o['true_peak_dbtp'] for o in report['outputs']):.2f} dBTP.",
                   "- Every rendered WAV was remeasured for LUFS and true peak after PCM16 quantization. Format, channel count, sample rate, loop endpoints and RIFF metadata are checked.",
-                  "- " + (f"Two full independent processing passes completed; all {len(report['outputs'])} WAV SHA256 hashes match byte-for-byte." if reproducibility else "Single render completed; use --verify-repro to verify two complete processing passes."),
-                  "- Evidence: Processed/_processing.json and Processed/_reproducibility.json. Both passes decode and process sources again; there is no rendered-audio cache.",
-                  "", "## Run / audition", "", "    Tools/audio/.venv/Scripts/python.exe -B Tools/audio/process_audio.py --verify-repro", "",
+                  "- " + (f"Two independent processing passes completed for the selected render group ({report.get('render_group') or 'ALL'}); selected WAV hashes match byte-for-byte. Earlier A01 evidence is retained for untouched outputs." if reproducibility else "Single render completed; use --verify-repro to verify two processing passes."),
+                  "- Evidence: Processed/_processing.json and Processed/_reproducibility.json. Selected passes decode and process sources again; there is no rendered-audio cache.",
+                  "", "## Run / audition", "", "    Tools/audio/.venv/Scripts/python.exe -B Tools/audio/process_audio.py --group MUSIC --verify-repro", "",
                   "Manifest: Tools/audio/audio_manifest.json. Open [Processed/_listen.html](Processed/_listen.html) in a browser to audition the grouped outputs; no server is required.",
                   "", "## Files / human check / stop", "",
                   "Tooling: Tools/audio/process_audio.py, audio_manifest.json, requirements.lock.txt, isolated .venv and scratch .work/.tmp. Deliverables: Audio/Processed/*.wav, _listen.html, _processing.json, _reproducibility.json and this report.",
@@ -501,6 +614,7 @@ class Processor:
         (ROOT / "Audio" / "AUDIO_REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     def validate_files(self, report):
+        loops, clipped = [], 0
         for out in report["outputs"]:
             path = self.out / out["output"]
             with wave.open(str(path), "rb") as wav:
@@ -509,36 +623,106 @@ class Processor:
                 assert wav.getnframes() == out["frames"]
                 raw = wav.readframes(wav.getnframes())
             pcm = np.frombuffer(raw, dtype="<i2").reshape(-1, out["channels"])
+            clipped += int(np.count_nonzero((pcm == -32768) | (pcm == 32767)))
             assert (pcm[0] == 0).all() and (pcm[-1] == 0).all()
             if out["loop"]:
-                assert b"smpl" in path.read_bytes()
+                riff = path.read_bytes()
+                assert riff[:4] == b'RIFF' and riff[8:12] == b'WAVE'
+                assert struct.unpack_from('<I', riff, 4)[0] + 8 == len(riff)
+                chunks, offset = {}, 12
+                while offset + 8 <= len(riff):
+                    key, size = struct.unpack_from('<4sI', riff, offset)
+                    chunks[key] = riff[offset + 8:offset + 8 + size]
+                    offset += 8 + size + (size % 2)
+                smpl = struct.unpack('<15I', chunks[b'smpl'])
+                assert smpl[7] == 1 and smpl[10] == 0 and smpl[11] == 0
+                assert smpl[12] == len(pcm) - 1 and smpl[14] == 0
+                loops.append(dict(output=out['output'], duration_seconds=out['duration_seconds'],
+                                  start=smpl[11], end_inclusive=smpl[12]))
+                if out['group'] == 'MUSIC':
+                    expected = out['loop']['bars'] * out['beat_grid']['beats_per_bar'] * 60 / out['bpm'] * self.rate
+                    assert abs(len(pcm) - expected) <= .500001
+                    assert abs(out['loop']['rotation_samples']) <= .002 * self.rate
             assert sha256(path) == out["sha256"]
             assert abs(out["lufs"] - out["target_lufs"]) <= self.config["normalization"]["tolerance_lu"]
             assert out["true_peak_dbtp"] <= self.peak_ceiling
+        assert clipped == 0
+        return dict(outputs=len(report['outputs']), mono=sum(o['channels'] == 1 for o in report['outputs']),
+                    stereo=sum(o['channels'] == 2 for o in report['outputs']), loop_count=len(loops), loops=loops,
+                    maximum_loudness_error_lu=max(abs(o['lufs'] - o['target_lufs']) for o in report['outputs']),
+                    highest_true_peak_dbtp=max(o['true_peak_dbtp'] for o in report['outputs']),
+                    source_files_unchanged=report['source_inventory_unchanged'],
+                    source_hashes_checked=len(report['source_inventory']),
+                    format='PCM16 / 48000 Hz', clipped_samples=clipped,
+                    manifest_sha256=sha256(self.manifest_path), processing_script_sha256=sha256(Path(__file__)),
+                    analysis_script_sha256=sha256(HERE / 'analyze_music.py'))
+
+    def validate_page(self, report):
+        class Players(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.players = {}
+            def handle_starttag(self, tag, attrs):
+                if tag == 'audio':
+                    values = dict(attrs)
+                    self.players[values['src']] = values
+        parser = Players()
+        page = (self.out / '_listen.html').read_text(encoding='utf-8')
+        parser.feed(page)
+        assert len(parser.players) == len(report['outputs'])
+        for out in report['outputs']:
+            attrs = parser.players[out['output']]
+            assert ('loop' in attrs) == bool(out['loop'])
+            assert 'controls' in attrs and (self.out / out['output']).is_file()
+        assert '<h2>MUSIC</h2>' in page
+        assert '.mp3"' not in page
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=HERE / "audio_manifest.json")
     parser.add_argument("--verify-repro", action="store_true", help="Run the full render twice and compare every WAV hash")
+    parser.add_argument('--group', choices=GROUPS, help='Render only this group, preserving verified existing outputs')
     args = parser.parse_args()
     processor = Processor(args.manifest)
-    report = processor.render()
+    previous = json.loads((processor.out / '_processing.json').read_text(encoding='utf-8')) if args.group else None
+    previous_repro = json.loads((processor.out / '_reproducibility.json').read_text(encoding='utf-8')) if args.group else None
+    if previous:
+        processor.validate_files(previous)
+    report = processor.render(args.group)
     processor.validate_files(report)
     first = {o["output"]: o["sha256"] for o in report["outputs"]}
     repro = {"full_processing_passes": 1, "verified": False, "first_pass": first}
     if args.verify_repro:
         print("SECOND COMPLETE PASS: verifying byte-for-byte reproducibility", flush=True)
-        second = processor.render()
+        second = processor.render(args.group)
         processor.validate_files(second)
         hashes = {o["output"]: o["sha256"] for o in second["outputs"]}
         if first != hashes:
             raise RuntimeError("Idempotence failed: output WAV hashes differ")
         repro.update(full_processing_passes=2, verified=True, second_pass=hashes)
         report = second
+    if previous:
+        report['outputs'] = [o for o in previous['outputs'] if o['group'] != args.group] + report['outputs']
+        replaced = {e['id'] for e in processor.config['events'] if e['group'] == args.group}
+        report['events'] = [e for e in previous['events'] if e['id'] not in replaced] + report['events']
+        report['previous_environment'] = previous.get('previous_environment', previous['environment'])
+        report['previous_source_inventory'] = previous.get('previous_source_inventory', previous['source_inventory'])
+        repro['render_group'] = args.group
+        repro['preserved_prior_evidence'] = previous_repro.get('preserved_prior_evidence', previous_repro)
+        processor.validate_files(report)
     save_json(processor.out / "_processing.json", report)
     save_json(processor.out / "_reproducibility.json", repro)
     processor.audition_page(report)
+    processor.validate_page(report)
+    validation = processor.validate_files(report)
+    validation.update(all_player_links_valid=True, render_group=args.group,
+                      full_processing_passes=repro['full_processing_passes'],
+                      all_selected_wav_hashes_identical=repro['verified'],
+                      preserved_output_hashes_unchanged=all(sha256(processor.out / o['output']) == o['sha256']
+                          for o in previous['outputs'] if o['group'] != args.group) if previous else None,
+                      prior_source_hash_evidence_retained=len(report.get('previous_source_inventory', {})))
+    save_json(processor.out / '_validation.json', validation)
     processor.write_report(report, repro["verified"])
     print(f"COMPLETE: {len(report['outputs'])} WAVs; sources unchanged; reproducibility={repro['verified']}", flush=True)
 

@@ -1,6 +1,34 @@
 {
   "schema_version": 1,
-  "task": "A01",
+  "task": "A01 + A03",
+  "music": {
+    "source_root": "Audio/Source/Music",
+    "license": "Uppbeat Basic License, director supplied; credit in Docs/ASSETS.md; never redistribute source MP3",
+    "source_inventory": {
+      "funk-formula-nick-petrov-main-version-50121-02-27.mp3": {
+        "sha256": "4b4f57a67757f0f9cb0f4626196c2ba72da1d137f5e1c5889aa85bcf295c320c",
+        "bytes": 5959584
+      },
+      "boardwalk-jaunt-sky-toes-main-version-35005-02-28.mp3": {
+        "sha256": "d7bcfc74d29e896295b537432d324244f88b026a3f9b8593208f1128f41dd370",
+        "bytes": 6029069
+      }
+    },
+    "sources": {
+      "funk-formula-nick-petrov-main-version-50121-02-27.mp3": {
+        "beat_analysis": {"analysis_seconds": [20, 120], "bpm_min": 80, "bpm_max": 150},
+        "grid_bpm": 110,
+        "beats_per_bar": 4,
+        "downbeat_seconds": 0.545455
+      },
+      "boardwalk-jaunt-sky-toes-main-version-35005-02-28.mp3": {
+        "beat_analysis": {"analysis_seconds": [20, 120], "bpm_min": 80, "bpm_max": 150},
+        "grid_bpm": 106.893357,
+        "beats_per_bar": 4,
+        "downbeat_seconds": 0.05
+      }
+    }
+  },
   "source_root": "Audio/Source/Sonniss_GDC2026",
   "output_root": "Audio/Processed",
   "work_root": "Tools/audio/.work",
@@ -475,6 +503,49 @@
       "fade_in_ms": 50,
       "fade_out_ms": 700,
       "window_selection": "maximum four-second RMS energy"
+    },
+    {
+      "id": "music_main",
+      "group": "MUSIC",
+      "source": "boardwalk-jaunt-sky-toes-main-version-35005-02-28.mp3",
+      "channels": 2,
+      "target_lufs": -22,
+      "output": "MUS_LF_Main_Loop",
+      "loop": true,
+      "bars": 8,
+      "source_window_seconds": [0, 147],
+      "maximum_bar_drop_db": 2,
+      "selection_mode": "energetic",
+      "energy_tie_db": 0.15,
+      "selection_reason": "Scan Boardwalk Jaunt for its most energetic sustained nine-bar passage. Among candidates within 0.15dB of the strongest RMS power, choose the closest tail/head match; one overlap bar leaves eight playback bars."
+    },
+    {
+      "id": "music_menu",
+      "group": "MUSIC",
+      "source": "boardwalk-jaunt-sky-toes-main-version-35005-02-28.mp3",
+      "channels": 2,
+      "target_lufs": -24,
+      "output": "MUS_LF_Menu",
+      "loop": true,
+      "bars": 4,
+      "source_window_seconds": [0, 147],
+      "maximum_bar_drop_db": 3,
+      "selection_mode": "calm",
+      "energy_tie_db": 0.15,
+      "selection_reason": "Scan Boardwalk Jaunt for its calmest sustained five-bar passage by RMS power, choosing the closest tail/head match within 0.15dB of the quietest window. One overlap bar leaves four playback bars."
+    },
+    {
+      "id": "music_final",
+      "group": "MUSIC",
+      "source": "funk-formula-nick-petrov-main-version-50121-02-27.mp3",
+      "channels": 2,
+      "target_lufs": -21,
+      "output": "MUS_LF_Final_Loop",
+      "loop": true,
+      "bars": 8,
+      "source_window_seconds": [70, 120],
+      "maximum_bar_drop_db": 3,
+      "selection_reason": "Use the later Funk Formula full groove, selecting nine source bars for eight playback bars; reject its brief 87-89s energy dip and choose the closest tail/head match. Final sits 1 LU above main for the climax."
     }
   ]
 }

@@ -1,11 +1,11 @@
-# A01 - audio processing
+# A01 / A03 - audio processing
 
 Backend: **FFmpeg**, with NumPy for deterministic sample operations and SoundFile for float intermediates.
 
 - ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
-- Python 3.12.10; NumPy 2.5.4; SoundFile 0.14.0
+- Python 3.14.4; NumPy 2.5.4; SoundFile 0.14.0
 - Dependencies isolated under Tools/audio/.venv; pinned in Tools/audio/requirements.lock.txt.
-- Sonniss GDC2026 sources licensed/royalty-free as confirmed by the director. All original source content hashes verified unchanged before and after processing.
+- Sonniss GDC2026 sources licensed/royalty-free as confirmed by the director. Current render source hashes verified unchanged before/after processing; prior A01 source evidence retained separately when rendering MUSIC only.
 - No git or Unreal commands; deliverables under Audio/ and processing tooling under Tools/audio/.
 
 ## Outputs
@@ -74,6 +74,10 @@ Backend: **FFmpeg**, with NumPy for deterministic sample operations and SoundFil
 | [UI_LF_MenuSelect.wav](Processed/UI_LF_MenuSelect.wav) | UIMisc_Kalimba 3 Up_CB Sounddesign_APPlicable Sounds.wav | 0.360 | -20.01 | -3.79 | single |
 | [UI_LF_MenuMove.wav](Processed/UI_LF_MenuMove.wav) | Interface Plucks Happy.wav | 0.650 | -20.00 | -10.49 | single |
 | [UI_LF_EndCheer.wav](Processed/UI_LF_EndCheer.wav) | CRWDCheer_Small Club, 50 People, Crowd, Spanish, Cheering and Applause-Surround_KSL_KS015.wav | 4.000 | -20.00 | -5.16 | single |
+| **MUSIC** | | | | | |
+| [MUS_LF_Main_Loop.wav](Processed/MUS_LF_Main_Loop.wav) | boardwalk-jaunt-sky-toes-main-version-35005-02-28.mp3 | 17.962 | -22.01 | -11.91 | single |
+| [MUS_LF_Menu.wav](Processed/MUS_LF_Menu.wav) | boardwalk-jaunt-sky-toes-main-version-35005-02-28.mp3 | 8.981 | -24.00 | -11.61 | single |
+| [MUS_LF_Final_Loop.wav](Processed/MUS_LF_Final_Loop.wav) | funk-formula-nick-petrov-main-version-50121-02-27.mp3 | 17.455 | -21.00 | -9.69 | single |
 
 ## Processing choices
 
@@ -82,7 +86,7 @@ Backend: **FFmpeg**, with NumPy for deterministic sample operations and SoundFil
 - Silence split starts at -40dBFS, 120ms gap, 5ms blocks, 10ms pre-roll/40ms post-roll; slices shorter than 80ms after any pitch-rate change are dropped. Selection begins with the strongest event then greedily maximizes distance in standardized log spectral-centroid/peak space, keeping at most six; numbering follows source chronology.
 - Non-loop clips are trimmed and faded 5ms in / 20ms out. EndCheer selects the most energetic continuous four-second window, with 50ms in / 700ms out for a natural ending.
 - RamWood +3 semitones uses natural resampling (rate factor 2^(3/12)); decay duration becomes 0.8409 of its source slice. No time stretch or added sustain.
-- Loops equal-power crossfade two seconds of tail into head and remove that overlap from length. The continuous result is rotated to a quiet stereo-mid zero crossing, then a 64-sample guard anchors both channels to digital zero. RIFF smpl metadata uses loop start 0 and inclusive end N-1. Exact points are in _processing.json; audition players loop those complete WAVs.
+- A01 loops equal-power crossfade two seconds of tail into head and remove that overlap from length. Music uses the bar-aligned assembly documented below. The continuous result is rotated to a quiet stereo-mid zero crossing, then a 64-sample guard anchors both channels to digital zero. RIFF smpl metadata uses loop start 0 and inclusive end N-1. Exact points are in _processing.json; audition players loop those complete WAVs.
 - A sub-400ms one-shot has insufficient duration for ordinary 400ms integrated gating. Only the metering copy is repeated for whole cycles to at least 1.2s; the delivered file keeps its original trimmed duration. This avoids normalizing a tiny transient against invented silence. Rows use that documented short-event integrated convention; ordinary files use native-duration metering.
 - PCM16 TPDF dither is seeded by manifest seed plus output name. Source hashes, tool versions, processing settings and selection rules are pinned; no timestamp metadata is written into WAVs.
 
@@ -90,17 +94,41 @@ Short-event metering convention applied to: SFX_LF_PaddleWood_01.wav, SFX_LF_Pad
 
 Police laugh loudness check: prepared source -14.34 LUFS -> delivered -18.00 LUFS, true peak -5.65 dBTP. The notably louder source was attenuated to the voice target.
 
+## A03 - music
+
+Sources: Boardwalk Jaunt by Sky Toes (Main/Menu) and Funk Formula by Nick Petrov (Final), Uppbeat Basic Licenses (director supplied); credit required, exact credits recorded in Docs/ASSETS.md. Source MP3s are read-only and must not be redistributed. No source links or copies are embedded in the audition page.
+
+| Output | Source seconds used | BPM | Source / playback bars (4/4) | Duration (s) | LUFS-I | dBTP |
+|---|---|---:|---:|---:|---:|---:|
+| MUS_LF_Main_Loop.wav | 89.859146-110.066208 | 106.893 | 9 / 8 | 17.961833 | -22.01 | -11.91 |
+| MUS_LF_Menu.wav | 2.295229-13.521375 | 106.893 | 5 / 4 | 8.980917 | -24.00 | -11.61 |
+| MUS_LF_Final_Loop.wav | 98.727271-118.363625 | 110.000 | 9 / 8 | 17.454542 | -21.00 | -9.69 |
+
+boardwalk-jaunt-sky-toes-main-version-35005-02-28.mp3: detected 106.893357 BPM over 20-120s using three-band positive log spectral flux; autocorrelation candidates; long-span beat comb refinement; grid 106.893357 BPM, 4/4, first downbeat 0.050000s. Flux phase 0.045500s agrees within 4.50ms. Bar grouping is inferred from the opening and repeating arrangement; director audition remains required.
+
+funk-formula-nick-petrov-main-version-50121-02-27.mp3: detected 109.999243 BPM over 20-120s using three-band positive log spectral flux; autocorrelation candidates; long-span beat comb refinement; grid 110.000000 BPM, 4/4, first downbeat 0.545455s. Flux phase 0.539500s agrees within 5.96ms. Bar grouping is inferred from the opening and repeating arrangement; director audition remains required.
+
+Music candidates begin/end on bar lines. One extra source bar supplies the one-bar equal-power overlap: N+1 source bars become exactly N playback bars (rounded once to the nearest sample). Boardwalk is scanned across the track for its strongest/quietest sustained passages by mean RMS power; within 0.15dB of the best energy, tail/head spectral distance and waveform correlation select the cleaner match. Per-bar energy floors reject dips. Funk Formula candidates stay in 70-120s and reject a bar more than 3dB below the median, excluding the brief approximately 87-89s dip. No intro, breakdown or outro enters Final.
+
+Final loop rotation is restricted to a stereo-mid zero crossing within 2ms of the bar line, preserving duration. The A01 64-sample guards anchor both channels to exact zero; this is a stereo-mid crossing plus digital-zero endpoints, not a claim of simultaneous natural L/R crossings. Crossfade, rotation, grid, per-bar source energy and all candidate scores are in _processing.json.
+
+Targets: main -22 LUFS-I, menu -24 LUFS-I, final -21 LUFS-I; ceiling -1 dBTP. Human check: listen through several repetitions of each MUSIC player for rhythmic/harmonic closure and crossfade swell; approve menu calmness, steady fight energy and final climax. Boardwalk is a live-feeling performance: measured local tempo 106.889-106.908 BPM supports the average grid, but phrase closure still needs an ear. Numeric evidence does not establish audible seamlessness or in-game mix acceptance.
+
+A03 files: Tools/audio/process_audio.py, analyze_music.py, audio_manifest.json; Audio/Processed/MUS_LF_Main_Loop.wav, MUS_LF_Menu.wav, MUS_LF_Final_Loop.wav, _listen.html, _processing.json, _reproducibility.json, _validation.json; Audio/AUDIO_REPORT.md. Local environment/cache and diagnostic evidence stay under Tools/audio/.
+
+Director log draft (write restriction): A03 asked, then updated to two sources / three music loops and manifest pipeline delivered / awaiting director audition. No Docs files edited.
+
 ## Verification
 
-- Outputs: 56; source mappings: 31; source inventory hashes protected: 32.
-- 40 mono / 16 stereo; 5 loops. Largest target error 0.20 LU; highest true peak -1.10 dBTP.
+- Outputs: 59; source mappings: 34; source inventory hashes protected: 2.
+- 40 mono / 19 stereo; 8 loops. Largest target error 0.20 LU; highest true peak -1.10 dBTP.
 - Every rendered WAV was remeasured for LUFS and true peak after PCM16 quantization. Format, channel count, sample rate, loop endpoints and RIFF metadata are checked.
-- Two full independent processing passes completed; all 56 WAV SHA256 hashes match byte-for-byte.
-- Evidence: Processed/_processing.json and Processed/_reproducibility.json. Both passes decode and process sources again; there is no rendered-audio cache.
+- Two independent processing passes completed for the selected render group (MUSIC); selected WAV hashes match byte-for-byte. Earlier A01 evidence is retained for untouched outputs.
+- Evidence: Processed/_processing.json and Processed/_reproducibility.json. Selected passes decode and process sources again; there is no rendered-audio cache.
 
 ## Run / audition
 
-    Tools/audio/.venv/Scripts/python.exe -B Tools/audio/process_audio.py --verify-repro
+    Tools/audio/.venv/Scripts/python.exe -B Tools/audio/process_audio.py --group MUSIC --verify-repro
 
 Manifest: Tools/audio/audio_manifest.json. Open [Processed/_listen.html](Processed/_listen.html) in a browser to audition the grouped outputs; no server is required.
 

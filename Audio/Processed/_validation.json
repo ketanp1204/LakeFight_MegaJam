@@ -1,8 +1,8 @@
 {
-  "outputs": 56,
+  "outputs": 59,
   "mono": 40,
-  "stereo": 16,
-  "loop_count": 5,
+  "stereo": 19,
+  "loop_count": 8,
   "loops": [
     {
       "output": "AMB_LF_Lake_Loop.wav",
@@ -33,19 +33,39 @@
       "duration_seconds": 58.0,
       "start": 0,
       "end_inclusive": 2783999
+    },
+    {
+      "output": "MUS_LF_Main_Loop.wav",
+      "duration_seconds": 17.961833333333335,
+      "start": 0,
+      "end_inclusive": 862167
+    },
+    {
+      "output": "MUS_LF_Menu.wav",
+      "duration_seconds": 8.980916666666667,
+      "start": 0,
+      "end_inclusive": 431083
+    },
+    {
+      "output": "MUS_LF_Final_Loop.wav",
+      "duration_seconds": 17.454541666666668,
+      "start": 0,
+      "end_inclusive": 837817
     }
   ],
   "maximum_loudness_error_lu": 0.1999999999999993,
   "highest_true_peak_dbtp": -1.1,
   "source_files_unchanged": true,
-  "source_hashes_checked": 32,
-  "all_player_links_valid": true,
-  "full_processing_passes": 2,
-  "all_wav_hashes_identical": true,
-  "taunt_input_lufs": -14.34,
-  "taunt_output_lufs": -18.0,
+  "source_hashes_checked": 2,
   "format": "PCM16 / 48000 Hz",
   "clipped_samples": 0,
-  "manifest_sha256": "6fd92210f051348422540ab2f587ffa82db9b7c9480bc7206631f8bb3b8e207a",
-  "processing_script_sha256": "31809be797045903344eb7516b7f73acc68c8b5388909884f83bcbf2fbd667cc"
+  "manifest_sha256": "b20ce91c4ba9ce1dd3f5568fee027c3dbe134d7c187487da7e2c4e3e1125f7ea",
+  "processing_script_sha256": "b3cd3ffb32e8be5765d54c426ee6a7d4805f1eee9a5f2cdbe6bdedaacd274a0f",
+  "analysis_script_sha256": "b4eb3eda5bbcdaa004808e3c2d32bc55d3f91b2ebde2efe0c8d8cf72c3036797",
+  "all_player_links_valid": true,
+  "render_group": "MUSIC",
+  "full_processing_passes": 2,
+  "all_selected_wav_hashes_identical": true,
+  "preserved_output_hashes_unchanged": true,
+  "prior_source_hash_evidence_retained": 32
 }
