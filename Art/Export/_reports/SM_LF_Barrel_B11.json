@@ -1,0 +1,46 @@
+{
+  "asset": "SM_LF_Barrel",
+  "triangles": 276,
+  "budget_exclusive": 300,
+  "dimensions_m": [
+    0.96,
+    0.644,
+    0.63824
+  ],
+  "z_range_m": [
+    -0.30624,
+    0.332
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Barrel",
+      "triangles": 276,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_WoodDark",
+        "M_LF_Wood",
+        "M_LF_Rope",
+        "M_LF_Metal"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7"
+    }
+  ]
+}

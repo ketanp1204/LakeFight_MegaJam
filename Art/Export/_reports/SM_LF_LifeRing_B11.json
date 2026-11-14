@@ -1,0 +1,45 @@
+{
+  "asset": "SM_LF_LifeRing",
+  "triangles": 288,
+  "budget_exclusive": 300,
+  "dimensions_m": [
+    0.962,
+    0.962,
+    0.138564
+  ],
+  "z_range_m": [
+    -0.069282,
+    0.069282
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_LifeRing",
+      "triangles": 288,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange",
+        "M_LF_Rope"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4"
+    }
+  ]
+}
