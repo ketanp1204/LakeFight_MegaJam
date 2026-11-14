@@ -1,18 +1,31 @@
 # Assets and tools used (goes into the submission)
 
 ## Third-party assets (licensed)
-| Asset | Source URL | Licence | Used for |
-| --- | --- | --- | --- |
-| Sound effects, ambience and voice clips (56 WAVs, processed in A01; per-file sources in `Audio/AUDIO_REPORT.md`) | Sonniss GDC 2026 Game Audio Bundle (https://gdc.sonniss.com) | Royalty-free, licensed as confirmed by the director | All game audio (`/Game/LakeFight/Audio`) |
-Mixamo (Adobe), retargeted to UE5 Manny
-Epic UE5 Mannequin (Manny), engine content under the Unreal Engine EULA; retargeted Mixamo animations
 
+| Asset | Source | Licence | Used for |
+| --- | --- | --- | --- |
+| Sound effects, ambience and voice clips (56 WAVs, processed in A01; per-file sources in `Audio/AUDIO_REPORT.md`) | [Sonniss GDC 2026 Game Audio Bundle](https://gdc.sonniss.com) | Royalty-free, licensed as confirmed by the director | Sound effects, ambience and voices (`/Game/LakeFight/Audio`) |
+| Mixamo animation clips | Adobe Mixamo | — | Animations retargeted to UE5 Manny |
+| Epic UE5 Mannequin (Manny) | Epic Games engine content | Unreal Engine EULA | Character mannequin; retargeted Mixamo animations |
+| Funk Formula by Nick Petrov | [Uppbeat](https://uppbeat.io/c/nick-petrov) | Director-supplied Uppbeat Basic License; attribution required | Final music |
+| Boardwalk Jaunt by Sky Toes | [Uppbeat](https://uppbeat.io/c/sky-toes) | Director-supplied Uppbeat Basic License; attribution required | Main/menu music |
+
+### Music attribution
+
+Exact attribution text supplied by the director:
+
+```text
 Music: 'Funk Formula' by Nick Petrov on #Uppbeat https://uppbeat.io/c/nick-petrov
 License code: ILNEZRJIJP1DSTBI
+```
+
+```text
 Music: 'Boardwalk Jaunt' by Sky Toes on #Uppbeat https://uppbeat.io/c/sky-toes
 License code: TBK6NUHLZIDMPKOK
+```
 
 ## AI-generated content
+
 | What | Tool | Notes |
 | --- | --- | --- |
 | Original low-poly meshes, palette materials, collision hulls and attachment/socket data | Codex writing Python scripts, executed in Blender through Blender MCP | Boats, paddles/oars, fish, docks, shoreline, vegetation, crew accessories, title lettering and ambient props/life. Geometry is constructed by committed scripts in `Art/BlenderScripts/`; FBX exports and repeat-run/round-trip evidence are recorded in the B02-B11 reports under `Art/Export/`. The title uses original block-cell lettering, not a font asset (`Art/Export/B05_REPORT.md`). Delivery does not imply every asset is placed in the game. |
@@ -23,6 +36,7 @@ License code: TBK6NUHLZIDMPKOK
 The recorded audio work is AI-assisted **processing of licensed recordings**, not generated music or synthesized voices: A01 selects/edits Sonniss recordings; A03 edits Uppbeat music into loops. Sources and processing are mapped in `Audio/AUDIO_REPORT.md`; the third-party credits above remain applicable.
 
 ## AI tools used during development
+
 | Tool | Used for |
 | --- | --- |
 | Claude Code (Anthropic) | Unreal C++ gameplay, physics, AI opponents, animation/IK, materials/effects, audio integration and level/editor work; source reviews. Task evidence: `Docs/CurrentTask.md` and `Docs/DirectorsLog.md`. |
