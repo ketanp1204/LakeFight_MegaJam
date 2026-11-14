@@ -15,8 +15,8 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 13. [DONE 3f8b0b5] How-to-play: controls card in pause + round-start hints; re-package + smoke
 14. [DONE 6de8c7a] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
 15. [DONE b478b5e] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
-16. [DONE pending] Hero shots (Docs/Shots/Hero/)
-17. [ ] ItchPage controls + how-to-play; final package + smoke
+16. [DONE 91f67f3] Hero shots (Docs/Shots/Hero/)
+17. [IN PROGRESS] ItchPage controls + how-to-play; final package + smoke
 
 ## N2 item 16 - hero shots (15 Nov 03:52-04:15 IST, unreviewed - director away)
 - **Docs/Shots/Hero/** - 7 x `HighResShot 1920x1080` (scene only, no HUD), editor -game at High:

@@ -16,6 +16,10 @@ The dev log keeps the awkward parts: rowing that felt backwards, a character sit
 
 You have four minutes to bank more fish than the other crews. Stop on a fish spot to catch fish and carry them in your boat. Rams spill some of your catch; capsizes spill it all. Return to your own dock to bank it safely. Gold fish appear at 2:00 and are worth five each. The crew with the most banked fish points wins.
 
+Your first round starts with three quick hints: **Stop on a fish spot to catch**, then **Bank at your dock**, then **Ram boats to spill their fish**. Knock a driver out and the boat is yours to row home, catch and all.
+
+Lost? Pause the game (Esc or Start) and pick **How to play** for the goal and a controls card.
+
 ## Controls
 
 Gamepad labels below use Xbox / PlayStation names.
@@ -30,8 +34,15 @@ Gamepad labels below use Xbox / PlayStation names.
 | Grab a nearby boat while swimming | E | Y / Triangle |
 | Let go while hanging from a moving boat | E | Y / Triangle |
 | Paddle attack while standing | Tap left mouse button; hold and release for a charged swing | Tap RT / R2; hold and release for a charged swing |
+| Pause / resume a round | Esc | Start / Options |
+| Menus: choose | Mouse hover, or arrow keys / WASD | D-pad or left stick |
+| Menus: confirm | Click, Enter or Space | A / Cross (bottom face button) |
+| Menus: back (resumes on the pause menu) | Esc or Backspace | B / Circle (right face button) |
+| Options: change a slider or the graphics level | Left / Right arrows (or drag / click) | D-pad left / right |
 | Results: choose Restart / Quit | Click a button, or Left / Right arrows / Tab | D-pad left / right |
 | Results: confirm selection | Enter or Space | A / Cross (bottom face button) |
+
+**Main menu:** Play, Options, Credits, Quit. **Pause menu:** Resume, How to play, Restart, Options, Quit to menu. **Options:** music volume, sound effects volume and graphics quality (Low / Medium / High); they are saved for the next session.
 
 Swim close to a boat and interact to grab its side. A fast boat can tow you until it slows enough to climb aboard. Once aboard, move to an empty seat and interact to drive it.
 
