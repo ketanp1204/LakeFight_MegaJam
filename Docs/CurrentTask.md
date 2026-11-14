@@ -14,9 +14,23 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 12. [DONE 60d24c6] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
 13. [DONE 3f8b0b5] How-to-play: controls card in pause + round-start hints; re-package + smoke
 14. [DONE 6de8c7a] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
-15. [DONE pending] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
-16. [IN PROGRESS] Hero shots (Docs/Shots/Hero/)
+15. [DONE b478b5e] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
+16. [DONE pending] Hero shots (Docs/Shots/Hero/)
 17. [ ] ItchPage controls + how-to-play; final package + smoke
+
+## N2 item 16 - hero shots (15 Nov 03:52-04:15 IST, unreviewed - director away)
+- **Docs/Shots/Hero/** - 7 x `HighResShot 1920x1080` (scene only, no HUD), editor -game at High:
+  01 pile-up incoming (3 crews converging on a fish spot), 02 pile-up with three crew members overboard swimming among the boats,
+  03 pile-up splash, 04 the gold spot with two crews in stolen boats (Yellow rowing Green's boat, Green in Red's),
+  05 steal - green crew rowing the red boat, its own boat abandoned, 06 bank - the red boat in the Red dock, 07 brawl on a spot.
+- Camera: `lf.ai.spectate 9 22` (the AI-follow spectate camera, tightened to 9-22 m with new optional args; player hidden).
+  01-05/07 are live AI play with staged starts: `lf.debug.pileup` (new; the -LFBench staging), `lf.debug.knockdrivers`,
+  `lf.round.remaining 119` for the gold spot. The steals are real AI steals (log: `[steal] ... steals ...`).
+  **06 is the player chase camera, not spectate** (the spectate camera follows fights, never a dock), and the bank is staged:
+  boat teleported into the Red bank zone with 8 fish (`[fish] bank ... fish=8`). No compositing.
+- My process error: a script's Move-Item -Force overwrote the first session's frames 0-9; 05 is from that first session
+  (frame 14), the rest from a re-run. Scripts: Saved/n1/tools/hero_shots.ps1, hero_bank.ps1; contact sheets Saved/n1/hero_sheet*.png.
+- Also fixed: unity-build clash (`TeamNames` in two anonymous namespaces) after the HUD rewrite - renamed in LFRoundWidget.cpp.
 
 ## N2 item 15 - UI polish pass (15 Nov 03:23-03:50 IST, unreviewed - director away)
 - New `Round/LFUIStyle.h/.cpp` (`LF::UI`): palette sampled from the B12a lockup (wood brown panels, dark-brown outline, cream

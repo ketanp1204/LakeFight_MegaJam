@@ -20,7 +20,7 @@ static TAutoConsoleVariable<int32> CVarLFAIFreeze(TEXT("lf.ai.freeze"), 0, TEXT(
 
 // lf.ai.spectate: take the player out of the fight (hidden, untargetable) and watch the AI crews from an overview camera.
 static FAutoConsoleCommandWithWorldAndArgs CmdLFAISpectate(TEXT("lf.ai.spectate"),
-	TEXT("lf.ai.spectate - remove the player from the fight and watch the AI crews from above."),
+	TEXT("lf.ai.spectate [min m] [max m] - remove the player from the fight and watch the AI crews from above."),
 	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
 	{
 		if (!World)
@@ -46,9 +46,12 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFAISpectate(TEXT("lf.ai.spectate"
 		}
 		FActorSpawnParameters P;
 		P.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		ACameraActor* Cam = World->SpawnActor<ALFSpectatorCamera>(FVector(0.f, -4200.f, 2600.f), FRotator(-38.f, 90.f, 0.f), P);
+		ALFSpectatorCamera* Cam = World->SpawnActor<ALFSpectatorCamera>(FVector(0.f, -4200.f, 2600.f), FRotator(-38.f, 90.f, 0.f), P);
 		if (Cam)
 		{
+			// Optional: lf.ai.spectate <min m> <max m> (N2.16 hero shots want a tighter frame).
+			if (Args.Num() >= 1) Cam->MinDistance = FCString::Atof(*Args[0]) * 100.f;
+			if (Args.Num() >= 2) Cam->MaxDistance = FMath::Max(Cam->MinDistance, FCString::Atof(*Args[1]) * 100.f);
 			PC->SetViewTargetWithBlend(Cam, 0.5f);
 		}
 		UE_LOG(LogLF, Display, TEXT("[ai] spectate: player removed from the fight, overview camera"));

@@ -54,6 +54,12 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFPause(TEXT("lf.pause"), TEXT("lf
 			return false;
 		}), FMath::Max(Delay, 0.01f));
 	}));
+// lf.debug.pileup: the -LFBench staging on demand (4 boats on a 9 m ring heading into the lake centre) - hero shots.
+static FAutoConsoleCommandWithWorldAndArgs CmdLFPileup(TEXT("lf.debug.pileup"), TEXT("lf.debug.pileup - send all boats into the lake centre."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>&, UWorld* World)
+	{
+		if (ULFRoundSubsystem* Round = World ? World->GetSubsystem<ULFRoundSubsystem>() : nullptr) Round->DebugPileup();
+	}));
 // lf.later <delay s> <command...>: run a console command through the first player controller after a real-time delay
 // (cheats like BugItGo, pawn execs like LFDrive) - N2 item 15 screenshot sequences.
 static FAutoConsoleCommandWithWorldAndArgs CmdLFLater(TEXT("lf.later"), TEXT("lf.later <delay s> <command...>"),

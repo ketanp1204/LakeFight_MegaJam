@@ -69,6 +69,8 @@ public:
 	void ResumeFromPause();
 	/** Reloads the map with the main menu shown again (also in PIE). */
 	void QuitToMenu();
+	/** Dev (lf.debug.pileup): stage the bench pile-up once. */
+	void DebugPileup() { StagePileup(); }
 
 private:
 	float Remaining = 240.f;
