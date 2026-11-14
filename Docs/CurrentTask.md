@@ -8,9 +8,9 @@
 7. [DONE d9683ce] Sky
 8. [DONE 30f6a19] Final package + report + DirectorsLog
 9. [DONE 35c7baa] Stretch: ambient life
-10. [IN PROGRESS] Stretch: spectators + foliage sway
+10. [DONE f9bb938] Stretch: spectators + foliage sway
 N2 (added by the director to Docs/N1.md during the run; package + smoke after 13 and at the end):
-11. [ ] AI banking check (7c)
+11. [IN PROGRESS] AI banking check (7c)
 12. [ ] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
 13. [ ] How-to-play: controls card in pause + round-start hints; re-package + smoke
 14. [ ] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
@@ -47,8 +47,9 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
   direction NOT verified up close (Blender -Y -> Unreal +Y assumed) - director to look up during a round.
 
 ## N1 report (Claude Code, 14 Nov 21:37-22:30 IST) - unreviewed, director away
-**Latest build (item 9 included):** `Builds/LakeFight_N1_ambient_20261114_2241.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
-Shipping smoke: 3 zones / 4 banks -> menu -> Play -> 65 catches -> "Yellow WINS!" 35/20/9/0 -> quit.
+**Latest build (items 1-10):** `Builds/LakeFight_N1_crowd_20261114_2254.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
+Shipping smoke: 3 zones / 4 banks -> menu -> Play -> 55 catches -> "Yellow WINS!" 28/9/7/5 -> quit.
+Item 9 build: `Builds/LakeFight_N1_ambient_20261114_2241.zip`.
 **Item 8 build (no ambient life):** `Builds/LakeFight_N1_final_20261114_2229.zip` (382 MB). Earlier zips:
 `LakeFight_N1_safety_20261114_2152.zip` (before the bug pass; no hats/vests), `LakeFight_N1_menu_20261114_2223.zip` (before the sky).
 **Final smoke (Shipping, `-LFSmoke`):** fish ready 3 zones / 4 banks -> menu -> Play -> 44 AI catches -> results "Yellow WINS!"
@@ -56,7 +57,7 @@ Shipping smoke: 3 zones / 4 banks -> menu -> Play -> 65 catches -> "Yellow WINS!
 
 Done (details per item below): 1 tags + AI fishing + AI fish API | 2 safety build | 3 bug pass a-e | 4 AI GoFish/ReturnToDock +
 2 AI-only rounds | 5 main menu + credits | 6 re-package (found + fixed missing hats/vests in packages) | 7 gradient sky | 8 this.
-Stretch: 9 ambient life done (see its section; gull wings not checked up close); 10 see checklist.
+Stretch: 9 ambient life and 10 shore spectators + foliage sway done (see their sections). N2 (11-17) follows.
 
 **Director check list (PIE or the zip):**
 1. Menu: logo position, Play/Options/Credits/Quit with mouse, keyboard AND a real gamepad (pad untested); volume sliders
@@ -74,6 +75,8 @@ Stretch: 9 ambient life done (see its section; gull wings not checked up close);
 9. Hats/vests now visible in packaged builds (they were missing in every earlier package).
 10. Ambient life: ducks/swans/junk on the waves, gulls circling (look up - check the wings flap the right way and sit on the
     body), dragonflies at the reeds. Too busy / too few? Counts are tunables on ALFAmbientLife.
+11. Spectators on the shore by each dock (Victory on banks, Victory/Insult on nearby rams) - placement, no team gear.
+12. Trees/bushes sway gently (7 cm at the top); shadows don't sway (VSM cost).
 
 ## N1 item 7 - sky (14 Nov 22:12-22:23 IST, unreviewed - director away)
 - `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):
