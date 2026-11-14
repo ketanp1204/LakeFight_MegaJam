@@ -6,7 +6,7 @@
 5. [DONE 739cea9] Credits + main menu
 6. [DONE 141de62] Re-package + smoke + zip
 7. [DONE d9683ce] Sky
-8. [DONE see git log "N1.8"] Final package + report + DirectorsLog
+8. [DONE 30f6a19] Final package + report + DirectorsLog
 9. [ ] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
 
@@ -35,7 +35,7 @@ Not done: stretch items 9-10 (see checklist).
    AI-only rounds had no steals (T03's >= 1 steal isn't met there; normal rounds with the player had 0-2).
 9. Hats/vests now visible in packaged builds (they were missing in every earlier package).
 
-## N1 item 7 - sky (14 Nov ~23:15-23:30 IST, unreviewed - director away)
+## N1 item 7 - sky (14 Nov 22:12-22:23 IST, unreviewed - director away)
 - `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):
   - VolumetricCloud actor removed (1).
   - Low-poly clouds lifted another 25 m: now 130-200 m up (L01.1 had added 25 m).
@@ -47,7 +47,7 @@ Not done: stretch items 9-10 (see checklist).
   non-sky dome -> clean gradient, lighting as before. The SkyAtmosphere / height fog / sun are untouched.
 - Clouds now read dark grey from below against the bright gradient (sunlit from above) - director to judge.
 
-## N1 item 6 - re-package + smoke (14 Nov ~23:10-23:25 IST, unreviewed - director away)
+## N1 item 6 - re-package + smoke (14 Nov 22:08-22:23 IST, unreviewed - director away)
 - 1st package attempt FAILED: the Shipping unity build merged LFMenuWidget.cpp with LFRoundWidget.cpp and both had
   anonymous-namespace helpers (Cream, Place, ...). The editor's adaptive build had hidden it. Menu helpers renamed (Menu*).
 - 2nd package OK. `-LFSmoke` Shipping run (LFSmoke.txt in %LOCALAPPDATA%/LakeFight/Saved): **"fish ready - 3 zones, 4 banks"**
@@ -58,7 +58,7 @@ Not done: stretch items 9-10 (see checklist).
 - 3rd package OK (cook only, 1:03). Smoke: hat + vest visible (Saved/n1/pkg3_start.png), "3 zones, 4 banks", menu -> Play ->
   50 catches -> "Green WINS!" 23/22/12 -> quit. Zip: `Builds/LakeFight_N1_menu_20261114_2223.zip` (393 MB).
 
-## N1 item 5 - main menu + credits (14 Nov ~22:45-23:10 IST, unreviewed - director away)
+## N1 item 5 - main menu + credits (14 Nov 22:01-22:08 IST, unreviewed - director away)
 - New `Round/LFMenuWidget.h/.cpp` (native UMG, 1280x720 design canvas like the round HUD): B12a title lockup
   (`Art/Export/KeyArt/LF_TitleLockup_960x300_Light.png`, staged to `LFUI/` next to the exe via LakeFight.Build.cs),
   PLAY / OPTIONS / CREDITS / QUIT. Options: MUSIC and SOUND FX sliders -> `ULFAudioSubsystem::SetCategoryVolume`
@@ -74,7 +74,7 @@ Not done: stretch items 9-10 (see checklist).
   the lettering sits in the left 45% of the lockup PNG; logo hidden on the Credits page). Headless `-LFSmoke` run:
   menu shown -> Play -> round END "Blue WINS!" 17/14/15, 2 steals -> quit (Saved/LFSmoke.txt).
 
-## N1 item 4 - T04 stage 3: AI fishing goals (14 Nov ~22:20-22:45 IST, unreviewed - director away)
+## N1 item 4 - T04 stage 3: AI fishing goals (14 Nov 21:55-22:01 IST, unreviewed - director away)
 - `ALFCaptainAI`: new states **GoFish** (drive to `ULFFishSubsystem::FindFishSpot` - gold first when `bChaseGold` - and hold
   station: wanted speed ~0.5 cm/s per cm of distance, zero inside `SpotHoldRadius` 150 cm, reverse throttle brakes, turn first
   when > 60 deg off) and **ReturnToDock** (drive into the own team's bank; shore avoidance off within 15 m of it). Decision order:
@@ -92,7 +92,7 @@ Not done: stretch items 9-10 (see checklist).
     rounds (crews rarely end up standing in an empty enemy boat now that they fish) - T03's ">= 1 steal" is NOT met by these runs.
   - The editor exited with a segfault AFTER saving the three DataAssets (-ExecutePythonScript + quit_editor); the saves are fine.
 
-## N1 item 3 - bug pass a-e (14 Nov ~21:55-22:20 IST, unreviewed - director away)
+## N1 item 3 - bug pass a-e (14 Nov 21:43-21:55 IST, unreviewed - director away)
 Debug helpers added: `lf.debug.knockdrivers [delay]`, `lf.debug.boatlog [s] [delay]`, `lf.debug.swim 1`, `lf.debug.shot <delay> <name>`,
 `LFSteer x` (boat exec, like LFRow), `-LFSmoke` (writes <Saved>/LFSmoke.txt even in Shipping; quits 5 s after results).
 - a. Driverless boats: could NOT reproduce stale input. Headless (`LFDrive,lf.debug.knockdrivers 10`, AIs chasing at 2.5-7 m/s):
@@ -118,7 +118,7 @@ Debug helpers added: `lf.debug.knockdrivers [delay]`, `lf.debug.boatlog [s] [del
   (rudder alone at 0 m/s has only MinTurnAuthority 0.15).
 - Builds: all editor builds succeeded (editor closed). Logs Saved/n1/{knock2,turn,shot}.log.
 
-## N1 item 2 - safety package (14 Nov ~21:43-21:53 IST, unreviewed - director away)
+## N1 item 2 - safety package (14 Nov 21:42-21:53 IST, unreviewed - director away)
 - `Tools/ue.ps1 -Action package -Project C:/Unreal/Projects/LakeFight_MegaJam/LakeFight.uproject -EngineDir D:/Unreal/UE_EpicGames/UE_5.8`
   (Shipping, Win64): BUILD SUCCESSFUL in 4:46 -> `Build/Windows/LakeFight.exe` (533 MB). Source = commit f927b8c.
 - Smoke: ran the .exe windowed 1280x720 untouched for a full round. Game-window captures (Saved/n1/pkg1_t60.png,
