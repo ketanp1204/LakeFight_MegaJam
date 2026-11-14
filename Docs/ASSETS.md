@@ -7,6 +7,11 @@
 Mixamo (Adobe), retargeted to UE5 Manny
 Epic UE5 Mannequin (Manny), engine content under the Unreal Engine EULA; retargeted Mixamo animations
 
+Music: 'Funk Formula' by Nick Petrov on #Uppbeat https://uppbeat.io/c/nick-petrov
+License code: ILNEZRJIJP1DSTBI
+Music: 'Boardwalk Jaunt' by Sky Toes on #Uppbeat https://uppbeat.io/c/sky-toes
+License code: TBK6NUHLZIDMPKOK
+
 ## AI-generated content
 | What | Tool | Notes |
 | --- | --- | --- |
