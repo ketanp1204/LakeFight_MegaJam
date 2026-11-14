@@ -10,7 +10,7 @@
 9. [DONE 35c7baa] Stretch: ambient life
 10. [DONE f9bb938] Stretch: spectators + foliage sway
 N2 (added by the director to Docs/N1.md during the run; package + smoke after 13 and at the end):
-11. [IN PROGRESS] AI banking check (7c)
+11. [DONE see git log "N2.11"] AI banking check (7c)
 12. [ ] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
 13. [ ] How-to-play: controls card in pause + round-start hints; re-package + smoke
 14. [ ] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
@@ -45,6 +45,16 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 - Evidence: `[ambient] 11 floaters, 5 gulls, 6 dragonflies (317 reed clumps)`; close-ups via dev `lf.ambient.look <i> [delay]`:
   Saved/n1/amb_sheet.png (duck + swan, life ring, dragonfly in reeds, gull far above the shore). Gull wing pivots/flap
   direction NOT verified up close (Blender -Y -> Unreal +Y assumed) - director to look up during a round.
+
+## N2 item 11 - AI banking check (14 Nov 22:55 IST, unreviewed - director away)
+- I have no definition of "7c" on disk; checked "do AIs reliably get their catch into the bank" from the two AI-only round
+  logs (Saved/n1/ai_r1/2.log, fixed 60 Hz, full 240 s). No code change.
+- 18 banked trips; time from deciding ReturnToDock to the deposit: 3-22 s (r1: 9.7-19.1, r2: 3.1-22.2; docks are ~10 s
+  from the centre at full speed; the long ones had a fight on the way). No AI circled at a dock or failed to enter a bank.
+- Trips abandoned on purpose: 12 to chase / fight an enemy that came within half the AI's aggro range (Bully most: 7),
+  2 back to fishing after being robbed (cargo spilled), 2 still under way at the final whistle. Banking uses the
+  driver's team (Self->Team), so a stolen boat's catch goes to the thief's bank - same rule as the player.
+- If 7c meant something else (e.g. a specific bank-zone geometry case), it is still open.
 
 ## N1 report (Claude Code, 14 Nov 21:37-22:30 IST) - unreviewed, director away
 **Latest build (items 1-10):** `Builds/LakeFight_N1_crowd_20261114_2254.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
