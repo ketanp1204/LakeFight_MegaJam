@@ -1,6 +1,6 @@
 # N1 progress (Claude Code, unattended night run 14-15 Nov; spec: Docs/N1.md)
-1. [IN PROGRESS] T04 review/normalize, #1 tags, #2 AI fishing, #14 API
-2. [ ] Safety package + smoke + zip
+1. [DONE f927b8c] T04 review/normalize, #1 tags, #2 AI fishing, #14 API
+2. [IN PROGRESS] Safety package + smoke + zip
 3. [ ] Bug pass a-e
 4. [ ] T04 stage 3 AI goals + 2 AI-only rounds
 5. [ ] Credits + main menu
