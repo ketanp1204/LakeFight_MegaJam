@@ -293,6 +293,17 @@ void ALFBoat::AimOars(const FVector& AimLWorld, const FVector& AimRWorld)
 	bOarAimed = true;
 	ApplyOarPose(true);
 	ApplyOarPose(false);
+	// Glitch metric (lf.debug.ik log): the largest frame-to-frame jump of either grip in hull space since the last log line.
+	for (int32 Side = 0; Side < 2; ++Side)
+	{
+		const FVector G = H.InverseTransformPosition(GetOarGrip(Side == 0).GetLocation());
+		if (bOarGripPrevValid)
+		{
+			OarGripMaxStep = FMath::Max(OarGripMaxStep, float(FVector::Dist(G, OarGripPrevLocal[Side])));
+		}
+		OarGripPrevLocal[Side] = G;
+	}
+	bOarGripPrevValid = true;
 }
 
 FTransform ALFBoat::GetOarGrip(bool bLeft) const
@@ -320,6 +331,7 @@ void ALFBoat::UpdateOars(float DeltaSeconds)
 	if (OarRowBlend <= 0.f)
 	{
 		bOarAimed = false; // the next driver aims them afresh
+		bOarGripPrevValid = false;
 	}
 	ApplyOarPose(true);
 	ApplyOarPose(false);
@@ -333,9 +345,11 @@ void ALFBoat::UpdateOars(float DeltaSeconds)
 		auto BladeZ = [&](const UStaticMeshComponent* Oar) { return float(Oar->GetComponentTransform().TransformPosition(FVector(117.f, 0.f, 0.f)).Z) - Water; };
 		// How far the hand targets were from the oar grips (the two-bone IK pulls the hands this far), and the gap between the grips.
 		const FVector GL = GetOarGrip(true).GetLocation(), GR = GetOarGrip(false).GetLocation();
-		UE_LOG(LogLF, Log, TEXT("[oars] %s rowing (throttle %.2f): blade centres L %.0f R %.0f cm vs water; hand target -> grip L %.1f R %.1f cm; grips %.1f cm apart"),
+		UE_LOG(LogLF, Log, TEXT("[oars] %s rowing (throttle %.2f): blade centres L %.0f R %.0f cm vs water; hand target -> grip L %.1f R %.1f cm; grips %.1f cm apart; largest grip step %.1f cm/frame"),
 			*GetName(), GetThrottleOutput(), BladeZ(OarL.Get()), BladeZ(OarR.Get()),
-			FVector::Dist(H.TransformPosition(OarAimLocal[0]), GL), FVector::Dist(H.TransformPosition(OarAimLocal[1]), GR), FVector::Dist(GL, GR));
+			FVector::Dist(H.TransformPosition(OarAimLocal[0]), GL), FVector::Dist(H.TransformPosition(OarAimLocal[1]), GR), FVector::Dist(GL, GR),
+			OarGripMaxStep);
+		OarGripMaxStep = 0.f;
 	}
 }
 

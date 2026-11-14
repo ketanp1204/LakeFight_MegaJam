@@ -201,28 +201,38 @@ void ULFBrawlerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		for (int32 Side = 0; Side < 2; ++Side)
 		{
 			const bool bRight = Side == 0;
-			const float Stagger = (bRight ? -0.5f : 0.5f) * RowHandStagger; // left hand over the right where the handles meet
-			Goal[Side] = Mid + (F * X + Rt * ((bRight ? 1.f : -1.f) * RowHandSpread) + U * (Z + Stagger)) * S;
+			// Left hand a little ahead of the right (fore-aft, not vertical: a vertical stagger tilted the two oars opposite ways
+			// and lifted one blade out of the water) so the handles pass each other where they meet near the centreline.
+			const float Stagger = (bRight ? -0.5f : 0.5f) * RowHandStagger;
+			Goal[Side] = Mid + (F * (X + Stagger) + Rt * ((bRight ? 1.f : -1.f) * RowHandSpread) + U * Z) * S;
 		}
 		// Pair hands with oars by distance (the hull's Oarlock_L / _R names don't say which side is which; nearest wins).
 		const FVector LockL = RowBoat->GetOarlockWorld(true), LockR = RowBoat->GetOarlockWorld(false);
 		const bool bRightOnR = FVector::DistSquared(Goal[0], LockR) <= FVector::DistSquared(Goal[0], LockL);
 		// Keep the stroke's fore-aft / height path but put each goal at the oar's reach (collar -> Grip) by solving its sideways
-		// offset from the oarlock: the hand target then lies where the grip will be, so the arm IK only takes up what's left
-		// (out of reach at the extremes of the stroke).
+		// offset from the oarlock: the hand target then lies where the grip will be, so the arm IK only takes up what's left.
+		// Playtest 007 (director: "the left arm and the oar are glitching"): the rower sits ~60 cm aft of the oarlocks, so at the
+		// finish the fore-aft/height offset reached ~65 of the 70 cm - the sideways solve collapsed (oar swung fore-aft, hand flung
+		// to the gunwale) and past 70 it switched off (hand snapped back). Now the offset is soft-clamped (continuous, smooth) below
+		// RowMaxReachFrac of the reach, and "inboard" comes from the boat's centreline, not from a sign that can flip.
 		const float Reach = RowBoat->GetOarGripReach();
+		const float Knee = Reach * RowReachKneeFrac;
+		const float MaxRest = Reach * FMath::Max(RowMaxReachFrac, RowReachKneeFrac + 0.01f);
+		const FVector BoatCentre = RowBoat->GetActorLocation();
 		for (int32 Side = 0; Side < 2; ++Side)
 		{
 			const bool bOarLeft = (Side == 0) ? !bRightOnR : bRightOnR;
 			const FVector Lock = bOarLeft ? LockL : LockR;
 			const FVector D = Goal[Side] - Lock;
-			const float Lat = float(FVector::DotProduct(D, Rt));
-			const FVector Rest = D - Rt * Lat;
-			const float Rest2 = float(Rest.SizeSquared());
-			if (Rest2 < Reach * Reach)
+			FVector Rest = D - Rt * FVector::DotProduct(D, Rt);
+			const float RestLen = float(Rest.Size());
+			if (RestLen > Knee)
 			{
-				Goal[Side] = Lock + Rest + Rt * (FMath::Sign(Lat) * FMath::Sqrt(Reach * Reach - Rest2));
+				const float Span = MaxRest - Knee;
+				Rest *= (Knee + Span * FMath::Tanh((RestLen - Knee) / Span)) / RestLen;
 			}
+			const float In = FVector::DotProduct(BoatCentre - Lock, Rt) >= 0.f ? 1.f : -1.f;
+			Goal[Side] = Lock + Rest + Rt * (In * FMath::Sqrt(FMath::Max(Reach * Reach - float(Rest.SizeSquared()), 0.f)));
 		}
 		RowBoat->AimOars(bRightOnR ? Goal[1] : Goal[0], bRightOnR ? Goal[0] : Goal[1]);
 		for (int32 Side = 0; Side < 2; ++Side)

@@ -70,10 +70,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
 	float RowHandSpread = 12.f;
 
-	/** The handles meet near the centreline (70 cm inboard of oarlocks 67 cm out): the left hand rows this much higher than the right
-	 *  (cm, mesh units; split +/- half) so the hands pass over each other instead of through. */
+	/** The handles meet near the centreline (70 cm inboard of oarlocks 67 cm out): the left hand rows this much further forward than
+	 *  the right (mesh units; split +/- half) so the hands pass each other instead of through. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
-	float RowHandStagger = 14.f;
+	float RowHandStagger = 12.f;
+
+	/** The hand goal's fore-aft/height offset from its oarlock is soft-clamped: unchanged up to RowReachKneeFrac of the oar's reach
+	 *  (collar -> Grip), then eased toward RowMaxReachFrac - the handle always stays well inboard (no swing to the gunwale). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row", meta=(ClampMin="0.1", ClampMax="0.95"))
+	float RowReachKneeFrac = 0.55f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row", meta=(ClampMin="0.2", ClampMax="0.98"))
+	float RowMaxReachFrac = 0.75f;
 
 	// --- Seated feet (T03.2): two-bone IK plants both feet on the boat's floor boards (knees bend more on the low thwart) ---
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Sit")
@@ -97,13 +105,13 @@ public:
 	FVector HeadSplit = FVector(0.3f, 0.3f, 0.4f);
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
-	float RowDriveZ = -14.f;
+	float RowDriveZ = -8.f; // T03.2: +6 after the 10.4 cm seat drop lifted the blades
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
-	float RowRecoverZ = -24.f;
+	float RowRecoverZ = -18.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")
-	float RowRestZ = -26.f;
+	float RowRestZ = -20.f;
 
 	/** Torso lean (deg, + = toward the stern he faces) at the catch / the finish. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Anim|Row")

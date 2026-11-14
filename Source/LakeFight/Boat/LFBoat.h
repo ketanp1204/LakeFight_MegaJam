@@ -526,6 +526,9 @@ private:
 	double LastOarLogTime = -100.0;
 	FVector OarAimLocal[2] = { FVector::ZeroVector, FVector::ZeroVector }; // hull-local hand targets (0 = L, 1 = R)
 	bool bOarAimed = false;
+	FVector OarGripPrevLocal[2] = { FVector::ZeroVector, FVector::ZeroVector };
+	bool bOarGripPrevValid = false;
+	float OarGripMaxStep = 0.f; // cm, largest frame-to-frame grip jump since the last [oars] log
 	void UpdateOars(float DeltaSeconds);
 	void ApplyOarPose(bool bLeft);
 	float CapsizeTimer = 0.f;
