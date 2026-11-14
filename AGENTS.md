@@ -9,6 +9,15 @@ stealing boats. Stylized low-poly. The human is the director; you execute one bo
 - Report = files changed, commands run, results, what the human must check by hand. No claims without evidence.
   "It compiles" is not "it feels good" - feel is accepted only by the human in PIE.
 
+## Git
+- New commits only: no amend, rebase, force-push or history rewrites.
+- Stage by explicit path. Never `git add -A` / `git add .` - other agents work in parallel.
+- Claude Code (Unreal tasks): commit Source/, Config/, Content/ and Docs/ files the task touched.
+- Codex (art/audio tasks): commit only under Art/ (or Audio/, Tools/audio/ for audio tasks),
+  one commit per numbered item. Never commit outside those unless the task names the exact files
+  (e.g. Docs/DevLog_draft.md for D01).
+- Never commit Art/Source/, *_Review.blend, logs, .venv or other ignored paths.
+
 ## Jam rules you must protect
 - Everything in this repo is made on or after 12 Nov 2026 05:00 UTC. Never copy code, prefabs, scripts, models or
   textures from any other project on this machine (there is an older Unity "Lake Fight" - do not open it).
