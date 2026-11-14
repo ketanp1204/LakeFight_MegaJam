@@ -1,0 +1,45 @@
+{
+  "asset": "SM_LF_Bird_Body",
+  "triangles": 84,
+  "budget_exclusive": 150,
+  "dimensions_m": [
+    0.44,
+    0.12,
+    0.124
+  ],
+  "z_range_m": [
+    -0.046,
+    0.078
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Bird_Body",
+      "triangles": 84,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange",
+        "M_LF_Black"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "b4d610e1a345a16f298d3d648cd2027e949a6888877ff128043d1ba7ad033031"
+    }
+  ]
+}

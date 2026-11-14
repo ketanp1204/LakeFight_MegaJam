@@ -1,0 +1,50 @@
+{
+  "asset": "SM_LF_Bird_Wing_R",
+  "triangles": 28,
+  "budget_exclusive": 150,
+  "dimensions_m": [
+    0.18,
+    0.407,
+    0.031
+  ],
+  "z_range_m": [
+    -0.009,
+    0.022
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Bird_Wing_R",
+      "triangles": 28,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_WoodDark"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "3dc10cb5bbafba1c1a94ae4942a8b6bcefd75b30ffdd1df9961bd5efc6547b70"
+    }
+  ],
+  "assembly_shoulder_m": [
+    0,
+    0.043,
+    0.006
+  ],
+  "flap_axis": "local X; left up = negative angle, right up = positive angle"
+}

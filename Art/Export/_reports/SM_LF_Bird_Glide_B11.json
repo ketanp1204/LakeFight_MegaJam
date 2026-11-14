@@ -1,0 +1,45 @@
+{
+  "asset": "SM_LF_Bird_Glide",
+  "triangles": 104,
+  "budget_exclusive": 150,
+  "dimensions_m": [
+    0.44,
+    0.896586,
+    0.124
+  ],
+  "z_range_m": [
+    -0.046,
+    0.078
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Bird_Glide",
+      "triangles": 104,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange",
+        "M_LF_WoodDark"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "bca8bb3a015e65e7eb164b20298d04e8cc6c5b936a0320ce4f233bce74ba0a44"
+    }
+  ]
+}
