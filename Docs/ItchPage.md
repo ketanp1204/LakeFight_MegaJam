@@ -4,13 +4,17 @@
 
 ## About
 
-I'm Ketan, and Lake Fight: Director's Cut is my small fishing lake turned into a boat brawl. Paddle someone, fall overboard, swim back, climb aboard and try leaving in their boat. The plan is a four-crew fight over fish, with plenty of wobble along the way.
+I'm Ketan, and Lake Fight: Director's Cut is my small fishing lake turned into a boat brawl. Paddle someone, fall overboard, swim back, climb aboard and try leaving in their boat. Four crews fight over fish: catch them, carry them in your boat, bank them at your dock. Steal a boat and you steal its catch.
 
 I'm using Director's Cut to return to a shelved Unity idea. This jam project is built separately; the old project's code and assets are off limits to the agents.
 
 I direct the design, playtest and make the final calls. Claude Code handles Unreal gameplay, Codex makes scripted Blender assets and processes audio, and Claude in chat helps me produce and schedule the work. Each task has a stopping point and a report I can check.
 
-The dev log keeps the awkward parts: rowing that felt backwards, a character sitting above the seat, an oar solve that flung a hand towards the gunwale, and art that needed another pass. Passing a build or an export check doesn't settle whether I want it in the game.
+The dev log keeps the awkward parts: rowing that felt backwards, a character sitting above the seat, an oar solve that flung a hand towards the gunwale, and art that needed another pass.
+
+## How to play
+
+You have four minutes to bank more fish than the other crews. Stop on a fish spot to catch fish and carry them in your boat. Rams spill some of your catch; capsizes spill it all. Return to your own dock to bank it safely. Gold fish appear at 2:00 and are worth five each. The crew with the most banked fish points wins.
 
 ## Controls
 
@@ -40,7 +44,7 @@ Fishing and banking happen automatically: slow down near a fish spot to catch, t
 - **Codex** — original scripted Blender art and icons, audio processing, documentation, and the assigned T04 fish/round implementation and fixes.
 - **Claude in chat** — production support, task briefs, reviews and scheduling.
 - **Epic Games** — Unreal Engine and UE5 Mannequin (Manny), used under the Unreal Engine EULA.
-- **Adobe Mixamo** — animation clips retargeted to Manny.
+- **Adobe Mixamo** — animation clips retargeted to Manny. Adobe Mixamo terms; clips used inside the game only, raw files not redistributed.
 - **Sonniss GDC 2026 Game Audio Bundle** — licensed sound effects, ambience and voice recordings; edited for the game. Per-file sources are recorded in `Audio/AUDIO_REPORT.md`.
 - **Sky Toes / Uppbeat** — Boardwalk Jaunt, edited for main/menu music.
 - **Nick Petrov / Uppbeat** — Funk Formula, edited for final music.
@@ -59,15 +63,3 @@ License code: TBK6NUHLZIDMPKOK
 - Claude Code, Codex and Claude in chat — the AI-assisted development workflow described above.
 - Blender MCP and Unreal MCP — development automation connections.
 - Git — source history and task-by-task commits.
-
-<!-- D02 drafting notes (not page copy): Title and tagline 2, plus the four About paragraphs,
-come from Docs/DevLog_short.md. Its Saturday-status paragraph is omitted from public copy.
-Controls checked against Source/LakeFight/Input/LFInput.cpp, Brawler/LFBrawler.cpp,
-Boat/LFBoat.cpp and Round/LFRoundWidget.cpp; Content/Input/IMC_Default.uasset,
-Content/Input/IMC_MouseLook.uasset, Content/LakeFight/Input/IMC_LF_Boat.uasset and
-Config/DefaultInput.ini. The mapping assets were read without opening the editor.
-Jump is intentionally absent: the template action exists but LFBrawler does not bind it.
-Gamepad mappings are documented, but gamepad playtesting remains unverified.
-Credits/tool disclosure use Docs/ASSETS.md, Audio/AUDIO_REPORT.md, Art/Export/B02-B11
-reports, Docs/CurrentTask.md and PRE_JAM_DECLARATION.md. Uppbeat lines are copied exactly
-from Docs/ASSETS.md. This is a page draft, not a packaged-build or final-submission claim. -->

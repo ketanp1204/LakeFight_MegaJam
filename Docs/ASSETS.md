@@ -5,7 +5,7 @@
 | Asset | Source | Licence | Used for |
 | --- | --- | --- | --- |
 | Sound effects, ambience and voice clips (56 WAVs, processed in A01; per-file sources in `Audio/AUDIO_REPORT.md`) | [Sonniss GDC 2026 Game Audio Bundle](https://gdc.sonniss.com) | Royalty-free, licensed as confirmed by the director | Sound effects, ambience and voices (`/Game/LakeFight/Audio`) |
-| Mixamo animation clips | Adobe Mixamo | — | Animations retargeted to UE5 Manny |
+| Mixamo animation clips | Adobe Mixamo | Adobe Mixamo terms; clips used inside the game only, raw files not redistributed | Animations retargeted to UE5 Manny |
 | Epic UE5 Mannequin (Manny) | Epic Games engine content | Unreal Engine EULA | Character mannequin; retargeted Mixamo animations |
 | Funk Formula by Nick Petrov | [Uppbeat](https://uppbeat.io/c/nick-petrov) | Director-supplied Uppbeat Basic License; attribution required | Final music |
 | Boardwalk Jaunt by Sky Toes | [Uppbeat](https://uppbeat.io/c/sky-toes) | Director-supplied Uppbeat Basic License; attribution required | Main/menu music |
