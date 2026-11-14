@@ -1,0 +1,51 @@
+{
+  "asset": "SM_LF_Dragonfly_Wings",
+  "triangles": 16,
+  "budget_exclusive": 100,
+  "dimensions_m": [
+    0.1065,
+    0.18,
+    0.008553
+  ],
+  "z_range_m": [
+    0.000449,
+    0.009001
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Dragonfly_Wings",
+      "triangles": 16,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_Metal"
+      ],
+      "closed_components": false,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "e1a2a2b813338a199517eb34527d985b5485382072b63b96b737db503beed613"
+    }
+  ],
+  "authored_enlargement": 1.5,
+  "thin_planes": true,
+  "assembly_hinge_m": [
+    0.0255,
+    0,
+    0
+  ]
+}

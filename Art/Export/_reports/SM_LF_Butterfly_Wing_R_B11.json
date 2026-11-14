@@ -1,0 +1,51 @@
+{
+  "asset": "SM_LF_Butterfly_Wing_R",
+  "triangles": 12,
+  "budget_exclusive": 100,
+  "dimensions_m": [
+    0.1035,
+    0.0615,
+    3e-06
+  ],
+  "z_range_m": [
+    -2e-06,
+    2e-06
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Butterfly_Wing_R",
+      "triangles": 12,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange"
+      ],
+      "closed_components": false,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "ee66080b835e9f41e12045072820490339c90e8196b76a0ec38080a1f04a1d81"
+    }
+  ],
+  "authored_enlargement": 1.5,
+  "thin_planes": true,
+  "assembly_hinge_m": [
+    0.00675,
+    0.00225,
+    0
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "units": "metres; multiply positions by 100 for Unreal centimetres",
+  "forward": "+X",
+  "left": "-Y",
+  "up": "+Z",
+  "swan": {
+    "body": "SM_LF_Swan",
+    "child": "SM_LF_Swan_HeadNeck",
+    "child_relative_pivot_m": [
+      0.1210526,
+      0,
+      0.1105263
+    ],
+    "neutral_rotation_degrees": [
+      0,
+      0,
+      0
+    ]
+  },
+  "flying_bird": {
+    "body": "SM_LF_Bird_Body",
+    "assembled_triangles": 140,
+    "level_span_m": 0.9,
+    "children": [
+      {
+        "mesh": "SM_LF_Bird_Wing_L",
+        "relative_shoulder_m": [
+          0,
+          -0.043,
+          0.006
+        ],
+        "neutral_rotation_degrees": [
+          0,
+          0,
+          0
+        ],
+        "up_rotation_about_local_X_degrees": -42,
+        "down_rotation_about_local_X_degrees": 32
+      },
+      {
+        "mesh": "SM_LF_Bird_Wing_R",
+        "relative_shoulder_m": [
+          0,
+          0.043,
+          0.006
+        ],
+        "neutral_rotation_degrees": [
+          0,
+          0,
+          0
+        ],
+        "up_rotation_about_local_X_degrees": 42,
+        "down_rotation_about_local_X_degrees": -32
+      }
+    ],
+    "glide": "SM_LF_Bird_Glide",
+    "glide_triangles": 104,
+    "glide_dihedral_degrees": 6
+  },
+  "insects": {
+    "authored_scale_multiplier": 1.5,
+    "dragonfly": {
+      "body": "SM_LF_Dragonfly",
+      "wings": "SM_LF_Dragonfly_Wings",
+      "wings_relative_hinge_m": [
+        0.0255,
+        0,
+        0
+      ],
+      "assembled_triangles": 84,
+      "body_length_m": 0.12,
+      "wing_planes": 4
+    },
+    "butterfly": {
+      "body": "SM_LF_Butterfly_Body",
+      "assembled_triangles": 60,
+      "children": [
+        {
+          "mesh": "SM_LF_Butterfly_Wing_L",
+          "relative_hinge_m": [
+            0.00675,
+            -0.00225,
+            0
+          ]
+        },
+        {
+          "mesh": "SM_LF_Butterfly_Wing_R",
+          "relative_hinge_m": [
+            0.00675,
+            0.00225,
+            0
+          ]
+        }
+      ],
+      "flap_axis": "local X; left up negative / right up positive"
+    }
+  }
+}

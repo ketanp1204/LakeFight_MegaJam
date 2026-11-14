@@ -1,0 +1,427 @@
+{
+  "blender": "5.1.0",
+  "all_asset_scripts_run_twice": true,
+  "all_final_runs_identical": true,
+  "fbx": [
+    {
+      "asset": "SM_LF_Cloud_01",
+      "total_triangles": 280,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Cloud_01",
+          "triangles": 280,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 21276
+    },
+    {
+      "asset": "SM_LF_Cloud_02",
+      "total_triangles": 336,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Cloud_02",
+          "triangles": 336,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 22300
+    },
+    {
+      "asset": "SM_LF_Cloud_03",
+      "total_triangles": 336,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Cloud_03",
+          "triangles": 336,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 22316
+    },
+    {
+      "asset": "SM_LF_Cloud_04",
+      "total_triangles": 392,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Cloud_04",
+          "triangles": 392,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 23324
+    },
+    {
+      "asset": "SM_LF_Duck",
+      "total_triangles": 252,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Duck",
+          "triangles": 252,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 24348
+    },
+    {
+      "asset": "SM_LF_Swan",
+      "total_triangles": 312,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Swan",
+          "triangles": 140,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        },
+        {
+          "name": "SM_LF_Swan_HeadNeck",
+          "triangles": 172,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": "SM_LF_Swan",
+          "pivot_local_m": [
+            0.1210526,
+            0.0,
+            0.1105263
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 24332
+    },
+    {
+      "asset": "SM_LF_Heron",
+      "total_triangles": 376,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Heron",
+          "triangles": 376,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 26764
+    },
+    {
+      "asset": "SM_LF_Barrel",
+      "total_triangles": 276,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Barrel",
+          "triangles": 276,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 21164
+    },
+    {
+      "asset": "SM_LF_LifeRing",
+      "total_triangles": 288,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_LifeRing",
+          "triangles": 288,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 20236
+    },
+    {
+      "asset": "SM_LF_Bottle_Message",
+      "total_triangles": 256,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Bottle_Message",
+          "triangles": 256,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 23980
+    },
+    {
+      "asset": "SM_LF_Bird_Body",
+      "total_triangles": 84,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Bird_Body",
+          "triangles": 84,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 18412
+    },
+    {
+      "asset": "SM_LF_Bird_Wing_L",
+      "total_triangles": 28,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Bird_Wing_L",
+          "triangles": 28,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 16524
+    },
+    {
+      "asset": "SM_LF_Bird_Wing_R",
+      "total_triangles": 28,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Bird_Wing_R",
+          "triangles": 28,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 16524
+    },
+    {
+      "asset": "SM_LF_Bird_Glide",
+      "total_triangles": 104,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Bird_Glide",
+          "triangles": 104,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 18780
+    },
+    {
+      "asset": "SM_LF_Dragonfly",
+      "total_triangles": 68,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Dragonfly",
+          "triangles": 68,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 19532
+    },
+    {
+      "asset": "SM_LF_Dragonfly_Wings",
+      "total_triangles": 16,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Dragonfly_Wings",
+          "triangles": 16,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 16540
+    },
+    {
+      "asset": "SM_LF_Butterfly_Body",
+      "total_triangles": 36,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Butterfly_Body",
+          "triangles": 36,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 15564
+    },
+    {
+      "asset": "SM_LF_Butterfly_Wing_L",
+      "total_triangles": 12,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Butterfly_Wing_L",
+          "triangles": 12,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 16316
+    },
+    {
+      "asset": "SM_LF_Butterfly_Wing_R",
+      "total_triangles": 12,
+      "budget_passed": true,
+      "parts": [
+        {
+          "name": "SM_LF_Butterfly_Wing_R",
+          "triangles": 12,
+          "local_geometry_materials_match_0.01mm": true,
+          "parent": null,
+          "pivot_local_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "identity_rotation_scale": true,
+          "flat_shaded": true
+        }
+      ],
+      "bytes": 16284
+    }
+  ],
+  "note": "FBX embeds timestamps: determinism compares geometry/materials/hierarchy rather than file bytes.",
+  "flying_assembled_triangles": 140,
+  "flying_glide_triangles": 104,
+  "flying_assembled_span_m": 0.9,
+  "insect_assembled_triangles": {
+    "dragonfly": 84,
+    "butterfly": 60
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "asset": "SM_LF_Butterfly_Body",
+  "triangles": 36,
+  "budget_exclusive": 100,
+  "dimensions_m": [
+    0.0525,
+    0.018,
+    0.011402
+  ],
+  "z_range_m": [
+    -0.0054,
+    0.006001
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Butterfly_Body",
+      "triangles": 36,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_WoodDark"
+      ],
+      "closed_components": false,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "3b3b1bf482237490c0637e4ac240d72daa28b038348440f3e0b7610ce4f992f9"
+    }
+  ],
+  "authored_enlargement": 1.5,
+  "thin_planes": false
+}

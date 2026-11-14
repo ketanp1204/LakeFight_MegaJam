@@ -1,0 +1,500 @@
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_01.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_01.fbx tris=270
+{'asset': 'SM_LF_Cloud_01', 'triangles': 270, 'budget_exclusive': 400, 'dimensions_m': [24.0, 12.847145, 16.677422], 'z_range_m': [0.0, 16.677422], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_01', 'triangles': 270, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ffeb52f914c84fe6911a27ab1b3dfd684277b9519d2a84db5ced634c546b71a8'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_01.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_01.fbx tris=270
+{'asset': 'SM_LF_Cloud_01', 'triangles': 270, 'budget_exclusive': 400, 'dimensions_m': [24.0, 12.847145, 16.677422], 'z_range_m': [0.0, 16.677422], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_01', 'triangles': 270, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ffeb52f914c84fe6911a27ab1b3dfd684277b9519d2a84db5ced634c546b71a8'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_02.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_02.fbx tris=324
+{'asset': 'SM_LF_Cloud_02', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [36.0, 20.441757, 28.502245], 'z_range_m': [0.0, 28.502245], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_02', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bc0eea9a14c6beec871dae1b01827403ceea70eeae2930033bcdb38099944028'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_02.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_02.fbx tris=324
+{'asset': 'SM_LF_Cloud_02', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [36.0, 20.441757, 28.502245], 'z_range_m': [0.0, 28.502245], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_02', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bc0eea9a14c6beec871dae1b01827403ceea70eeae2930033bcdb38099944028'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_03.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_03.fbx tris=324
+{'asset': 'SM_LF_Cloud_03', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [48.0, 22.719463, 24.392887], 'z_range_m': [0.0, 24.392887], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_03', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '8bbbb786071009d1259437b556104eef01dc49e869ee5dd15e69a617e01e7db9'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_03.fbx'
+export finished in 0.0037 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_03.fbx tris=324
+{'asset': 'SM_LF_Cloud_03', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [48.0, 22.719463, 24.392887], 'z_range_m': [0.0, 24.392887], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_03', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '8bbbb786071009d1259437b556104eef01dc49e869ee5dd15e69a617e01e7db9'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_04.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_04.fbx tris=378
+{'asset': 'SM_LF_Cloud_04', 'triangles': 378, 'budget_exclusive': 400, 'dimensions_m': [58.0, 31.58308, 48.569508], 'z_range_m': [0.0, 48.569508], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_04', 'triangles': 378, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '2d288a21df4fd8936d3c335f8f00ab4e77792ddc8a3bacbb451bfaa5bdb73b45'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_04.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_04.fbx tris=378
+{'asset': 'SM_LF_Cloud_04', 'triangles': 378, 'budget_exclusive': 400, 'dimensions_m': [58.0, 31.58308, 48.569508], 'z_range_m': [0.0, 48.569508], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_04', 'triangles': 378, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '2d288a21df4fd8936d3c335f8f00ab4e77792ddc8a3bacbb451bfaa5bdb73b45'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Duck.fbx'
+export finished in 0.0043 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Duck.fbx tris=252
+{'asset': 'SM_LF_Duck', 'triangles': 252, 'budget_exclusive': 400, 'dimensions_m': [0.35, 0.140696, 0.207841], 'z_range_m': [-0.058483, 0.149357], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Duck', 'triangles': 252, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Wood', 'M_LF_WoodDark', 'M_LF_Moss', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '5cea315013a9d1a4f9242cca4b6e8b5664044a91f00cf1588d4a914d959ee35e'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Duck.fbx'
+export finished in 0.0051 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Duck.fbx tris=252
+{'asset': 'SM_LF_Duck', 'triangles': 252, 'budget_exclusive': 400, 'dimensions_m': [0.35, 0.140696, 0.207841], 'z_range_m': [-0.058483, 0.149357], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Duck', 'triangles': 252, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Wood', 'M_LF_WoodDark', 'M_LF_Moss', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '5cea315013a9d1a4f9242cca4b6e8b5664044a91f00cf1588d4a914d959ee35e'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Swan.fbx'
+export finished in 0.0056 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Swan.fbx tris=312
+{'asset': 'SM_LF_Swan', 'triangles': 312, 'budget_exclusive': 400, 'dimensions_m': [0.8, 0.272997, 0.661053], 'z_range_m': [-0.105263, 0.555789], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Swan', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f'}, {'name': 'SM_LF_Swan_HeadNeck', 'triangles': 172, 'origin_local_m': [0.1210526, 0.0, 0.1105263], 'parent': 'SM_LF_Swan', 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'f1b0db66f83e7a45f6323e2f28f3899cd4ae6a86cf8808347c16f58bf8496d0f'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Swan.fbx'
+export finished in 0.0053 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Swan.fbx tris=312
+{'asset': 'SM_LF_Swan', 'triangles': 312, 'budget_exclusive': 400, 'dimensions_m': [0.8, 0.272997, 0.661053], 'z_range_m': [-0.105263, 0.555789], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Swan', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f'}, {'name': 'SM_LF_Swan_HeadNeck', 'triangles': 172, 'origin_local_m': [0.1210526, 0.0, 0.1105263], 'parent': 'SM_LF_Swan', 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'f1b0db66f83e7a45f6323e2f28f3899cd4ae6a86cf8808347c16f58bf8496d0f'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Heron.fbx'
+export finished in 0.0051 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Heron.fbx tris=376
+{'asset': 'SM_LF_Heron', 'triangles': 376, 'budget_exclusive': 400, 'dimensions_m': [0.516073, 0.173662, 1.0], 'z_range_m': [0.0, 1.0], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Heron', 'triangles': 376, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Metal', 'M_LF_Cloth', 'M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '352e612ede8afc8826f0abdd181820d7ac839edddf56df1cb9103298aec2b456'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Heron.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Heron.fbx tris=376
+{'asset': 'SM_LF_Heron', 'triangles': 376, 'budget_exclusive': 400, 'dimensions_m': [0.516073, 0.173662, 1.0], 'z_range_m': [0.0, 1.0], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Heron', 'triangles': 376, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Metal', 'M_LF_Cloth', 'M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '352e612ede8afc8826f0abdd181820d7ac839edddf56df1cb9103298aec2b456'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Barrel.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Barrel.fbx tris=276
+{'asset': 'SM_LF_Barrel', 'triangles': 276, 'budget_exclusive': 300, 'dimensions_m': [0.96, 0.644, 0.63824], 'z_range_m': [-0.30624, 0.332], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Barrel', 'triangles': 276, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Barrel.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Barrel.fbx tris=276
+{'asset': 'SM_LF_Barrel', 'triangles': 276, 'budget_exclusive': 300, 'dimensions_m': [0.96, 0.644, 0.63824], 'z_range_m': [-0.30624, 0.332], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Barrel', 'triangles': 276, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeRing.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LifeRing.fbx tris=288
+{'asset': 'SM_LF_LifeRing', 'triangles': 288, 'budget_exclusive': 300, 'dimensions_m': [0.962, 0.962, 0.138564], 'z_range_m': [-0.069282, 0.069282], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_LifeRing', 'triangles': 288, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Rope'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeRing.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LifeRing.fbx tris=288
+{'asset': 'SM_LF_LifeRing', 'triangles': 288, 'budget_exclusive': 300, 'dimensions_m': [0.962, 0.962, 0.138564], 'z_range_m': [-0.069282, 0.069282], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_LifeRing', 'triangles': 288, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Rope'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bottle_Message.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bottle_Message.fbx tris=256
+{'asset': 'SM_LF_Bottle_Message', 'triangles': 256, 'budget_exclusive': 300, 'dimensions_m': [0.480118, 0.1575, 0.234977], 'z_range_m': [-0.110815, 0.124162], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bottle_Message', 'triangles': 256, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Cloth', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '449a1b5b66c6c98ea6b08fd54a43b51df7d7986963dafc049a13d73f878d8762'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bottle_Message.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bottle_Message.fbx tris=256
+{'asset': 'SM_LF_Bottle_Message', 'triangles': 256, 'budget_exclusive': 300, 'dimensions_m': [0.480118, 0.1575, 0.234977], 'z_range_m': [-0.110815, 0.124162], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bottle_Message', 'triangles': 256, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Cloth', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '449a1b5b66c6c98ea6b08fd54a43b51df7d7986963dafc049a13d73f878d8762'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_01.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_01.fbx tris=270
+{'asset': 'SM_LF_Cloud_01', 'triangles': 270, 'budget_exclusive': 400, 'dimensions_m': [24.0, 12.847145, 16.677422], 'z_range_m': [0.0, 16.677422], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_01', 'triangles': 270, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ffeb52f914c84fe6911a27ab1b3dfd684277b9519d2a84db5ced634c546b71a8'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_01.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_01.fbx tris=270
+{'asset': 'SM_LF_Cloud_01', 'triangles': 270, 'budget_exclusive': 400, 'dimensions_m': [24.0, 12.847145, 16.677422], 'z_range_m': [0.0, 16.677422], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_01', 'triangles': 270, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ffeb52f914c84fe6911a27ab1b3dfd684277b9519d2a84db5ced634c546b71a8'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_02.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_02.fbx tris=324
+{'asset': 'SM_LF_Cloud_02', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [36.0, 20.441757, 28.502245], 'z_range_m': [0.0, 28.502245], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_02', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bc0eea9a14c6beec871dae1b01827403ceea70eeae2930033bcdb38099944028'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_02.fbx'
+export finished in 0.0037 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_02.fbx tris=324
+{'asset': 'SM_LF_Cloud_02', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [36.0, 20.441757, 28.502245], 'z_range_m': [0.0, 28.502245], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_02', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bc0eea9a14c6beec871dae1b01827403ceea70eeae2930033bcdb38099944028'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_03.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_03.fbx tris=324
+{'asset': 'SM_LF_Cloud_03', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [48.0, 22.719463, 24.392887], 'z_range_m': [0.0, 24.392887], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_03', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '8bbbb786071009d1259437b556104eef01dc49e869ee5dd15e69a617e01e7db9'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_03.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_03.fbx tris=324
+{'asset': 'SM_LF_Cloud_03', 'triangles': 324, 'budget_exclusive': 400, 'dimensions_m': [48.0, 22.719463, 24.392887], 'z_range_m': [0.0, 24.392887], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_03', 'triangles': 324, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '8bbbb786071009d1259437b556104eef01dc49e869ee5dd15e69a617e01e7db9'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_04.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_04.fbx tris=378
+{'asset': 'SM_LF_Cloud_04', 'triangles': 378, 'budget_exclusive': 400, 'dimensions_m': [58.0, 31.58308, 48.569508], 'z_range_m': [0.0, 48.569508], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_04', 'triangles': 378, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '2d288a21df4fd8936d3c335f8f00ab4e77792ddc8a3bacbb451bfaa5bdb73b45'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_04.fbx'
+export finished in 0.0043 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_04.fbx tris=378
+{'asset': 'SM_LF_Cloud_04', 'triangles': 378, 'budget_exclusive': 400, 'dimensions_m': [58.0, 31.58308, 48.569508], 'z_range_m': [0.0, 48.569508], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_04', 'triangles': 378, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '2d288a21df4fd8936d3c335f8f00ab4e77792ddc8a3bacbb451bfaa5bdb73b45'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Duck.fbx'
+export finished in 0.0052 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Duck.fbx tris=252
+{'asset': 'SM_LF_Duck', 'triangles': 252, 'budget_exclusive': 400, 'dimensions_m': [0.35, 0.140696, 0.207841], 'z_range_m': [-0.058483, 0.149357], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Duck', 'triangles': 252, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Wood', 'M_LF_WoodDark', 'M_LF_Moss', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '5cea315013a9d1a4f9242cca4b6e8b5664044a91f00cf1588d4a914d959ee35e'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Duck.fbx'
+export finished in 0.0043 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Duck.fbx tris=252
+{'asset': 'SM_LF_Duck', 'triangles': 252, 'budget_exclusive': 400, 'dimensions_m': [0.35, 0.140696, 0.207841], 'z_range_m': [-0.058483, 0.149357], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Duck', 'triangles': 252, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Wood', 'M_LF_WoodDark', 'M_LF_Moss', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '5cea315013a9d1a4f9242cca4b6e8b5664044a91f00cf1588d4a914d959ee35e'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Swan.fbx'
+export finished in 0.0047 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Swan.fbx tris=312
+{'asset': 'SM_LF_Swan', 'triangles': 312, 'budget_exclusive': 400, 'dimensions_m': [0.8, 0.272997, 0.661053], 'z_range_m': [-0.105263, 0.555789], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Swan', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f'}, {'name': 'SM_LF_Swan_HeadNeck', 'triangles': 172, 'origin_local_m': [0.1210526, 0.0, 0.1105263], 'parent': 'SM_LF_Swan', 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'f1b0db66f83e7a45f6323e2f28f3899cd4ae6a86cf8808347c16f58bf8496d0f'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Swan.fbx'
+export finished in 0.0057 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Swan.fbx tris=312
+{'asset': 'SM_LF_Swan', 'triangles': 312, 'budget_exclusive': 400, 'dimensions_m': [0.8, 0.272997, 0.661053], 'z_range_m': [-0.105263, 0.555789], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Swan', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f'}, {'name': 'SM_LF_Swan_HeadNeck', 'triangles': 172, 'origin_local_m': [0.1210526, 0.0, 0.1105263], 'parent': 'SM_LF_Swan', 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'f1b0db66f83e7a45f6323e2f28f3899cd4ae6a86cf8808347c16f58bf8496d0f'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Heron.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Heron.fbx tris=376
+{'asset': 'SM_LF_Heron', 'triangles': 376, 'budget_exclusive': 400, 'dimensions_m': [0.516073, 0.173662, 1.0], 'z_range_m': [0.0, 1.0], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Heron', 'triangles': 376, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Metal', 'M_LF_Cloth', 'M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '352e612ede8afc8826f0abdd181820d7ac839edddf56df1cb9103298aec2b456'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Heron.fbx'
+export finished in 0.0051 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Heron.fbx tris=376
+{'asset': 'SM_LF_Heron', 'triangles': 376, 'budget_exclusive': 400, 'dimensions_m': [0.516073, 0.173662, 1.0], 'z_range_m': [0.0, 1.0], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Heron', 'triangles': 376, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Metal', 'M_LF_Cloth', 'M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '352e612ede8afc8826f0abdd181820d7ac839edddf56df1cb9103298aec2b456'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Barrel.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Barrel.fbx tris=276
+{'asset': 'SM_LF_Barrel', 'triangles': 276, 'budget_exclusive': 300, 'dimensions_m': [0.96, 0.644, 0.63824], 'z_range_m': [-0.30624, 0.332], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Barrel', 'triangles': 276, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Barrel.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Barrel.fbx tris=276
+{'asset': 'SM_LF_Barrel', 'triangles': 276, 'budget_exclusive': 300, 'dimensions_m': [0.96, 0.644, 0.63824], 'z_range_m': [-0.30624, 0.332], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Barrel', 'triangles': 276, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeRing.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LifeRing.fbx tris=288
+{'asset': 'SM_LF_LifeRing', 'triangles': 288, 'budget_exclusive': 300, 'dimensions_m': [0.962, 0.962, 0.138564], 'z_range_m': [-0.069282, 0.069282], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_LifeRing', 'triangles': 288, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Rope'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeRing.fbx'
+export finished in 0.0043 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LifeRing.fbx tris=288
+{'asset': 'SM_LF_LifeRing', 'triangles': 288, 'budget_exclusive': 300, 'dimensions_m': [0.962, 0.962, 0.138564], 'z_range_m': [-0.069282, 0.069282], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_LifeRing', 'triangles': 288, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Rope'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bottle_Message.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bottle_Message.fbx tris=256
+{'asset': 'SM_LF_Bottle_Message', 'triangles': 256, 'budget_exclusive': 300, 'dimensions_m': [0.480118, 0.1575, 0.234977], 'z_range_m': [-0.110815, 0.124162], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bottle_Message', 'triangles': 256, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Cloth', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '449a1b5b66c6c98ea6b08fd54a43b51df7d7986963dafc049a13d73f878d8762'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bottle_Message.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bottle_Message.fbx tris=256
+{'asset': 'SM_LF_Bottle_Message', 'triangles': 256, 'budget_exclusive': 300, 'dimensions_m': [0.480118, 0.1575, 0.234977], 'z_range_m': [-0.110815, 0.124162], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bottle_Message', 'triangles': 256, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Cloth', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '449a1b5b66c6c98ea6b08fd54a43b51df7d7986963dafc049a13d73f878d8762'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_01.fbx'
+export finished in 0.0072 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_01.fbx tris=280
+{'asset': 'SM_LF_Cloud_01', 'triangles': 280, 'budget_exclusive': 400, 'dimensions_m': [24.0, 12.587086, 11.143568], 'z_range_m': [0.0, 11.143568], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_01', 'triangles': 280, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'e2eac52e38026d1f1dc6f4f0d11c082ed832402a3691d213f393e19462b9ba62'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_01.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_01.fbx tris=280
+{'asset': 'SM_LF_Cloud_01', 'triangles': 280, 'budget_exclusive': 400, 'dimensions_m': [24.0, 12.587086, 11.143568], 'z_range_m': [0.0, 11.143568], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_01', 'triangles': 280, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'e2eac52e38026d1f1dc6f4f0d11c082ed832402a3691d213f393e19462b9ba62'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_02.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_02.fbx tris=336
+{'asset': 'SM_LF_Cloud_02', 'triangles': 336, 'budget_exclusive': 400, 'dimensions_m': [36.0, 19.915552, 17.550114], 'z_range_m': [0.0, 17.550114], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_02', 'triangles': 336, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'f07a9712c5b9f8d53cf32fcbf03a7982707925ae00fa6e4bd93c7b6fa675e51b'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_02.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_02.fbx tris=336
+{'asset': 'SM_LF_Cloud_02', 'triangles': 336, 'budget_exclusive': 400, 'dimensions_m': [36.0, 19.915552, 17.550114], 'z_range_m': [0.0, 17.550114], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_02', 'triangles': 336, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'f07a9712c5b9f8d53cf32fcbf03a7982707925ae00fa6e4bd93c7b6fa675e51b'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_03.fbx'
+export finished in 0.0037 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_03.fbx tris=336
+{'asset': 'SM_LF_Cloud_03', 'triangles': 336, 'budget_exclusive': 400, 'dimensions_m': [48.0, 22.402716, 17.497677], 'z_range_m': [0.0, 17.497677], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_03', 'triangles': 336, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '319f101513325dbaaa90f3a7d1d396706900b9170d917a0fbf20f7a6dd1f15f6'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_03.fbx'
+export finished in 0.0039 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_03.fbx tris=336
+{'asset': 'SM_LF_Cloud_03', 'triangles': 336, 'budget_exclusive': 400, 'dimensions_m': [48.0, 22.402716, 17.497677], 'z_range_m': [0.0, 17.497677], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_03', 'triangles': 336, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '319f101513325dbaaa90f3a7d1d396706900b9170d917a0fbf20f7a6dd1f15f6'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_04.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_04.fbx tris=392
+{'asset': 'SM_LF_Cloud_04', 'triangles': 392, 'budget_exclusive': 400, 'dimensions_m': [58.0, 31.387455, 27.435852], 'z_range_m': [0.0, 27.435852], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_04', 'triangles': 392, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'a460f5436bf0e9493c06e17c2f13317590e7c49ac451965a92978682dde492d0'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Cloud_04.fbx'
+export finished in 0.0053 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Cloud_04.fbx tris=392
+{'asset': 'SM_LF_Cloud_04', 'triangles': 392, 'budget_exclusive': 400, 'dimensions_m': [58.0, 31.387455, 27.435852], 'z_range_m': [0.0, 27.435852], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Cloud_04', 'triangles': 392, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'a460f5436bf0e9493c06e17c2f13317590e7c49ac451965a92978682dde492d0'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Duck.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Duck.fbx tris=252
+{'asset': 'SM_LF_Duck', 'triangles': 252, 'budget_exclusive': 400, 'dimensions_m': [0.35, 0.140696, 0.207841], 'z_range_m': [-0.058483, 0.149357], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Duck', 'triangles': 252, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Wood', 'M_LF_WoodDark', 'M_LF_Moss', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1681f181dad47729c6d39ad97b76c9340632ffe189ab88efe5664c4eff3d8d58'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Duck.fbx'
+export finished in 0.0044 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Duck.fbx tris=252
+{'asset': 'SM_LF_Duck', 'triangles': 252, 'budget_exclusive': 400, 'dimensions_m': [0.35, 0.140696, 0.207841], 'z_range_m': [-0.058483, 0.149357], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Duck', 'triangles': 252, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Wood', 'M_LF_WoodDark', 'M_LF_Moss', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1681f181dad47729c6d39ad97b76c9340632ffe189ab88efe5664c4eff3d8d58'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Swan.fbx'
+export finished in 0.0057 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Swan.fbx tris=312
+{'asset': 'SM_LF_Swan', 'triangles': 312, 'budget_exclusive': 400, 'dimensions_m': [0.8, 0.272997, 0.661053], 'z_range_m': [-0.105263, 0.555789], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Swan', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f'}, {'name': 'SM_LF_Swan_HeadNeck', 'triangles': 172, 'origin_local_m': [0.1210526, 0.0, 0.1105263], 'parent': 'SM_LF_Swan', 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '6e0217c6c1a78a15eab012d46d7c9ad10ae780523a96df3cb7e2be368a66ec4e'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Swan.fbx'
+export finished in 0.0054 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Swan.fbx tris=312
+{'asset': 'SM_LF_Swan', 'triangles': 312, 'budget_exclusive': 400, 'dimensions_m': [0.8, 0.272997, 0.661053], 'z_range_m': [-0.105263, 0.555789], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Swan', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f'}, {'name': 'SM_LF_Swan_HeadNeck', 'triangles': 172, 'origin_local_m': [0.1210526, 0.0, 0.1105263], 'parent': 'SM_LF_Swan', 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '6e0217c6c1a78a15eab012d46d7c9ad10ae780523a96df3cb7e2be368a66ec4e'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Heron.fbx'
+export finished in 0.0047 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Heron.fbx tris=376
+{'asset': 'SM_LF_Heron', 'triangles': 376, 'budget_exclusive': 400, 'dimensions_m': [0.516073, 0.173662, 1.0], 'z_range_m': [0.0, 1.0], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Heron', 'triangles': 376, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Metal', 'M_LF_Cloth', 'M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bd1d750f76dfa37d28e405c1bc49d0204accf425d120b0d862ed6eeb2a85558d'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Heron.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Heron.fbx tris=376
+{'asset': 'SM_LF_Heron', 'triangles': 376, 'budget_exclusive': 400, 'dimensions_m': [0.516073, 0.173662, 1.0], 'z_range_m': [0.0, 1.0], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Heron', 'triangles': 376, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Metal', 'M_LF_Cloth', 'M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bd1d750f76dfa37d28e405c1bc49d0204accf425d120b0d862ed6eeb2a85558d'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Barrel.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Barrel.fbx tris=276
+{'asset': 'SM_LF_Barrel', 'triangles': 276, 'budget_exclusive': 300, 'dimensions_m': [0.96, 0.644, 0.63824], 'z_range_m': [-0.30624, 0.332], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Barrel', 'triangles': 276, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Barrel.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Barrel.fbx tris=276
+{'asset': 'SM_LF_Barrel', 'triangles': 276, 'budget_exclusive': 300, 'dimensions_m': [0.96, 0.644, 0.63824], 'z_range_m': [-0.30624, 0.332], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Barrel', 'triangles': 276, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeRing.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LifeRing.fbx tris=288
+{'asset': 'SM_LF_LifeRing', 'triangles': 288, 'budget_exclusive': 300, 'dimensions_m': [0.962, 0.962, 0.138564], 'z_range_m': [-0.069282, 0.069282], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_LifeRing', 'triangles': 288, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Rope'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_LifeRing.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_LifeRing.fbx tris=288
+{'asset': 'SM_LF_LifeRing', 'triangles': 288, 'budget_exclusive': 300, 'dimensions_m': [0.962, 0.962, 0.138564], 'z_range_m': [-0.069282, 0.069282], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_LifeRing', 'triangles': 288, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Rope'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bottle_Message.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bottle_Message.fbx tris=256
+{'asset': 'SM_LF_Bottle_Message', 'triangles': 256, 'budget_exclusive': 300, 'dimensions_m': [0.480795, 0.15196, 0.238175], 'z_range_m': [-0.114388, 0.123786], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bottle_Message', 'triangles': 256, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Cloth', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1ee7b8a745a75b50c456fb23b02a2ac41a7861e16b98d51a5714a79d5c812fd9'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bottle_Message.fbx'
+export finished in 0.0052 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bottle_Message.fbx tris=256
+{'asset': 'SM_LF_Bottle_Message', 'triangles': 256, 'budget_exclusive': 300, 'dimensions_m': [0.480795, 0.15196, 0.238175], 'z_range_m': [-0.114388, 0.123786], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bottle_Message', 'triangles': 256, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_Cloth', 'M_LF_Wood', 'M_LF_Rope', 'M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '1ee7b8a745a75b50c456fb23b02a2ac41a7861e16b98d51a5714a79d5c812fd9'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Body.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Body.fbx tris=84
+{'asset': 'SM_LF_Bird_Body', 'triangles': 84, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.12, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Body', 'triangles': 84, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'b4d610e1a345a16f298d3d648cd2027e949a6888877ff128043d1ba7ad033031'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Body.fbx'
+export finished in 0.0037 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Body.fbx tris=84
+{'asset': 'SM_LF_Bird_Body', 'triangles': 84, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.12, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Body', 'triangles': 84, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'b4d610e1a345a16f298d3d648cd2027e949a6888877ff128043d1ba7ad033031'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_L.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_L.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '236490cffe3991d365ecc90b2ef7250e009ca7ad2ada18b403623879c88b9806'}], 'assembly_shoulder_m': [0, -0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_L.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_L.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '236490cffe3991d365ecc90b2ef7250e009ca7ad2ada18b403623879c88b9806'}], 'assembly_shoulder_m': [0, -0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_R.fbx'
+export finished in 0.0138 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_R.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3dc10cb5bbafba1c1a94ae4942a8b6bcefd75b30ffdd1df9961bd5efc6547b70'}], 'assembly_shoulder_m': [0, 0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_R.fbx'
+export finished in 0.0036 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_R.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3dc10cb5bbafba1c1a94ae4942a8b6bcefd75b30ffdd1df9961bd5efc6547b70'}], 'assembly_shoulder_m': [0, 0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Glide.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Glide.fbx tris=140
+{'asset': 'SM_LF_Bird_Glide', 'triangles': 140, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.896586, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Glide', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '9762bb355746db31da008b49a61dad1f68afa079ca62e3add86f983dddd3aef6'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Glide.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Glide.fbx tris=140
+{'asset': 'SM_LF_Bird_Glide', 'triangles': 140, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.896586, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Glide', 'triangles': 140, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '9762bb355746db31da008b49a61dad1f68afa079ca62e3add86f983dddd3aef6'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Body.fbx'
+export finished in 0.0089 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Body.fbx tris=84
+{'asset': 'SM_LF_Bird_Body', 'triangles': 84, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.12, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Body', 'triangles': 84, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'b4d610e1a345a16f298d3d648cd2027e949a6888877ff128043d1ba7ad033031'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Body.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Body.fbx tris=84
+{'asset': 'SM_LF_Bird_Body', 'triangles': 84, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.12, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Body', 'triangles': 84, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_Black'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'b4d610e1a345a16f298d3d648cd2027e949a6888877ff128043d1ba7ad033031'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_L.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_L.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '236490cffe3991d365ecc90b2ef7250e009ca7ad2ada18b403623879c88b9806'}], 'assembly_shoulder_m': [0, -0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_L.fbx'
+export finished in 0.0037 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_L.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_L', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '236490cffe3991d365ecc90b2ef7250e009ca7ad2ada18b403623879c88b9806'}], 'assembly_shoulder_m': [0, -0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_R.fbx'
+export finished in 0.0039 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_R.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3dc10cb5bbafba1c1a94ae4942a8b6bcefd75b30ffdd1df9961bd5efc6547b70'}], 'assembly_shoulder_m': [0, 0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Wing_R.fbx'
+export finished in 0.0035 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Wing_R.fbx tris=28
+{'asset': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'budget_exclusive': 150, 'dimensions_m': [0.18, 0.407, 0.031], 'z_range_m': [-0.009, 0.022], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Wing_R', 'triangles': 28, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3dc10cb5bbafba1c1a94ae4942a8b6bcefd75b30ffdd1df9961bd5efc6547b70'}], 'assembly_shoulder_m': [0, 0.043, 0.006], 'flap_axis': 'local X; left up = negative angle, right up = positive angle'}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Glide.fbx'
+export finished in 0.0043 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Glide.fbx tris=104
+{'asset': 'SM_LF_Bird_Glide', 'triangles': 104, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.896586, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Glide', 'triangles': 104, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bca8bb3a015e65e7eb164b20298d04e8cc6c5b936a0320ce4f233bce74ba0a44'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Bird_Glide.fbx'
+export finished in 0.0046 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Bird_Glide.fbx tris=104
+{'asset': 'SM_LF_Bird_Glide', 'triangles': 104, 'budget_exclusive': 150, 'dimensions_m': [0.44, 0.896586, 0.124], 'z_range_m': [-0.046, 0.078], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Bird_Glide', 'triangles': 104, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'bca8bb3a015e65e7eb164b20298d04e8cc6c5b936a0320ce4f233bce74ba0a44'}]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly.fbx'
+export finished in 0.0098 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly.fbx tris=68
+{'asset': 'SM_LF_Dragonfly', 'triangles': 68, 'budget_exclusive': 100, 'dimensions_m': [0.12, 0.051, 0.024], 'z_range_m': [-0.012, 0.012], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly', 'triangles': 68, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintBlue', 'M_LF_Moss', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ec2011ce51f3964e584b2c522cab62aa00242471f1036efc176d3a7cf1323530'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly.fbx'
+export finished in 0.0043 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly.fbx tris=68
+{'asset': 'SM_LF_Dragonfly', 'triangles': 68, 'budget_exclusive': 100, 'dimensions_m': [0.12, 0.051, 0.024], 'z_range_m': [-0.012, 0.012], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly', 'triangles': 68, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintBlue', 'M_LF_Moss', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ec2011ce51f3964e584b2c522cab62aa00242471f1036efc176d3a7cf1323530'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly_Wings.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly_Wings.fbx tris=16
+{'asset': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1065, 0.18, 0.00855], 'z_range_m': [0.00045, 0.009], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'df083d5e881cb1c3b8430417067c129ddd9d2211f1222a182a514b23d0791997'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.0255, 0, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly_Wings.fbx'
+export finished in 0.0039 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly_Wings.fbx tris=16
+{'asset': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1065, 0.18, 0.00855], 'z_range_m': [0.00045, 0.009], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'df083d5e881cb1c3b8430417067c129ddd9d2211f1222a182a514b23d0791997'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.0255, 0, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Body.fbx'
+export finished in 0.0036 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Body.fbx tris=36
+{'asset': 'SM_LF_Butterfly_Body', 'triangles': 36, 'budget_exclusive': 100, 'dimensions_m': [0.0525, 0.018, 0.0114], 'z_range_m': [-0.0054, 0.006], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Body', 'triangles': 36, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'd327eb635903a0467540d6956bf1ec12c317c54f61a3e3185a7b791824d24f14'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Body.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Body.fbx tris=36
+{'asset': 'SM_LF_Butterfly_Body', 'triangles': 36, 'budget_exclusive': 100, 'dimensions_m': [0.0525, 0.018, 0.0114], 'z_range_m': [-0.0054, 0.006], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Body', 'triangles': 36, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark'], 'closed_components': True, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'd327eb635903a0467540d6956bf1ec12c317c54f61a3e3185a7b791824d24f14'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_L.fbx'
+export finished in 0.0041 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_L.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '308f15663f336c6730fb0c8d65eb91c16d4eb3d177cc0bb0c5bb7bc33d89d682'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, -0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_L.fbx'
+export finished in 0.0034 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_L.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '308f15663f336c6730fb0c8d65eb91c16d4eb3d177cc0bb0c5bb7bc33d89d682'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, -0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_R.fbx'
+export finished in 0.0036 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_R.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'b873f9ab7a822ea38cbd4262e6713fbdc5e9b28f350fe64cff369c005a899930'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, 0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_R.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_R.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'b873f9ab7a822ea38cbd4262e6713fbdc5e9b28f350fe64cff369c005a899930'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, 0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly.fbx'
+export finished in 0.0042 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly.fbx tris=68
+{'asset': 'SM_LF_Dragonfly', 'triangles': 68, 'budget_exclusive': 100, 'dimensions_m': [0.12, 0.051, 0.024002], 'z_range_m': [-0.012002, 0.012], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly', 'triangles': 68, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintBlue', 'M_LF_Moss', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '8834e437d48f92d3d9e0069c103a3cebcbf475fbd49e8771cf05a0125f122e1e'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly.fbx tris=68
+{'asset': 'SM_LF_Dragonfly', 'triangles': 68, 'budget_exclusive': 100, 'dimensions_m': [0.12, 0.051, 0.024002], 'z_range_m': [-0.012002, 0.012], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly', 'triangles': 68, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintBlue', 'M_LF_Moss', 'M_LF_Black', 'M_LF_WoodDark'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '8834e437d48f92d3d9e0069c103a3cebcbf475fbd49e8771cf05a0125f122e1e'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly_Wings.fbx'
+export finished in 0.0036 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly_Wings.fbx tris=16
+{'asset': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1065, 0.18, 0.008553], 'z_range_m': [0.000449, 0.009001], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'e1a2a2b813338a199517eb34527d985b5485382072b63b96b737db503beed613'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.0255, 0, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Dragonfly_Wings.fbx'
+export finished in 0.0039 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Dragonfly_Wings.fbx tris=16
+{'asset': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1065, 0.18, 0.008553], 'z_range_m': [0.000449, 0.009001], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Dragonfly_Wings', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_Metal'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'e1a2a2b813338a199517eb34527d985b5485382072b63b96b737db503beed613'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.0255, 0, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Body.fbx'
+export finished in 0.0035 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Body.fbx tris=36
+{'asset': 'SM_LF_Butterfly_Body', 'triangles': 36, 'budget_exclusive': 100, 'dimensions_m': [0.0525, 0.018, 0.011402], 'z_range_m': [-0.0054, 0.006001], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Body', 'triangles': 36, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3b3b1bf482237490c0637e4ac240d72daa28b038348440f3e0b7610ce4f992f9'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Body.fbx'
+export finished in 0.0032 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Body.fbx tris=36
+{'asset': 'SM_LF_Butterfly_Body', 'triangles': 36, 'budget_exclusive': 100, 'dimensions_m': [0.0525, 0.018, 0.011402], 'z_range_m': [-0.0054, 0.006001], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Body', 'triangles': 36, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_WoodDark'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '3b3b1bf482237490c0637e4ac240d72daa28b038348440f3e0b7610ce4f992f9'}], 'authored_enlargement': 1.5, 'thin_planes': False}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_L.fbx'
+export finished in 0.0036 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_L.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'd2f8d79b5bfd70197136391b8ca873215d75f9ae62dd86db08c2cd1f1e9716fb'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, -0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_L.fbx'
+export finished in 0.0037 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_L.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_L', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'd2f8d79b5bfd70197136391b8ca873215d75f9ae62dd86db08c2cd1f1e9716fb'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, -0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_R.fbx'
+export finished in 0.0040 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_R.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '41af4c640ff724bcd5db34b15d6d31d225d265099236d96aa53a2edc22380c61'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, 0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_R.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_R.fbx tris=16
+{'asset': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 0.00018], 'z_range_m': [-9e-05, 9e-05], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_R', 'triangles': 16, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '41af4c640ff724bcd5db34b15d6d31d225d265099236d96aa53a2edc22380c61'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, 0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_L.fbx'
+export finished in 0.0033 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_L.fbx tris=12
+{'asset': 'SM_LF_Butterfly_Wing_L', 'triangles': 12, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 3e-06], 'z_range_m': [-2e-06, 2e-06], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_L', 'triangles': 12, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '2998a60db36184cd03dc3c30c3136629a18ef082a641c369e92441adf74d4a28'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, -0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_L.fbx'
+export finished in 0.0037 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_L.fbx tris=12
+{'asset': 'SM_LF_Butterfly_Wing_L', 'triangles': 12, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 3e-06], 'z_range_m': [-2e-06, 2e-06], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_L', 'triangles': 12, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintOrange', 'M_LF_PaintCream'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': '2998a60db36184cd03dc3c30c3136629a18ef082a641c369e92441adf74d4a28'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, -0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_R.fbx'
+export finished in 0.0045 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_R.fbx tris=12
+{'asset': 'SM_LF_Butterfly_Wing_R', 'triangles': 12, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 3e-06], 'z_range_m': [-2e-06, 2e-06], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_R', 'triangles': 12, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ee66080b835e9f41e12045072820490339c90e8196b76a0ec38080a1f04a1d81'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, 0.00225, 0]}
+
+FBX export starting... 'D:\\Projects\\LakeFight\\Art\\Export\\SM_LF_Butterfly_Wing_R.fbx'
+export finished in 0.0038 sec.
+[lf] exported D:\Projects\LakeFight\Art\Export\SM_LF_Butterfly_Wing_R.fbx tris=12
+{'asset': 'SM_LF_Butterfly_Wing_R', 'triangles': 12, 'budget_exclusive': 100, 'dimensions_m': [0.1035, 0.0615, 3e-06], 'z_range_m': [-2e-06, 2e-06], 'root_origin_m': [0.0, 0.0, 0.0], 'parts': [{'name': 'SM_LF_Butterfly_Wing_R', 'triangles': 12, 'origin_local_m': [0.0, 0.0, 0.0], 'parent': None, 'scale': [1.0, 1.0, 1.0], 'materials': ['M_LF_PaintCream', 'M_LF_PaintOrange'], 'closed_components': False, 'degenerate_faces': 0, 'flat_shaded': True, 'geometry_sha256': 'ee66080b835e9f41e12045072820490339c90e8196b76a0ec38080a1f04a1d81'}], 'authored_enlargement': 1.5, 'thin_planes': True, 'assembly_hinge_m': [0.00675, 0.00225, 0]}

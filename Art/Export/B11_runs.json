@@ -1,0 +1,1923 @@
+{
+  "SM_LF_Cloud_01": {
+    "runs": [
+      {
+        "asset": "SM_LF_Cloud_01",
+        "triangles": 280,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          24.0,
+          12.587086,
+          11.143568
+        ],
+        "z_range_m": [
+          0.0,
+          11.143568
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_01",
+            "triangles": 280,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "e2eac52e38026d1f1dc6f4f0d11c082ed832402a3691d213f393e19462b9ba62"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Cloud_01",
+        "triangles": 280,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          24.0,
+          12.587086,
+          11.143568
+        ],
+        "z_range_m": [
+          0.0,
+          11.143568
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_01",
+            "triangles": 280,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "e2eac52e38026d1f1dc6f4f0d11c082ed832402a3691d213f393e19462b9ba62"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Cloud_02": {
+    "runs": [
+      {
+        "asset": "SM_LF_Cloud_02",
+        "triangles": 336,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          36.0,
+          19.915552,
+          17.550114
+        ],
+        "z_range_m": [
+          0.0,
+          17.550114
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_02",
+            "triangles": 336,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "f07a9712c5b9f8d53cf32fcbf03a7982707925ae00fa6e4bd93c7b6fa675e51b"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Cloud_02",
+        "triangles": 336,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          36.0,
+          19.915552,
+          17.550114
+        ],
+        "z_range_m": [
+          0.0,
+          17.550114
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_02",
+            "triangles": 336,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "f07a9712c5b9f8d53cf32fcbf03a7982707925ae00fa6e4bd93c7b6fa675e51b"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Cloud_03": {
+    "runs": [
+      {
+        "asset": "SM_LF_Cloud_03",
+        "triangles": 336,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          48.0,
+          22.402716,
+          17.497677
+        ],
+        "z_range_m": [
+          0.0,
+          17.497677
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_03",
+            "triangles": 336,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "319f101513325dbaaa90f3a7d1d396706900b9170d917a0fbf20f7a6dd1f15f6"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Cloud_03",
+        "triangles": 336,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          48.0,
+          22.402716,
+          17.497677
+        ],
+        "z_range_m": [
+          0.0,
+          17.497677
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_03",
+            "triangles": 336,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "319f101513325dbaaa90f3a7d1d396706900b9170d917a0fbf20f7a6dd1f15f6"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Cloud_04": {
+    "runs": [
+      {
+        "asset": "SM_LF_Cloud_04",
+        "triangles": 392,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          58.0,
+          31.387455,
+          27.435852
+        ],
+        "z_range_m": [
+          0.0,
+          27.435852
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_04",
+            "triangles": 392,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "a460f5436bf0e9493c06e17c2f13317590e7c49ac451965a92978682dde492d0"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Cloud_04",
+        "triangles": 392,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          58.0,
+          31.387455,
+          27.435852
+        ],
+        "z_range_m": [
+          0.0,
+          27.435852
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Cloud_04",
+            "triangles": 392,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "a460f5436bf0e9493c06e17c2f13317590e7c49ac451965a92978682dde492d0"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Duck": {
+    "runs": [
+      {
+        "asset": "SM_LF_Duck",
+        "triangles": 252,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          0.35,
+          0.140696,
+          0.207841
+        ],
+        "z_range_m": [
+          -0.058483,
+          0.149357
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Duck",
+            "triangles": 252,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_Wood",
+              "M_LF_WoodDark",
+              "M_LF_Moss",
+              "M_LF_PaintOrange",
+              "M_LF_Black",
+              "M_LF_PaintCream"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "1681f181dad47729c6d39ad97b76c9340632ffe189ab88efe5664c4eff3d8d58"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Duck",
+        "triangles": 252,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          0.35,
+          0.140696,
+          0.207841
+        ],
+        "z_range_m": [
+          -0.058483,
+          0.149357
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Duck",
+            "triangles": 252,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_Wood",
+              "M_LF_WoodDark",
+              "M_LF_Moss",
+              "M_LF_PaintOrange",
+              "M_LF_Black",
+              "M_LF_PaintCream"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "1681f181dad47729c6d39ad97b76c9340632ffe189ab88efe5664c4eff3d8d58"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Swan": {
+    "runs": [
+      {
+        "asset": "SM_LF_Swan",
+        "triangles": 312,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          0.8,
+          0.272997,
+          0.661053
+        ],
+        "z_range_m": [
+          -0.105263,
+          0.555789
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Swan",
+            "triangles": 140,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f"
+          },
+          {
+            "name": "SM_LF_Swan_HeadNeck",
+            "triangles": 172,
+            "origin_local_m": [
+              0.1210526,
+              0.0,
+              0.1105263
+            ],
+            "parent": "SM_LF_Swan",
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Black"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "6e0217c6c1a78a15eab012d46d7c9ad10ae780523a96df3cb7e2be368a66ec4e"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Swan",
+        "triangles": 312,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          0.8,
+          0.272997,
+          0.661053
+        ],
+        "z_range_m": [
+          -0.105263,
+          0.555789
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Swan",
+            "triangles": 140,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f"
+          },
+          {
+            "name": "SM_LF_Swan_HeadNeck",
+            "triangles": 172,
+            "origin_local_m": [
+              0.1210526,
+              0.0,
+              0.1105263
+            ],
+            "parent": "SM_LF_Swan",
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Black"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "6e0217c6c1a78a15eab012d46d7c9ad10ae780523a96df3cb7e2be368a66ec4e"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Heron": {
+    "runs": [
+      {
+        "asset": "SM_LF_Heron",
+        "triangles": 376,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          0.516073,
+          0.173662,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.0
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Heron",
+            "triangles": 376,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_Metal",
+              "M_LF_Cloth",
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Black",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "bd1d750f76dfa37d28e405c1bc49d0204accf425d120b0d862ed6eeb2a85558d"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Heron",
+        "triangles": 376,
+        "budget_exclusive": 400,
+        "dimensions_m": [
+          0.516073,
+          0.173662,
+          1.0
+        ],
+        "z_range_m": [
+          0.0,
+          1.0
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Heron",
+            "triangles": 376,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_Metal",
+              "M_LF_Cloth",
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Black",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "bd1d750f76dfa37d28e405c1bc49d0204accf425d120b0d862ed6eeb2a85558d"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Barrel": {
+    "runs": [
+      {
+        "asset": "SM_LF_Barrel",
+        "triangles": 276,
+        "budget_exclusive": 300,
+        "dimensions_m": [
+          0.96,
+          0.644,
+          0.63824
+        ],
+        "z_range_m": [
+          -0.30624,
+          0.332
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Barrel",
+            "triangles": 276,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_WoodDark",
+              "M_LF_Wood",
+              "M_LF_Rope",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Barrel",
+        "triangles": 276,
+        "budget_exclusive": 300,
+        "dimensions_m": [
+          0.96,
+          0.644,
+          0.63824
+        ],
+        "z_range_m": [
+          -0.30624,
+          0.332
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Barrel",
+            "triangles": 276,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_WoodDark",
+              "M_LF_Wood",
+              "M_LF_Rope",
+              "M_LF_Metal"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "1878f580c9021510958fe52679254ddfc2dcd2ab6b3341a0c4dcc0aac7fe64e7"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_LifeRing": {
+    "runs": [
+      {
+        "asset": "SM_LF_LifeRing",
+        "triangles": 288,
+        "budget_exclusive": 300,
+        "dimensions_m": [
+          0.962,
+          0.962,
+          0.138564
+        ],
+        "z_range_m": [
+          -0.069282,
+          0.069282
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_LifeRing",
+            "triangles": 288,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Rope"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_LifeRing",
+        "triangles": 288,
+        "budget_exclusive": 300,
+        "dimensions_m": [
+          0.962,
+          0.962,
+          0.138564
+        ],
+        "z_range_m": [
+          -0.069282,
+          0.069282
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_LifeRing",
+            "triangles": 288,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Rope"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "c2359c416149db74ac16faf81d2e54b98da7a9e8e166252ee555fa53642f6ac4"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Bottle_Message": {
+    "runs": [
+      {
+        "asset": "SM_LF_Bottle_Message",
+        "triangles": 256,
+        "budget_exclusive": 300,
+        "dimensions_m": [
+          0.480795,
+          0.15196,
+          0.238175
+        ],
+        "z_range_m": [
+          -0.114388,
+          0.123786
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bottle_Message",
+            "triangles": 256,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_Cloth",
+              "M_LF_Wood",
+              "M_LF_Rope",
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "1ee7b8a745a75b50c456fb23b02a2ac41a7861e16b98d51a5714a79d5c812fd9"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Bottle_Message",
+        "triangles": 256,
+        "budget_exclusive": 300,
+        "dimensions_m": [
+          0.480795,
+          0.15196,
+          0.238175
+        ],
+        "z_range_m": [
+          -0.114388,
+          0.123786
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bottle_Message",
+            "triangles": 256,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_Cloth",
+              "M_LF_Wood",
+              "M_LF_Rope",
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "1ee7b8a745a75b50c456fb23b02a2ac41a7861e16b98d51a5714a79d5c812fd9"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Bird_Body": {
+    "runs": [
+      {
+        "asset": "SM_LF_Bird_Body",
+        "triangles": 84,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.44,
+          0.12,
+          0.124
+        ],
+        "z_range_m": [
+          -0.046,
+          0.078
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Body",
+            "triangles": 84,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Black"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "b4d610e1a345a16f298d3d648cd2027e949a6888877ff128043d1ba7ad033031"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Bird_Body",
+        "triangles": 84,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.44,
+          0.12,
+          0.124
+        ],
+        "z_range_m": [
+          -0.046,
+          0.078
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Body",
+            "triangles": 84,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_Black"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "b4d610e1a345a16f298d3d648cd2027e949a6888877ff128043d1ba7ad033031"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Bird_Wing_L": {
+    "runs": [
+      {
+        "asset": "SM_LF_Bird_Wing_L",
+        "triangles": 28,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.18,
+          0.407,
+          0.031
+        ],
+        "z_range_m": [
+          -0.009,
+          0.022
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Wing_L",
+            "triangles": 28,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "236490cffe3991d365ecc90b2ef7250e009ca7ad2ada18b403623879c88b9806"
+          }
+        ],
+        "assembly_shoulder_m": [
+          0,
+          -0.043,
+          0.006
+        ],
+        "flap_axis": "local X; left up = negative angle, right up = positive angle"
+      },
+      {
+        "asset": "SM_LF_Bird_Wing_L",
+        "triangles": 28,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.18,
+          0.407,
+          0.031
+        ],
+        "z_range_m": [
+          -0.009,
+          0.022
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Wing_L",
+            "triangles": 28,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "236490cffe3991d365ecc90b2ef7250e009ca7ad2ada18b403623879c88b9806"
+          }
+        ],
+        "assembly_shoulder_m": [
+          0,
+          -0.043,
+          0.006
+        ],
+        "flap_axis": "local X; left up = negative angle, right up = positive angle"
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Bird_Wing_R": {
+    "runs": [
+      {
+        "asset": "SM_LF_Bird_Wing_R",
+        "triangles": 28,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.18,
+          0.407,
+          0.031
+        ],
+        "z_range_m": [
+          -0.009,
+          0.022
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Wing_R",
+            "triangles": 28,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "3dc10cb5bbafba1c1a94ae4942a8b6bcefd75b30ffdd1df9961bd5efc6547b70"
+          }
+        ],
+        "assembly_shoulder_m": [
+          0,
+          0.043,
+          0.006
+        ],
+        "flap_axis": "local X; left up = negative angle, right up = positive angle"
+      },
+      {
+        "asset": "SM_LF_Bird_Wing_R",
+        "triangles": 28,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.18,
+          0.407,
+          0.031
+        ],
+        "z_range_m": [
+          -0.009,
+          0.022
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Wing_R",
+            "triangles": 28,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "3dc10cb5bbafba1c1a94ae4942a8b6bcefd75b30ffdd1df9961bd5efc6547b70"
+          }
+        ],
+        "assembly_shoulder_m": [
+          0,
+          0.043,
+          0.006
+        ],
+        "flap_axis": "local X; left up = negative angle, right up = positive angle"
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Bird_Glide": {
+    "runs": [
+      {
+        "asset": "SM_LF_Bird_Glide",
+        "triangles": 104,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.44,
+          0.896586,
+          0.124
+        ],
+        "z_range_m": [
+          -0.046,
+          0.078
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Glide",
+            "triangles": 104,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "bca8bb3a015e65e7eb164b20298d04e8cc6c5b936a0320ce4f233bce74ba0a44"
+          }
+        ]
+      },
+      {
+        "asset": "SM_LF_Bird_Glide",
+        "triangles": 104,
+        "budget_exclusive": 150,
+        "dimensions_m": [
+          0.44,
+          0.896586,
+          0.124
+        ],
+        "z_range_m": [
+          -0.046,
+          0.078
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Bird_Glide",
+            "triangles": 104,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": true,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "bca8bb3a015e65e7eb164b20298d04e8cc6c5b936a0320ce4f233bce74ba0a44"
+          }
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Dragonfly": {
+    "runs": [
+      {
+        "asset": "SM_LF_Dragonfly",
+        "triangles": 68,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.12,
+          0.051,
+          0.024002
+        ],
+        "z_range_m": [
+          -0.012002,
+          0.012
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Dragonfly",
+            "triangles": 68,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintBlue",
+              "M_LF_Moss",
+              "M_LF_Black",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "8834e437d48f92d3d9e0069c103a3cebcbf475fbd49e8771cf05a0125f122e1e"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": false
+      },
+      {
+        "asset": "SM_LF_Dragonfly",
+        "triangles": 68,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.12,
+          0.051,
+          0.024002
+        ],
+        "z_range_m": [
+          -0.012002,
+          0.012
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Dragonfly",
+            "triangles": 68,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintBlue",
+              "M_LF_Moss",
+              "M_LF_Black",
+              "M_LF_WoodDark"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "8834e437d48f92d3d9e0069c103a3cebcbf475fbd49e8771cf05a0125f122e1e"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": false
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Dragonfly_Wings": {
+    "runs": [
+      {
+        "asset": "SM_LF_Dragonfly_Wings",
+        "triangles": 16,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.1065,
+          0.18,
+          0.008553
+        ],
+        "z_range_m": [
+          0.000449,
+          0.009001
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Dragonfly_Wings",
+            "triangles": 16,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "e1a2a2b813338a199517eb34527d985b5485382072b63b96b737db503beed613"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": true,
+        "assembly_hinge_m": [
+          0.0255,
+          0,
+          0
+        ]
+      },
+      {
+        "asset": "SM_LF_Dragonfly_Wings",
+        "triangles": 16,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.1065,
+          0.18,
+          0.008553
+        ],
+        "z_range_m": [
+          0.000449,
+          0.009001
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Dragonfly_Wings",
+            "triangles": 16,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_Metal"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "e1a2a2b813338a199517eb34527d985b5485382072b63b96b737db503beed613"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": true,
+        "assembly_hinge_m": [
+          0.0255,
+          0,
+          0
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Butterfly_Body": {
+    "runs": [
+      {
+        "asset": "SM_LF_Butterfly_Body",
+        "triangles": 36,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.0525,
+          0.018,
+          0.011402
+        ],
+        "z_range_m": [
+          -0.0054,
+          0.006001
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Butterfly_Body",
+            "triangles": 36,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_WoodDark"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "3b3b1bf482237490c0637e4ac240d72daa28b038348440f3e0b7610ce4f992f9"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": false
+      },
+      {
+        "asset": "SM_LF_Butterfly_Body",
+        "triangles": 36,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.0525,
+          0.018,
+          0.011402
+        ],
+        "z_range_m": [
+          -0.0054,
+          0.006001
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Butterfly_Body",
+            "triangles": 36,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_WoodDark"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "3b3b1bf482237490c0637e4ac240d72daa28b038348440f3e0b7610ce4f992f9"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": false
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Butterfly_Wing_L": {
+    "runs": [
+      {
+        "asset": "SM_LF_Butterfly_Wing_L",
+        "triangles": 12,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.1035,
+          0.0615,
+          3e-06
+        ],
+        "z_range_m": [
+          -2e-06,
+          2e-06
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Butterfly_Wing_L",
+            "triangles": 12,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintOrange",
+              "M_LF_PaintCream"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "2998a60db36184cd03dc3c30c3136629a18ef082a641c369e92441adf74d4a28"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": true,
+        "assembly_hinge_m": [
+          0.00675,
+          -0.00225,
+          0
+        ]
+      },
+      {
+        "asset": "SM_LF_Butterfly_Wing_L",
+        "triangles": 12,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.1035,
+          0.0615,
+          3e-06
+        ],
+        "z_range_m": [
+          -2e-06,
+          2e-06
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Butterfly_Wing_L",
+            "triangles": 12,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintOrange",
+              "M_LF_PaintCream"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "2998a60db36184cd03dc3c30c3136629a18ef082a641c369e92441adf74d4a28"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": true,
+        "assembly_hinge_m": [
+          0.00675,
+          -0.00225,
+          0
+        ]
+      }
+    ],
+    "identical": true
+  },
+  "SM_LF_Butterfly_Wing_R": {
+    "runs": [
+      {
+        "asset": "SM_LF_Butterfly_Wing_R",
+        "triangles": 12,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.1035,
+          0.0615,
+          3e-06
+        ],
+        "z_range_m": [
+          -2e-06,
+          2e-06
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Butterfly_Wing_R",
+            "triangles": 12,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "ee66080b835e9f41e12045072820490339c90e8196b76a0ec38080a1f04a1d81"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": true,
+        "assembly_hinge_m": [
+          0.00675,
+          0.00225,
+          0
+        ]
+      },
+      {
+        "asset": "SM_LF_Butterfly_Wing_R",
+        "triangles": 12,
+        "budget_exclusive": 100,
+        "dimensions_m": [
+          0.1035,
+          0.0615,
+          3e-06
+        ],
+        "z_range_m": [
+          -2e-06,
+          2e-06
+        ],
+        "root_origin_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "parts": [
+          {
+            "name": "SM_LF_Butterfly_Wing_R",
+            "triangles": 12,
+            "origin_local_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "materials": [
+              "M_LF_PaintCream",
+              "M_LF_PaintOrange"
+            ],
+            "closed_components": false,
+            "degenerate_faces": 0,
+            "flat_shaded": true,
+            "geometry_sha256": "ee66080b835e9f41e12045072820490339c90e8196b76a0ec38080a1f04a1d81"
+          }
+        ],
+        "authored_enlargement": 1.5,
+        "thin_planes": true,
+        "assembly_hinge_m": [
+          0.00675,
+          0.00225,
+          0
+        ]
+      }
+    ],
+    "identical": true
+  }
+}
