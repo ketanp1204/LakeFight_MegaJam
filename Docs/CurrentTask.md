@@ -14,11 +14,33 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 12. [DONE 60d24c6] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
 13. [DONE 3f8b0b5] How-to-play: controls card in pause + round-start hints; re-package + smoke
 14. [DONE 6de8c7a] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
-15. [IN PROGRESS] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
-16. [ ] Hero shots (Docs/Shots/Hero/)
+15. [DONE pending] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
+16. [IN PROGRESS] Hero shots (Docs/Shots/Hero/)
 17. [ ] ItchPage controls + how-to-play; final package + smoke
 
-## N2 item 14 - graphics quality + pile-up frame time (15 Nov 03:15-03:22 IST, unreviewed - director away)
+## N2 item 15 - UI polish pass (15 Nov 03:23-03:50 IST, unreviewed - director away)
+- New `Round/LFUIStyle.h/.cpp` (`LF::UI`): palette sampled from the B12a lockup (wood brown panels, dark-brown outline, cream
+  text, red ribbon accents, gold only for gold fish, team colours only on team elements); rounded panels (Slate RoundedBox
+  brush, 3 px outline) with a two-layer soft drop shadow; engine Roboto only - Bold for numbers/titles, Regular for body, all
+  text outlined + shadowed; one button style (wood idle, red ribbon + cream outline when selected by hover, keyboard or pad);
+  A01 UI sounds (MenuMove on selection change, MenuSelect on confirm, Deny on back - UI volume, audible while paused).
+- HUD (`ULFRoundWidget` rewritten): team chips (team-colour badge + crew icon + team name + big bold score), timer pill (turns
+  red ribbon at 0:30), YOUR BOAT panel with fish icon, gold banner as a red ribbon with gold lettering, gold arrow pill
+  (bottom right), hint card restyled. **Banking pop:** a "+N" in your team colour flies from your boat panel to your chip on
+  an arc and the chip number bumps; other teams' banks pop up into their chip. Gold banner / arrow / hint hide while paused.
+- Menu / pause: centred 1920x1080 lockup on the main menu (buttons below it), ribbon titles (PAUSED, CREDITS), styled
+  cards; 0.25 s fade-in for the whole menu, 0.15 s per page. Results: styled card - "TIME'S UP!", winner banner in the
+  winner's team colour with crew icons (red ribbon on a draw), four team score chips, five stat rows with icons (team
+  values in team colour; "Nobody" rows grey their crew icon), RESTART / QUIT with hover + pad states, 0.35 s fade-in.
+- Scaling: everything lives on a 1280x720 design canvas in a ScaleToFit box (= the 1920x1080 reference at 2/3), so it scales
+  uniformly; checked at 1280x720 and 2560x1440 (Docs/Shots/UI/Scaling). On 16:10 the HUD letterboxes (bands top/bottom).
+- **Screenshots (true 1920x1080, editor -game -ForceRes): Docs/Shots/UI/** - 01 menu, 02 options, 03 credits, 04 HUD + hint,
+  05a-c banking pop (6 fish at the Red dock), 06 gold banner + arrow, 07 final 30 s (red timer), 08 pause, 09 how to play,
+  10 pause options, 11 results. Sequence script: Saved/n1/tools/ui_shots.ps1 (new dev `lf.later <s> <cmd>`).
+- Found while shooting: rounded-box outlines ignore inherited render opacity, so fully faded groups are now collapsed;
+  windows larger than the DPI-scaled desktop are shrunk unless `-ForceRes`. Not checked: real mouse hover / gamepad focus
+  visuals (same selected style is used for both by design), sound levels of the UI stings.
+ + pile-up frame time (15 Nov 03:15-03:22 IST, unreviewed - director away)
 - Options page (main menu and pause): new **GRAPHICS** row `< LOW / MEDIUM / HIGH >` - left/right or click cycles. Maps to
   `UGameUserSettings::SetOverallScalabilityLevel` **Low = 1 (engine Medium), Medium = 2 (High), High = 3 (Epic)**: Epic is
   what the game was built and shot at, and engine level 0 drops Lumen/shadows so far that the look breaks - my call, easy
@@ -151,6 +173,7 @@ Stretch: 9 ambient life and 10 shore spectators + foliage sway done (see their s
     (Esc stops PIE). Check a real gamepad (Start opens/closes, B backs out, D-pad + A navigate) - untested.
 14. How to play (N2.13): the controls card wording/accuracy, and the three round-start hints (timing 5 s each - too fast?).
 15. Graphics (N2.14): does LOW (engine Medium) still look acceptable? Remap if you want engine Low in the list.
+16. UI polish (N2.15): Docs/Shots/UI/ - style, sizes, the banking pop (05a-c), results card; mouse hover + pad focus.
 
 ## N1 item 7 - sky (14 Nov 22:12-22:23 IST, unreviewed - director away)
 - `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):

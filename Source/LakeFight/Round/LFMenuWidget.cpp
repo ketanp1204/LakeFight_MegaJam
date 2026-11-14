@@ -1,6 +1,7 @@
 #include "Round/LFMenuWidget.h"
 
 #include "Round/LFRoundSubsystem.h"
+#include "Round/LFUIStyle.h"
 #include "Audio/LFAudio.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
@@ -56,10 +57,6 @@ static FAutoConsoleCommand CmdLFMenuItem(TEXT("lf.menu.item"), TEXT("lf.menu.ite
 
 namespace
 {
-	const FLinearColor MenuCream(1.f, .95f, .8f, 1.f);
-	const FLinearColor MenuGold(1.f, .85f, .25f, 1.f);
-	const FLinearColor MenuInk(.02f, .04f, .05f, 1.f);
-	const FLinearColor MenuPanel(.018f, .035f, .045f, .9f);
 	const TCHAR* MenuSection = TEXT("LakeFight.Audio");
 
 	void MenuPlace(UWidget* Widget, FVector2D At, FVector2D Size)
@@ -102,32 +99,12 @@ namespace
 
 UTextBlock* ULFMenuWidget::Text(UCanvasPanel* Parent, const FString& Value, FVector2D At, FVector2D Size, int32 FontSize, FLinearColor Colour)
 {
-	UTextBlock* Label = WidgetTree->ConstructWidget<UTextBlock>();
-	Parent->AddChild(Label);
-	MenuPlace(Label, At, Size);
-	Label->SetText(FText::FromString(Value));
-	FSlateFontInfo Font = Label->GetFont();
-	Font.Size = FontSize;
-	Label->SetFont(Font);
-	Label->SetColorAndOpacity(Colour);
-	Label->SetShadowColorAndOpacity(FLinearColor(0.f, 0.f, 0.f, 0.85f));
-	Label->SetShadowOffset(FVector2D(1.f, 2.f));
-	return Label;
+	return LF::UI::Label(WidgetTree, Parent, Value, At, Size, FontSize, Colour, FontSize >= 20);
 }
 
 UButton* ULFMenuWidget::MakeButton(UCanvasPanel* Parent, const FString& Label, FVector2D At, FVector2D Size, int32 FontSize)
 {
-	UButton* Button = WidgetTree->ConstructWidget<UButton>();
-	Parent->AddChild(Button);
-	MenuPlace(Button, At, Size);
-	UTextBlock* Text = WidgetTree->ConstructWidget<UTextBlock>();
-	Text->SetText(FText::FromString(Label));
-	Text->SetColorAndOpacity(MenuInk);
-	FSlateFontInfo Font = Text->GetFont();
-	Font.Size = FontSize;
-	Text->SetFont(Font);
-	Button->AddChild(Text);
-	return Button;
+	return LF::UI::Button(WidgetTree, Parent, Label, At, Size, FontSize);
 }
 
 USlider* ULFMenuWidget::MakeSlider(UCanvasPanel* Parent, FVector2D At, FVector2D Size, float Value)
@@ -137,8 +114,8 @@ USlider* ULFMenuWidget::MakeSlider(UCanvasPanel* Parent, FVector2D At, FVector2D
 	MenuPlace(Slider, At, Size);
 	Slider->SetValue(Value);
 	Slider->SetStepSize(0.05f);
-	Slider->SetSliderBarColor(MenuCream);
-	Slider->SetSliderHandleColor(MenuGold);
+	Slider->SetSliderBarColor(LF::UI::Cream);
+	Slider->SetSliderHandleColor(LF::UI::Ribbon);
 	Slider->OnValueChanged.AddDynamic(this, &ULFMenuWidget::OnSliderChanged);
 	return Slider;
 }
@@ -151,7 +128,7 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	UOverlay* Root = WidgetTree->ConstructWidget<UOverlay>();
 	WidgetTree->RootWidget = Root;
 	UBorder* Backdrop = WidgetTree->ConstructWidget<UBorder>();
-	Backdrop->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, bPauseMode ? 0.55f : 0.f));
+	Backdrop->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, bPauseMode ? 0.5f : 0.f));
 	UOverlaySlot* BackdropSlot = Root->AddChildToOverlay(Backdrop);
 	BackdropSlot->SetHorizontalAlignment(HAlign_Fill);
 	BackdropSlot->SetVerticalAlignment(VAlign_Fill);
@@ -169,23 +146,21 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 
 	if (bPauseMode)
 	{
-		// Pause: no logo (the round is behind it), a title instead.
-		UTextBlock* Title = Text(Canvas, TEXT("PAUSED"), FVector2D(390.f, 196.f), FVector2D(500.f, 64.f), 42, MenuCream); // between the HUD timer and the buttons
-		Title->SetJustification(ETextJustify::Center);
+		// Pause: no logo (the round is behind it) - a red ribbon title between the HUD timer and the buttons.
+		LF::UI::Panel(WidgetTree, Canvas, FVector2D(500.f, 196.f), FVector2D(280.f, 56.f), LF::UI::Ribbon, 10.f, LF::UI::Cream, 3.f);
+		LF::UI::Label(WidgetTree, Canvas, TEXT("PAUSED"), FVector2D(500.f, 200.f), FVector2D(280.f, 48.f), 34, LF::UI::Cream, true, 1);
 	}
 	else
 	{
-	// Logo: B12a title lockup PNG (editor: Art/Export/KeyArt, packaged: LFUI next to the executable - see LakeFight.Build.cs).
-	FString LogoPath = FPaths::ProjectDir() / TEXT("Art/Export/KeyArt/LF_TitleLockup_960x300_Light.png");
-	if (!FPaths::FileExists(LogoPath)) LogoPath = FString(FPlatformProcess::BaseDir()) / TEXT("LFUI/LF_TitleLockup_960x300_Light.png");
-	LogoTexture = UKismetRenderingLibrary::ImportFileAsTexture2D(this, LogoPath);
+	// Logo: B12a centred 1920x1080 title lockup over the whole design canvas (editor: Art/Export/KeyArt, packaged: LFUI next to
+	// the executable - see LakeFight.Build.cs). The sign + ribbon fill the top ~40%; the buttons sit below it.
+	LogoTexture = LF::UI::LoadPng(this, TEXT("Art/Export/KeyArt"), TEXT("LF_TitleLockup_1920x1080_Light.png"));
 	UImage* Logo = WidgetTree->ConstructWidget<UImage>();
 	LogoImage = Logo;
 	Canvas->AddChild(Logo);
-	// The lettering fills roughly the left 45% of the 960x300 lockup canvas: offset so it sits centred above the buttons.
-	MenuPlace(Logo, FVector2D(395.f, -10.f), FVector2D(1000.f, 312.5f));
+	MenuPlace(Logo, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
 	if (LogoTexture) Logo->SetBrushFromTexture(LogoTexture);
-	else Text(Canvas, TEXT("LAKE FIGHT"), FVector2D(380.f, 90.f), FVector2D(520.f, 90.f), 56, MenuCream);
+	else Text(Canvas, TEXT("LAKE FIGHT"), FVector2D(380.f, 90.f), FVector2D(520.f, 90.f), 56, LF::UI::Cream);
 	}
 
 	// Main page.
@@ -197,7 +172,7 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	for (int32 I = 0; I < (bPauseMode ? 5 : 4); ++I)
 	{
 		MainButtons.Add(bPauseMode ? MakeButton(MainPage, PauseLabels[I], FVector2D(480.f, 266.f + I * 66.f), FVector2D(320.f, 56.f), 22)
-			: MakeButton(MainPage, MenuLabels[I], FVector2D(480.f, 290.f + I * 82.f), FVector2D(320.f, 64.f)));
+			: MakeButton(MainPage, MenuLabels[I], FVector2D(480.f, 312.f + I * 74.f), FVector2D(320.f, 60.f)));
 	}
 	if (bPauseMode)
 	{
@@ -213,46 +188,44 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	MainButtons[2]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverCredits);
 	MainButtons[3]->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverQuit);
 	Text(MainPage, bPauseMode ? TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / Start / B resume")
-		: TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / B back"), bPauseMode ? FVector2D(510.f, 650.f) : FVector2D(340.f, 640.f), FVector2D(720.f, 30.f), 14, MenuCream); // pause: clear of the HUD boat panel
+		: TEXT("Mouse / arrows / D-pad to choose  -  Enter / A to confirm  -  Esc / B back"), bPauseMode ? FVector2D(340.f, 590.f) : FVector2D(280.f, 650.f), bPauseMode ? FVector2D(600.f, 22.f) : FVector2D(720.f, 30.f), bPauseMode ? 12 : 14, LF::UI::Cream)
+		->SetJustification(ETextJustify::Center); // pause: under the buttons, clear of the HUD boat panel and gold pill
 
 	// Options page: two rows (label + slider), Back.
 	OptionsPage = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Canvas->AddChild(OptionsPage);
 	MenuPlace(OptionsPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
-	UBorder* OptionsCard = WidgetTree->ConstructWidget<UBorder>();
-	OptionsPage->AddChild(OptionsCard);
-	MenuPlace(OptionsCard, FVector2D(300.f, 270.f), FVector2D(680.f, 330.f)); // rows at 286 / 352 / 418, hint 482, Back 520
-	OptionsCard->SetBrushColor(MenuPanel);
+	const float OY = bPauseMode ? 0.f : 26.f; // below the logo ribbon on the main menu; clear of the HUD boat panel in pause
+	LF::UI::Panel(WidgetTree, OptionsPage, FVector2D(300.f, 270.f + OY), FVector2D(680.f, 330.f)); // rows 286 / 352 / 418, hint 482, Back 520
 	const ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this);
 	const float Music = Audio ? Audio->GetCategoryVolume(ELFSoundCategory::Music) : 1.f;
 	const float Sfx = Audio ? Audio->GetCategoryVolume(ELFSoundCategory::SFX) : 1.f;
-	MusicRow = MakeButton(OptionsPage, TEXT("MUSIC"), FVector2D(330.f, 286.f), FVector2D(200.f, 54.f), 22);
-	SfxRow = MakeButton(OptionsPage, TEXT("SOUND FX"), FVector2D(330.f, 352.f), FVector2D(200.f, 54.f), 22);
-	GraphicsRow = MakeButton(OptionsPage, TEXT("GRAPHICS"), FVector2D(330.f, 418.f), FVector2D(200.f, 54.f), 22);
-	MusicSlider = MakeSlider(OptionsPage, FVector2D(560.f, 293.f), FVector2D(300.f, 40.f), FMath::Clamp(Music, 0.f, 1.f));
-	SfxSlider = MakeSlider(OptionsPage, FVector2D(560.f, 359.f), FVector2D(300.f, 40.f), FMath::Clamp(Sfx, 0.f, 1.f));
-	MusicValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 295.f), FVector2D(90.f, 40.f), 20, MenuCream);
-	SfxValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 361.f), FVector2D(90.f, 40.f), 20, MenuCream);
-	GraphicsValue = Text(OptionsPage, TEXT(""), FVector2D(560.f, 425.f), FVector2D(400.f, 40.f), 22, MenuCream);
+	MusicRow = MakeButton(OptionsPage, TEXT("MUSIC"), FVector2D(330.f, 286.f + OY), FVector2D(200.f, 54.f), 22);
+	SfxRow = MakeButton(OptionsPage, TEXT("SOUND FX"), FVector2D(330.f, 352.f + OY), FVector2D(200.f, 54.f), 22);
+	GraphicsRow = MakeButton(OptionsPage, TEXT("GRAPHICS"), FVector2D(330.f, 418.f + OY), FVector2D(200.f, 54.f), 22);
+	MusicSlider = MakeSlider(OptionsPage, FVector2D(560.f, 293.f + OY), FVector2D(300.f, 40.f), FMath::Clamp(Music, 0.f, 1.f));
+	SfxSlider = MakeSlider(OptionsPage, FVector2D(560.f, 359.f + OY), FVector2D(300.f, 40.f), FMath::Clamp(Sfx, 0.f, 1.f));
+	MusicValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 295.f + OY), FVector2D(90.f, 40.f), 20, LF::UI::Cream);
+	SfxValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 361.f + OY), FVector2D(90.f, 40.f), 20, LF::UI::Cream);
+	GraphicsValue = Text(OptionsPage, TEXT(""), FVector2D(560.f, 425.f + OY), FVector2D(400.f, 40.f), 22, LF::UI::Cream);
 	GraphicsRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverGraphics);
 	GraphicsRow->OnClicked.AddDynamic(this, &ULFMenuWidget::OnGraphicsClicked);
 	RefreshGraphics();
-	OptionsBack = MakeButton(OptionsPage, TEXT("BACK"), FVector2D(480.f, 520.f), FVector2D(320.f, 60.f));
+	OptionsBack = MakeButton(OptionsPage, TEXT("BACK"), FVector2D(480.f, 520.f + OY), FVector2D(320.f, 60.f));
 	MusicRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverMusic);
 	SfxRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverSfx);
 	OptionsBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
 	OptionsBack->OnClicked.AddDynamic(this, &ULFMenuWidget::OnBack);
-	Text(OptionsPage, TEXT("Left / right to change  -  click Graphics to cycle"), FVector2D(330.f, 482.f), FVector2D(600.f, 30.f), 14, MenuCream);
+	Text(OptionsPage, TEXT("Left / right to change  -  click Graphics to cycle"), FVector2D(330.f, 482.f + OY), FVector2D(600.f, 30.f), 14, LF::UI::Cream);
 
 	// Credits page.
 	CreditsPage = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Canvas->AddChild(CreditsPage);
 	MenuPlace(CreditsPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
-	UBorder* CreditsCard = WidgetTree->ConstructWidget<UBorder>();
-	CreditsPage->AddChild(CreditsCard);
-	MenuPlace(CreditsCard, FVector2D(90.f, 200.f), FVector2D(1100.f, 420.f));
-	CreditsCard->SetBrushColor(MenuPanel);
-	UTextBlock* Credits = Text(CreditsPage, MenuCreditsText, FVector2D(120.f, 214.f), FVector2D(1040.f, 400.f), 13, MenuCream);
+	LF::UI::Panel(WidgetTree, CreditsPage, FVector2D(500.f, 40.f), FVector2D(280.f, 56.f), LF::UI::Ribbon, 10.f, LF::UI::Cream, 3.f);
+	LF::UI::Label(WidgetTree, CreditsPage, TEXT("CREDITS"), FVector2D(500.f, 44.f), FVector2D(280.f, 48.f), 32, LF::UI::Cream, true, 1);
+	LF::UI::Panel(WidgetTree, CreditsPage, FVector2D(90.f, 120.f), FVector2D(1100.f, 490.f));
+	UTextBlock* Credits = Text(CreditsPage, MenuCreditsText, FVector2D(124.f, 136.f), FVector2D(1032.f, 466.f), 15, LF::UI::Cream);
 	Credits->SetAutoWrapText(true);
 	CreditsBack = MakeButton(CreditsPage, TEXT("BACK"), FVector2D(480.f, 636.f), FVector2D(320.f, 60.f));
 	CreditsBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
@@ -262,18 +235,16 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	HowToPage = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Canvas->AddChild(HowToPage);
 	MenuPlace(HowToPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
-	UBorder* HowToCard = WidgetTree->ConstructWidget<UBorder>();
-	HowToPage->AddChild(HowToCard);
-	MenuPlace(HowToCard, FVector2D(190.f, 266.f), FVector2D(900.f, 322.f));
-	HowToCard->SetBrushColor(MenuPanel);
-	UTextBlock* Goal = Text(HowToPage, HowToGoal, FVector2D(215.f, 276.f), FVector2D(850.f, 70.f), 14, MenuCream);
+	LF::UI::Panel(WidgetTree, HowToPage, FVector2D(190.f, 266.f), FVector2D(900.f, 322.f));
+	UTextBlock* Goal = Text(HowToPage, HowToGoal, FVector2D(215.f, 276.f), FVector2D(850.f, 70.f), 14, LF::UI::Cream);
 	Goal->SetAutoWrapText(true);
-	Text(HowToPage, TEXT("ACTION"), FVector2D(215.f, 354.f), FVector2D(380.f, 22.f), 13, MenuGold);
-	Text(HowToPage, TEXT("KEYBOARD + MOUSE"), FVector2D(615.f, 354.f), FVector2D(220.f, 22.f), 13, MenuGold);
-	Text(HowToPage, TEXT("GAMEPAD"), FVector2D(855.f, 354.f), FVector2D(220.f, 22.f), 13, MenuGold);
-	Text(HowToPage, HowToActions, FVector2D(215.f, 378.f), FVector2D(390.f, 236.f), 15, MenuCream);
-	Text(HowToPage, HowToKeys, FVector2D(615.f, 378.f), FVector2D(230.f, 236.f), 15, MenuCream);
-	Text(HowToPage, HowToPad, FVector2D(855.f, 378.f), FVector2D(220.f, 236.f), 15, MenuCream);
+	LF::UI::Panel(WidgetTree, HowToPage, FVector2D(205.f, 352.f), FVector2D(870.f, 26.f), LF::UI::Ribbon, 8.f, LF::UI::WoodDark, 2.f);
+	LF::UI::Label(WidgetTree, HowToPage, TEXT("ACTION"), FVector2D(215.f, 354.f), FVector2D(380.f, 22.f), 14, LF::UI::Cream, true);
+	LF::UI::Label(WidgetTree, HowToPage, TEXT("KEYBOARD + MOUSE"), FVector2D(615.f, 354.f), FVector2D(230.f, 22.f), 14, LF::UI::Cream, true);
+	LF::UI::Label(WidgetTree, HowToPage, TEXT("GAMEPAD"), FVector2D(855.f, 354.f), FVector2D(220.f, 22.f), 14, LF::UI::Cream, true);
+	Text(HowToPage, HowToActions, FVector2D(215.f, 378.f), FVector2D(390.f, 236.f), 15, LF::UI::Cream);
+	Text(HowToPage, HowToKeys, FVector2D(615.f, 378.f), FVector2D(230.f, 236.f), 15, LF::UI::Cream);
+	Text(HowToPage, HowToPad, FVector2D(855.f, 378.f), FVector2D(220.f, 236.f), 15, LF::UI::Cream);
 	HowToBack = MakeButton(HowToPage, TEXT("BACK"), FVector2D(500.f, 604.f), FVector2D(280.f, 52.f), 22); // clear of the HUD boat panel
 	HowToBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
 	HowToBack->OnClicked.AddDynamic(this, &ULFMenuWidget::OnBack);
@@ -286,12 +257,16 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 void ULFMenuWidget::ShowPage(EPage NewPage)
 {
 	Page = NewPage;
+	PageAge = 0.f;
 	MainPage->SetVisibility(Page == EPage::Main ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	OptionsPage->SetVisibility(Page == EPage::Options ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	CreditsPage->SetVisibility(Page == EPage::Credits ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	HowToPage->SetVisibility(Page == EPage::HowTo ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	if (LogoImage) LogoImage->SetVisibility(Page == EPage::Credits ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible);
+	bSounds = false;
+	Selection = 0;
 	Select(0);
+	bSounds = true;
 	LF::Smoke(FString::Printf(TEXT("%s page %s"), bPauseMode ? TEXT("pause") : TEXT("menu"),
 		Page == EPage::Main ? TEXT("main") : Page == EPage::Options ? TEXT("options") : Page == EPage::HowTo ? TEXT("how to play") : TEXT("credits")));
 }
@@ -303,14 +278,27 @@ int32 ULFMenuWidget::ItemCount() const
 
 void ULFMenuWidget::Select(int32 Index)
 {
+	const int32 Previous = Selection;
 	Selection = (Index + ItemCount()) % ItemCount();
-	for (int32 I = 0; I < MainButtons.Num(); ++I) MainButtons[I]->SetBackgroundColor(Page == EPage::Main && I == Selection ? MenuGold : MenuCream);
-	MusicRow->SetBackgroundColor(Page == EPage::Options && Selection == 0 ? MenuGold : MenuCream);
-	SfxRow->SetBackgroundColor(Page == EPage::Options && Selection == 1 ? MenuGold : MenuCream);
-	GraphicsRow->SetBackgroundColor(Page == EPage::Options && Selection == 2 ? MenuGold : MenuCream);
-	OptionsBack->SetBackgroundColor(Page == EPage::Options && Selection == 3 ? MenuGold : MenuCream);
-	CreditsBack->SetBackgroundColor(Page == EPage::Credits ? MenuGold : MenuCream);
-	HowToBack->SetBackgroundColor(Page == EPage::HowTo ? MenuGold : MenuCream);
+	if (bSounds && Selection != Previous) LF::UI::Sound(this, TEXT("MenuMove"));
+	for (int32 I = 0; I < MainButtons.Num(); ++I) LF::UI::SetSelected(MainButtons[I], Page == EPage::Main && I == Selection);
+	LF::UI::SetSelected(MusicRow, Page == EPage::Options && Selection == 0);
+	LF::UI::SetSelected(SfxRow, Page == EPage::Options && Selection == 1);
+	LF::UI::SetSelected(GraphicsRow, Page == EPage::Options && Selection == 2);
+	LF::UI::SetSelected(OptionsBack, Page == EPage::Options && Selection == 3);
+	LF::UI::SetSelected(CreditsBack, Page == EPage::Credits);
+	LF::UI::SetSelected(HowToBack, Page == EPage::HowTo);
+}
+
+void ULFMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	// Short fades: the whole menu over 0.25 s when it opens, each page over 0.15 s when it changes (real time; works paused).
+	Age += InDeltaTime;
+	PageAge += InDeltaTime;
+	SetRenderOpacity(FMath::Clamp(Age / 0.25f, 0.f, 1.f));
+	UCanvasPanel* Current = Page == EPage::Main ? MainPage.Get() : Page == EPage::Options ? OptionsPage.Get() : Page == EPage::Credits ? CreditsPage.Get() : HowToPage.Get();
+	if (Current) Current->SetRenderOpacity(FMath::Clamp(PageAge / 0.15f, 0.f, 1.f));
 }
 
 void ULFMenuWidget::Activate()
@@ -335,6 +323,7 @@ void ULFMenuWidget::Activate()
 
 void ULFMenuWidget::ActivateMain(int32 Index)
 {
+	LF::UI::Sound(this, TEXT("MenuSelect"));
 	ULFRoundSubsystem* Round = GetWorld() ? GetWorld()->GetSubsystem<ULFRoundSubsystem>() : nullptr;
 	if (bPauseMode)
 	{
@@ -359,6 +348,7 @@ void ULFMenuWidget::ActivateMain(int32 Index)
 
 void ULFMenuWidget::Back()
 {
+	if (Page != EPage::Main) LF::UI::Sound(this, TEXT("Deny"));
 	if (Page != EPage::Main) ShowPage(EPage::Main);
 	else if (bPauseMode) ActivateMain(0); // Esc / Start / B on the pause menu's main page resumes
 }
@@ -399,6 +389,7 @@ void ULFMenuWidget::SetGraphicsQuality(int32 Quality)
 
 void ULFMenuWidget::CycleGraphics(int32 Step)
 {
+	LF::UI::Sound(this, TEXT("MenuMove"));
 	SetGraphicsQuality((GetGraphicsQuality() + Step + 3) % 3);
 	RefreshGraphics();
 }

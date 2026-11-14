@@ -54,6 +54,26 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFPause(TEXT("lf.pause"), TEXT("lf
 			return false;
 		}), FMath::Max(Delay, 0.01f));
 	}));
+// lf.later <delay s> <command...>: run a console command through the first player controller after a real-time delay
+// (cheats like BugItGo, pawn execs like LFDrive) - N2 item 15 screenshot sequences.
+static FAutoConsoleCommandWithWorldAndArgs CmdLFLater(TEXT("lf.later"), TEXT("lf.later <delay s> <command...>"),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		if (Args.Num() < 2 || !World) return;
+		const float Delay = FCString::Atof(*Args[0]);
+		FString Command;
+		for (int32 I = 1; I < Args.Num(); ++I) Command += (I > 1 ? TEXT(" ") : TEXT("")) + Args[I];
+		TWeakObjectPtr<UWorld> WeakWorld(World);
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([WeakWorld, Command](float)
+		{
+			// The world may have been reloaded (Restart / Quit to menu): use whatever game world is current.
+			UWorld* Target = WeakWorld.Get();
+			if (!Target && GEngine) for (const FWorldContext& Context : GEngine->GetWorldContexts()) if (Context.World() && Context.World()->IsGameWorld()) Target = Context.World();
+			if (APlayerController* PC = Target ? Target->GetFirstPlayerController() : nullptr) PC->ConsoleCommand(Command);
+			UE_LOG(LogLF, Display, TEXT("[later] %s"), *Command);
+			return false;
+		}), FMath::Max(Delay, 0.01f));
+	}));
 #endif
 
 namespace
@@ -477,6 +497,36 @@ FString ULFRoundSubsystem::GetWinner() const
 		else if (Score == Best) { Winners += FString(TEXT(" / ")) + Teams[I]; ++Count; }
 	}
 	return Count > 1 ? FString(TEXT("DRAW - ")) + Winners : Winners + TEXT(" WINS!");
+}
+
+int32 ULFRoundSubsystem::GetWinnerTeam() const
+{
+	const ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+	int32 Best = -1, Team = -1;
+	for (int32 I = 0; I < 4; ++I)
+	{
+		const int32 Score = Fish ? Fish->GetScore(I) : 0;
+		if (Score > Best) { Best = Score; Team = I; }
+		else if (Score == Best) Team = -1;
+	}
+	return Team;
+}
+
+TArray<FLFStatRow> ULFRoundSubsystem::GetStatRows() const
+{
+	static const TCHAR* Crew[] = { TEXT("Crew_Red"), TEXT("Crew_Blue"), TEXT("Crew_Green"), TEXT("Crew_Yellow") };
+	int32 Most = 0;
+	for (int32 I = 1; I < 4; ++I) if (Overboards[I] > Overboards[Most]) Most = I;
+	TArray<FLFStatRow> Rows;
+	Rows.Add({ TEXT("Most overboards"), Overboards[Most] ? FString::Printf(TEXT("%s  x%d"), Teams[Most], Overboards[Most]) : FString(TEXT("Nobody")),
+		Overboards[Most] ? Crew[Most] : TEXT("Crew_Red"), Overboards[Most] ? Most : -1 });
+	Rows.Add({ TEXT("Longest swim"), LongestSwim > 0.f ? FString::Printf(TEXT("%s  %.1f s"), Teams[LongestSwimTeam], LongestSwim) : FString(TEXT("Nobody")),
+		LongestSwim > 0.f ? Crew[LongestSwimTeam] : TEXT("Crew_Blue"), LongestSwim > 0.f ? LongestSwimTeam : -1 });
+	Rows.Add({ TEXT("Boats stolen"), FString::FromInt(Steals), TEXT("Paddle"), -1 });
+	Rows.Add({ TEXT("Fish spilled"), FString::FromInt(Spills), TEXT("Fish"), -1 });
+	Rows.Add({ TEXT("Biggest single bank"), BiggestBank ? FString::Printf(TEXT("%s  %d pts"), Teams[BiggestBankTeam], BiggestBank) : FString(TEXT("Nobody")),
+		TEXT("FishGold"), BiggestBank ? BiggestBankTeam : -1 });
+	return Rows;
 }
 
 FString ULFRoundSubsystem::GetStats() const

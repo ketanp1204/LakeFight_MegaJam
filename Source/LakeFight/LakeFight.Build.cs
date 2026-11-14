@@ -28,7 +28,7 @@ public class LakeFight : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] { "SlateCore", "RHI", "RenderCore" }); // T04 hook; N2.14 frame timing
 
 		// T04 hook: original B08 PNGs travel with the executable; no runtime art tools required.
-		foreach (string Icon in new string[] { "Clock", "Crew_Red", "Crew_Blue", "Crew_Green", "Crew_Yellow", "Fish", "FishGold" })
+		foreach (string Icon in new string[] { "Clock", "Crew_Red", "Crew_Blue", "Crew_Green", "Crew_Yellow", "Fish", "FishGold", "Paddle" })
 		{
 			RuntimeDependencies.Add("$(TargetOutputDir)/LFUI/ICON_LF_" + Icon + ".png",
 				System.IO.Path.Combine(ModuleDirectory, "../../Art/Export/UI/ICON_LF_" + Icon + ".png"), StagedFileType.NonUFS);
@@ -36,6 +36,9 @@ public class LakeFight : ModuleRules
 		// N1 item 5: B12a title lockup for the main menu.
 		RuntimeDependencies.Add("$(TargetOutputDir)/LFUI/LF_TitleLockup_960x300_Light.png",
 			System.IO.Path.Combine(ModuleDirectory, "../../Art/Export/KeyArt/LF_TitleLockup_960x300_Light.png"), StagedFileType.NonUFS);
+		// N2 item 15: centred 1920x1080 lockup for the restyled main menu.
+		RuntimeDependencies.Add("$(TargetOutputDir)/LFUI/LF_TitleLockup_1920x1080_Light.png",
+			System.IO.Path.Combine(ModuleDirectory, "../../Art/Export/KeyArt/LF_TitleLockup_1920x1080_Light.png"), StagedFileType.NonUFS);
 
 		PublicIncludePaths.AddRange(new string[] {
 			"LakeFight",

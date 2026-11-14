@@ -11,6 +11,15 @@ class ULFMenuWidget;
 class USoundWave;
 class UAudioComponent;
 
+/** N2 item 15: one results-card row (icon = ICON_LF_<Icon>.png; Team -1 = no team). */
+struct FLFStatRow
+{
+	FString Label;
+	FString Value;
+	FString Icon;
+	int32 Team = -1;
+};
+
 /** Single-player round authority. World lifetime = one round; restart reloads the map. */
 UCLASS()
 class LAKEFIGHT_API ULFRoundSubsystem : public UTickableWorldSubsystem
@@ -45,6 +54,9 @@ public:
 	void RecordBank(int32 Team, int32 Value);
 	FString GetWinner() const;
 	FString GetStats() const;
+	/** -1 on a draw. */
+	int32 GetWinnerTeam() const;
+	TArray<FLFStatRow> GetStatRows() const;
 	void Restart();
 	void Quit();
 	/** N1 item 5: the main menu shows over the paused lake on the first load only; Play starts the round. */

@@ -24,6 +24,7 @@ class LAKEFIGHT_API ULFMenuWidget : public UUserWidget
 public:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual FReply NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	/** Saved volumes (GameUserSettings [LakeFight.Audio]) -> LFAudio. Called once at startup by the round subsystem. */
 	static void LoadAudioSettings(UObject* WorldContext);
@@ -64,6 +65,9 @@ private:
 	UPROPERTY() TObjectPtr<class UImage> LogoImage;
 
 	bool bPauseMode = false;
+	float Age = 0.f;     // N2 item 15: whole-widget fade in
+	float PageAge = 0.f; // page cross-fade
+	bool bSounds = false; // no MenuMove on the initial selection
 	EPage Page = EPage::Main;
 	int32 Selection = 0;
 
