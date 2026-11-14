@@ -23,6 +23,8 @@ SHORE_STEP = 6.6
 WATER_MARGIN = 10.0
 LEVEL = "/Game/LakeFight/Maps/L_Lake01.L_Lake01:PersistentLevel."
 MESH = "/Game/LakeFight/Meshes/"
+# SM_LF_GroundPatch_02 renders invisible from above (faces point down?) - only _01 until the asset is fixed (L01 finding).
+GROUND = "SM_LF_GroundPatch_01"
 
 SC = "editor_toolset.toolsets.scene.SceneTools."
 AT = "editor_toolset.toolsets.actor.ActorTools."
@@ -216,7 +218,7 @@ def pass_beyond():
         for i in range(n):
             x, y, tx, ty = at_arc(i * PERIM / n)
             nx, ny = -ty, tx
-            add(rng.pick(["SM_LF_GroundPatch_01", "SM_LF_GroundPatch_02"]), "Ground_B%d_%03d" % (row, i), x - nx * off, y - ny * off,
+            add(GROUND, "Ground_B%d_%03d" % (row, i), x - nx * off, y - ny * off,
                 0.42 - 0.01 * row, math.degrees(math.atan2(ty, tx)) + rng.pick([0, 90, 180, 270]), (0.45 * SCALE, 0.45 * SCALE, 0.5), F + "/Ground")
             tiles += 1
 
@@ -232,13 +234,13 @@ def pass_beyond():
         while h < ext:
             cx, cy = g + 20.0, h + 20.0
             if beyond(cx, cy, 20.0, 4.0):
-                add(rng.pick(["SM_LF_GroundPatch_01", "SM_LF_GroundPatch_02"]), "Ground_G%03d" % gi, cx, cy, 0.38, rng.pick([0, 90, 180, 270]),
+                add(GROUND, "Ground_G%03d" % gi, cx, cy, 0.38, rng.pick([0, 90, 180, 270]),
                     (SCALE, SCALE, 1.0), F + "/Ground"); gi += 1; tiles += 1
             else:
                 for qx in (-10.0, 10.0):
                     for qy in (-10.0, 10.0):
                         if beyond(cx + qx, cy + qy, 10.0, 4.0):
-                            add(rng.pick(["SM_LF_GroundPatch_01", "SM_LF_GroundPatch_02"]), "Ground_G%03d" % gi, cx + qx, cy + qy, 0.39,
+                            add(GROUND, "Ground_G%03d" % gi, cx + qx, cy + qy, 0.39,
                                 rng.pick([0, 90, 180, 270]), (0.5 * SCALE, 0.5 * SCALE, 0.7), F + "/Ground"); gi += 1; tiles += 1
             h += 40.0
         g += 40.0
@@ -246,8 +248,34 @@ def pass_beyond():
         for gy in range(-4, 4):
             cx, cy = gx * 80.0 + 40.0, gy * 80.0 + 40.0
             if max(abs(cx), abs(cy)) - 40.0 >= ext - 1.0:  # outside the 40 m grid
-                add(rng.pick(["SM_LF_GroundPatch_01", "SM_LF_GroundPatch_02"]), "Ground_F%03d" % gi, cx, cy, 0.36, rng.pick([0, 90, 180, 270]),
+                add(GROUND, "Ground_F%03d" % gi, cx, cy, 0.36, rng.pick([0, 90, 180, 270]),
                     (2.0 * SCALE, 2.0 * SCALE, 1.5), F + "/Ground"); gi += 1; tiles += 1
+    # Fill: 10 m tiles in every cell fully beyond shore + 1 m that no 40 / 20 m tile covers (the band only reaches ~33 m inland,
+    # rejected 40 m cells left holes showing the water plane / void).
+    covered = []
+    g = -ext
+    while g < ext:
+        h = -ext
+        while h < ext:
+            cx, cy = g + 20.0, h + 20.0
+            if beyond(cx, cy, 20.0, 4.0):
+                covered.append((cx, cy, 20.0))
+            else:
+                for qx in (-10.0, 10.0):
+                    for qy in (-10.0, 10.0):
+                        if beyond(cx + qx, cy + qy, 10.0, 4.0):
+                            covered.append((cx + qx, cy + qy, 10.0))
+            h += 40.0
+        g += 40.0
+    fi = 0
+    for ix in range(int(-ext / 10), int(ext / 10)):
+        for iy in range(int(-ext / 10), int(ext / 10)):
+            cx, cy = ix * 10.0 + 5.0, iy * 10.0 + 5.0
+            if any(abs(cx - kx) < kh and abs(cy - ky) < kh for kx, ky, kh in covered):
+                continue
+            if beyond(cx, cy, 5.0, 1.0):
+                add(GROUND, "Ground_S%03d" % fi, cx, cy, 0.40, rng.pick([0, 90, 180, 270]),
+                    (0.27 * SCALE, 0.27 * SCALE, 0.4), F + "/Ground"); fi += 1; tiles += 1
     # Forest: single trees near the shore (8-30 m inland, sparse), clusters further back (25-110 m, denser with distance).
     trees = 0
     for i in range(70):
