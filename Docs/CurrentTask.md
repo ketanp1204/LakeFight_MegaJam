@@ -7,8 +7,21 @@
 6. [DONE 141de62] Re-package + smoke + zip
 7. [DONE d9683ce] Sky
 8. [DONE 30f6a19] Final package + report + DirectorsLog
-9. [ ] Stretch: ambient life
+9. [IN PROGRESS] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 9 (stretch) - ambient life (14 Nov ~22:31-22:45 IST, unreviewed - director away)
+- New `World/LFAmbientLife.h/.cpp`: `ULFAmbientLifeSubsystem` spawns one `ALFAmbientLife` in L_Lake01 game worlds (no level
+  edit; `-LFNoAmbient` turns it off). One actor tick, every part NoCollision / no navigation, small critters cast no shadow.
+  - 6 ducks (x1.75), 2 swans (import kept the head/neck), barrel, life ring, message bottle (x1.75) on open-water points
+    18-56 m from the centre (5-point shore check). They ride LF::Water (height + slope tilt); birds paddle loops round home and
+    hurry away from boats within 6 m; junk drifts and spins; shore/islands bounce them back.
+  - 5 gulls circling 22-36 m out at ~38 m (x2.2): 3 s flapping (B11 wing parts on their shoulder pivots, +42/-32 deg at
+    2.5 Hz), 4 s gliding (B11 glide mesh swapped in), banked into the turn.
+  - 6 dragonflies darting within 2.5 m of random reed clumps, ~1 m above the water, wings buzzing.
+- Evidence: `[ambient] 11 floaters, 5 gulls, 6 dragonflies (317 reed clumps)`; close-ups via dev `lf.ambient.look <i> [delay]`:
+  Saved/n1/amb_sheet.png (duck + swan, life ring, dragonfly in reeds, gull far above the shore). Gull wing pivots/flap
+  direction NOT verified up close (Blender -Y -> Unreal +Y assumed) - director to look up during a round.
 
 ## N1 report (Claude Code, 14 Nov 21:37-22:30 IST) - unreviewed, director away
 **Build:** `Builds/LakeFight_N1_final_20261114_2229.zip` (382 MB; unzipped copy in `Build/Windows/LakeFight.exe`). Earlier zips:
