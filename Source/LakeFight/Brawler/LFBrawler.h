@@ -333,6 +333,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
 	float FloatTime = 1.3f;
 
+	/** L01.1: a ragdoll lying on land (ground tiles / islands / docks have collision) this long (s) is put into the water ... */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float LandWashDelay = 2.f;
+
+	/** ... this far (cm) beyond the first open water found from the nearest shore, swimming. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
+	float ShoreWashOffset = 200.f;
+
+	float OnLandTime = 0.f;
+
 	UPROPERTY(EditDefaultsOnly, Category="LF|Overboard", meta=(ClampMin="0"))
 	float FloatStillSpeed = 15.f;
 

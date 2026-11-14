@@ -962,8 +962,8 @@ bool ALFBrawler::FindWaterNear(const FVector& From, FVector& OutWater) const
 			const FVector P = From + FVector(FMath::Cos(A), FMath::Sin(A), 0.f) * R;
 			if (IsWater(P))
 			{
-				// One more metre out so he isn't hugging the bank.
-				const FVector Out = From + FVector(FMath::Cos(A), FMath::Sin(A), 0.f) * (R + 100.f);
+				// ShoreWashOffset further out (L01.1: 2 m) so he isn't hugging the bank.
+				const FVector Out = From + FVector(FMath::Cos(A), FMath::Sin(A), 0.f) * (R + ShoreWashOffset);
 				OutWater = IsWater(Out) ? Out : P;
 				return true;
 			}
@@ -1247,6 +1247,29 @@ void ALFBrawler::UpdateRagdoll(float DeltaSeconds)
 			bRagdollIgnoresBoats = true;
 		}
 		UpdateWaterForces(DeltaSeconds);
+	}
+
+	// L01.1: the land (ground tiles, islands, docks) has collision now. A ragdoll lying on land for LandWashDelay is put back
+	// in the water ShoreWashOffset off the nearest shore, swimming (boats under him don't count as land).
+	if (RagdollPhase == ERagdollPhase::Flying || RagdollPhase == ERagdollPhase::Floating)
+	{
+		FHitResult Under;
+		FCollisionQueryParams UP(SCENE_QUERY_STAT(LFOnLand), false, this);
+		const bool bHit = World->LineTraceSingleByChannel(Under, Pelvis + FVector(0.f, 0.f, 30.f), Pelvis - FVector(0.f, 0.f, 120.f), ECC_WorldStatic, UP);
+		const bool bOnLand = bHit && !Cast<ALFBoat>(Under.GetActor()) && Under.ImpactPoint.Z > Water - 20.f;
+		OnLandTime = bOnLand ? OnLandTime + DeltaSeconds : 0.f;
+		FVector WaterAt;
+		if (OnLandTime >= LandWashDelay && FindWaterNear(Pelvis, WaterAt))
+		{
+			UE_LOG(LogLF, Display, TEXT("[shore] %s lay on land %.1f s (%s, ground %.0f cm above the water) -> into the water %.0f cm away, swimming"),
+				*GetName(), OnLandTime, *GetNameSafe(Under.GetActor()), float(Under.ImpactPoint.Z - Water), float(FVector::Dist2D(Pelvis, WaterAt)));
+			OnLandTime = 0.f;
+			EndRagdoll();
+			RagdollPhase = ERagdollPhase::Upright;
+			SetActorLocation(FVector(WaterAt.X, WaterAt.Y, LF::Water::GetHeightAt(WaterAt, float(Now)) - HalfHeight * 0.4f));
+			EnterSwimming();
+			return;
+		}
 	}
 
 	switch (RagdollPhase)
