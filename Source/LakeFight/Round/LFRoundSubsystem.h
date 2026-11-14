@@ -87,6 +87,14 @@ private:
 	TObjectPtr<ULFMenuWidget> PauseMenu;
 	TSharedPtr<class IInputProcessor> PauseKeys;
 	bool bSmokePauseDone = false;
+	// N2 item 14: -LFBench [-LFQuality=0|1|2] stages a 4-boat pile-up at the centre and logs frame times (works in Shipping).
+	bool bBench = false;
+	int32 BenchStaged = 0;
+	bool bBenchDone = false;
+	bool bBenchShot = false;
+	TArray<float> BenchFrame, BenchGame, BenchRender, BenchGPU;
+	void StagePileup();
+	void FinishBench();
 	float RoundTime = 0.f;
 	UPROPERTY()
 	TObjectPtr<USoundWave> GoldSound;

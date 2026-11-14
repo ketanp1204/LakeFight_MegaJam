@@ -27,6 +27,10 @@ public:
 
 	/** Saved volumes (GameUserSettings [LakeFight.Audio]) -> LFAudio. Called once at startup by the round subsystem. */
 	static void LoadAudioSettings(UObject* WorldContext);
+	/** N2 item 14: graphics quality 0 Low / 1 Medium / 2 High = engine scalability levels 1 / 2 / 3 (Medium / High / Epic;
+	 *  Epic is the look the game was authored at), applied to every scalability group and saved in GameUserSettings. */
+	static int32 GetGraphicsQuality();
+	static void SetGraphicsQuality(int32 Quality);
 	/** Dev evidence (lf.menu.page): 0 main, 1 options, 2 credits (menu only), 3 how to play (pause only). */
 	void DebugShowPage(int32 Index)
 	{
@@ -51,6 +55,8 @@ private:
 	UPROPERTY() TObjectPtr<UButton> MusicRow;
 	UPROPERTY() TObjectPtr<UButton> SfxRow;
 	UPROPERTY() TObjectPtr<UButton> OptionsBack;
+	UPROPERTY() TObjectPtr<UButton> GraphicsRow;
+	UPROPERTY() TObjectPtr<UTextBlock> GraphicsValue;
 	UPROPERTY() TObjectPtr<UButton> CreditsBack;
 	UPROPERTY() TObjectPtr<UTextBlock> MusicValue;
 	UPROPERTY() TObjectPtr<UTextBlock> SfxValue;
@@ -72,6 +78,8 @@ private:
 	void Back();
 	void Nudge(float Delta);
 	void ApplyVolumes();
+	void CycleGraphics(int32 Step);
+	void RefreshGraphics();
 
 	UFUNCTION() void OnMain0();
 	UFUNCTION() void OnMain1();
@@ -87,5 +95,7 @@ private:
 	UFUNCTION() void OnHoverQuit();
 	UFUNCTION() void OnHoverMusic();
 	UFUNCTION() void OnHoverSfx();
+	UFUNCTION() void OnHoverGraphics();
+	UFUNCTION() void OnGraphicsClicked();
 	UFUNCTION() void OnHoverBack();
 };

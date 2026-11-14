@@ -25,7 +25,7 @@ public class LakeFight : ModuleRules
 			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "SlateCore" }); // T04 hook
+		PrivateDependencyModuleNames.AddRange(new string[] { "SlateCore", "RHI", "RenderCore" }); // T04 hook; N2.14 frame timing
 
 		// T04 hook: original B08 PNGs travel with the executable; no runtime art tools required.
 		foreach (string Icon in new string[] { "Clock", "Crew_Red", "Crew_Blue", "Crew_Green", "Crew_Yellow", "Fish", "FishGold" })

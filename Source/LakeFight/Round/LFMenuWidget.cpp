@@ -14,6 +14,9 @@
 #include "Components/SizeBox.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+#include "GameFramework/GameUserSettings.h"
+#include "Engine/Engine.h"
+#include "Water/LFWater.h"
 #include "Engine/Texture2D.h"
 #include "Engine/World.h"
 #include "HAL/PlatformProcess.h"
@@ -218,23 +221,28 @@ TSharedRef<SWidget> ULFMenuWidget::RebuildWidget()
 	MenuPlace(OptionsPage, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
 	UBorder* OptionsCard = WidgetTree->ConstructWidget<UBorder>();
 	OptionsPage->AddChild(OptionsCard);
-	MenuPlace(OptionsCard, FVector2D(300.f, 270.f), FVector2D(680.f, 330.f));
+	MenuPlace(OptionsCard, FVector2D(300.f, 270.f), FVector2D(680.f, 330.f)); // rows at 286 / 352 / 418, hint 482, Back 520
 	OptionsCard->SetBrushColor(MenuPanel);
 	const ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this);
 	const float Music = Audio ? Audio->GetCategoryVolume(ELFSoundCategory::Music) : 1.f;
 	const float Sfx = Audio ? Audio->GetCategoryVolume(ELFSoundCategory::SFX) : 1.f;
-	MusicRow = MakeButton(OptionsPage, TEXT("MUSIC"), FVector2D(330.f, 300.f), FVector2D(200.f, 60.f), 22);
-	SfxRow = MakeButton(OptionsPage, TEXT("SOUND FX"), FVector2D(330.f, 380.f), FVector2D(200.f, 60.f), 22);
-	MusicSlider = MakeSlider(OptionsPage, FVector2D(560.f, 310.f), FVector2D(300.f, 40.f), FMath::Clamp(Music, 0.f, 1.f));
-	SfxSlider = MakeSlider(OptionsPage, FVector2D(560.f, 390.f), FVector2D(300.f, 40.f), FMath::Clamp(Sfx, 0.f, 1.f));
-	MusicValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 312.f), FVector2D(90.f, 40.f), 20, MenuCream);
-	SfxValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 392.f), FVector2D(90.f, 40.f), 20, MenuCream);
-	OptionsBack = MakeButton(OptionsPage, TEXT("BACK"), FVector2D(480.f, 500.f), FVector2D(320.f, 64.f));
+	MusicRow = MakeButton(OptionsPage, TEXT("MUSIC"), FVector2D(330.f, 286.f), FVector2D(200.f, 54.f), 22);
+	SfxRow = MakeButton(OptionsPage, TEXT("SOUND FX"), FVector2D(330.f, 352.f), FVector2D(200.f, 54.f), 22);
+	GraphicsRow = MakeButton(OptionsPage, TEXT("GRAPHICS"), FVector2D(330.f, 418.f), FVector2D(200.f, 54.f), 22);
+	MusicSlider = MakeSlider(OptionsPage, FVector2D(560.f, 293.f), FVector2D(300.f, 40.f), FMath::Clamp(Music, 0.f, 1.f));
+	SfxSlider = MakeSlider(OptionsPage, FVector2D(560.f, 359.f), FVector2D(300.f, 40.f), FMath::Clamp(Sfx, 0.f, 1.f));
+	MusicValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 295.f), FVector2D(90.f, 40.f), 20, MenuCream);
+	SfxValue = Text(OptionsPage, TEXT(""), FVector2D(880.f, 361.f), FVector2D(90.f, 40.f), 20, MenuCream);
+	GraphicsValue = Text(OptionsPage, TEXT(""), FVector2D(560.f, 425.f), FVector2D(400.f, 40.f), 22, MenuCream);
+	GraphicsRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverGraphics);
+	GraphicsRow->OnClicked.AddDynamic(this, &ULFMenuWidget::OnGraphicsClicked);
+	RefreshGraphics();
+	OptionsBack = MakeButton(OptionsPage, TEXT("BACK"), FVector2D(480.f, 520.f), FVector2D(320.f, 60.f));
 	MusicRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverMusic);
 	SfxRow->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverSfx);
 	OptionsBack->OnHovered.AddDynamic(this, &ULFMenuWidget::OnHoverBack);
 	OptionsBack->OnClicked.AddDynamic(this, &ULFMenuWidget::OnBack);
-	Text(OptionsPage, TEXT("Left / right to change"), FVector2D(330.f, 450.f), FVector2D(600.f, 30.f), 14, MenuCream);
+	Text(OptionsPage, TEXT("Left / right to change  -  click Graphics to cycle"), FVector2D(330.f, 482.f), FVector2D(600.f, 30.f), 14, MenuCream);
 
 	// Credits page.
 	CreditsPage = WidgetTree->ConstructWidget<UCanvasPanel>();
@@ -290,7 +298,7 @@ void ULFMenuWidget::ShowPage(EPage NewPage)
 
 int32 ULFMenuWidget::ItemCount() const
 {
-	return Page == EPage::Main ? MainButtons.Num() : Page == EPage::Options ? 3 : 1;
+	return Page == EPage::Main ? MainButtons.Num() : Page == EPage::Options ? 4 : 1;
 }
 
 void ULFMenuWidget::Select(int32 Index)
@@ -299,7 +307,8 @@ void ULFMenuWidget::Select(int32 Index)
 	for (int32 I = 0; I < MainButtons.Num(); ++I) MainButtons[I]->SetBackgroundColor(Page == EPage::Main && I == Selection ? MenuGold : MenuCream);
 	MusicRow->SetBackgroundColor(Page == EPage::Options && Selection == 0 ? MenuGold : MenuCream);
 	SfxRow->SetBackgroundColor(Page == EPage::Options && Selection == 1 ? MenuGold : MenuCream);
-	OptionsBack->SetBackgroundColor(Page == EPage::Options && Selection == 2 ? MenuGold : MenuCream);
+	GraphicsRow->SetBackgroundColor(Page == EPage::Options && Selection == 2 ? MenuGold : MenuCream);
+	OptionsBack->SetBackgroundColor(Page == EPage::Options && Selection == 3 ? MenuGold : MenuCream);
 	CreditsBack->SetBackgroundColor(Page == EPage::Credits ? MenuGold : MenuCream);
 	HowToBack->SetBackgroundColor(Page == EPage::HowTo ? MenuGold : MenuCream);
 }
@@ -313,6 +322,10 @@ void ULFMenuWidget::Activate()
 	else if (Page == EPage::Options && Selection < 2)
 	{
 		Select(Selection + 1);
+	}
+	else if (Page == EPage::Options && Selection == 2)
+	{
+		CycleGraphics(1);
 	}
 	else
 	{
@@ -352,10 +365,48 @@ void ULFMenuWidget::Back()
 
 void ULFMenuWidget::Nudge(float Delta)
 {
-	if (Page != EPage::Options || Selection > 1) return;
+	if (Page != EPage::Options || Selection > 2) return;
+	if (Selection == 2)
+	{
+		CycleGraphics(Delta > 0.f ? 1 : -1);
+		return;
+	}
 	USlider* Slider = Selection == 0 ? MusicSlider.Get() : SfxSlider.Get();
 	Slider->SetValue(FMath::Clamp(Slider->GetValue() + Delta, 0.f, 1.f));
 	ApplyVolumes();
+}
+
+int32 ULFMenuWidget::GetGraphicsQuality()
+{
+	const UGameUserSettings* Settings = GEngine ? GEngine->GetGameUserSettings() : nullptr;
+	const int32 Level = Settings ? Settings->GetOverallScalabilityLevel() : 3; // -1 = mixed groups -> treat as High
+	return Level < 0 ? 2 : FMath::Clamp(Level - 1, 0, 2);
+}
+
+void ULFMenuWidget::SetGraphicsQuality(int32 Quality)
+{
+	Quality = FMath::Clamp(Quality, 0, 2);
+	if (UGameUserSettings* Settings = GEngine ? GEngine->GetGameUserSettings() : nullptr)
+	{
+		Settings->SetOverallScalabilityLevel(Quality + 1);
+		Settings->ApplyNonResolutionSettings();
+		Settings->SaveSettings();
+	}
+	static const TCHAR* Names[] = { TEXT("Low"), TEXT("Medium"), TEXT("High") };
+	UE_LOG(LogLF, Display, TEXT("[options] graphics %s (scalability %d)"), Names[Quality], Quality + 1);
+	LF::Smoke(FString::Printf(TEXT("graphics quality %s (scalability %d)"), Names[Quality], Quality + 1));
+}
+
+void ULFMenuWidget::CycleGraphics(int32 Step)
+{
+	SetGraphicsQuality((GetGraphicsQuality() + Step + 3) % 3);
+	RefreshGraphics();
+}
+
+void ULFMenuWidget::RefreshGraphics()
+{
+	static const TCHAR* Labels[] = { TEXT("<  LOW  >"), TEXT("<  MEDIUM  >"), TEXT("<  HIGH  >") };
+	GraphicsValue->SetText(FText::FromString(Labels[GetGraphicsQuality()]));
 }
 
 void ULFMenuWidget::ApplyVolumes()
@@ -431,4 +482,6 @@ void ULFMenuWidget::OnHoverCredits() { if (Page == EPage::Main) Select(2); }
 void ULFMenuWidget::OnHoverQuit() { if (Page == EPage::Main) Select(3); }
 void ULFMenuWidget::OnHoverMusic() { if (Page == EPage::Options) Select(0); }
 void ULFMenuWidget::OnHoverSfx() { if (Page == EPage::Options) Select(1); }
-void ULFMenuWidget::OnHoverBack() { if (Page == EPage::Options) Select(2); else if (Page != EPage::Main) Select(0); }
+void ULFMenuWidget::OnHoverGraphics() { if (Page == EPage::Options) Select(2); }
+void ULFMenuWidget::OnGraphicsClicked() { Select(2); CycleGraphics(1); }
+void ULFMenuWidget::OnHoverBack() { if (Page == EPage::Options) Select(3); else if (Page != EPage::Main) Select(0); }

@@ -22,6 +22,10 @@
 #include "Misc/DateTime.h"
 #include "Containers/Ticker.h"
 #include "Engine/Console.h"
+#include "DynamicRHI.h"
+#include "RenderTimer.h"
+#include "Misc/App.h"
+#include "Components/StaticMeshComponent.h"
 #include "Framework/Application/IInputProcessor.h"
 #include "Framework/Application/SlateApplication.h"
 #include "Sound/SoundWave.h"
@@ -143,6 +147,9 @@ void ULFRoundSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	}
 	bInMenu = bForceMenu || (!bMenuDone && !bTest && !InWorld.IsPlayInEditor() && !FParse::Param(FCommandLine::Get(), TEXT("LFNoMenu")));
 	bForceMenu = false;
+	bBench = FParse::Param(FCommandLine::Get(), TEXT("LFBench"));
+	int32 Quality = -1;
+	if (FParse::Value(FCommandLine::Get(), TEXT("LFQuality="), Quality)) ULFMenuWidget::SetGraphicsQuality(Quality);
 	if (FSlateApplication::IsInitialized())
 	{
 		PauseKeys = MakeShared<FLFPauseKeys>(this);
@@ -312,7 +319,25 @@ void ULFRoundSubsystem::Tick(float DeltaTime)
 	GoldBanner = FMath::Max(0.f, GoldBanner - DeltaTime);
 	Remaining = FMath::Max(0.f, Remaining - DeltaTime);
 	RoundTime += DeltaTime;
-	if (LF::SmokeEnabled() && !bSmokePauseDone && RoundTime > 6.f && CanPause())
+	if (bBench && !bBenchDone)
+	{
+		// Re-stage every 5 s so the boats stay piled up; sample frames 4-19 s.
+		if (RoundTime >= 3.f + BenchStaged * 5.f && BenchStaged < 3) { ++BenchStaged; StagePileup(); }
+		if (RoundTime >= 4.f)
+		{
+			BenchFrame.Add(FApp::GetDeltaTime() * 1000.f);
+			BenchGame.Add(FPlatformTime::ToMilliseconds(GGameThreadTime));
+			BenchRender.Add(FPlatformTime::ToMilliseconds(GRenderThreadTime));
+			BenchGPU.Add(FPlatformTime::ToMilliseconds(RHIGetGPUFrameCycles(0)));
+		}
+		if (RoundTime >= 9.8f && !bBenchShot)
+		{
+			bBenchShot = true;
+			FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir() / TEXT("Screenshots/N2_bench_pileup.png"), true, false);
+		}
+		if (RoundTime >= 19.f) FinishBench();
+	}
+	if (LF::SmokeEnabled() && !bBench && !bSmokePauseDone && RoundTime > 6.f && CanPause())
 	{
 		// Smoke runs pause once 6 s in, show How to play at +1 s, resume at +2.5 s real time (the world is paused): proves pause stops the clock.
 		bSmokePauseDone = true;
@@ -355,6 +380,47 @@ void ULFRoundSubsystem::Tick(float DeltaTime)
 		else if (TestStep == 4 && TestElapsed > 12.f) { SetRemaining(1.f); ++TestStep; }
 	}
 	Advance();
+}
+
+void ULFRoundSubsystem::StagePileup()
+{
+	// Four boats on a 9 m ring round the lake centre (the player's included, so the chase camera looks at it), all heading in
+	// at 5 m/s: they meet in ~1.5 s and the AIs fight it out from there.
+	TArray<ALFBoat*> Boats;
+	for (TActorIterator<ALFBoat> It(GetWorld()); It; ++It) Boats.Add(*It);
+	for (int32 I = 0; I < Boats.Num(); ++I)
+	{
+		const float Angle = I * 2.f * PI / FMath::Max(Boats.Num(), 1);
+		const FVector Out(FMath::Cos(Angle), FMath::Sin(Angle), 0.f);
+		const FVector At = Out * 900.f + FVector(0.f, 0.f, LF::Water::BaseHeight + 20.f);
+		Boats[I]->SetActorLocationAndRotation(At, (-Out).Rotation(), false, nullptr, ETeleportType::TeleportPhysics);
+		if (UStaticMeshComponent* Hull = Boats[I]->GetHull())
+		{
+			Hull->SetPhysicsLinearVelocity(-Out * 500.f);
+			Hull->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+		}
+	}
+	UE_LOG(LogLF, Display, TEXT("[bench] pile-up staged (%d boats)"), Boats.Num());
+	LF::Smoke(FString::Printf(TEXT("bench: pile-up staged (%d boats)"), Boats.Num()));
+}
+
+void ULFRoundSubsystem::FinishBench()
+{
+	bBenchDone = true;
+	auto Stats = [](TArray<float> V)
+	{
+		if (!V.Num()) return FString(TEXT("n/a"));
+		V.Sort();
+		float Sum = 0.f;
+		for (float X : V) Sum += X;
+		return FString::Printf(TEXT("avg %.1f / p95 %.1f / max %.1f ms"), Sum / V.Num(), V[FMath::Min(V.Num() - 1, int32(V.Num() * 0.95f))], V.Last());
+	};
+	const FIntPoint Size = GEngine && GEngine->GameViewport && GEngine->GameViewport->Viewport ? GEngine->GameViewport->Viewport->GetSizeXY() : FIntPoint::ZeroValue;
+	const FString Line = FString::Printf(TEXT("bench: quality %d, %dx%d, %d frames over 15 s | frame %s | game %s | render %s | GPU %s"),
+		ULFMenuWidget::GetGraphicsQuality(), Size.X, Size.Y, BenchFrame.Num(), *Stats(BenchFrame), *Stats(BenchGame), *Stats(BenchRender), *Stats(BenchGPU));
+	UE_LOG(LogLF, Display, TEXT("[bench] %s"), *Line);
+	LF::Smoke(Line);
+	FPlatformMisc::RequestExit(false);
 }
 
 void ULFRoundSubsystem::EndRound()
