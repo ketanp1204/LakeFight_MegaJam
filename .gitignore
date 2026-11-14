@@ -30,3 +30,9 @@ Art/Source/
 Tools/audio/.venv/
 Tools/audio/.work/
 Tools/audio/.tmp/
+
+# Local agent / editor MCP configs (machine-specific)
+.mcp.json
+.cursor/
+.gemini/
+.vscode/
