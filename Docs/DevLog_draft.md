@@ -1,6 +1,6 @@
 # Lake Fight: Director's Cut — dev log draft
 
-*Saturday draft. Counts are frozen at Git commit `b97d4bf`, before this writing task. Image slots point to existing files; captions still need my editorial review.*
+*Saturday draft, updated through T04 stages 1–2.1. Counts in “By the numbers” are frozen at Git commit `b97d4bf`. Image slots use existing files, with missing shots marked below.*
 
 ## The shelved idea, uncut
 
@@ -8,25 +8,25 @@ Lake Fight is a physical-comedy boat brawler on a small fishing lake. You can fi
 
 I'm reading the jam's theme 'Director's Cut' as “the shelved idea, uncut.” The old Lake Fight was a Unity prototype with two boats on a lake in split-screen co-op. Combat and boarding were deferred. Paddle fights, overboard ragdolls, swimming, boarding, stealing boats and the four-crew fight over fish never got built. This is my chance to return to those parts of the idea.
 
-I shelved the project because I'd built the prototype as a local split-screen co-op. That felt like a small audience, and making couch multiplayer feel right looked like a long job, so I moved on to other projects. The jam version flips that: it's single-player against three AI crews from the start, and split-screen becomes an extra rather than the foundation. That's a big part of why the cut features finally fit. 
+I shelved the project because I'd built the prototype as a local split-screen co-op. That felt like a small audience, and making couch multiplayer feel right looked like a long job, so I moved on to other projects. The jam version flips that: it's single-player against three AI crews from the start, and split-screen becomes an extra rather than the foundation. That's a big part of why the cut features finally fit.
 
-The old project is off limits to the agents. My rules forbid opening it or copying its code, models or textures. The jam project has its own work, starting from the declared jam boundary. 
+The old project is off limits to the agents. My rules forbid opening it or copying its code, models or textures. The jam project has its own work, starting from the declared jam boundary.
 
 ![Image slot: the scripted rowboat, side view](../Art/Export/_shots/SM_LF_Rowboat_B011_Side.png)
 
 ## Who did what
 
-I'm Ketan, the director. I choose the design, review what comes back, play it and make the final calls. An agent can tell me something builds or produce a clean log. I still have to decide whether steering, hitting someone or climbing aboard feels right. I like to watch my agents working and steer them a lot as they go to nudge the work in the direction that I want.
+I'm Ketan, the director. I choose the design, review what comes back, play it and make the final calls. I like to watch my agents working and steer them a lot as they go to nudge the work in the direction that I want.
 
-Claude Code handles Unreal C++ and Unreal MCP work. Codex handles scripted Blender MCP assets, the audio processing pipeline and documentation. Claude in chat is my producer: task prompts, reviews and scheduling. 
+Claude Code handles Unreal C++ and Unreal MCP work. Codex handles scripted Blender MCP assets, the audio processing pipeline and documentation. Claude in chat is my producer: task prompts, reviews and scheduling.
 
 The intended loop is simple: put one bounded task in `CurrentTask.md`, give the agent an acceptance check and a stopping point, inspect its report, then keep, change or cut the result. Nearby problems become follow-ups. The agent doesn't get to expand the game just because it found another thing to build.
 
 In practice, some art reports say that `CurrentTask.md` still described another agent's work, so my explicit art brief supplied their scope. The written process and the actual handoff were not always perfectly aligned.
 
-For art, the useful deliverable is the script as well as the mesh. We run it twice, compare the generated geometry, then reimport the FBX and check what survived export. A pretty screenshot alone cannot tell me whether a shoulder pivot moved or collision filled the cockpit.
+For art, the useful deliverable is the script as well as the mesh. We run it twice, compare the generated geometry, then reimport the FBX and check what survived export.
 
-For audio, the processing report records sources, selected slices, loudness and repeatability. Those checks make review easier. They don't listen on my behalf.
+For audio, the processing report records sources, selected slices, loudness and repeatability. Those checks make review easier.
 
 ![Image slot: crew clothing and accessories on fitting proxies](../Art/Export/_shots/B04_DressUp_Gallery.png)
 
@@ -38,7 +38,7 @@ For audio, the processing report records sources, selected slices, loudness and 
 
 **T01.1:** Handling gained rudder force, throttle spool and yaw momentum. A water-material setting made the lake disappear; I caught that during review and it was restored.
 
-**T01.2:** We added separate bump and ram responses, collision hulls and a water mask inside the boat. The report explicitly left driving and ram feel for my test.
+**T01.2:** We added separate bump and ram responses, collision hulls and a water mask inside the boat.
 
 **B02:** The prop batch supplied paddles, dock, fish, reeds, rocks, buoy, crate and shack. Git records the batch on Thursday; later corrections belong to Friday's art reports.
 
@@ -54,7 +54,7 @@ For audio, the processing report records sources, selected slices, loudness and 
 
 **T03, stage 1:** One Blue rival learned to chase, ram, fight, recover a boat and flee, using the same player actions. It also needed reaction delay and imperfect aim.
 
-**T02, step 5 / T03, stage 2:** Clothing, animation hooks and paddle grip arrived alongside three rival personalities. The recorded AI-only run produced a steal and repeated overboards; whether those personalities read without debug labels remained my question.
+**T02, step 5 / T03, stage 2:** Clothing, animation hooks and paddle grip arrived alongside three rival personalities. The recorded AI-only run produced a steal and repeated overboards.
 
 ![Image slot: the four-crew spectator test](Shots/T03_spectate_1.png)
 
@@ -62,25 +62,23 @@ For audio, the processing report records sources, selected slices, loudness and 
 
 **B03–B07:** Art work covered shoreline pieces, plants, crew gear, larger hats, the title and team dock. Collision and paddle sockets were separate jobs; I brought B07 forward while B06 waited.
 
-**B08 / B09:** Round markers and HUD icons arrived, followed by proper oars and oarlock sockets. These were assets for integration, not proof that the round loop or rowing animation was finished.
+**B08 / B09:** Round markers and HUD icons arrived, followed by proper oars and oarlock sockets.
 
 **A01:** The processed sound library was committed. Its source mapping and audition page kept the sound choices available for review rather than burying them in an import folder.
 
 ## Saturday, 14 November, so far
 
-The log crosses midnight, and some entries were written out of order. I'm grouping the work by its recorded day rather than pretending every row is a precise stopwatch.
-
 **T03.1 grip and rowing:** The late-night pass replaced the sword-slash base with procedural movement and worked through several holding and rowing setups. My “looks great” applied to rowing; hit-rate and walking feel were still unmeasured.
 
 **A03 / A02 / A02.1:** Music loops were processed, sounds were wired into gameplay, and music gained persistent playback, crossfades and ram/capsize ducking. A four-boat pile-up exposed stacked bass tails, so the implementation limited them and added burst ducking.
 
-**T03.2 / Playtest 007:** Real oars, seating and foot placement improved. Then my playtest found an arm-and-oar glitch at the end of the stroke. That got another correction and another pending human check.
+**T03.2 / Playtest 007:** Real oars, seating and foot placement improved. Then my playtest found an arm-and-oar glitch at the end of the stroke. That led to a soft clamp and revised hand goals.
 
 ![Image slot: rowing correction strip from Playtest 007](Shots/T032_fix_rowing_strip.png)
 
 **B10:** Ten environment meshes extended the ground and distant hills beyond the shore. The paddle icon also became horizontal with an oval blade, and the bonus fish gained a pale highlight and sparkles.
 
-**B11:** Clouds, birds, floating junk and insects were delivered and kept. Clouds and one static heron are planned for L01. I deferred moving wildlife until T04 works, and enlarged the duck and bottle in Unreal for chase-camera readability.
+**B11:** Clouds, birds, floating junk and insects were delivered and kept. Clouds and one static heron made it into L01. I deferred moving wildlife until T04 works, and enlarged the duck and bottle in Unreal for chase-camera readability.
 
 ![Image slot: ambient birds at their authored relative scales](../Art/Export/_shots/B11_birds.png)
 
@@ -88,15 +86,15 @@ The log crosses midnight, and some entries were written out of order. I'm groupi
 
 **The mirror lake.** The first T01 water rendered as a mirror with black holes in it. I caught that in my first screenshot review. We replaced it with custom summed-sine water and a toon lake material.
 
-Later reviews rejected moving facets, a straight wake and heavy foam. T01.3 records fragmented foam, depth-colour corrections and foam following the actual hull outline. Those are documented changes, with some look approval still pending.
+Later reviews rejected moving facets, a straight wake and heavy foam. T01.3 added fragmented foam, depth-colour corrections and foam following the actual hull outline.
 
-**Boat handling.** My T01 playtest notes were “feels like a car” and “not enough oomph”. That led to rudder force at the stern, throttle spool and yaw momentum in T01.1. The implementation report still left feel acceptance to me.
+**Boat handling.** My T01 playtest notes were “feels like a car” and “not enough oomph”. That led to rudder force at the stern, throttle spool and yaw momentum in T01.1.
 
-**Water inside the hull.** T01.2 introduced the hull water mask and checked it in screenshots at zero and fifteen degrees of roll. Later review still found submerged hull edges, bottom lines and an unwanted foam halo. The fixes used the hull stencil and real outline. The lake also became translucent because of a material limitation, which the report disclosed.
+**Water inside the hull.** T01.2 introduced the hull water mask and checked it in screenshots at zero and fifteen degrees of roll. Later review still found submerged hull edges, bottom lines and an unwanted foam halo. The fixes used the hull stencil and real outline. The lake also became translucent because of a material limitation.
 
 ![Image slot: water treatment from the chase view](Shots/T013_chase.png)
 
-**Camera-shake jank.** I called it “janky”. Hitstop was fighting camera lag. The T01.3 fix moved the shake onto real time, along with camera and FOV timing, using one decaying vertical shake and a pair cooldown. The report could verify a clean run, but could not drive a ram through MCP.
+**Camera-shake jank.** I called it “janky”. Hitstop was fighting camera lag. The T01.3 fix moved the shake onto real time, along with camera and FOV timing, using one decaying vertical shake and a pair cooldown.
 
 TODO(director): Add my camera-shake acceptance verdict after testing the real-time fix in a ram.
 
@@ -108,15 +106,15 @@ TODO(director): Add my camera-shake acceptance verdict after testing the real-ti
 
 ![Image slot: the forward-facing push stroke](Shots/T031_rowing_push_stroke.png)
 
-**The floating seat.** T03.2 measured the character's backside from skinned vertices: it sat 10.1–10.9 cm above the thwart. Lowering the driver 10.4 cm brought that gap to 0.4 cm; foot IK brought soles within 0.2 cm of the floor. Those measurements support the fix, while the log still asks me to check the pose in play.
+**The floating seat.** T03.2 measured the character's backside from skinned vertices: it sat 10.1–10.9 cm above the thwart. Lowering the driver 10.4 cm brought that gap to 0.4 cm; foot IK brought soles within 0.2 cm of the floor.
 
-**The oar arm glitch.** In Playtest 007 I reported the left arm and oar glitching. The reach solve broke down near the stroke's end, throwing the hand towards the gunwale before snapping back. A continuous soft clamp, fore-aft hand stagger and raised hand goals reduced the measured grip jump. It still needed my re-check.
+**The oar arm glitch.** In Playtest 007 I reported the left arm and oar glitching. The reach solve broke down near the stroke's end, throwing the hand towards the gunwale before snapping back. A continuous soft clamp, fore-aft hand stagger and raised hand goals reduced the measured grip jump.
 
-**Washed-out PaintRed had two parts.** The Unreal exposure check found imported palette values matched their source. The source red itself was salmon-like. I supplied an exact red, and the palette pass strengthened the team colours, re-exporting boats and flags without changing their geometry. Checking values and checking the final look were separate steps.
+**Washed-out PaintRed had two parts.** The Unreal exposure check found imported palette values matched their source. The source red itself was salmon-like. I supplied an exact red, and the palette pass strengthened the team colours, re-exporting boats and flags without changing their geometry.
 
 ![Image slot: the revised team palette on boats and flags](../Art/Export/_shots/B04_TeamPalette_BoatsFlags.png)
 
-**The reeds needed another pass.** The first reed beds didn't read as reeds in review. B03 v2 rebuilt them as narrow blades and cattails, without rows. A geometry test caught root gaps; the agent changed blade construction and added coverage. It reported near-total concealment from one fixed broadside test, while leaving other angles to human review.
+**The reeds needed another pass.** The first reed beds didn't read as reeds in review. B03 v2 rebuilt them as narrow blades and cattails, without rows. A geometry test caught root gaps; the agent changed blade construction and added coverage. The fixed broadside test then reported near-total concealment.
 
 **An agent crossed the no-git boundary.** Codex committed during an art task while the rule was “no git”. I resolved that by allowing art-task commits only for explicitly listed `Art/` paths, one commit per item. That rule is now in [AGENTS.md](../AGENTS.md), alongside the task boundaries. Finishing the asset did not excuse ignoring the instruction.
 
@@ -128,20 +126,22 @@ TODO(director): Add my camera-shake acceptance verdict after testing the real-ti
 - I chose forward-facing push rowing over the stern-facing setup.
 - I asked for larger hats, supplied the red colour and reserved team colours, with explicit exceptions.
 - I kept B11, but put moving wildlife behind a working round loop. A finished bird mesh didn't earn permission to expand the schedule.
+- I rejected the symmetric X lake for irregular lobes.
+- I moved round-loop coding to Codex when Claude's quota ran out, boxed into new files for Claude to review.
 
 ## By the numbers
 
-These are a snapshot, not submission totals. At `b97d4bf`, Git has **59 commits**: 6 dated Thursday, 29 Friday and 24 Saturday. This excludes the dev-log commit and anything added afterwards.
+At `b97d4bf`, Git has **59 commits**: 6 dated Thursday, 29 Friday and 24 Saturday. This excludes the dev-log commit and anything added afterwards.
 
 There are **86 tracked top-level FBX exports** under `Art/Export`: 8 icon-stage exports and 78 `SM_LF` files, including the preserved reed-bed v1. That count includes colour variants and separate parts; it is not 86 unique designs or 86 placed objects.
 
-The task-family count is **17**: B01–B11, T01–T03 and A01–A03. Revisions, stages and numbered items stay inside their families. Active L01 and planned T04 are excluded. Separately, the Director's Log contains **25 dated entries**, including experiments and playtest follow-ups.
+At that snapshot, the task-family count is **17**: B01–B11, T01–T03 and A01–A03. Revisions, stages and numbered items stay inside their families. L01 and T04 are excluded from those frozen counts. The Director's Log then contained **25 dated entries**, including experiments and playtest follow-ups.
 
 The general art rule is under 3,000 triangles per boat and under 1,000 per prop, with task-specific budgets recorded separately. B06 boats have 1,214 render triangles plus 232 collision triangles. B11's assembled gull is 140, its distant glide 104, its dragonfly 84 and its butterfly 60.
 
 ![Image slot: wings up, level, down and the merged glide](../Art/Export/_shots/B11_flying_bird_front.png)
 
-The audio report has **59 output WAVs**, **34 source mappings**, **40 mono / 19 stereo** outputs and **8 loops**. Targets are -16 LUFS for one-shots, -18 for voices, -20 for UI and -28 for ambience; music targets are -22 main, -24 menu and -21 final. The true-peak ceiling is -1 dBTP. These describe processing, not my approval of the mix.
+The audio report has **59 output WAVs**, **34 source mappings**, **40 mono / 19 stereo** outputs and **8 loops**. Targets are -16 LUFS for one-shots, -18 for voices, -20 for UI and -28 for ambience; music targets are -22 main, -24 menu and -21 final. The true-peak ceiling is -1 dBTP.
 
 ## Tools and licences
 
@@ -153,15 +153,31 @@ The music is **Boardwalk Jaunt — Sky Toes**, used for main/menu, and **Funk Fo
 
 My [pre-jam declaration](../PRE_JAM_DECLARATION.md) is committed at the repository root and belongs with the process record.
 
-TODO(verify): Complete the empty AI-content/tool tables in ASSETS.md and confirm the submission wording for Mixamo and Manny.
+The AI-content/tool disclosure and Mixamo/Manny credits are recorded in [ASSETS.md](ASSETS.md).
 
-## TODO(director): Saturday afternoon — L01 lake layout
+## Saturday afternoon — L01 lake layout
 
-Add the finished layout and camera/readability decisions, including what happened to the clouds and static heron planned for L01.
+The first pass was a pool with natural edges. The islands sat off the routes home, and the left side had none. I wanted the islands to shape the journey back to the docks, so I asked for another layout.
 
-## TODO(director): T04 round loop
+Pass two came back as a perfectly symmetric X: right on paper, man-made to look at. I rejected it and asked for irregular lobes. Pass three, recorded in L01.1, gave us four uneven arms, wooded headlands and one island on each route home. The docks sit 68.5–72 m from the centre, around an open middle roughly 57 m across.
 
-Record the actual fishing, banking, timer and win/lose loop, what got cut, and the playtest result.
+Clouds and the static heron made it in. Moving wildlife remained deferred while we worked on the round loop.
+
+![Image slot: lake-layout strip — pass 3, irregular lobes and islands on the routes home](Shots/L01_top.png)
+
+TODO(director): Add the pool and X shots to make a three-pass comparison strip.
+
+## T04 — the round loop, with a different coder
+
+My Claude quota ran out, so I moved stages 1–2.1 to Codex. I boxed the work into new files, with minimal changes to existing classes marked `// T04 hook`, for Claude to review. Claude reviewed stage 1 read-only and returned 12 findings, including two must-fix items.
+
+Stage 1 (`37c75c4`) put the catch on the boat: slow down at a fish spot, carry fish in the hull and bank them at your own dock. Steal the boat and you steal its catch. Rams spill one or two fish; capsizes spill the lot, leaving floating pickups for other boats to scoop up.
+
+Stage 2 (`c0b13ab`) added the four-minute round, a gold spot at 2:00 with fish worth five points, Final music for the last 30 seconds, the HUD and the results screen with Restart and Quit. My PIE checks accepted fast-pass rejection, own-dock banking, enemy banks doing nothing, Final music, the end screen and the mouse buttons.
+
+My playtest also showed where the loop was awkward. Static fish spots were unreadable, so stage 2.1 (`a8c2311`) added bobbing pieces, expanding ripples and leaping fish with splashes. Low-speed catching was too fiddly: I raised the catch radius from 2 to 4 m and the speed limit from 1.5 to 2.2 m/s. Live fish counts appeared above loaded boats, with a larger count on my HUD. The same pass added the review fixes assigned to Codex and test commands for giving every boat fish and capsizing my boat.
+
+TODO(director): Add AI fishing and banking results after the night run.
 
 ## TODO(director): Sunday — polish
 
