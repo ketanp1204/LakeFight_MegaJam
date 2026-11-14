@@ -19,6 +19,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	void MakePickup(ALFBoat* SourceBoat); // T04 hook
 	bool IsSpot() const { return !bPickup; }
+	const ALFBoat* GetCatcher() const { return Catcher.Get(); } // N1 #14
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float CatchInterval = 1.5f;

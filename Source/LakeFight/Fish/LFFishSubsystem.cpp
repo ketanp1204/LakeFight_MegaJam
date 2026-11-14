@@ -5,6 +5,7 @@
 #include "Fish/LFFishSpotVisualComponent.h" // T04 hook
 #include "Round/LFRoundCargoComponent.h" // T04 hook
 #include "Round/LFRoundSubsystem.h" // T04 hook
+#include "Round/LFGoldFish.h"
 #include "Boat/LFBoat.h"
 #include "Brawler/LFBrawler.h"
 #include "Audio/LFAudio.h"
@@ -273,7 +274,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 					--S.Remaining;
 					S.Progress = 0.f;
 					Catcher->OnSplash(At, 0.25f);
-					PlaySound(CatchSound);
+					if (Catcher == LF::Fish::PlayerBoat(GetWorld())) PlaySound(CatchSound); // N1 #2: AI catches are not UI sounds
 					UE_LOG(LogLF, Display, TEXT("[fish] catch %s cargo=%d spot=%d t=%.2f"), *Catcher->GetName(), Cargo->GetCount(), S.Remaining, Now);
 					if (S.Remaining == 0)
 					{
@@ -379,4 +380,97 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 			Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3], Pickups.Num());
 		NextReport = Now + 10.f;
 	}
+}
+
+// ---- AI query API (N1 #14)
+bool ULFFishSubsystem::FindFishSpot(const ALFBoat* Boat, FVector& OutLocation, bool bPreferGold) const
+{
+	const FVector From = Boat ? Boat->GetActorLocation() : FVector::ZeroVector;
+	if (bPreferGold)
+	{
+		const ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
+		const ALFGoldFish* Gold = Round ? Round->GetGoldSpot() : nullptr;
+		if (Gold && Gold->IsSpot())
+		{
+			OutLocation = Gold->GetActorLocation();
+			return true;
+		}
+	}
+	float Best = TNumericLimits<float>::Max();
+	for (const FSpot& S : Spots)
+	{
+		if (!S.Mesh.IsValid() || S.Remaining <= 0) continue;
+		const ALFBoat* Holder = S.Catcher.Get();
+		if (Holder && Holder != Boat) continue;
+		const float D = FVector::DistSquared2D(From, S.Mesh->GetActorLocation());
+		if (D < Best)
+		{
+			Best = D;
+			OutLocation = S.Mesh->GetActorLocation();
+		}
+	}
+	return Best < TNumericLimits<float>::Max();
+}
+
+bool ULFFishSubsystem::GetBankLocation(ELFTeam Team, FVector& OutLocation) const
+{
+	for (const FBank& B : Banks)
+	{
+		if (B.Team == int32(Team) && B.Zone.IsValid())
+		{
+			OutLocation = B.Zone->GetActorLocation();
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ULFFishSubsystem::IsFishing(const ALFBoat* Boat) const
+{
+	if (!Boat) return false;
+	for (const FSpot& S : Spots)
+	{
+		if (S.Mesh.IsValid() && S.Catcher.Get() == Boat) return true;
+	}
+	const ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
+	const ALFGoldFish* Gold = Round ? Round->GetGoldSpot() : nullptr;
+	return Gold && Gold->GetCatcher() == Boat;
+}
+
+int32 ULFFishSubsystem::GetCargoCount(const ALFBoat* Boat)
+{
+	const ULFFishCargoComponent* Cargo = Boat ? ULFFishCargoComponent::Get(Boat) : nullptr;
+	return Cargo ? Cargo->GetCount() : 0;
+}
+
+int32 ULFFishSubsystem::GetCargoValue(const ALFBoat* Boat)
+{
+	const int32 Count = GetCargoCount(Boat);
+	const ULFRoundCargoComponent* Round = Boat ? ULFRoundCargoComponent::Get(const_cast<ALFBoat*>(Boat)) : nullptr;
+	return Round ? Round->GetValue(Count) : Count;
+}
+
+bool ULFFishSubsystem::FindPickup(const FVector& From, float Radius, FVector& OutLocation) const
+{
+	float Best = Radius * Radius;
+	bool bFound = false;
+	for (const FPickup& P : Pickups)
+	{
+		if (!P.Mesh.IsValid()) continue;
+		const float D = FVector::DistSquared2D(From, P.Mesh->GetActorLocation());
+		if (D < Best)
+		{
+			Best = D;
+			OutLocation = P.Mesh->GetActorLocation();
+			bFound = true;
+		}
+	}
+	return bFound;
+}
+
+int32 ULFFishSubsystem::GetActiveSpotCount() const
+{
+	int32 N = 0;
+	for (const FSpot& S : Spots) N += S.Mesh.IsValid() ? 1 : 0;
+	return N;
 }

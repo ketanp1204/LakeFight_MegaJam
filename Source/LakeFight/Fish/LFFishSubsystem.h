@@ -5,11 +5,12 @@
 #include "LFFishSubsystem.generated.h"
 
 class ALFBoat;
+enum class ELFTeam : uint8;
 class AStaticMeshActor;
 class UStaticMesh;
 class USoundWave;
 
-/** T04 stage 1: player fishing, shared pickups, driver-team banking. No AI decisions. */
+/** T04: fish spots any driven boat can work (player and AI alike), shared pickups, driver-team banking. */
 UCLASS()
 class LAKEFIGHT_API ULFFishSubsystem : public UTickableWorldSubsystem
 {
@@ -24,6 +25,21 @@ public:
 
 	int32 Spill(ALFBoat* Boat, int32 Amount); // T04 hook: return pickups actually spawned
 	int32 GetScore(int32 Team) const { return Scores[FMath::Clamp(Team, 0, 3)]; } // T04 hook
+
+	// ---- AI query API (N1 #14, for T04 stage 3 goals). Read-only; AIs still fish/bank by driving like the player.
+	/** Best fish spot for Boat: the gold spot if bPreferGold and it is active, else the nearest live spot that no other
+	 *  boat currently holds. False when nothing is available (all spots respawning or taken). */
+	bool FindFishSpot(const ALFBoat* Boat, FVector& OutLocation, bool bPreferGold = true) const;
+	/** Centre of the team's bank zone (deposit by driving the hull centre into it). */
+	bool GetBankLocation(ELFTeam Team, FVector& OutLocation) const;
+	/** True while Boat is the boat currently reeling from a spot (it must stay slow and close to keep the catch). */
+	bool IsFishing(const ALFBoat* Boat) const;
+	/** Fish aboard (ordinary + gold count) and their bank value in points. */
+	static int32 GetCargoCount(const ALFBoat* Boat);
+	static int32 GetCargoValue(const ALFBoat* Boat);
+	/** Live floating pickups (spilled fish anyone can scoop) within Radius of From; nearest first in OutLocation. */
+	bool FindPickup(const FVector& From, float Radius, FVector& OutLocation) const;
+	int32 GetActiveSpotCount() const;
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float CatchInterval = 1.5f;

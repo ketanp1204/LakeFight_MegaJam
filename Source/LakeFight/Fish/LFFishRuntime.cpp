@@ -100,8 +100,8 @@ ALFBoat* LF::Fish::NearestCatcher(UWorld* World, const FVector& At, float Radius
 		}
 		else SecondDistance = FMath::Min(SecondDistance, Distance);
 	}
-	// Stage 2 remains player-only. A closer AI occupies the spot but gains no fishing behaviour.
-	return SecondDistance - BestDistance > 1.f && Best && Best->IsPlayerControlled() ? Best : nullptr;
+	// N1 #2: any driven boat fishes (player or AI) - same speed/radius rules for everyone.
+	return SecondDistance - BestDistance > 1.f ? Best : nullptr;
 }
 
 static FAutoConsoleCommandWithWorldAndArgs CmdLFFishGiveAll(TEXT("lf.fish.giveall"), TEXT("lf.fish.giveall N - add 0-100 fish to every boat."),

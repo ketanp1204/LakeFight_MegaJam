@@ -1,3 +1,28 @@
+# N1 progress (Claude Code, unattended night run 14-15 Nov; spec: Docs/N1.md)
+1. [IN PROGRESS] T04 review/normalize, #1 tags, #2 AI fishing, #14 API
+2. [ ] Safety package + smoke + zip
+3. [ ] Bug pass a-e
+4. [ ] T04 stage 3 AI goals + 2 AI-only rounds
+5. [ ] Credits + main menu
+6. [ ] Re-package + smoke + zip
+7. [ ] Sky
+8. [ ] Final package + report + DirectorsLog
+9. [ ] Stretch: ambient life
+10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 1 - T04 review follow-ups (Claude Code, 14 Nov night, unreviewed - director away)
+- The R-T04.1 list itself was not on disk; worked from N1's descriptions of #1/#2/#14.
+- #1 `Tools/L01_layout.py`: BankZone_* and FishZone_* get a runtime Actor Tag equal to their label (cooked builds
+  have no labels). Gameplay pass re-run headless (`UnrealEditor.exe ... -ExecutePythonScript=<wrapper>` loads
+  L_Lake01, runs `gameplay`, saves; same seeds -> same placements, 391 actors). L_Lake01 saved.
+- #2 `LF::Fish::NearestCatcher` no longer requires a player-controlled boat: any driven, upright, slow boat fishes
+  (same 400 cm / 220 cm/s / 1.5 s rules). The 2D catch sound only plays for the player's boat.
+- #14 AI query API on `ULFFishSubsystem`: FindFishSpot (gold first, else nearest spot nobody else holds),
+  GetBankLocation(team), IsFishing(boat), GetCargoCount/GetCargoValue, FindPickup, GetActiveSpotCount;
+  `ALFGoldFish::GetCatcher`. Stage 3 AI uses these.
+- Build (editor closed) succeeded. Headless smoke (`-game -NullRHI ... lf.ai.freeze 1,LFDrive,BugItGo 0 0 0 0 0 0`):
+  `[fish] ready: 3 zones, 4 banks`, 8 catches in 20 s. Log Saved/n1/smoke1.log.
+
 # T03 - AI rival captains (Fri 13 Nov afternoon) - agent: Claude Code
 
 ## Goal

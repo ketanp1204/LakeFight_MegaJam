@@ -3,6 +3,7 @@
     py "D:/Projects/LakeFight/Tools/L01_layout.py"                 -> all passes
     py "D:/Projects/LakeFight/Tools/L01_layout.py" shore beyond    -> only those passes
     py "D:/Projects/LakeFight/Tools/L01_layout.py" report          -> measurements only (no changes)
+(repo now lives at C:/Unreal/Projects/LakeFight_MegaJam - use that path.)
 
 Passes: shore, beyond, gameplay, sky. Each pass deletes the actors in its outliner folder (L01/<Pass>...) and places them
 again, so re-running is idempotent. Results are logged as "[L01] ..." lines in the output log. Save the level afterwards.
@@ -206,13 +207,16 @@ def load(name):
     return a
 
 
-def add(mesh, label, x, y, z, yaw=0.0, sc=(1.0, 1.0, 1.0), folder="L01", cls=None):
+def add(mesh, label, x, y, z, yaw=0.0, sc=(1.0, 1.0, 1.0), folder="L01", cls=None, tag=False):
     loc = unreal.Vector(x * CM, y * CM, z * 100.0)
     rot = unreal.Rotator(roll=0.0, pitch=0.0, yaw=yaw)
     a = ACTORS.spawn_actor_from_class(cls, loc, rot) if cls else ACTORS.spawn_actor_from_object(load(mesh), loc, rot)
     a.set_actor_scale3d(unreal.Vector(sc[0], sc[1], sc[2]))
     a.set_actor_label(label)
     a.set_folder_path(folder)
+    if tag:  # N1 #1: runtime Actor Tag = label (editor labels are stripped from cooked builds; the fish system finds these by tag)
+        a.tags = [unreal.Name(label)]
+        a.set_editor_property("is_editor_only_actor", False)
     key = mesh or cls.__name__
     STATS[key] = STATS.get(key, 0) + 1
     return a
@@ -500,7 +504,7 @@ def pass_gameplay():
         add("SM_LF_TeamFlag_%s" % team, "Flag_%s" % team, x + (1.82 * math.cos(t) + 1.08 * math.sin(t)) / SCALE,
             y + (1.82 * math.sin(t) - 1.08 * math.cos(t)) / SCALE, 1.2, yaw, folder=F + "/Docks")
         bx, by = polar(ang, DOCK_RAD[team] - 4.0 / SCALE)
-        add("SM_LF_BankZone", "BankZone_%s" % team, bx, by, 0.02, yaw, folder=F + "/Docks")
+        add("SM_LF_BankZone", "BankZone_%s" % team, bx, by, 0.02, yaw, folder=F + "/Docks", tag=True)
         docks[team] = (x, y)
         sx, sy = polar(ang + 6.0, shore_r(math.radians(ang + 6.0)) + 1.5)
         add("SM_LF_Log", "DockLog_%s" % team, sx, sy, 0.05, ang + 75.0, folder=F + "/Dressing")
@@ -592,7 +596,7 @@ def pass_gameplay():
              "FishZone_%s_%s" % (best[1][0], best[2][0]): best[3][0],
              "FishZone_%s_%s" % (best[1][1], best[2][1]): best[3][1]}
     for lab, (x, y) in zones.items():
-        add(None, lab, x, y, 0.5, cls=unreal.TargetPoint, folder=F + "/FishZones")
+        add(None, lab, x, y, 0.5, cls=unreal.TargetPoint, folder=F + "/FishZones", tag=True)
     log("gameplay: removed %d; lanes %s" % (removed, json.dumps(lanes_out)))
     log("gameplay: fish zones %s; nearest lane zone per dock %s (spread %.1f m)" % (
         json.dumps({k: [round(v[0], 1), round(v[1], 1)] for k, v in zones.items()}), json.dumps({k: round(v, 1) for k, v in best[4].items()}), best[0]))
