@@ -1,0 +1,34 @@
+{
+  "name": "SM_LF_TreeCluster_01",
+  "triangles": 942,
+  "dimensions_m": [
+    14.5645,
+    10.82693,
+    7.40612
+  ],
+  "origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "z_range_m": [
+    0.0,
+    7.406116
+  ],
+  "materials": [
+    "M_LF_WoodDark",
+    "M_LF_Moss",
+    "M_LF_Cloth",
+    "M_LF_Reed"
+  ],
+  "boundary_edges": 0,
+  "boundary_z_max_abs_m": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "9bf66c59281367fdafc6fca6cd8f9ce4deeffc01ba8633b2828b41532e0b04b3",
+  "budget_exclusive": 3000
+}
