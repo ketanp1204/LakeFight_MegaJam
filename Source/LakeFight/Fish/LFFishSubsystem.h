@@ -22,15 +22,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override;
 
-	void Spill(ALFBoat* Boat, int32 Amount);
+	int32 Spill(ALFBoat* Boat, int32 Amount); // T04 hook: return pickups actually spawned
 	int32 GetScore(int32 Team) const { return Scores[FMath::Clamp(Team, 0, 3)]; } // T04 hook
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float CatchInterval = 1.5f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
-	float CatchMaxSpeed = 150.f;
+	float CatchMaxSpeed = 220.f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
-	float CatchRadius = 200.f;
+	float CatchRadius = 400.f;
 	/** TargetPoints have no area: use a 3 m disc around each marker. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float ZoneRadius = 300.f;
@@ -38,6 +38,9 @@ public:
 	float DriftSpeed = 50.f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float PickupLifetime = 10.f;
+	/** 0 = use every discovered FishZone; positive values limit active spots. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish", meta=(ClampMin="0"))
+	int32 MaxSpots = 0; // T04 hook
 
 private:
 	struct FSpot
@@ -52,6 +55,7 @@ private:
 	};
 	struct FPickup
 	{
+		TWeakObjectPtr<ALFBoat> SourceBoat; // T04 hook
 		TWeakObjectPtr<AStaticMeshActor> Mesh;
 		float Born = 0.f;
 	};

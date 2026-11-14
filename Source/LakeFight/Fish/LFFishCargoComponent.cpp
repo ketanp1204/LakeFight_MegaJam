@@ -18,6 +18,11 @@ ULFFishCargoComponent::ULFFishCargoComponent()
 	FishMesh = Fish.Object;
 }
 
+ULFFishCargoComponent* ULFFishCargoComponent::Get(const AActor* Boat)
+{
+	return Boat ? Boat->FindComponentByClass<ULFFishCargoComponent>() : nullptr;
+}
+
 void ULFFishCargoComponent::AddFish(int32 Amount)
 {
 	Count += FMath::Clamp(Amount, 0, MAX_int32 - Count);
@@ -33,17 +38,20 @@ int32 ULFFishCargoComponent::RemoveFish(int32 Amount)
 	return Removed;
 }
 
-void ULFFishCargoComponent::Spill(int32 Amount)
+void ULFFishCargoComponent::Spill(int32 Amount, const TCHAR* Reason)
 {
 	ALFBoat* Boat = Cast<ALFBoat>(GetOwner());
 	ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();
 	if (Boat && Fish)
 	{
+		const int32 GoldBefore = ULFRoundCargoComponent::Get(Boat)->GetGold(); // T04 hook
 		const int32 Spilled = RemoveFish(Amount);
+		const int32 GoldRemoved = GoldBefore - ULFRoundCargoComponent::Get(Boat)->GetGold();
 		// T04 hook: gold pickups retain their value; statistics count fish, not points.
 		const int32 Gold = ULFRoundCargoComponent::Get(Boat)->SpillGold();
-		if (ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) Round->RecordSpill(Spilled);
-		Fish->Spill(Boat, Spilled - Gold);
+		const int32 Actual = Gold + Fish->Spill(Boat, Spilled - GoldRemoved);
+		if (ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>()) Round->RecordSpill(Actual);
+		UE_LOG(LogLF, Display, TEXT("[fish] spill %d from %s by %s"), Actual, *Boat->GetName(), Reason);
 	}
 }
 

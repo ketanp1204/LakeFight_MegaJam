@@ -15,6 +15,7 @@ class LAKEFIGHT_API ULFFishCargoComponent : public UActorComponent
 
 public:
 	ULFFishCargoComponent();
+	static ULFFishCargoComponent* Get(const AActor* Boat); // T04 hook
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	int32 VisibleFishLimit = 8;
@@ -27,7 +28,7 @@ public:
 
 	void AddFish(int32 Amount);
 	int32 RemoveFish(int32 Amount);
-	void Spill(int32 Amount);
+	void Spill(int32 Amount, const TCHAR* Reason = TEXT("unknown")); // T04 hook
 
 private:
 	UPROPERTY(Transient)

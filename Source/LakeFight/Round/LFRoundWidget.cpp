@@ -4,6 +4,7 @@
 #include "Round/LFRoundCargoComponent.h"
 #include "Round/LFGoldFish.h"
 #include "Fish/LFFishSubsystem.h"
+#include "Fish/LFBoatFishLabels.h" // T04 hook
 #include "Fish/LFFishCargoComponent.h"
 #include "Brawler/LFBrawler.h"
 #include "Boat/LFBoat.h"
@@ -77,6 +78,11 @@ TSharedRef<SWidget> ULFRoundWidget::RebuildWidget()
 	Scale->AddChild(Design);
 	Canvas = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Design->AddChild(Canvas);
+	// T04 hook: projected gameplay cargo counts, behind the fixed HUD.
+	ULFBoatFishLabels* BoatLabels = CreateWidget<ULFBoatFishLabels>(GetOwningPlayer(), ULFBoatFishLabels::StaticClass());
+	Canvas->AddChild(BoatLabels);
+	Place(BoatLabels, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
+	GameplayWidgets.Add(BoatLabels);
 	for (int32 I = 0; I < 4; ++I)
 	{
 		UBorder* Card = WidgetTree->ConstructWidget<UBorder>();
@@ -99,11 +105,11 @@ TSharedRef<SWidget> ULFRoundWidget::RebuildWidget()
 	Banner->SetJustification(ETextJustify::Center);
 	UBorder* CargoCard = WidgetTree->ConstructWidget<UBorder>();
 	Canvas->AddChild(CargoCard);
-	Place(CargoCard, FVector2D(36.f, 608.f), FVector2D(390.f, 86.f));
+	Place(CargoCard, FVector2D(36.f, 608.f), FVector2D(450.f, 86.f));
 	CargoCard->SetBrushColor(FLinearColor(.025f, .055f, .065f, .92f));
 	Icon(TEXT("ICON_LF_Fish"), FVector2D(44.f, 616.f), 68.f);
 	Text(Canvas, TEXT("YOUR BOAT"), FVector2D(122.f, 616.f), FVector2D(280.f, 26.f), 15, Cream);
-	Cargo = Text(Canvas, TEXT("0 fish"), FVector2D(122.f, 642.f), FVector2D(280.f, 42.f), 23, Cream);
+	Cargo = Text(Canvas, TEXT("0 fish"), FVector2D(122.f, 642.f), FVector2D(340.f, 42.f), 28, Cream);
 	GoldIcon = Icon(TEXT("ICON_LF_FishGold"), FVector2D(1020.f, 616.f), 60.f);
 	Direction = Text(Canvas, TEXT(""), FVector2D(830.f, 644.f), FVector2D(410.f, 50.f), 20, Colours[3]);
 	Direction->SetJustification(ETextJustify::Right);
@@ -125,7 +131,7 @@ void ULFRoundWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	APlayerController* PC = GetOwningPlayer();
 	ALFBoat* Boat = PC ? Cast<ALFBoat>(PC->GetPawn()) : nullptr;
 	if (PC) if (ALFBrawler* Brawler = Cast<ALFBrawler>(PC->GetPawn())) Boat = Brawler->GetBoat();
-	ULFFishCargoComponent* Hold = Boat ? Boat->FindComponentByClass<ULFFishCargoComponent>() : nullptr;
+	ULFFishCargoComponent* Hold = ULFFishCargoComponent::Get(Boat);
 	const int32 Count = Hold ? Hold->GetCount() : 0;
 	const ULFRoundCargoComponent* Gold = Boat ? Boat->FindComponentByClass<ULFRoundCargoComponent>() : nullptr;
 	Cargo->SetText(FText::FromString(Boat ? FString::Printf(TEXT("%d fish  /  %d points"), Count, Gold ? Gold->GetValue(Count) : Count) : TEXT("Swimming - find a boat")));

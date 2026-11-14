@@ -713,3 +713,70 @@ Native new systems + minimal marked T04 hooks; no Unreal MCP; closed-editor buil
    not been exercised through the unavailable desktop-control helper; these remain manual checks.
 5. Packaging dependency entries exist, but a packaged build was not run; verify PNGs ship and load.
 Stage 3 has NOT started. Await the director's combined playtest and explicit Stage 3 go.
+
+## T04 Stage 2.1 - director/review fixes (Codex)
+Authorized now: #3 hull-exterior spill ring, source-boat pickup immunity 1.5 s, open-water checks;
+#4 nearest eligible boat wins spot (ties pause); #5 bank bounds from mesh + break after bank;
+#6 configurable zone limit, default unlimited; #7 spawn-failure respawn delay; #8 lf.fish.debug default 0;
+#9 cache boats/cargo at BeginPlay (track later spawned boats); #11 checked team-name mapping;
+#12 static ULFFishCargoComponent::Get. Do NOT do #1/#2 or Stage 3 API (Claude Code owns them).
+PIE fixes: animated bob/rotation/ripples and fish leaps every 2-4 s with splash/SFX (gold faster + sparkles);
+catch radius 400 cm / max speed 220 cm/s, tunable; projected team-coloured fish icon/count above every
+loaded boat (hide zero/off-screen), prominent own cargo; lf.fish.giveall N and lf.boat.capsize helpers;
+log '[fish] spill N from <boat> by <reason>'. Mesh/C++ only. Build, commit, STOP.
+Director accepted: fast-pass rejection, own bank, enemy bank ignored, Final music, end screen,
+Restart/Quit with mouse. Gamepad still untested.
+
+**Stage 2.1 implementation**
+- New Fish/LFFishRuntime.h/.cpp: internal weak boat/cargo cache populated at world BeginPlay and
+  updated for spawned boats; shared nearest eligible catcher (ties within 1 cm pause; a nearer AI
+  occupies the spot without fishing); safe spill placement beyond the hull XY bounds; console helpers.
+- New Fish/LFFishSpotVisualComponent.h/.cpp: spot pieces bob/tilt/rotate, two thin expanding mesh
+  ripple rings, original fish leaps every 2-4 s (gold 1-2 s), existing small splash and Surface SFX.
+  Ripple segments reuse the original SM_LF_Crate, flattened/instanced; no new Content assets.
+- New Fish/LFBoatFishLabels.h/.cpp: B08 fish icon + team-coloured outlined count above loaded boats;
+  zero/off-screen labels hidden. Round widget adds the labels and enlarges the own-cargo panel.
+- Fish cargo/subsystem and gold integration: static Cargo::Get, source pickup immunity 1.5 s for
+  ordinary/gold, failed pickup spawns restore cargo, actual spill counts/reasons logged, mesh-local
+  bank XY bounds (component transform included), one deposit per tick, MaxSpots=0 uses all zones,
+  failed spot spawns retry after 5-8 s, checked team mapping, lf.fish.debug default 0 gates fish debug.
+  Catch defaults now 400 cm / 220 cm/s, interval still 1.5 s. Ram still spills 1-2; capsize spills all.
+- Existing LFBoat changes are confined to the two marked T04 spill hooks. Review #1/#2, AI goals,
+  Stage 3 API, item 0, map/assets and unrelated brawler debug prompts are untouched.
+
+**Stage 2.1 verification / commands**
+- Final editor-closed build succeeded through `Tools/ue.ps1 -Action build
+  -Project D:/Projects/LakeFight/LakeFight.uproject -EngineDir D:/UE_EpicGames/UE_5.8`.
+  Initial build caught a UWidget::Slot local shadow; fixed before successful subsequent builds.
+- Standalone rendered run: `UnrealEditor.exe LakeFight.uproject /Game/LakeFight/Maps/L_Lake01
+  -game -RenderOffscreen -windowed -ResX=1280 -ResY=720 -unattended -nosplash -seconds=22 -LFRoundTest`,
+  ExecCmds `lf.ai.freeze 1,LFDrive,lf.fish.giveall 6,BugItGo 0 0 0 0 0 0`.
+  Logged giveall for all four boats and ordinary catches spaced 1.5 s; leap Surface sounds logged.
+  Screenshots inspected for projected/own counts and ripple readability; test flag accelerates
+  gold/final/results milestones. Log: Saved/Logs/T04_Stage21_final_render.log.
+- Headless capsize helper run: same map `-game -NullRHI -unattended -nosound -nosplash -benchmark
+  -fps=60 -seconds=23`, ExecCmds `lf.ai.freeze 1,LFDrive,lf.fish.giveall 10,lf.boat.capsize`.
+  Logged giveall to all four boats, '[fish] spill 10 from BP_LF_Boat_C_3 by capsize'; 10 pickups at
+  t=10, zero at t=20, no automatic re-scoop. Existing settle diagnostic warned boat was not level
+  while deliberately capsized. Log: Saved/Logs/T04_Stage21_spill.log.
+- Fast-pass regression: `-game -NullRHI -unattended -nosound -nosplash -benchmark -fps=60 -seconds=15`,
+  ExecCmds `lf.ai.freeze 1,LFDrive,BugItGo 0 0 0 0 0 0,LFRow 1`. Zero catches; t=10 sample caught=0.
+  Log: Saved/Logs/T04_Stage21_fastpass.log. These are standalone checks, not human PIE acceptance.
+- Code review: source-boat-only immunity, nearest/tie arbitration, transformed bank bounds/break,
+  uncapped zone iteration and spawn-failure timer inspected. Overlapping/scaled banks, >3 zones and
+  forced spawn failure were not exercised in a modified level. No Unreal MCP or assets saved.
+
+**Director PIE checks / stop**
+1. Check spot bob/rotation, ripple rings, leaping fish and splash loudness from chase cam; gold faster.
+2. Stop within 4 m at under 2.2 m/s: one fish per 1.5 s; full-speed pass still catches nothing.
+3. `lf.fish.giveall 6`: check all visible boats' coloured counts; ram for 1-2 exterior pickups;
+   source boat waits 1.5 s to scoop, other teams can scoop immediately. Check near dock/shore too.
+4. `lf.boat.capsize`: all cargo spills; wait 10 s for expiry. Repeat with gold cargo to check value.
+5. Put two boats on a spot: nearest eligible boat reserves it; nearly equal distance pauses.
+6. Own bank deposits once; enemy bank ignored. `lf.fish.debug 1` enables temporary fish diagnostics;
+   `lf.fish.debug 0` hides them while gameplay labels/HUD remain. Gamepad remains untested.
+Build, commit, STOP at Stage 2.1. Stage 3 has not started.
+- Final `git diff --check` passed. Final rendered run had no LogLF warnings/errors; normal exit.
+  Reviewed copies: Saved/Screenshots/T04_Stage21_HUD.png, T04_Stage21_Gold.png,
+  T04_Stage21_Results.png (Saved artifacts, not committed). Engine experimental toolset startup
+  warnings/errors remain outside this task, as in the previous standalone runs.

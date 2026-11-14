@@ -1,6 +1,8 @@
 #include "Fish/LFFishSubsystem.h"
 
 #include "Fish/LFFishCargoComponent.h"
+#include "Fish/LFFishRuntime.h" // T04 hook
+#include "Fish/LFFishSpotVisualComponent.h" // T04 hook
 #include "Round/LFRoundCargoComponent.h" // T04 hook
 #include "Round/LFRoundSubsystem.h" // T04 hook
 #include "Boat/LFBoat.h"
@@ -35,7 +37,7 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFFishGive(TEXT("lf.fish.give"), T
 		}
 		if (Boat)
 		{
-			if (ULFFishCargoComponent* Cargo = Boat->FindComponentByClass<ULFFishCargoComponent>())
+			if (ULFFishCargoComponent* Cargo = ULFFishCargoComponent::Get(Boat))
 			{
 				const int32 N = FMath::Clamp(FCString::Atoi(*Args[0]), 0, 100);
 				Cargo->AddFish(N);
@@ -47,6 +49,9 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFFishGive(TEXT("lf.fish.give"), T
 namespace
 {
 	const TCHAR* TeamNames[] = { TEXT("Red"), TEXT("Blue"), TEXT("Green"), TEXT("Yellow") };
+	// T04 hook: these array indices are the persisted crew enum values.
+	static_assert(int32(ELFTeam::Red) == 0 && int32(ELFTeam::Blue) == 1 && int32(ELFTeam::Green) == 2 && int32(ELFTeam::Yellow) == 3);
+	static_assert(UE_ARRAY_COUNT(TeamNames) == int32(ELFTeam::Yellow) + 1);
 
 	bool Named(const AActor* Actor, const FString& Prefix)
 	{
@@ -97,7 +102,7 @@ void ULFFishSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	Super::OnWorldBeginPlay(InWorld);
 	for (TActorIterator<AActor> It(&InWorld); It; ++It)
 	{
-		if (Named(*It, TEXT("FishZone_")) && Spots.Num() < 3)
+		if (Named(*It, TEXT("FishZone_")) && (MaxSpots <= 0 || Spots.Num() < MaxSpots))
 		{
 			FSpot S;
 			S.Centre = It->GetActorLocation();
@@ -119,9 +124,9 @@ void ULFFishSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 		Respawn(S);
 	}
 	UE_LOG(LogLF, Display, TEXT("[fish] ready: %d zones, %d banks; catch %.1f s below %.0f cm/s, radius %.0f cm"), Spots.Num(), Banks.Num(), CatchInterval, CatchMaxSpeed, CatchRadius);
-	if (Spots.Num() < 3 || Banks.Num() != 4)
+	if (Spots.IsEmpty() || Banks.Num() != UE_ARRAY_COUNT(TeamNames))
 	{
-		UE_LOG(LogLF, Warning, TEXT("[fish] expected 3 FishZone_* markers and BankZone_Red/Blue/Green/Yellow; add runtime Actor Tags matching these names (editor labels work only in PIE)"));
+		UE_LOG(LogLF, Warning, TEXT("[fish] expected FishZone_* markers and BankZone_Red/Blue/Green/Yellow; add runtime Actor Tags matching these names (editor labels work only in PIE)"));
 	}
 	NextReport = InWorld.GetTimeSeconds() + 10.f;
 	bStarted = true;
@@ -168,6 +173,10 @@ void ULFFishSubsystem::Respawn(FSpot& Spot)
 {
 	const FVector At = PickPoint(Spot.Centre);
 	Spot.Mesh = MakeMesh(SpotMesh, At, 2.f);
+	// T04 hook: failed spawns retry on the same cooldown, never every frame.
+	Spot.RespawnAt = GetWorld()->GetTimeSeconds() + FMath::FRandRange(5.f, 8.f);
+	if (!Spot.Mesh.IsValid()) return;
+	ULFFishSpotVisualComponent::Add(Spot.Mesh.Get(), false);
 	Spot.Goal = PickPoint(Spot.Centre);
 	Spot.Remaining = FMath::RandRange(3, 5);
 	Spot.Progress = 0.f;
@@ -185,24 +194,27 @@ void ULFFishSubsystem::PlaySound(USoundWave* Sound)
 	UGameplayStatics::PlaySound2D(this, Sound, Gain);
 }
 
-void ULFFishSubsystem::Spill(ALFBoat* Boat, int32 Amount)
+int32 ULFFishSubsystem::Spill(ALFBoat* Boat, int32 Amount)
 {
 	const float Now = GetWorld()->GetTimeSeconds();
+	int32 Spawned = 0;
 	for (int32 I = 0; I < Amount; ++I)
 	{
-		const float Angle = 2.f * PI * I / FMath::Max(Amount, 1) + FMath::FRandRange(-0.3f, 0.3f);
-		const FVector At = Boat->GetActorLocation() + FVector(FMath::Cos(Angle), FMath::Sin(Angle), 0.f) * 220.f;
+		FVector At;
+		// T04 hook: outside the complete hull, in open water; keep fish aboard on failure.
+		if (!LF::Fish::SpillPoint(Boat, I, Amount, At)) continue;
 		FPickup P;
 		P.Mesh = MakeMesh(FishMesh, At, 0.8f);
+		if (!P.Mesh.IsValid()) continue;
 		P.Born = Now;
+		P.SourceBoat = Boat;
 		Pickups.Add(P);
+		++Spawned;
 	}
-	Spilled += Amount;
-	if (Amount > 0)
-	{
-		Boat->OnSplash(Boat->GetActorLocation(), 0.3f);
-		UE_LOG(LogLF, Display, TEXT("[fish] %s spilled %d (pickup lifetime %.1f s)"), *Boat->GetName(), Amount, PickupLifetime);
-	}
+	if (Spawned < Amount) ULFFishCargoComponent::Get(Boat)->AddFish(Amount - Spawned);
+	Spilled += Spawned;
+	if (Spawned > 0) Boat->OnSplash(Boat->GetActorLocation(), 0.3f);
+	return Spawned;
 }
 
 void ULFFishSubsystem::Tick(float DeltaTime)
@@ -215,11 +227,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 		return;
 	}
 	const float Now = GetWorld()->GetTimeSeconds();
-	TArray<ALFBoat*> Boats;
-	for (TActorIterator<ALFBoat> It(GetWorld()); It; ++It)
-	{
-		Boats.Add(*It);
-	}
+	const TArray<FLFFishBoat>& Boats = GetWorld()->GetSubsystem<ULFFishBoatCache>()->GetBoats(); // T04 hook
 	for (FSpot& S : Spots)
 	{
 		if (!S.Mesh.IsValid())
@@ -247,17 +255,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 		At.Z = LF::Water::GetHeightAt(At, Now) + 18.f;
 		S.Mesh->SetActorLocation(At);
 		S.Mesh->SetActorScale3D(FVector(2.f + 0.08f * FMath::Sin(Now * 3.f)));
-		ALFBoat* Catcher = nullptr;
-		for (ALFBoat* Boat : Boats)
-		{
-			if (!Boat->IsCapsized() && Boat->HasDriver() && Boat->IsPlayerControlled()
-				&& Boat->GetHull()->GetPhysicsLinearVelocity().Size2D() < CatchMaxSpeed
-				&& FVector::Dist2D(Boat->GetActorLocation(), At) < CatchRadius)
-			{
-				Catcher = Boat;
-				break;
-			}
-		}
+		ALFBoat* Catcher = LF::Fish::NearestCatcher(GetWorld(), At, CatchRadius, CatchMaxSpeed); // T04 hook
 		if (!Catcher || S.Catcher.Get() != Catcher)
 		{
 			S.Progress = 0.f;
@@ -268,7 +266,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 			S.Progress += DeltaTime;
 			if (S.Progress >= CatchInterval)
 			{
-				if (ULFFishCargoComponent* Cargo = Catcher->FindComponentByClass<ULFFishCargoComponent>())
+				if (ULFFishCargoComponent* Cargo = ULFFishCargoComponent::Get(Catcher))
 				{
 					Cargo->AddFish(1);
 					++Caught;
@@ -296,12 +294,14 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 			FVector At = P.Mesh->GetActorLocation();
 			At.Z = LF::Water::GetHeightAt(At, Now) + 18.f;
 			P.Mesh->SetActorLocation(At);
-			for (ALFBoat* Boat : Boats)
+			for (const FLFFishBoat& Entry : Boats)
 			{
+				ALFBoat* Boat = Entry.Boat.Get();
+				if (!Boat || !Entry.Cargo.IsValid()) continue;
 				FVector2D Nearest;
-				if (Now - P.Born > 0.75f && !Boat->IsCapsized() && Boat->HasDriver() && Boat->GunwaleDistance(At, Nearest) < 25.f)
+				if ((Boat != P.SourceBoat.Get() || Now - P.Born >= 1.5f) && !Boat->IsCapsized() && Boat->HasDriver() && Boat->GunwaleDistance(At, Nearest) < 25.f)
 				{
-					if (ULFFishCargoComponent* Cargo = Boat->FindComponentByClass<ULFFishCargoComponent>())
+					if (ULFFishCargoComponent* Cargo = Entry.Cargo.Get())
 					{
 						Cargo->AddFish(1);
 						++Scooped;
@@ -318,19 +318,25 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 			Pickups.RemoveAt(I);
 		}
 	}
-	for (ALFBoat* Boat : Boats)
+	for (const FLFFishBoat& Entry : Boats)
 	{
-		ULFFishCargoComponent* Cargo = Boat->FindComponentByClass<ULFFishCargoComponent>();
-		if (!Cargo) continue;
+		ALFBoat* Boat = Entry.Boat.Get();
+		ULFFishCargoComponent* Cargo = Entry.Cargo.Get();
+		if (!Boat || !Cargo) continue;
 		// T04 hook: the round HUD replaces temporary boat text.
-		if (!Round) DrawDebugString(GetWorld(), Boat->GetActorLocation() + FVector(0.f, 0.f, 180.f), FString::Printf(TEXT("Fish: %d"), Cargo->GetCount()), nullptr, FColor::White, 0.f, true);
+		if (LF::Fish::DebugEnabled()) DrawDebugString(GetWorld(), Boat->GetActorLocation() + FVector(0.f, 0.f, 180.f), FString::Printf(TEXT("Fish: %d"), Cargo->GetCount()), nullptr, FColor::White, 0.f, true);
 		ALFBrawler* Driver = Boat->GetDriver();
 		if (!Driver || Boat->IsCapsized() || Cargo->GetCount() == 0) continue;
 		for (const FBank& B : Banks)
 		{
 			if (!B.Zone.IsValid() || int32(Driver->Team) != B.Team) continue;
-			const FVector Local = B.Zone->GetActorTransform().InverseTransformPosition(Boat->GetActorLocation());
-			if (FMath::Abs(Local.X) > 238.f || FMath::Abs(Local.Y) > 138.f || FMath::Abs(Local.Z) > 150.f) continue;
+			// T04 hook: mesh-local bounds include authored size, offset, rotation and component scale.
+			const UStaticMeshComponent* BankMesh = B.Zone->FindComponentByClass<UStaticMeshComponent>();
+			if (!BankMesh || !BankMesh->GetStaticMesh()) continue;
+			const FBox Bounds = BankMesh->GetStaticMesh()->GetBoundingBox();
+			const FVector Local = BankMesh->GetComponentTransform().InverseTransformPosition(Boat->GetActorLocation());
+			if (Local.X < Bounds.Min.X || Local.X > Bounds.Max.X || Local.Y < Bounds.Min.Y || Local.Y > Bounds.Max.Y
+				|| FMath::Abs(Local.Z - Bounds.GetCenter().Z) > 150.f) continue;
 			// T04 hook
 			const int32 Points = ULFRoundCargoComponent::Get(Boat)->GetValue(Cargo->GetCount());
 			const int32 N = Cargo->RemoveFish(Cargo->GetCount());
@@ -347,8 +353,9 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 				F.Mesh = MakeMesh(FishMesh, F.Start, 0.6f);
 				Flights.Add(F);
 			}
-			if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FString::Printf(TEXT("%s +%d points!"), TeamNames[B.Team], Points));
+			if (LF::Fish::DebugEnabled() && GEngine) GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FString::Printf(TEXT("%s +%d points!"), TeamNames[B.Team], Points));
 			UE_LOG(LogLF, Display, TEXT("[fish] bank %s team=%s fish=%d points=%d score=%d"), *Boat->GetName(), TeamNames[B.Team], N, Points, Scores[B.Team]);
+			break; // T04 hook: one deposit even when same-team banks overlap.
 		}
 	}
 	for (int32 I = Flights.Num() - 1; I >= 0; --I)
@@ -364,7 +371,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 		F.Mesh->SetActorLocation(FMath::Lerp(F.Start, F.End, T) + FVector(0.f, 0.f, 240.f * FMath::Sin(T * PI)));
 	}
 	// T04 hook: the round HUD replaces temporary scores.
-	if (!Round && GEngine) GEngine->AddOnScreenDebugMessage(40401, 0.f, FColor::White,
+	if (LF::Fish::DebugEnabled() && GEngine) GEngine->AddOnScreenDebugMessage(40401, 0.f, FColor::White,
 		FString::Printf(TEXT("FISH  Red %d | Blue %d | Green %d | Yellow %d"), Scores[0], Scores[1], Scores[2], Scores[3]));
 	if (Now >= NextReport)
 	{

@@ -1,6 +1,8 @@
 #include "Round/LFGoldFish.h"
 
 #include "Round/LFRoundCargoComponent.h"
+#include "Fish/LFFishRuntime.h" // T04 hook
+#include "Fish/LFFishSpotVisualComponent.h" // T04 hook
 #include "Round/LFRoundSubsystem.h"
 #include "Brawler/LFBrawler.h"
 #include "Boat/LFBoat.h"
@@ -43,9 +45,10 @@ void ALFGoldFish::BeginPlay()
 	UE_LOG(LogLF, Display, TEXT("[round] gold spot: %d fish, value 5 each"), Remaining);
 }
 
-void ALFGoldFish::MakePickup()
+void ALFGoldFish::MakePickup(ALFBoat* SourceBoat)
 {
 	bPickup = true;
+	SpillSource = SourceBoat; // T04 hook
 	Mesh->SetStaticMesh(GoldMesh);
 	Mesh->SetRelativeScale3D(FVector(0.8f));
 	for (UStaticMeshComponent* Sparkle : Sparkles) Sparkle->SetVisibility(false);
@@ -64,6 +67,8 @@ void ALFGoldFish::Tick(float DeltaSeconds)
 	SetActorLocation(At);
 	if (!bPickup)
 	{
+		// T04 hook: defer until the first tick so pickups never create spot visuals.
+		if (!bVisualStarted) { ULFFishSpotVisualComponent::Add(this, true); bVisualStarted = true; }
 		for (int32 I = 0; I < Sparkles.Num(); ++I)
 		{
 			const float A = Now * 1.5f + I * PI / 3.f;
@@ -72,16 +77,20 @@ void ALFGoldFish::Tick(float DeltaSeconds)
 			Sparkles[I]->SetRelativeScale3D(FVector(0.12f + 0.08f * FMath::Abs(FMath::Sin(A * 3.f))));
 		}
 	}
-	ALFBoat* Eligible = nullptr;
-	for (TActorIterator<ALFBoat> It(GetWorld()); It; ++It)
+	// T04 hook: use the shared cache and identical spot arbitration; pickups allow every team.
+	ALFBoat* Eligible = bPickup ? nullptr : LF::Fish::NearestCatcher(GetWorld(), At, CatchRadius, CatchMaxSpeed);
+	if (bPickup)
 	{
-		if (It->IsCapsized() || !It->HasDriver()) continue;
-		FVector2D Nearest;
-		if (bPickup ? (Now - Born > 0.75f && It->GunwaleDistance(At, Nearest) < 25.f)
-			: (It->IsPlayerControlled() && It->GetHull()->GetPhysicsLinearVelocity().Size2D() < CatchMaxSpeed && FVector::Dist2D(It->GetActorLocation(), At) < CatchRadius))
+		for (const FLFFishBoat& Entry : GetWorld()->GetSubsystem<ULFFishBoatCache>()->GetBoats())
 		{
-			Eligible = *It;
-			break;
+			ALFBoat* Boat = Entry.Boat.Get();
+			if (!Boat || !Entry.Cargo.IsValid() || Boat->IsCapsized() || !Boat->HasDriver()) continue;
+			FVector2D Nearest;
+			if ((Boat != SpillSource.Get() || Now - Born >= 1.5f) && Boat->GunwaleDistance(At, Nearest) < 25.f)
+			{
+				Eligible = Boat;
+				break;
+			}
 		}
 	}
 	if (!Eligible || Catcher.Get() != Eligible) Progress = 0.f;

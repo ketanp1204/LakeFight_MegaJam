@@ -17,15 +17,15 @@ public:
 	ALFGoldFish();
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-	void MakePickup();
+	void MakePickup(ALFBoat* SourceBoat); // T04 hook
 	bool IsSpot() const { return !bPickup; }
 
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float CatchInterval = 1.5f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
-	float CatchMaxSpeed = 150.f;
+	float CatchMaxSpeed = 220.f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
-	float CatchRadius = 200.f;
+	float CatchRadius = 400.f;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category="LF|Fish")
@@ -40,4 +40,6 @@ private:
 	float Born = 0.f;
 	int32 Remaining = 1;
 	bool bPickup = false;
+	bool bVisualStarted = false; // T04 hook
+	TWeakObjectPtr<ALFBoat> SpillSource;
 };

@@ -610,9 +610,9 @@ void ALFBoat::ResolveContact(ALFBoat* Target, const FVector& TargetDir, float Cl
 	}
 
 	// T04 hook
-	if (ULFFishCargoComponent* Cargo = Target->FindComponentByClass<ULFFishCargoComponent>())
+	if (ULFFishCargoComponent* Cargo = ULFFishCargoComponent::Get(Target))
 	{
-		Cargo->Spill(Strength >= 0.5f ? 2 : 1);
+		Cargo->Spill(Strength >= 0.5f ? 2 : 1, TEXT("ram"));
 	}
 	ApplyRamTo(Target, TargetDir, Contact, Strength);
 
@@ -845,9 +845,9 @@ void ALFBoat::UpdateCapsize(float DeltaSeconds)
 void ALFBoat::Capsize()
 {
 	// T04 hook
-	if (ULFFishCargoComponent* Cargo = FindComponentByClass<ULFFishCargoComponent>())
+	if (ULFFishCargoComponent* Cargo = ULFFishCargoComponent::Get(this))
 	{
-		Cargo->Spill(Cargo->GetCount());
+		Cargo->Spill(Cargo->GetCount(), TEXT("capsize"));
 	}
 	bCapsized = true;
 	CapsizedAt = GetWorld()->GetTimeSeconds();
