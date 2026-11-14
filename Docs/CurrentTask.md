@@ -16,7 +16,18 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 14. [DONE 6de8c7a] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
 15. [DONE b478b5e] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
 16. [DONE 91f67f3] Hero shots (Docs/Shots/Hero/)
-17. [IN PROGRESS] ItchPage controls + how-to-play; final package + smoke
+17. [DONE 80d00b2 + report commit] ItchPage controls + how-to-play; final package + smoke
+
+## N2 report - items 11-17 (Claude Code, resumed session 15 Nov 02:55-04:20 IST) - unreviewed, director away
+**Final build:** `Builds/LakeFight_N2_final_20261115_0350.zip` (383 MB; unzipped in `Build/Windows/LakeFight.exe`), source 80d00b2.
+**Final smoke (Shipping, `LakeFight.exe -LFSmoke`, Saved/n1/final_smoke.txt):** fish ready 3 zones / 4 banks -> main menu ->
+Play -> hints 1-2 -> pause at 234.0 s -> How to play page -> Resume at 234.0 s -> hint 3 -> 52 catches, 44 banked ->
+results "Yellow WINS!" 0/14/6/32 -> quit, exit code 0. My window-capture of the packaged menu/results failed (PrintWindow
+got no handle), so the restyled UI is verified in editor -game shots only (Docs/Shots/UI), not by eye in Shipping; the new
+lockup PNG is staged at Build/Windows/LakeFight/Binaries/Win64/LFUI/.
+Done: 11 AI banking check | 12 pause menu | 13 how-to card + hints (zip LakeFight_N2_howto_20261115_0313) | 14 graphics
+option + pile-up frame time (High 8.2 ms avg in Shipping) | 15 UI polish + 1080p shots | 16 hero shots | 17 ItchPage + this.
+Check items 13-16 in the director check list below cover N2.
 
 ## N2 item 16 - hero shots (15 Nov 03:52-04:15 IST, unreviewed - director away)
 - **Docs/Shots/Hero/** - 7 x `HighResShot 1920x1080` (scene only, no HUD), editor -game at High:
@@ -151,7 +162,7 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 - If 7c meant something else (e.g. a specific bank-zone geometry case), it is still open.
 
 ## N1 report (Claude Code, 14 Nov 21:37-22:30 IST) - unreviewed, director away
-**Latest build (items 1-13):** `Builds/LakeFight_N2_howto_20261115_0313.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
+**Latest build (items 1-17):** `Builds/LakeFight_N2_final_20261115_0350.zip` (see the N2 report above). Items 1-13: `Builds/LakeFight_N2_howto_20261115_0313.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
 Shipping smoke: menu -> Play -> hints -> pause / how to play / resume (clock held) -> 41 catches -> "Yellow WINS!" -> quit.
 Items 1-10 build: `Builds/LakeFight_N1_crowd_20261114_2254.zip`.
 Shipping smoke: 3 zones / 4 banks -> menu -> Play -> 55 catches -> "Yellow WINS!" 28/9/7/5 -> quit.
@@ -188,6 +199,9 @@ Stretch: 9 ambient life and 10 shore spectators + foliage sway done (see their s
 14. How to play (N2.13): the controls card wording/accuracy, and the three round-start hints (timing 5 s each - too fast?).
 15. Graphics (N2.14): does LOW (engine Medium) still look acceptable? Remap if you want engine Low in the list.
 16. UI polish (N2.15): Docs/Shots/UI/ - style, sizes, the banking pop (05a-c), results card; mouse hover + pad focus.
+    Also look at the packaged menu once - I could not capture it in Shipping.
+17. Hero shots (N2.16): Docs/Shots/Hero/ - 06 (bank) is staged with the chase camera; want a spectate-cam bank instead?
+18. ItchPage (N2.17): new pause/menu/options control rows and the first-round hint paragraph.
 
 ## N1 item 7 - sky (14 Nov 22:12-22:23 IST, unreviewed - director away)
 - `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):
