@@ -7,6 +7,7 @@
 class ALFBrawler;
 class ALFGoldFish;
 class ULFRoundWidget;
+class ULFMenuWidget;
 class USoundWave;
 class UAudioComponent;
 
@@ -44,6 +45,9 @@ public:
 	FString GetStats() const;
 	void Restart();
 	void Quit();
+	/** N1 item 5: the main menu shows over the paused lake on the first load only; Play starts the round. */
+	bool IsInMenu() const { return bInMenu; }
+	void StartFromMenu();
 
 private:
 	float Remaining = 240.f;
@@ -64,6 +68,11 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<ULFRoundWidget> Widget;
+	UPROPERTY()
+	TObjectPtr<ULFMenuWidget> Menu;
+	bool bInMenu = false;
+	float MenuTime = 0.f;
+	static bool bMenuDone; // process lifetime: Restart (map reload) goes straight back into a round
 	UPROPERTY()
 	TObjectPtr<USoundWave> GoldSound;
 	UPROPERTY()

@@ -31,6 +31,7 @@
 #include "ProceduralMeshComponent.h"
 #include "TimerManager.h"
 #include "UnrealClient.h"
+#include "Containers/Ticker.h"
 #include "Misc/Paths.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -43,12 +44,13 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFShot(TEXT("lf.debug.shot"), TEXT
 	{
 		const float Delay = Args.Num() > 0 ? FCString::Atof(*Args[0]) : 1.f;
 		const FString Name = Args.Num() > 1 ? Args[1] : TEXT("LF_Shot");
-		FTimerHandle H;
-		World->GetTimerManager().SetTimer(H, FTimerDelegate::CreateLambda([Name]()
+		// Real-time ticker: works while the game is paused (menu / results).
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Name](float)
 		{
-			FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir() / TEXT("Screenshots") / (Name + TEXT(".png")), false, false);
+			FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir() / TEXT("Screenshots") / (Name + TEXT(".png")), true, false);
 			UE_LOG(LogLF, Display, TEXT("[shot] %s"), *Name);
-		}), FMath::Max(Delay, 0.01f), false);
+			return false;
+		}), FMath::Max(Delay, 0.01f));
 	}));
 // lf.debug.boatlog [seconds] [delay]: log every boat's speed / yaw rate / drive input once a second (N1 3e measurements).
 static FAutoConsoleCommandWithWorldAndArgs CmdLFBoatLog(TEXT("lf.debug.boatlog"), TEXT("lf.debug.boatlog [seconds=10] [delay=0] - log boat speed/yaw/input every second."),

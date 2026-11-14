@@ -2,6 +2,7 @@
 
 #include "Round/LFGoldFish.h"
 #include "Round/LFRoundWidget.h"
+#include "Round/LFMenuWidget.h"
 #include "Brawler/LFBrawler.h"
 #include "Boat/LFBoat.h"
 #include "Fish/LFFishSubsystem.h"
@@ -75,6 +76,8 @@ void LF::Smoke(const FString& Line)
 		FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM, &IFileManager::Get(), FILEWRITE_Append);
 }
 
+bool ULFRoundSubsystem::bMenuDone = false;
+
 void ULFRoundSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
@@ -84,6 +87,14 @@ void ULFRoundSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 #if !UE_BUILD_SHIPPING
 	bTest = FParse::Param(FCommandLine::Get(), TEXT("LFRoundTest"));
 #endif
+	// N1 item 5: menu on the first load of a real game session (not in editor PIE, not for the test flag).
+	static bool bAudioLoaded = false;
+	if (!bAudioLoaded)
+	{
+		bAudioLoaded = true;
+		ULFMenuWidget::LoadAudioSettings(this);
+	}
+	bInMenu = !bMenuDone && !bTest && !InWorld.IsPlayInEditor() && !FParse::Param(FCommandLine::Get(), TEXT("LFNoMenu"));
 	UE_LOG(LogLF, Display, TEXT("[round] started %.0f s; gold at %.0f remaining, final at %.0f"), Remaining, GoldRemaining, FinalRemaining);
 }
 
@@ -137,9 +148,57 @@ void ULFRoundSubsystem::Advance()
 	}
 }
 
+void ULFRoundSubsystem::StartFromMenu()
+{
+	if (!bInMenu) return;
+	bInMenu = false;
+	bMenuDone = true;
+	if (Menu) Menu->RemoveFromParent();
+	Menu = nullptr;
+	UGameplayStatics::SetGamePaused(this, false);
+	if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
+	{
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->bShowMouseCursor = false;
+	}
+	if (ULFMusicSubsystem* Music = ULFMusicSubsystem::Get(this)) Music->SetMusicState(ELFMusicState::Main);
+	UE_LOG(LogLF, Display, TEXT("[round] menu -> Play"));
+	LF::Smoke(TEXT("menu -> Play: round starts"));
+}
+
 void ULFRoundSubsystem::Tick(float DeltaTime)
 {
 	if (!bStarted || bEnded) return;
+	if (bInMenu)
+	{
+		// Menu over the lake; the world pauses after MenuSettleTime so the camera / boats have settled (pausing on the first
+		// frame froze a motion-blurred camera jump). The subsystem doesn't tick while paused; Play unpauses.
+		APlayerController* PC = GetWorld()->GetFirstPlayerController();
+		MenuTime += DeltaTime;
+		if (Menu && PC && MenuTime >= 1.5f && !PC->IsPaused())
+		{
+			PC->SetPause(true);
+		}
+		if (!Menu && PC)
+		{
+			Menu = CreateWidget<ULFMenuWidget>(PC, ULFMenuWidget::StaticClass());
+			Menu->AddToViewport(60);
+			FInputModeUIOnly Mode;
+			Mode.SetWidgetToFocus(Menu->TakeWidget());
+			PC->SetInputMode(Mode);
+			PC->bShowMouseCursor = true;
+			if (ULFMusicSubsystem* Music = ULFMusicSubsystem::Get(this)) Music->SetMusicState(ELFMusicState::Menu);
+			UE_LOG(LogLF, Display, TEXT("[round] main menu shown"));
+			LF::Smoke(TEXT("main menu shown"));
+			if (LF::SmokeEnabled())
+			{
+				// Smoke runs press Play themselves after 3 s (real time - the world is paused).
+				TWeakObjectPtr<ULFRoundSubsystem> Self(this);
+				FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([Self](float) { if (Self.IsValid()) Self->StartFromMenu(); return false; }), 3.f);
+			}
+		}
+		return;
+	}
 	if (!Widget)
 	{
 		if (APlayerController* PC = GetWorld()->GetFirstPlayerController())

@@ -33,6 +33,9 @@ public class LakeFight : ModuleRules
 			RuntimeDependencies.Add("$(TargetOutputDir)/LFUI/ICON_LF_" + Icon + ".png",
 				System.IO.Path.Combine(ModuleDirectory, "../../Art/Export/UI/ICON_LF_" + Icon + ".png"), StagedFileType.NonUFS);
 		}
+		// N1 item 5: B12a title lockup for the main menu.
+		RuntimeDependencies.Add("$(TargetOutputDir)/LFUI/LF_TitleLockup_960x300_Light.png",
+			System.IO.Path.Combine(ModuleDirectory, "../../Art/Export/KeyArt/LF_TitleLockup_960x300_Light.png"), StagedFileType.NonUFS);
 
 		PublicIncludePaths.AddRange(new string[] {
 			"LakeFight",

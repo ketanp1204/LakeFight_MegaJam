@@ -2,13 +2,29 @@
 1. [DONE f927b8c] T04 review/normalize, #1 tags, #2 AI fishing, #14 API
 2. [DONE bcf332b] Safety package + smoke + zip
 3. [DONE 61dca4d] Bug pass a-e
-4. [IN PROGRESS] T04 stage 3 AI goals + 2 AI-only rounds
-5. [ ] Credits + main menu
+4. [DONE 8dcba09] T04 stage 3 AI goals + 2 AI-only rounds
+5. [IN PROGRESS] Credits + main menu
 6. [ ] Re-package + smoke + zip
 7. [ ] Sky
 8. [ ] Final package + report + DirectorsLog
 9. [ ] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 5 - main menu + credits (14 Nov ~22:45-23:10 IST, unreviewed - director away)
+- New `Round/LFMenuWidget.h/.cpp` (native UMG, 1280x720 design canvas like the round HUD): B12a title lockup
+  (`Art/Export/KeyArt/LF_TitleLockup_960x300_Light.png`, staged to `LFUI/` next to the exe via LakeFight.Build.cs),
+  PLAY / OPTIONS / CREDITS / QUIT. Options: MUSIC and SOUND FX sliders -> `ULFAudioSubsystem::SetCategoryVolume`
+  (Sound FX = SFX + Voice + Ambience + UI), saved to GameUserSettings `[LakeFight.Audio]` and re-applied at startup.
+  Credits: the director-approved list from Docs/ItchPage.md; the two Uppbeat blocks verbatim from Docs/ASSETS.md.
+- Input: mouse (click, hover selects, drag sliders), keyboard (arrows/WASD, Enter/Space, Esc/Backspace), gamepad
+  (D-pad / left stick, A confirm, B back, left/right on a slider row = 5% steps). Gamepad NOT tested with a real pad.
+- Flow (`ULFRoundSubsystem`): first load of a game session shows the menu (Menu music, AIs hold still, world pauses after
+  1.5 s so the camera has settled - pausing on frame 1 froze a motion-blurred camera). Play -> unpause, Main music, round
+  starts. Restart from results reloads straight into a round (no menu); results Quit still exits. No menu in editor PIE
+  or with `-LFRoundTest` / `-LFNoMenu` (use -LFNoMenu for headless -game tests). `-LFSmoke` presses Play after 3 s.
+- Evidence: rendered shots Saved/Screenshots/N1_menu_{main,options,credits}.png (logo re-centred after the first shot -
+  the lettering sits in the left 45% of the lockup PNG; logo hidden on the Credits page). Headless `-LFSmoke` run:
+  menu shown -> Play -> round END "Blue WINS!" 17/14/15, 2 steals -> quit (Saved/LFSmoke.txt).
 
 ## N1 item 4 - T04 stage 3: AI fishing goals (14 Nov ~22:20-22:45 IST, unreviewed - director away)
 - `ALFCaptainAI`: new states **GoFish** (drive to `ULFFishSubsystem::FindFishSpot` - gold first when `bChaseGold` - and hold

@@ -225,7 +225,8 @@ void ALFCaptainAI::Tick(float DeltaSeconds)
 	{
 		return;
 	}
-	if (CVarLFAIFreeze.GetValueOnGameThread() != 0)
+	const ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
+	if (CVarLFAIFreeze.GetValueOnGameThread() != 0 || (Round && Round->IsInMenu())) // N1: hold still behind the main menu
 	{
 		ALFBoat* B = Self->GetBoat();
 		if (B && B->GetDriver() == Self)
