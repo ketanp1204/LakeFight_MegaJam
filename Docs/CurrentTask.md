@@ -514,3 +514,56 @@ waterline. No ducks/swans/junk/gulls/insects.
 
 **Please review:** overall size and feel (one SCALE knob), the bays/points shape, channel widths, island dressing, spawn
 distance, cloud sizes, the spectate camera.
+
+## L01.1 - layout pass 2 (Claude Code, 14 Nov 11:57-12:55 IST)
+Brief: 4-lobed lake with headlands, 4 islands on the routes home with lanes, reeds in lanes / bay mouths, fair fish zones,
+lower/further hills, clouds +20-30 m, heron reed-bed fix, ground collision + land wash-back, import BankZone / FishSpot /
+Swan_HeadNeck (+ GroundPatch_02 reimport and _01/_02 mix). Director's choices on the way: deeper peninsulas (option 3) -> the
+symmetric X was rejected ("odd shape") -> option C with constraints (arms rotated 10-25 deg, lobes differ, wide rounded wooded
+headlands, docks 70 m +/-5%, lanes ~9-12 / ~15-20 m); reed beds must not read as squares.
+
+**How it's built:** `Tools/L01_layout.py` now runs inside the editor (`py "D:/Projects/LakeFight/Tools/L01_layout.py" [passes]`,
+unreal API) - each run 4-6 s, logs `[L01] ...`. Arms (angle / dock distance / lobe width) and headlands (angle / tip radius /
+width) are the shape knobs at the top; the outline is solved to those targets, then smoothed over 7 m.
+
+**Numbers** (generator log + PIE):
+- Arms: Blue 52 deg (+15 off diagonal), Green 160 (+17), Red -128 (+15), Yellow -50 (-13). Dock water ends Blue 72.0 / Green 68.5 /
+  Red 71.0 / Yellow 69.5 m from the centre (= 10.3 / 9.8 / 10.2 / 10.0 s at the measured 6.98 m/s; within +/-3%). Lobes: Green
+  narrowest (sigma 10 deg), Red fattest (17 deg).
+- Headlands: tips at 28.6 / 30.4 / 37.2 / 29.4 m, sharpest tip radius 4.8 m, tightest water pocket 8.7 m. Open centre ~57 m across.
+  Outline 120 x 126 m, perimeter 489 m (smaller than L01's 150 x 116 - the arms/headlands take the area).
+- Islands (Island_M x1.1 = 12.1 m, trees + rock + bush): lanes narrow / wide - Blue 12.0 / 16.7, Green 9.3 / 17.5, Red 9.4 / 15.1,
+  Yellow 9.6 / 15.3 m; 38-44 m from the centre.
+- Reeds: 6 organic patches (one in each island's wide lane, two at the Green / Yellow bay mouths) = 317 SM_LF_Reeds clumps on a
+  jittered 0.75 m grid inside noisy ellipses - no ReedBed meshes (they read as 4 x 3 m squares, director).
+- Sight lines (centre, 2.5 m eye height, `Docs/Shots/L01_sightlines.png`): every dock is partly screened by its island's trees and
+  framed by wooded headlands; Blue's is the most open (shack visible past the island). Physics traces to 5 points per dock (colliders
+  only - TreeClusters / reeds are NoCollision): blocked Yellow 5/10, Blue 2/10, Red 2/10, Green 0/10.
+- AI-only run (`lf.ai.spectate`, 94 s logged): 54 state changes, 18 rams, 10 fights, 1 overboard + 2 recoveries / climbs, 1 AI
+  washed back from land by the new rule, 0 stuck boats (all three AI boats moved 10-40 m between every 20 s sample), 0 warnings.
+- GPU (`ProfileGPU`, PIE, Red start view): 3.47-3.99 ms (two samples), 646-650 draws, 671-699k prims (L01: 3.70 ms / 645 / 603k).
+- Ground: 303 + 42 gap tiles, GroundPatch_01 / _02 ~50/50 with random 90-deg yaw; a tile is only placed if all 9 points of its square
+  are on land (106 skipped); two gap-fill passes (6 m, 3 m). Hole check: a pixel scan of the 1600 px top-down for water/void colour
+  on land found 0 holes (9 samples = the editor axis gizmo + one blue prop pixel) - was 213 before the 3 m pass.
+- Item 6: ground patches have one convex hull + BlockAll. `LFRagdollAt 80 -4600` (south headland): "[shore] ... lay on land 2.0 s
+  (ground 81 cm above the water) -> into the water 1100 cm away, swimming" (`LandWashDelay` 2 s, `ShoreWashOffset` 2 m).
+- Hills: 7 (was 9), Z 0.8-1.1, XY 1.6-2.0, 420-570 m out; ground extended to 640 m. Clouds 105-175 m up (+25).
+
+**Findings / not done**
+- **Fish zones can't be fair with two lane zones**: the picker (centre + 2 lane points >= 140 deg apart, minimising the spread of each
+  dock's nearest lane zone) gives Green 37 / Yellow 36 / Red 63 / Blue 81 m. Suggest one lane zone per island (fair by construction).
+- **The "green triangle"** = one of 8 broad low "leaves" (kite-shaped Moss shells, 0.42-0.58 x 0.6-0.9 m) built into SM_LF_ReedBed (v2)
+  by its Blender script; ReedBed_v1 has broad stem leaves too. Both are no longer used (reed patches use SM_LF_Reeds). Codex could
+  drop / shrink them in SM_LF_ReedBed.py.
+- **SM_LF_Swan_HeadNeck**: no FBX in the repo - not imported. BankZone, FishSpot (NoCollision) and GroundPatch_02 imported.
+- No CornerOut shore pieces now (their R4 turn made squared notches on the wide headlands); CornerIn at the dock bays.
+- **Feel:** from the chase camera the arms read noticeably tighter than L01 (lanes 9-17 m) - see the dock shots before deciding.
+- **Two mistakes of mine** while regenerating: my console helper pressed Ctrl+A / Backspace when the console box wasn't focused, which
+  selected and deleted every actor in the open level (twice - "the level looks empty"). Nothing was saved; the map was reloaded from
+  disk both times. The helper no longer sends those keys. My wait loops also mis-detected finished runs, so "runs taking long" was
+  idle waiting, not the generator.
+- Director note: the `lf.ai.spectate` tracking camera = marketing-video tool (recorded in Claude memory).
+
+**Shots** (`Docs/Shots/`, PIE game frames, no editor icons): `L01_top.png` (labelled, from a temporary evidence camera),
+`L01_dock_Red/Blue/Green/Yellow.png` (each crew's game camera at its spawn), `L01_sightlines.png`, `L01_heron.png` (editor view of
+the reed patch + heron).

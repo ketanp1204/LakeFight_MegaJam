@@ -457,6 +457,36 @@ def pass_beyond():
     log("beyond: removed %d, ground tiles %d, trees %d, headland pieces %d, clumps %d, hills %d" % (removed, tiles, trees, pen, clumps, hills))
 
 
+def reed_patch(name, cx, cy, ra, rb, rng, folder):
+    """Organic reed patch (director: the 4 x 3 m ReedBed meshes read as squares): SM_LF_Reeds clumps (1.2 m) scattered on a
+    jittered 0.75 m grid inside a noisy, rotated ellipse (ra x rb m), taller in the middle, plus a few stragglers outside the edge.
+    Returns the patch's lake-side edge point (for the heron)."""
+    rot = math.radians(rng.r(0, 180))
+    p1, p2 = rng.r(0, 6.3), rng.r(0, 6.3)
+    cr, sr = math.cos(rot), math.sin(rot)
+
+    def edge(phi):
+        return 1.0 + 0.22 * math.sin(2 * phi + p1) + 0.14 * math.sin(3 * phi + p2)
+
+    n = 0
+    gx = -ra * 1.4
+    while gx <= ra * 1.4:
+        gy = -rb * 1.4
+        while gy <= rb * 1.4:
+            lx, ly = gx + rng.r(-0.35, 0.35), gy + rng.r(-0.35, 0.35)
+            phi = math.atan2(ly / rb, lx / ra)
+            d = math.hypot(lx / ra, ly / rb) / edge(phi)
+            if d <= 1.0 or (d <= 1.25 and rng.f() < 0.18):
+                x, y = cx + lx * cr - ly * sr, cy + lx * sr + ly * cr
+                if inland(x, y) < -1.0:  # stay in the water (shallows)
+                    sc = max(0.65, 1.35 - 0.55 * d) * rng.r(0.85, 1.15)
+                    add("SM_LF_Reeds", "%s_%02d" % (name, n), x, y, -0.1, rng.r(0, 360), (sc, sc, sc * rng.r(0.9, 1.2)), folder)
+                    n += 1
+            gy += 0.75
+        gx += 0.75
+    return n
+
+
 def pass_gameplay():
     removed = clear("L01/Gameplay")
     rng = Rng(777)
@@ -491,6 +521,7 @@ def pass_gameplay():
     # Islands on the routes home (12-18 m across), dressed to block sight lines; a reed bed in each wide lane.
     lanes_out = {}
     lane_pts = {}
+    reed_count = [0]
     for team, cx, cy, s in ISLANDS:
         add("SM_LF_Island_M", "Island_%s" % team, cx, cy, 0.0, rng.r(0, 360), (s, s, s), F + "/Islands")
         top = 0.65 * s
@@ -507,18 +538,18 @@ def pass_gameplay():
         for side, kind in ((narrow_side, "narrow"), (-narrow_side, "wide")):
             mid = w + L[side] * 0.5
             lane_pts[(team, kind)] = (cx + n[0] * side * mid, cy + n[1] * side * mid)
-        # Reed bed in the wide lane (pass-through lurk spot). Blue's is v1: v2 has eight broad low leaves (the "green triangle").
+        # Reed patch in the wide lane (pass-through lurk spot) - organic clump patches, not the square ReedBed meshes (L01.1).
         rx, ry = lane_pts[(team, "wide")]
-        add("SM_LF_ReedBed_v1" if team == "Blue" else "SM_LF_ReedBed", "ReedBed_Lane_%s" % team, rx, ry, -0.15, rng.r(0, 360),
-            (1.2, 1.2, 1.0), F + "/Reeds")
+        reed_count[0] += reed_patch("Reeds_Lane_%s" % team, rx, ry, rng.r(3.0, 4.2), rng.r(2.0, 2.8), rng, F + "/Reeds")
     for team in ("Green", "Yellow"):
         ang = DOCK_ANG[team] + (10.0 if team == "Green" else -10.0)
-        x, y = polar(ang, shore_r(math.radians(ang)) - 4.0)
-        add("SM_LF_ReedBed_v1", "ReedBed_Bay_%s" % team, x, y, -0.15, rng.r(0, 360), (1.2, 1.2, 1.0), F + "/Reeds")
-    # Heron at the lake-side edge of the Blue lane reed bed, feet at the waterline.
+        x, y = polar(ang, shore_r(math.radians(ang)) - 4.5)
+        reed_count[0] += reed_patch("Reeds_Bay_%s" % team, x, y, rng.r(3.5, 4.5), rng.r(2.0, 2.6), rng, F + "/Reeds")
+    # Heron at the lake-side edge of the Blue lane reed patch, feet at the waterline.
     hx, hy = lane_pts[("Blue", "wide")]
     hd = math.hypot(hx, hy)
-    add("SM_LF_Heron", "Heron", hx - hx / hd * 3.0, hy - hy / hd * 3.0, 0.0, math.degrees(math.atan2(-hy, -hx)) + 35.0, folder=F + "/Wildlife")
+    add("SM_LF_Heron", "Heron", hx - hx / hd * 4.0, hy - hy / hd * 4.0, 0.0, math.degrees(math.atan2(-hy, -hx)) + 35.0, folder=F + "/Wildlife")
+    log("gameplay: reed patches 6, %d SM_LF_Reeds clumps (no ReedBed meshes)" % reed_count[0])
     for k, ang in enumerate([60, 120, 200, 245, 300, 330]):
         x, y = polar(ang, shore_r(math.radians(ang)) - rng.r(3.0, 5.0))
         add("SM_LF_LilyPads", "LilyPads_%d" % k, x, y, 0.03, rng.r(0, 360), (1.2, 1.2, 1.0), F + "/Dressing")
