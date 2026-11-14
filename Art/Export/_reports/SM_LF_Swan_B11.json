@@ -1,0 +1,67 @@
+{
+  "asset": "SM_LF_Swan",
+  "triangles": 312,
+  "budget_exclusive": 400,
+  "dimensions_m": [
+    0.8,
+    0.272997,
+    0.661053
+  ],
+  "z_range_m": [
+    -0.105263,
+    0.555789
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Swan",
+      "triangles": 140,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "3abc827ce8e8003328c54ac80ef5f64770b8800e50d7853854cf4cebd8a1981f"
+    },
+    {
+      "name": "SM_LF_Swan_HeadNeck",
+      "triangles": 172,
+      "origin_local_m": [
+        0.1210526,
+        0.0,
+        0.1105263
+      ],
+      "parent": "SM_LF_Swan",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange",
+        "M_LF_Black"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "6e0217c6c1a78a15eab012d46d7c9ad10ae780523a96df3cb7e2be368a66ec4e"
+    }
+  ]
+}

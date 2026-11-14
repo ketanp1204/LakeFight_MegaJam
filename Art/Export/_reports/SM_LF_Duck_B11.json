@@ -1,0 +1,48 @@
+{
+  "asset": "SM_LF_Duck",
+  "triangles": 252,
+  "budget_exclusive": 400,
+  "dimensions_m": [
+    0.35,
+    0.140696,
+    0.207841
+  ],
+  "z_range_m": [
+    -0.058483,
+    0.149357
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Duck",
+      "triangles": 252,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_Wood",
+        "M_LF_WoodDark",
+        "M_LF_Moss",
+        "M_LF_PaintOrange",
+        "M_LF_Black",
+        "M_LF_PaintCream"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "1681f181dad47729c6d39ad97b76c9340632ffe189ab88efe5664c4eff3d8d58"
+    }
+  ]
+}
