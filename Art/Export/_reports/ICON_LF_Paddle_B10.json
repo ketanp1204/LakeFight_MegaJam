@@ -1,0 +1,31 @@
+{
+  "name": "ICON_LF_Paddle",
+  "triangles": 148,
+  "dimensions_m": [
+    2.392,
+    0.09891,
+    0.46
+  ],
+  "origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "z_range_m": [
+    -0.23,
+    0.23
+  ],
+  "materials": [
+    "M_LF_Rope"
+  ],
+  "boundary_edges": 0,
+  "boundary_z_max_abs_m": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "dda8191139ad1cf5be0693ccd7e7aaa63b14957dac878324b4bdde594288b48c",
+  "budget_exclusive": 1000
+}
