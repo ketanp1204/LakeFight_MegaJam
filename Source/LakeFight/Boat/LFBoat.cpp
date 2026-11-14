@@ -1,5 +1,7 @@
 #include "Boat/LFBoat.h"
 
+#include "Fish/LFFishCargoComponent.h" // T04 hook
+
 #include "Brawler/LFBrawler.h"
 #include "Input/LFInput.h"
 #include "EngineUtils.h"
@@ -65,6 +67,7 @@ namespace
 ALFBoat::ALFBoat()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	CreateDefaultSubobject<ULFFishCargoComponent>(TEXT("FishCargo")); // T04 hook
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
 
 	// Root = the rowboat mesh itself, simulating with its own UCX convex collision.
@@ -606,6 +609,11 @@ void ALFBoat::ResolveContact(ALFBoat* Target, const FVector& TargetDir, float Cl
 		Music->Duck(TEXT("ram"));
 	}
 
+	// T04 hook
+	if (ULFFishCargoComponent* Cargo = Target->FindComponentByClass<ULFFishCargoComponent>())
+	{
+		Cargo->Spill(Strength >= 0.5f ? 2 : 1);
+	}
 	ApplyRamTo(Target, TargetDir, Contact, Strength);
 
 	OnSplash(Contact, Strength);
@@ -836,6 +844,11 @@ void ALFBoat::UpdateCapsize(float DeltaSeconds)
 
 void ALFBoat::Capsize()
 {
+	// T04 hook
+	if (ULFFishCargoComponent* Cargo = FindComponentByClass<ULFFishCargoComponent>())
+	{
+		Cargo->Spill(Cargo->GetCount());
+	}
 	bCapsized = true;
 	CapsizedAt = GetWorld()->GetTimeSeconds();
 	ThrottleInput = 0.f;

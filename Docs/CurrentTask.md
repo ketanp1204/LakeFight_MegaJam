@@ -572,3 +572,77 @@ width) are the shape knobs at the top; the outline is solved to those targets, t
 **Shots** (`Docs/Shots/`, PIE game frames, no editor icons): `L01_top.png` (labelled, from a temporary evidence camera),
 `L01_dock_Red/Blue/Green/Yellow.png` (each crew's game camera at its spawn), `L01_sightlines.png`, `L01_heron.png` (editor view of
 the reed patch + heron).
+
+## T04 - the round (director, 14 Nov; Codex Unreal C++ exception)
+Work in stages; STOP after each stage for the director's PIE test. Item 0 (labels) belongs to the director.
+Stage 1 only now: 3 drifting fish spots in existing FishZone_* areas, 3-5 fish each, 5-8 s respawn;
+player catches every 1.5 s below 150 cm/s. Boat-owned cargo, visible pile capped at 8; ram target spills
+1-2, capsize spills all; floating pickups live 10 s, any crew can collect. Own-team banking, sound,
+fish flight, score pop; temporary scores/counts and lf.fish.give N. AI decisions unchanged.
+Stage 2 (WAIT for go): 4-minute round, gold spot at 2 minutes, final-30 audio, B08 HUD, results/restart/quit.
+Stage 3 (WAIT for go): fishing/banking AI goals and personalities, two AI-only rounds.
+Constraints: new systems in new files, minimal existing-class hooks marked // T04 hook; no Unreal MCP;
+closed-editor Tools/ue.ps1 build; explicit-path new commits only (Source/, Config/, Docs/CurrentTask.md).
+Stage 1 evidence required: build, catch/spill settings, honest 60 s player run log and PIE checklist.
+
+### Stage 1 implementation / awaiting director PIE acceptance
+- New `Fish/LFFishCargoComponent.h/.cpp`: hull-owned count, up to eight visible fish, spill interface.
+- New `Fish/LFFishSubsystem.h/.cpp`: three zones discovered by Actor Tag/name (editor label fallback),
+  spots drift 50 cm/s in a 300 cm disc, 3-5 catches then 5-8 s absent; catch radius 200 cm,
+  uninterrupted 1.5 s below 150 cm/s while the player drives. No rod pose: splash + UI_LF_FishCaught.
+- `Boat/LFBoat.cpp`: only marked T04 hooks (create cargo; ram target spills 1, or 2 at strength >= 0.5;
+  capsize spills all). No changes to brawler, AI, animation, audio, input or physics rules.
+- Pickups live 10 s; first 0.75 s cannot be scooped, then any driven upright hull can collect them.
+  Banking uses the CURRENT DRIVER's team, including stolen boats. Bank bounds match SM_LF_BankZone:
+  local X +/-238, Y +/-138 cm. Enter with the hull centre. Enemy banks do nothing.
+- Existing UI catch/bank sounds respect the audio subsystem's Master/UI category gains. Bank flights
+  last 0.8 s, score pop 2 s. `[fish]` events and cumulative summaries every 10 s provide run evidence.
+- `git diff --check -- Source/LakeFight/Boat/LFBoat.cpp Docs/CurrentTask.md`: passed.
+  Whole-tree check found pre-existing whitespace in Docs/DevLog_draft.md; left untouched.
+- Engine detection needs explicit `-EngineDir D:\UE_EpicGames\UE_5.8` (installed outside wrapper search roots).
+- Closed-editor build and standalone smoke checks completed below; visual/audio/feel acceptance remains with the director.
+
+**Manual level setup (no MCP / no Content edits):** PIE uses existing FishZone_* / BankZone_* labels.
+For packaged play, add an Actor Tag matching each BankZone_Red/Blue/Green/Yellow label to its existing
+bank actor. FishZones are editor TargetPoints: place a runtime Empty Actor at each of the three existing
+FishZone_* transforms, give each the matching FishZone_* Actor Tag, and remove the original TargetPoint
+(or rename its label so PIE does not discover both). Keep these marker actors' Is Editor Only Actor OFF.
+The fish system uses a 3 m wander disc around each marker; no volume placement is required.
+
+**PIE acceptance (after successful build):**
+1. `lf.ai.freeze 1`, drive to a ripple ring, coast below 1.5 m/s. Time catches at 1.5 s; fast passes give none.
+2. Empty a spot (3-5 fish), verify disappearance and a new position 5-8 s later. Check lane positions stay in water.
+3. `lf.fish.give 10`: count rises, pile stops at 8. Stand/swim/reboard; cargo stays on the hull.
+4. Bank at Red: all cargo becomes Red score, sound/pop/flying fish. Enemy banks keep cargo intact.
+5. `lf.ai.freeze 0`: a bump spills none; ram spills 1-2 from the target, capsize all. Pickups expire after 10 s.
+   Drive over pickups; steal a loaded hull and verify its cargo remains. Return `lf.ai.freeze 0` after testing.
+6. Keep one player-only run going at least 60 s; preserve Saved/Logs/LakeFight.log for measured catch/spill/bank results.
+Stop here for director acceptance. Stage 2 has NOT started. Visual/audio/feel acceptance remains pending.
+
+
+**Stage 1 verification (14 Nov, Codex):**
+- Director authorized closing/restarting the editor. Desktop tool connection was unavailable; a graceful
+  `Get-Process UnrealEditor ... CloseMainWindow()` outside the sandbox closed it (no force kill).
+- Build command (editor process absent): `Tools/ue.ps1 -Action build -Project D:/Projects/LakeFight/LakeFight.uproject -EngineDir D:/UE_EpicGames/UE_5.8`.
+  First build exposed an incomplete ALFBrawler type through LFBoat.h's inline SetDriver. Added the
+  Brawler header to the NEW cargo cpp; second build Succeeded, linked UnrealEditor-LakeFight.dll.
+- Standalone checks used UnrealEditor.exe with this project/map, `-game -NullRHI -unattended -nosound
+  -nosplash -seconds=65` (15 for bank/spill), separate `-abslog` files. These are headless smoke runs,
+  NOT a visual PIE playtest. No Unreal MCP used and no level/assets saved.
+- 60 s player-only fishing: `-ExecCmds="lf.ai.freeze 1,LFDrive,BugItGo 0 0 0 0 0 0"`.
+  The player drives a stationary boat teleported to the centre; no AI decisions. Discovered 3 zones/4 banks.
+  Summary at 10/20/30/40/50/60 s: caught 5/7/9/13/15/16. At 60 s: spilled=0, scooped=0,
+  banked=0, scores=0/0/0/0. First catches t=1.50/3.00/4.50/6.00; drift out of range resets progress.
+  Four depleted spots respawned after approximately 5.6/7.0/7.2/5.8 s. Log:
+  `Saved/Logs/T04_Stage1_smoke.log` (untracked/ignored). Normal process exit.
+- Bank check: `-ExecCmds="lf.ai.freeze 1,LFDrive,lf.fish.give 10,BugItGo -4124.9 -5279.7 0 0 52 0"`.
+  Red bank coordinates from Tools/L01_layout.py; logged `team=Red +10 score=10` and banked=10.
+  `Saved/Logs/T04_Stage1_bank.log`. Normal process exit.
+- Capsize check: `-ExecCmds="lf.ai.freeze 1,LFDrive,lf.fish.give 10,lf.debug.capsize 3"`.
+  Logged player boat spilled 10 and CAPSIZED; `Saved/Logs/T04_Stage1_spill.log`.
+- Fishing/bank checks had no LogLF warnings/errors. The forced capsize produced one expected
+  [settle] NOT level warning at t=3 s (hull still inverted); no LogLF errors. Standalone startup logs contain experimental Epic toolset
+  Python errors (missing ToolsetDefinition/PythonTestRunner in game mode); gameplay runs continued.
+  Follow-up only: do not expand T04 into toolset/plugin cleanup.
+- Still for human PIE: ripple/pile/flight visibility, catch/bank sound levels, fast-pass rejection,
+  enemy-bank rejection, 1/2 fish RAM versus bump, pickup scooping/expiry and loaded-boat theft.
