@@ -81,4 +81,19 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Behaviour")
 	float FleeTime = 4.f;
+
+	// --- T04 stage 3: fishing economy ---
+	/** Go after an enemy boat within this range (cm) even while fishing (Bully: big). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fishing")
+	float AggroRange = 1500.f;
+	/** Go after an enemy boat carrying at least this many points (Thief: low). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fishing")
+	int32 LootChaseValue = 4;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fishing")
+	float LootChaseRange = 4000.f;
+	/** Bank once the cargo is worth this many points (Hothead: impatient, low). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fishing")
+	int32 BankAtValue = 5;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fishing")
+	bool bChaseGold = true;
 };

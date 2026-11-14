@@ -3,6 +3,8 @@
 #include "AI/LFCaptainPersonality.h"
 #include "AI/LFSpectatorCamera.h"
 #include "Boat/LFBoat.h"
+#include "Fish/LFFishSubsystem.h"
+#include "Round/LFRoundSubsystem.h"
 #include "Brawler/LFBrawler.h"
 #include "Water/LFWater.h"
 #include "Camera/CameraActor.h"
@@ -64,6 +66,8 @@ namespace
 		case ELFCaptainState::Steal: return TEXT("Steal");
 		case ELFCaptainState::RecoverBoat: return TEXT("RecoverBoat");
 		case ELFCaptainState::Flee: return TEXT("Flee");
+		case ELFCaptainState::GoFish: return TEXT("GoFish");
+		case ELFCaptainState::ReturnToDock: return TEXT("ReturnToDock");
 		default: return TEXT("Idle");
 		}
 	}
@@ -103,6 +107,11 @@ void ALFCaptainAI::ApplyPersonality(const ULFCaptainPersonality* P)
 	OwnBoatRecoverWeight = P->OwnBoatRecoverWeight;
 	FleeHits = P->FleeHits;
 	FleeTime = P->FleeTime;
+	AggroRange = P->AggroRange;
+	LootChaseValue = P->LootChaseValue;
+	LootChaseRange = P->LootChaseRange;
+	BankAtValue = P->BankAtValue;
+	bChaseGold = P->bChaseGold;
 }
 
 void ALFCaptainAI::OnPossess(APawn* InPawn)
@@ -304,6 +313,43 @@ void ALFCaptainAI::Decide()
 		}
 		else
 		{
+			// T04 stage 3: fishing economy first - bank a good catch, otherwise fish - unless an enemy is close (AggroRange) or
+			// worth robbing (cargo >= LootChaseValue within LootChaseRange). Fights still start whenever boats meet (above).
+			ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+			const ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
+			const FVector From = MyBoat ? MyBoat->GetActorLocation() : Self->GetActorLocation();
+			const int32 Value = ULFFishSubsystem::GetCargoValue(MyBoat);
+			FVector BankAt = FVector::ZeroVector, Spot = FVector::ZeroVector;
+			const bool bHaveBank = Fish && Fish->GetBankLocation(Self->Team, BankAt);
+			const float TimeHome = bHaveBank ? float(FVector::Dist2D(From, BankAt)) / 500.f + 8.f : 0.f;
+			const bool bClock = Round && Value > 0 && Round->GetRemaining() < TimeHome + 10.f;
+			const int32 TLoot = T && T->GetBoat() ? ULFFishSubsystem::GetCargoValue(T->GetBoat()) : 0;
+			const bool bLoot = TLoot >= LootChaseValue && TDist < LootChaseRange;
+			// Give up a fruitless chase for a while (loot is always worth chasing).
+			const bool bChasing = State == ELFCaptainState::Chase || State == ELFCaptainState::Ram;
+			if (!bChasing) ChaseSince = -1.0;
+			else if (ChaseSince < 0.0) ChaseSince = Now;
+			if (bChasing && !bLoot && ChaseSince >= 0.0 && Now - ChaseSince > MaxChaseTime)
+			{
+				NoChaseUntil = Now + ChaseCooldown;
+				ChaseSince = -1.0;
+			}
+			const bool bGoAfter = T && (bLoot || (TDist < AggroRange && Now >= NoChaseUntil));
+			if (MyBoat && bHaveBank && Value > 0 && (Value >= BankAtValue || bClock) && !(bGoAfter && TDist < AggroRange * 0.5f))
+			{
+				Want = ELFCaptainState::ReturnToDock;
+				GoalPoint = BankAt;
+				T = nullptr;
+			}
+			else if (!bGoAfter && MyBoat && Fish && Fish->FindFishSpot(MyBoat, Spot, bChaseGold))
+			{
+				Want = ELFCaptainState::GoFish;
+				GoalPoint = Spot;
+				T = nullptr;
+			}
+		}
+		if (Want == ELFCaptainState::Idle && (S == ELFBrawlerState::Standing || S == ELFBrawlerState::Driving) && !(Now < FleeUntil && T))
+		{
 			// Chase / ram an enemy boat - or ram a boat whose crew is all overboard.
 			ALFBoat* Crewless = T ? nullptr : PickCrewlessBoat();
 			const AActor* Goal = T ? static_cast<const AActor*>(T->GetBoat()) : static_cast<const AActor*>(Crewless);
@@ -390,6 +436,13 @@ void ALFCaptainAI::Execute(float DeltaSeconds)
 			MyBoat->SetDriveInput(0.f, 0.f);
 			Self->LeaveDriving(); // stand up to fight
 			break;
+		case ELFCaptainState::GoFish:
+			DriveTo(GoalPoint, SpotHoldRadius, 60.f, true);
+			break;
+		case ELFCaptainState::ReturnToDock:
+			// Drive right into the bank (the hull centre must enter it); no shore avoidance near the dock.
+			DriveTo(GoalPoint, 0.f, 180.f, FVector::Dist2D(GoalPoint, MyBoat->GetActorLocation()) > 1500.f);
+			break;
 		default:
 			MyBoat->SetDriveInput(0.f, 0.f);
 			break;
@@ -415,7 +468,8 @@ void ALFCaptainAI::Execute(float DeltaSeconds)
 			}
 			return;
 		}
-		if (State == ELFCaptainState::Chase || State == ELFCaptainState::Steal || State == ELFCaptainState::Flee || State == ELFCaptainState::Ram)
+		if (State == ELFCaptainState::Chase || State == ELFCaptainState::Steal || State == ELFCaptainState::Flee || State == ELFCaptainState::Ram
+			|| State == ELFCaptainState::GoFish || State == ELFCaptainState::ReturnToDock)
 		{
 			// Take the seat (drive/steal) - interact AT the seat, like the player.
 			if (!MyBoat->HasDriver())
@@ -447,6 +501,33 @@ void ALFCaptainAI::DriveToward(const FVector& Point, float Throttle)
 	Steer = AvoidShore(Steer);
 	const float Thr = FMath::Abs(Ang) > 100.f ? Throttle * 0.35f : Throttle;
 	MyBoat->SetDriveInput(Thr, Steer);
+}
+
+void ALFCaptainAI::DriveTo(const FVector& Point, float HoldRadius, float MinApproachSpeed, bool bAvoidShore)
+{
+	ALFBoat* MyBoat = Me()->GetBoat();
+	if (!MyBoat)
+	{
+		return;
+	}
+	const FVector To = (Point - MyBoat->GetActorLocation()) * FVector(1, 1, 0);
+	const float Dist = float(To.Size());
+	const float Ang = FMath::FindDeltaAngleDegrees(MyBoat->GetActorRotation().Yaw, To.Rotation().Yaw);
+	const float Fwd = MyBoat->GetForwardSpeed();
+	// Wanted forward speed: fast far away, ~0.5 cm/s per cm of remaining distance near, zero inside the hold radius (fishing
+	// needs < 220 cm/s within 400 cm). Throttle chases that speed - negative throttle brakes.
+	float Want = Dist <= HoldRadius ? 0.f : FMath::Clamp((Dist - HoldRadius) * 0.5f, MinApproachSpeed, 700.f);
+	if (FMath::Abs(Ang) > 60.f)
+	{
+		Want = FMath::Min(Want, 120.f); // turn first (the low-speed pivot does the work)
+	}
+	const float Throttle = FMath::Clamp((Want - Fwd) / 150.f, -1.f, 1.f);
+	float Steer = Dist <= HoldRadius ? 0.f : FMath::Clamp(Ang / 35.f, -1.f, 1.f);
+	if (bAvoidShore)
+	{
+		Steer = AvoidShore(Steer);
+	}
+	MyBoat->SetDriveInput(Throttle, Steer);
 }
 
 float ALFCaptainAI::AvoidShore(float Steer) const

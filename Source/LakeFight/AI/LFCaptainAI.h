@@ -17,7 +17,9 @@ enum class ELFCaptainState : uint8
 	Fight,
 	Steal,
 	RecoverBoat,
-	Flee
+	Flee,
+	GoFish,       // T04 stage 3: drive to a fish spot and hold station on it (slow, close) while the catches come in
+	ReturnToDock  // T04 stage 3: carry the catch into our team's bank zone
 };
 
 /**
@@ -99,6 +101,30 @@ public:
 	UPROPERTY(EditAnywhere, Category="LF|AI")
 	float OwnBoatRecoverWeight = 0.6f;
 
+	// --- T04 stage 3: fishing economy (personality overrides) ---
+	/** Go after an enemy boat within this range (cm) even while fishing. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float AggroRange = 1500.f;
+	/** Go after an enemy boat carrying at least this many points of fish (within LootChaseRange). */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="1"))
+	int32 LootChaseValue = 4;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float LootChaseRange = 4000.f;
+	/** Head home to bank once our cargo is worth this many points (or when the clock says so). */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="1"))
+	int32 BankAtValue = 5;
+	/** Drop everything for the gold spot when it appears. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish")
+	bool bChaseGold = true;
+	/** Station keeping: stop within this distance (cm) of the spot (catch radius is 400 cm, max 220 cm/s). */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float SpotHoldRadius = 150.f;
+	/** A chase (not for loot) that hasn't come to blows after this long (s) is dropped for ChaseCooldown (s): back to fishing. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float MaxChaseTime = 9.f;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float ChaseCooldown = 12.f;
+
 	UFUNCTION(BlueprintPure, Category="LF|AI")
 	ELFCaptainState GetCaptainState() const { return State; }
 
@@ -116,6 +142,8 @@ private:
 	void Decide();
 	void Execute(float DeltaSeconds);
 	void DriveToward(const FVector& Point, float Throttle);
+	/** T04 stage 3: arrive at Point - speed falls with distance (station keeping inside HoldRadius, reverse to brake). */
+	void DriveTo(const FVector& Point, float HoldRadius, float MinApproachSpeed, bool bAvoidShore);
 	float AvoidShore(float Steer) const;
 	void FaceAndSwing(ALFBrawler* Target);
 	void WalkToward(const FVector& Point);
@@ -125,6 +153,9 @@ private:
 	TWeakObjectPtr<ALFBrawler> Target;
 	TWeakObjectPtr<ALFBrawler> PendingTarget;
 	TWeakObjectPtr<ALFBoat> GoalBoat;      // RecoverBoat goal, or the crew-less boat we're ramming
+	FVector GoalPoint = FVector::ZeroVector; // GoFish spot / ReturnToDock bank
+	double ChaseSince = -1.0;              // stage 3: start of the current Chase/Ram run
+	double NoChaseUntil = -1.0;
 	double NextDecision = 0.0;
 	double ApplyAt = -1.0;
 	double LastSwing = -100.0;

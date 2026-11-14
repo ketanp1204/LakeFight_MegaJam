@@ -1,14 +1,32 @@
 # N1 progress (Claude Code, unattended night run 14-15 Nov; spec: Docs/N1.md)
 1. [DONE f927b8c] T04 review/normalize, #1 tags, #2 AI fishing, #14 API
 2. [DONE bcf332b] Safety package + smoke + zip
-3. [IN PROGRESS] Bug pass a-e
-4. [ ] T04 stage 3 AI goals + 2 AI-only rounds
+3. [DONE 61dca4d] Bug pass a-e
+4. [IN PROGRESS] T04 stage 3 AI goals + 2 AI-only rounds
 5. [ ] Credits + main menu
 6. [ ] Re-package + smoke + zip
 7. [ ] Sky
 8. [ ] Final package + report + DirectorsLog
 9. [ ] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 4 - T04 stage 3: AI fishing goals (14 Nov ~22:20-22:45 IST, unreviewed - director away)
+- `ALFCaptainAI`: new states **GoFish** (drive to `ULFFishSubsystem::FindFishSpot` - gold first when `bChaseGold` - and hold
+  station: wanted speed ~0.5 cm/s per cm of distance, zero inside `SpotHoldRadius` 150 cm, reverse throttle brakes, turn first
+  when > 60 deg off) and **ReturnToDock** (drive into the own team's bank; shore avoidance off within 15 m of it). Decision order:
+  RecoverBoat / Flee / Fight / Steal unchanged; then bank when cargo value >= `BankAtValue` or the clock says go (time home + 10 s),
+  else chase an enemy within `AggroRange` or carrying >= `LootChaseValue` points within `LootChaseRange`, else fish. A chase that
+  isn't for loot is dropped after `MaxChaseTime` 9 s for `ChaseCooldown` 12 s (first test: endless Chase<->RAM, no fishing 50-130 s).
+  A standing AI in its boat takes the seat for GoFish/ReturnToDock too. Same inputs as the player (SetDriveInput only).
+- Personalities (DataAssets saved via editor Python, `Saved/n1/tools/set_personalities.py`): Bully aggro 16 m / robs >= 6 /
+  banks at 6; Thief aggro 7 m / robs >= 2 within 50 m / banks at 5; Hothead aggro 11 m / robs >= 5 / banks at 3.
+- Two AI-only rounds (`-game -NullRHI -benchmark -fps=60 -seconds=250 -ExecCmds=lf.ai.spectate`, full 240 s, logs Saved/n1/ai_r1/2.log):
+  - Round 1: 49 catches (Green/Thief 14, Blue/Bully 13, Yellow/Hothead 22); 10 banks; gold banked (Blue 5 fish = 13 pts);
+    **Yellow wins 27**, Blue 20, Green 12; 6 overboard splashes; 0 steals; 0 LogLF warnings.
+  - Round 2: 40 catches; 8 banks incl. gold (Blue 5 fish = 17 pts); **Blue wins 28**, Yellow 16, Green 5; 2 overboards; 0 steals.
+  - Readable in the logs: Hothead banks small and often (3-5 fish), Bully carries 5-7. Steals no longer happen in AI-only
+    rounds (crews rarely end up standing in an empty enemy boat now that they fish) - T03's ">= 1 steal" is NOT met by these runs.
+  - The editor exited with a segfault AFTER saving the three DataAssets (-ExecutePythonScript + quit_editor); the saves are fine.
 
 ## N1 item 3 - bug pass a-e (14 Nov ~21:55-22:20 IST, unreviewed - director away)
 Debug helpers added: `lf.debug.knockdrivers [delay]`, `lf.debug.boatlog [s] [delay]`, `lf.debug.swim 1`, `lf.debug.shot <delay> <name>`,
