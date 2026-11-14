@@ -27,19 +27,34 @@ void ALFSpectatorCamera::Tick(float DeltaSeconds)
 	{
 		return;
 	}
-	const FVector Centre = Sum / Points.Num();
+	// L01 (director: "the camera is way too high up"): on the 150 x 116 m lake the crews start ~100 m apart, so framing all of
+	// them put the camera ~180 m out. Follow the action instead - the closest pair of brawlers - and cap the distance.
+	FVector Centre = Sum / Points.Num();
 	float Spread = 0.f;
-	for (const FVector& P : Points)
+	if (Points.Num() >= 2)
 	{
-		Spread = FMath::Max(Spread, float(FVector::Dist2D(P, Centre)));
+		float Best = TNumericLimits<float>::Max();
+		for (int32 I = 0; I < Points.Num(); ++I)
+		{
+			for (int32 J = I + 1; J < Points.Num(); ++J)
+			{
+				const float D = float(FVector::Dist2D(Points[I], Points[J]));
+				if (D < Best)
+				{
+					Best = D;
+					Centre = (Points[I] + Points[J]) * 0.5f;
+					Spread = D * 0.5f;
+				}
+			}
+		}
 	}
-	const float WantDist = FMath::Max(MinDistance, Spread * 2.f * SpreadScale);
+	const float WantDist = FMath::Clamp(Spread * 2.f * SpreadScale, MinDistance, FMath::Max(MaxDistance, MinDistance));
 	const float RealDt = FMath::Min(GetWorld()->DeltaRealTimeSeconds, 0.1f);
 	const float A = bInit ? 1.f - FMath::Exp(-FollowSpeed * RealDt) : 1.f;
 	bInit = true;
 	Focus = FMath::Lerp(Focus, FVector(Centre.X, Centre.Y, 0.f), A);
 	Dist = FMath::Lerp(Dist, WantDist, A);
-	const FVector Dir = FVector(0.f, -1.f, 0.75f).GetSafeNormal(); // from the south, ~37 deg down
+	const FVector Dir = FVector(0.f, -1.f, 0.6f).GetSafeNormal(); // from the south, ~31 deg down
 	const FVector Loc = Focus + Dir * Dist;
 	SetActorLocationAndRotation(Loc, (Focus - Loc).Rotation());
 }
