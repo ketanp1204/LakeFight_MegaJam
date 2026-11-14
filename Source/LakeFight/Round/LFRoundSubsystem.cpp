@@ -17,6 +17,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Paths.h"
+#include "Misc/FileHelper.h"
+#include "Misc/DateTime.h"
+#include "Containers/Ticker.h"
 #include "Sound/SoundWave.h"
 #include "UnrealClient.h"
 #include "UObject/ConstructorHelpers.h"
@@ -56,6 +59,20 @@ bool ULFRoundSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 TStatId ULFRoundSubsystem::GetStatId() const
 {
 	RETURN_QUICK_DECLARE_CYCLE_STAT(ULFRoundSubsystem, STATGROUP_Tickables);
+}
+
+bool LF::SmokeEnabled()
+{
+	static const bool bOn = FParse::Param(FCommandLine::Get(), TEXT("LFSmoke"));
+	return bOn;
+}
+
+void LF::Smoke(const FString& Line)
+{
+	if (!SmokeEnabled()) return;
+	const FString Path = FPaths::ProjectSavedDir() / TEXT("LFSmoke.txt");
+	FFileHelper::SaveStringToFile(FDateTime::Now().ToString(TEXT("%H:%M:%S ")) + Line + LINE_TERMINATOR, *Path,
+		FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM, &IFileManager::Get(), FILEWRITE_Append);
 }
 
 void ULFRoundSubsystem::OnWorldBeginPlay(UWorld& InWorld)
@@ -192,6 +209,14 @@ void ULFRoundSubsystem::EndRound()
 		PC->SetPause(true); // freezes physics, AI, input and scoring; Slate stays interactive
 	}
 	UE_LOG(LogLF, Display, TEXT("[round] END %s | %s"), *GetWinner(), *GetStats());
+	if (LF::SmokeEnabled())
+	{
+		const ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+		LF::Smoke(FString::Printf(TEXT("round END - results screen %s; winner %s; scores R%d B%d G%d Y%d | %s"), Widget ? TEXT("shown") : TEXT("MISSING"),
+			*GetWinner(), Fish ? Fish->GetScore(0) : -1, Fish ? Fish->GetScore(1) : -1, Fish ? Fish->GetScore(2) : -1, Fish ? Fish->GetScore(3) : -1, *GetStats()));
+		// Smoke runs end themselves 5 s after the results appear (real time; the world is paused).
+		FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([](float) { LF::Smoke(TEXT("quit")); FPlatformMisc::RequestExit(false); return false; }), 5.f);
+	}
 	if (bTest) FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir() / TEXT("Screenshots/T04_Results.png"), true, false);
 }
 

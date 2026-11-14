@@ -30,7 +30,87 @@
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "ProceduralMeshComponent.h"
 #include "TimerManager.h"
+#include "UnrealClient.h"
+#include "Misc/Paths.h"
 #include "UObject/ConstructorHelpers.h"
+
+// lf.debug.knockdrivers: knock every seated driver overboard (N1 3a test: the empty boats must coast to a stop) and log
+// each boat's speed and drive input for the next 6 s.
+static void LFKnockDrivers(UWorld* World);
+// lf.debug.shot <delay s> <name>: rendered screenshot to Saved/Screenshots/<name>.png after a delay (N1 evidence shots).
+static FAutoConsoleCommandWithWorldAndArgs CmdLFShot(TEXT("lf.debug.shot"), TEXT("lf.debug.shot <delay s> <name> - screenshot after a delay."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		const float Delay = Args.Num() > 0 ? FCString::Atof(*Args[0]) : 1.f;
+		const FString Name = Args.Num() > 1 ? Args[1] : TEXT("LF_Shot");
+		FTimerHandle H;
+		World->GetTimerManager().SetTimer(H, FTimerDelegate::CreateLambda([Name]()
+		{
+			FScreenshotRequest::RequestScreenshot(FPaths::ProjectSavedDir() / TEXT("Screenshots") / (Name + TEXT(".png")), false, false);
+			UE_LOG(LogLF, Display, TEXT("[shot] %s"), *Name);
+		}), FMath::Max(Delay, 0.01f), false);
+	}));
+// lf.debug.boatlog [seconds] [delay]: log every boat's speed / yaw rate / drive input once a second (N1 3e measurements).
+static FAutoConsoleCommandWithWorldAndArgs CmdLFBoatLog(TEXT("lf.debug.boatlog"), TEXT("lf.debug.boatlog [seconds=10] [delay=0] - log boat speed/yaw/input every second."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		const int32 N = Args.Num() > 0 ? FCString::Atoi(*Args[0]) : 10;
+		const float Delay = Args.Num() > 1 ? FCString::Atof(*Args[1]) : 0.f;
+		for (int32 S = 0; S <= N; ++S)
+		{
+			FTimerHandle H;
+			TWeakObjectPtr<UWorld> W(World);
+			World->GetTimerManager().SetTimer(H, FTimerDelegate::CreateLambda([W, S]()
+			{
+				if (!W.IsValid()) return;
+				for (TActorIterator<ALFBoat> It(W.Get()); It; ++It)
+				{
+					UE_LOG(LogLF, Display, TEXT("[boatlog] t+%d %s speed=%.0f fwd=%.0f yawrate=%.1f deg/s yaw=%.0f throttle=%.2f steer=%.2f driver=%s"), S, *It->GetName(),
+						It->GetVelocity().Size2D(), It->GetForwardSpeed(), FMath::RadiansToDegrees(It->GetHull()->GetPhysicsAngularVelocityInRadians().Z), It->GetActorRotation().Yaw,
+						It->GetThrottleOutput(), It->GetSteerInput(), It->GetDriver() ? *It->GetDriver()->GetName() : TEXT("none"));
+				}
+			}), Delay + float(S) + 0.001f, false);
+		}
+	}));
+static FAutoConsoleCommandWithWorldAndArgs CmdLFKnockDrivers(TEXT("lf.debug.knockdrivers"),
+	TEXT("lf.debug.knockdrivers [delay s] - knock every driver overboard (after the delay) and log the empty boats for 6 s."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		const float Delay = Args.Num() ? FCString::Atof(*Args[0]) : 0.f;
+		if (Delay <= 0.f) { LFKnockDrivers(World); return; }
+		FTimerHandle H;
+		TWeakObjectPtr<UWorld> W(World);
+		World->GetTimerManager().SetTimer(H, FTimerDelegate::CreateLambda([W]() { if (W.IsValid()) LFKnockDrivers(W.Get()); }), Delay, false);
+	}));
+static void LFKnockDrivers(UWorld* World)
+	{
+		TArray<TWeakObjectPtr<ALFBoat>> Boats;
+		for (TActorIterator<ALFBoat> It(World); It; ++It)
+		{
+			if (ALFBrawler* D = It->GetDriver())
+			{
+				UE_LOG(LogLF, Display, TEXT("[knockdrivers] %s out of %s at %.0f cm/s"), *D->GetName(), *It->GetName(), It->GetVelocity().Size2D());
+				D->KnockOverboard(It->GetActorRightVector(), 1.f);
+				Boats.Add(*It);
+			}
+		}
+		for (int32 S = 1; S <= 6; ++S)
+		{
+			FTimerHandle H;
+			World->GetTimerManager().SetTimer(H, FTimerDelegate::CreateLambda([Boats, S]()
+			{
+				for (const TWeakObjectPtr<ALFBoat>& B : Boats)
+				{
+					if (B.IsValid())
+					{
+						UE_LOG(LogLF, Display, TEXT("[knockdrivers] t+%d s %s speed=%.0f cm/s yawrate=%.0f deg/s throttle=%.2f steer=%.2f driver=%s"), S, *B->GetName(),
+							B->GetVelocity().Size2D(), FMath::RadiansToDegrees(B->GetHull()->GetPhysicsAngularVelocityInRadians().Z), B->GetThrottleOutput(), B->GetSteerInput(),
+							B->GetDriver() ? *B->GetDriver()->GetName() : TEXT("none"));
+					}
+				}
+			}), float(S), false);
+		}
+	}
 
 // lf.debug.capsize [index]: kick boat #index (actor iteration order) over - for testing the capsize rule.
 static FAutoConsoleCommandWithWorldAndArgs CmdLFCapsize(TEXT("lf.debug.capsize"), TEXT("lf.debug.capsize [index] - roll a boat over."),
@@ -365,7 +445,23 @@ void ALFBoat::Tick(float DeltaSeconds)
 	if (IsPlayerControlled() && ThrottleValue && SteerValue)
 	{
 		ThrottleInput = DebugThrottle != 0.f ? DebugThrottle : FMath::Clamp(ThrottleValue->GetValue().Get<float>(), -1.f, 1.f);
-		SteerInput = FMath::Clamp(SteerValue->GetValue().Get<float>(), -1.f, 1.f);
+		SteerInput = DebugSteer != 0.f ? DebugSteer : FMath::Clamp(SteerValue->GetValue().Get<float>(), -1.f, 1.f);
+	}
+	// N1 3a: nobody in the seat -> no drive input, whatever path set it (a driver that is no longer seated in THIS boat counts as
+	// gone). Logged so a stale writer shows up in playtest logs instead of as an empty boat motoring away.
+	{
+		const ALFBrawler* D = Driver.Get();
+		if (D && (D->GetBrawlerState() != ELFBrawlerState::Driving || D->GetBoat() != this))
+		{
+			UE_LOG(LogLF, Warning, TEXT("[boat] %s: driver %s is no longer seated (state %d) - clearing driver"), *GetName(), *D->GetName(), int32(D->GetBrawlerState()));
+			SetDriver(nullptr);
+		}
+		if (!Driver.IsValid() && !IsPlayerControlled() && (ThrottleInput != 0.f || SteerInput != 0.f))
+		{
+			UE_LOG(LogLF, Warning, TEXT("[boat] %s: drive input %.2f/%.2f with no driver - cleared"), *GetName(), ThrottleInput, SteerInput);
+			ThrottleInput = 0.f;
+			SteerInput = 0.f;
+		}
 	}
 	UpdateCapsize(DeltaSeconds);
 	if (bCapsized)
@@ -396,6 +492,13 @@ void ALFBoat::Tick(float DeltaSeconds)
 	const float FwdSpeed = GetForwardSpeed();
 	const float Authority = GetTurnAuthority();
 
+	// N1 3a: empty boat - trailing-oar drag on the horizontal velocity.
+	if (!Driver.IsValid() && EmptyBoatDrag > 0.f)
+	{
+		const FVector V = HullMesh->GetPhysicsLinearVelocity() * FVector(1.f, 1.f, 0.f);
+		HullMesh->AddForce(-V * EmptyBoatDrag * Mass);
+	}
+
 	// Thrust at the stern, below the waterline (bow lifts because it acts below the centre of mass).
 	if (!FMath::IsNearlyZero(SpooledThrottle))
 	{
@@ -422,6 +525,13 @@ void ALFBoat::Tick(float DeltaSeconds)
 			const float FlowSign = FwdSpeed < 0.f ? -1.f : 1.f;
 			const float Lateral = -SteerInput * FlowSign * Authority * RudderForceAccel * Mass;
 			HullMesh->AddForceAtLocation(Right * Lateral, P);
+		}
+
+		// N1 3e: low-speed pivot (paddling the bow round): steer right -> yaw right, fading out by LowSpeedTurnSpeed.
+		const float Slow = 1.f - FMath::Clamp(FMath::Abs(FwdSpeed) / LowSpeedTurnSpeed, 0.f, 1.f);
+		if (Slow > 0.f)
+		{
+			HullMesh->AddTorqueInRadians(FVector::UpVector * (FMath::DegreesToRadians(LowSpeedYawAccelDeg) * SteerInput * Slow), NAME_None, /*bAccelChange*/ true);
 		}
 
 		// Outward lean: steer right -> deck tips toward the boat's left. Torque axis Up x Dir tips the deck top toward Dir.

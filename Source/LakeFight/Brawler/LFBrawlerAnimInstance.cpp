@@ -1114,7 +1114,9 @@ bool FLFBrawlerAnimProxy::Evaluate(FPoseContext& Output)
 	// Walk: (1) keep it IN PLACE - Wheelbarrow_Walk is a Mixamo clip with forward travel baked into the hips, which made the body
 	// run ahead of the capsule, snap back at the loop and swing in a circle when turning (director, playtest); the root and the
 	// pelvis keep the idle pose's horizontal position, only the vertical bob stays. (2) Optionally damp the pelvis sway.
-	if (Clip == ELFBrawlerClip::Locomotion && Walk && Idle && (bWalkInPlace || WalkHipDamp > 0.f))
+	// N1 3c: the Swing clip (punch held / swinging while walking) evaluates the same idle<->walk blend underneath the procedural
+	// torso, so it needs the same in-place fix - without it the body ran ahead of the capsule and circled on turns.
+	if ((Clip == ELFBrawlerClip::Locomotion || Clip == ELFBrawlerClip::Swing) && Walk && Idle && (bWalkInPlace || WalkHipDamp > 0.f))
 	{
 		const FBoneContainer& Bones = Output.Pose.GetBoneContainer();
 		const FReferenceSkeleton& Ref = Bones.GetReferenceSkeleton();

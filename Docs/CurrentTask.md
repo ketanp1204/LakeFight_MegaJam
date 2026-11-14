@@ -1,7 +1,7 @@
 # N1 progress (Claude Code, unattended night run 14-15 Nov; spec: Docs/N1.md)
 1. [DONE f927b8c] T04 review/normalize, #1 tags, #2 AI fishing, #14 API
-2. [DONE see git log "N1.2"] Safety package + smoke + zip
-3. [ ] Bug pass a-e
+2. [DONE bcf332b] Safety package + smoke + zip
+3. [IN PROGRESS] Bug pass a-e
 4. [ ] T04 stage 3 AI goals + 2 AI-only rounds
 5. [ ] Credits + main menu
 6. [ ] Re-package + smoke + zip
@@ -9,6 +9,32 @@
 8. [ ] Final package + report + DirectorsLog
 9. [ ] Stretch: ambient life
 10. [ ] Stretch: spectators + foliage sway
+
+## N1 item 3 - bug pass a-e (14 Nov ~21:55-22:20 IST, unreviewed - director away)
+Debug helpers added: `lf.debug.knockdrivers [delay]`, `lf.debug.boatlog [s] [delay]`, `lf.debug.swim 1`, `lf.debug.shot <delay> <name>`,
+`LFSteer x` (boat exec, like LFRow), `-LFSmoke` (writes <Saved>/LFSmoke.txt even in Shipping; quits 5 s after results).
+- a. Driverless boats: could NOT reproduce stale input. Headless (`LFDrive,lf.debug.knockdrivers 10`, AIs chasing at 2.5-7 m/s):
+  every empty boat had throttle 0 / steer 0 from the first sample; SetDriver(nullptr) still clears input on every exit path
+  (KnockOverboard / ReceivePaddleHit / LFOverboard / capsize / interact / AI Fight all go through LeaveDriving). What looked
+  like "still driving" is most likely the long coast: 700 cm/s took ~6 s to drop below 50 cm/s. Changes: `EmptyBoatDrag` 0.8/s
+  while the seat is empty (measured: 218 -> 62 -> 17 cm/s at +1/+2/+3 s), plus a backstop in ALFBoat::Tick that clears a driver who
+  is no longer seated in this boat and zeroes any input on a driverless, non-player boat with a LogLF warning naming the boat
+  (0 warnings in the test - if the director still sees it, the log line will point at the case).
+- b. Swim height: measured with lf.debug.swim - treading head +23 / shoulders +10 cm (fine), swimming at speed head -21 /
+  shoulders -27 cm (the swim lean dips the head). New `SwimSpeedLift` 36 cm at full swim speed (eased): now head +15..+17,
+  shoulders +8..+10 cm while swimming. The knocked-out float was not changed.
+- c. Punch held while moving: the Swing clip evaluates the idle<->walk blend underneath, but the walk in-place fix only ran for the
+  Locomotion clip -> now Locomotion OR Swing. While charging/swinging the brawler no longer orients to movement (that flipped
+  him 180 when moving backwards): the player keeps facing the camera aim and strafes, an AI keeps its swing facing. Plus a
+  hull-space backstop box (X -120..90, Y +-35 cm) for a standing brawler. NOT exercised at runtime (needs real input) - PIE check.
+- d. Seated paddle: while Driving the paddle lies on the floor boards beside the rower (hull child; `PaddleSeatedLocal`
+  (-20, 30, 5) from the driver seat, blade toward the bow), standing = in the hands, swimming/climbing still on the back.
+  Rendered shots Saved/Screenshots/N1_seated*.png: no paddle on the back; the floor paddle is mostly hidden behind the rower
+  from the chase cam - director to check placement/clipping.
+- e. Low-speed turning: `LowSpeedYawAccelDeg` 45 deg/s^2 pivot torque fading out by `LowSpeedTurnSpeed` 300 cm/s (rudder unchanged
+  at speed). Measured standstill full steer (`lf.ai.freeze 1,LFDrive,LFSteer 1,lf.debug.boatlog 8`): 29 -> 45 deg/s after 1-3 s
+  (rudder alone at 0 m/s has only MinTurnAuthority 0.15).
+- Builds: all editor builds succeeded (editor closed). Logs Saved/n1/{knock2,turn,shot}.log.
 
 ## N1 item 2 - safety package (14 Nov ~21:43-21:53 IST, unreviewed - director away)
 - `Tools/ue.ps1 -Action package -Project C:/Unreal/Projects/LakeFight_MegaJam/LakeFight.uproject -EngineDir D:/Unreal/UE_EpicGames/UE_5.8`

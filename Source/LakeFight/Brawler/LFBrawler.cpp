@@ -45,6 +45,9 @@
 #include "Rendering/SkeletalMeshLODModel.h"
 #endif
 
+// N1 3b: lf.debug.swim 1 logs head / shoulder height above the water for swimmers and floating knockouts (every 0.5 s).
+static TAutoConsoleVariable<int32> CVarLFDebugSwim(TEXT("lf.debug.swim"), 0, TEXT("1 = log head/shoulder height above the water while swimming or floating."));
+
 namespace
 {
 	// Brawler scale (director, T02 step 1a): the whole character is 0.75 of the UE mannequin.
@@ -316,9 +319,12 @@ bool ALFBrawler::GetPaddleGripTargets(FTransform& OutRight, FTransform& OutLeft)
 
 void ALFBrawler::UpdatePaddleStow()
 {
-	// Standing: in the hands (pivot + IK). Driving (the oars row) / swimming / climbing: stowed on the back. Ragdoll: right hand.
+	// Standing: in the hands (pivot + IK). Driving (the oars row): lying in the boat beside the seat (N1 3d - director: not on
+	// the back). Swimming / climbing: stowed on the back. Ragdoll: right hand.
+	const ALFBoat* SeatBoat = Boat.Get();
 	const EPaddleMount Want = State == ELFBrawlerState::Standing ? EPaddleMount::Hands
-		: (State == ELFBrawlerState::Ragdoll ? EPaddleMount::Hand : EPaddleMount::Back);
+		: State == ELFBrawlerState::Ragdoll ? EPaddleMount::Hand
+		: (State == ELFBrawlerState::Driving && SeatBoat) ? EPaddleMount::Boat : EPaddleMount::Back;
 	if (Want == PaddleMount || Want == EPaddleMount::Hand)
 	{
 		return;
@@ -328,6 +334,13 @@ void ALFBrawler::UpdatePaddleStow()
 	{
 		Paddle->AttachToComponent(PaddlePivot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		Paddle->SetRelativeLocationAndRotation(FVector(-10.f, 0.f, 0.f), FRotator::ZeroRotator);
+	}
+	else if (Want == EPaddleMount::Boat)
+	{
+		const FTransform& HX = SeatBoat->GetHull()->GetComponentTransform();
+		const FVector Local = SeatBoat->DriverSeatLocal + PaddleSeatedLocal;
+		Paddle->AttachToComponent(SeatBoat->GetHull(), FAttachmentTransformRules::KeepWorldTransform);
+		Paddle->SetWorldLocationAndRotation(HX.TransformPosition(Local), HX.TransformRotation(PaddleSeatedRot.Quaternion()));
 	}
 	else
 	{
@@ -635,6 +648,25 @@ void ALFBrawler::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	if (State == ELFBrawlerState::Standing)
 	{
+		// N1 3c: while a punch is held / swinging, don't turn to face the movement direction (moving back flipped him 180):
+		// the player keeps facing the camera aim and strafes; an AI keeps the facing its swing set.
+		{
+			UCharacterMovementComponent* Move = GetCharacterMovement();
+			const bool bAiming = SwingPhase != ELFSwingPhase::Idle;
+			Move->bOrientRotationToMovement = !bAiming;
+			Move->bUseControllerDesiredRotation = bAiming && IsPlayerControlled();
+		}
+		// N1 3c: hard limit inside the hull footprint (hull space) - the walls should already stop him; this catches leaks.
+		if (const ALFBoat* InB = Boat.Get())
+		{
+			const FTransform& HX = InB->GetHull()->GetComponentTransform();
+			const FVector Local = HX.InverseTransformPosition(GetActorLocation());
+			const FVector Clamped(FMath::Clamp(float(Local.X), StandMinX, StandMaxX), FMath::Clamp(float(Local.Y), -StandMaxY, StandMaxY), Local.Z);
+			if (!Clamped.Equals(Local, 0.5f))
+			{
+				SetActorLocation(HX.TransformPosition(Clamped));
+			}
+		}
 		UpdateSway(DeltaSeconds);
 		// Safety net: a standing brawler should never fall for long (knockback hops last ~0.3 s). If he does - pushed into
 		// the hull, boat yanked away - put him back on the floor where he is, or into the water if he is outside the boat.
@@ -669,6 +701,19 @@ void ALFBrawler::Tick(float DeltaSeconds)
 	else if (State == ELFBrawlerState::Climbing)
 	{
 		UpdateClimb(DeltaSeconds);
+	}
+	if (CVarLFDebugSwim.GetValueOnGameThread() != 0 && (State == ELFBrawlerState::Swimming || State == ELFBrawlerState::Ragdoll))
+	{
+		SwimLogClock += DeltaSeconds;
+		if (SwimLogClock >= 0.5f)
+		{
+			SwimLogClock = 0.f;
+			const FVector Head = GetMesh()->GetSocketLocation(TEXT("head"));
+			const FVector NeckL = GetMesh()->GetSocketLocation(TEXT("clavicle_l"));
+			const float W = LF::Water::GetHeightAt(Head, GetWorld()->GetTimeSeconds());
+			UE_LOG(LogLF, Display, TEXT("[swim] %s %s head %+.0f cm, shoulder %+.0f cm above water (speed %.0f)"), *GetName(),
+				State == ELFBrawlerState::Swimming ? TEXT("SWIM") : TEXT("FLOAT"), Head.Z - W, NeckL.Z - W, GetVelocity().Size2D());
+		}
 	}
 	UpdateFakeWeight(DeltaSeconds);
 	UpdatePaddleStow();
@@ -1559,7 +1604,9 @@ void ALFBrawler::UpdateSwim(float DeltaSeconds)
 	// Bob on the water: capsule centre a fixed fraction of the half-height under the surface.
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const float Water = LF::Water::GetHeightAt(L, Now);
-	L.Z = Water - HalfHeight * SwimSubmerge;
+	const float Lift01 = FMath::Clamp(float(GetVelocity().Size2D()) / FMath::Max(SwimSpeed, 1.f), 0.f, 1.f);
+	SwimLift = FMath::FInterpTo(SwimLift, SwimSpeedLift * Lift01, DeltaSeconds, 6.f); // N1 3b: eased with the lean
+	L.Z = Water - HalfHeight * SwimSubmerge + SwimLift;
 	SetActorLocation(L);
 	GetCharacterMovement()->Velocity.Z = 0.f;
 

@@ -83,3 +83,11 @@ private:
 	float TestElapsed = 0.f;
 	int32 TestStep = 0;
 };
+
+namespace LF
+{
+	/** N1 smoke evidence: with -LFSmoke on the command line (works in Shipping, which has no log), append a timestamped line
+	 *  to <ProjectSavedDir>/LFSmoke.txt. No-op otherwise. */
+	LAKEFIGHT_API void Smoke(const FString& Line);
+	LAKEFIGHT_API bool SmokeEnabled();
+}

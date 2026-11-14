@@ -127,6 +127,19 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0", ClampMax="1"))
 	float MinTurnAuthority = 0.15f;
 
+	/** N1 3e: extra yaw (deg/s^2 at full steer) when slow, fading out linearly by LowSpeedTurnSpeed - a rowboat can pivot on
+	 *  the spot, so you can turn onto a fish spot and stop there. The rudder still does all the turning at speed. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0"))
+	float LowSpeedYawAccelDeg = 45.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="1"))
+	float LowSpeedTurnSpeed = 300.f;
+
+	/** N1 3a: extra horizontal drag (1/s) while nobody is in the seat - oars trailing, the empty boat glides to a stop in a
+	 *  couple of seconds instead of ~6 s (it read as "still driving"). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0"))
+	float EmptyBoatDrag = 0.8f;
+
 	/** Authority multiplier when moving backwards (steering also inverts naturally). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Handling", meta=(ClampMin="0", ClampMax="1"))
 	float ReverseRudderScale = 0.5f;
@@ -457,6 +470,10 @@ public:
 	UFUNCTION(Exec)
 	void LFRow(float Throttle) { DebugThrottle = FMath::Clamp(Throttle, -1.f, 1.f); }
 	float DebugThrottle = 0.f;
+	/** Debug console while driving: hold this steer (-1..1) without keys, 0 = back to the keys (tests low-speed turning). */
+	UFUNCTION(Exec)
+	void LFSteer(float Steer) { DebugSteer = FMath::Clamp(Steer, -1.f, 1.f); }
+	float DebugSteer = 0.f;
 
 	/** Drive input from an AI captain (same path as the player's Throttle/Steer actions): throttle -1..1, steer -1..1. */
 	UFUNCTION(BlueprintCallable, Category="LF|Crew")

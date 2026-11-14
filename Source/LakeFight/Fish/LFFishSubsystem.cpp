@@ -125,6 +125,7 @@ void ULFFishSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 		Respawn(S);
 	}
 	UE_LOG(LogLF, Display, TEXT("[fish] ready: %d zones, %d banks; catch %.1f s below %.0f cm/s, radius %.0f cm"), Spots.Num(), Banks.Num(), CatchInterval, CatchMaxSpeed, CatchRadius);
+	LF::Smoke(FString::Printf(TEXT("map %s: fish ready - %d zones, %d banks"), *InWorld.GetMapName(), Spots.Num(), Banks.Num()));
 	if (Spots.IsEmpty() || Banks.Num() != UE_ARRAY_COUNT(TeamNames))
 	{
 		UE_LOG(LogLF, Warning, TEXT("[fish] expected FishZone_* markers and BankZone_Red/Blue/Green/Yellow; add runtime Actor Tags matching these names (editor labels work only in PIE)"));
@@ -276,6 +277,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 					Catcher->OnSplash(At, 0.25f);
 					if (Catcher == LF::Fish::PlayerBoat(GetWorld())) PlaySound(CatchSound); // N1 #2: AI catches are not UI sounds
 					UE_LOG(LogLF, Display, TEXT("[fish] catch %s cargo=%d spot=%d t=%.2f"), *Catcher->GetName(), Cargo->GetCount(), S.Remaining, Now);
+					LF::Smoke(FString::Printf(TEXT("catch %s (driver %s) cargo=%d"), *Catcher->GetName(), Catcher->GetDriver() ? *Catcher->GetDriver()->GetName() : TEXT("-"), Cargo->GetCount()));
 					if (S.Remaining == 0)
 					{
 						S.Mesh->Destroy();
@@ -378,6 +380,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 	{
 		UE_LOG(LogLF, Display, TEXT("[fish] t=%.1f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d pickups=%d"),
 			Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3], Pickups.Num());
+		LF::Smoke(FString::Printf(TEXT("t=%.0f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d"), Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3]));
 		NextReport = Now + 10.f;
 	}
 }

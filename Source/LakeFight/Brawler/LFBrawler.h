@@ -169,6 +169,21 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Boat", meta=(ClampMin="0"))
 	float BoatStepHeight = 12.f;
 
+	/** N1 3c: standing brawlers are kept inside this hull-space box (cm) - a backstop to the hull walls. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Boat")
+	float StandMinX = -120.f;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Boat")
+	float StandMaxX = 90.f;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Boat")
+	float StandMaxY = 35.f;
+
+	/** N1 3d: while driving, the paddle lies on the floor boards beside the rower instead of on his back. Offset of the T-grip
+	 *  end from the boat's DriverSeatLocal (hull space, cm); the shaft runs along PaddleSeatedRot (zero = blade toward the bow). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	FVector PaddleSeatedLocal = FVector(-20.f, 30.f, 5.f);
+	UPROPERTY(EditDefaultsOnly, Category="LF|Paddle")
+	FRotator PaddleSeatedRot = FRotator(0.f, -4.f, 0.f);
+
 	// --- Fake weight tilt (Standing only; pure torque, no added mass) ---
 	/** Pretend weight (kg) whose torque about the hull's centre of mass tilts the boat toward the brawler. 0 = off. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Brawler", meta=(ClampMin="0"))
@@ -248,6 +263,11 @@ public:
 	/** Capsule centre this far (fraction of half-height) below the water surface: head and shoulders out. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0", ClampMax="1"))
 	float SwimSubmerge = 0.5f;
+
+	/** N1 3b: the swim lean dips the head under at speed (measured: head -21 cm at full swim speed, +23 cm treading). Lift
+	 *  the swimmer this much (cm) at full swim speed so head and shoulders stay out (lf.debug.swim 1 logs the heights). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
+	float SwimSpeedLift = 36.f;
 
 	/** Forward lean of the mesh at full swim speed (deg) - placeholder swim pose. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0", ClampMax="90"))
@@ -628,9 +648,11 @@ private:
 	void ApplyCrewLook();
 	void AttachAligned(USceneComponent* Comp, FName Socket, FName Bone, const FVector& ActorOffset, const FRotator& ActorRot);
 	void UpdatePaddleStow();
-	enum class EPaddleMount : uint8 { Hands, Back, Hand };
+	enum class EPaddleMount : uint8 { Hands, Back, Hand, Boat };
 	EPaddleMount PaddleMount = EPaddleMount::Hands;
 	float SwimStrokeAccum = 0.f;
+	float SwimLogClock = 0.f; // N1 3b lf.debug.swim
+	float SwimLift = 0.f;     // N1 3b current lift (cm)
 	double LastPantTime = -100.0; // A02: swim pant at most every 1.5 s
 	float HangSoundTimer = 0.f;   // A02: pant while hanging + towed
 	void EnterSwimming();
