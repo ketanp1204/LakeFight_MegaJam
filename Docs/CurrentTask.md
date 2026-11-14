@@ -563,6 +563,11 @@ width) are the shape knobs at the top; the outline is solved to those targets, t
   disk both times. The helper no longer sends those keys. My wait loops also mis-detected finished runs, so "runs taking long" was
   idle waiting, not the generator.
 - Director note: the `lf.ai.spectate` tracking camera = marketing-video tool (recorded in Claude memory).
+- **Sky (director):** the default Unreal realistic sky still clashes with the game's low-poly look. The level uses the template
+  `SkyAtmosphere` + `VolumetricCloud` (+ `SM_SkySphere`, `SkyLight`, `ExponentialHeightFog`): soft photoreal volumetric clouds
+  behind our faceted SM_LF_Cloud meshes. Not changed in L01.1. Suggested next pass: remove the VolumetricCloud, replace the sky with
+  a simple stylized gradient (flat-shaded sky sphere / sky material driven by the existing light), keep only the low-poly clouds,
+  re-tune fog + SkyLight so the hills and forest edge keep their haze.
 
 **Shots** (`Docs/Shots/`, PIE game frames, no editor icons): `L01_top.png` (labelled, from a temporary evidence camera),
 `L01_dock_Red/Blue/Green/Yellow.png` (each crew's game camera at its spawn), `L01_sightlines.png`, `L01_heron.png` (editor view of
