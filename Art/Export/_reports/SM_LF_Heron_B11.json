@@ -1,0 +1,48 @@
+{
+  "asset": "SM_LF_Heron",
+  "triangles": 376,
+  "budget_exclusive": 400,
+  "dimensions_m": [
+    0.516073,
+    0.173662,
+    1.0
+  ],
+  "z_range_m": [
+    0.0,
+    1.0
+  ],
+  "root_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "parts": [
+    {
+      "name": "SM_LF_Heron",
+      "triangles": 376,
+      "origin_local_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent": null,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "M_LF_Metal",
+        "M_LF_Cloth",
+        "M_LF_PaintCream",
+        "M_LF_PaintOrange",
+        "M_LF_Black",
+        "M_LF_WoodDark"
+      ],
+      "closed_components": true,
+      "degenerate_faces": 0,
+      "flat_shaded": true,
+      "geometry_sha256": "bd1d750f76dfa37d28e405c1bc49d0204accf425d120b0d862ed6eeb2a85558d"
+    }
+  ]
+}
