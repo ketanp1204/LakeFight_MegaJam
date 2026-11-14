@@ -8,6 +8,7 @@
 
 #include "Water/LFWater.h"
 #include "Water/LFBuoyancyComponent.h"
+#include "Audio/LFAudio.h"
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Containers/Ticker.h"
@@ -529,7 +530,16 @@ void ALFBoat::ResolveContact(ALFBoat* Target, const FVector& TargetDir, float Cl
 
 	if (!bRam)
 	{
+		if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+		{
+			Audio->Play(ELFSound::BoatCreak, Contact, 0.35f, 1.f, TEXT("bump"));
+		}
 		return; // bump: physics only
+	}
+	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+	{
+		Audio->Play(ELFSound::RamWood, Contact, FMath::Lerp(0.7f, 1.f, Strength), 1.f, TEXT("ram"));
+		Audio->Play(ELFSound::RamBass, Contact, FMath::Lerp(0.6f, 1.f, Strength), 1.f, TEXT("ram"));
 	}
 
 	ApplyRamTo(Target, TargetDir, Contact, Strength);
@@ -749,6 +759,10 @@ void ALFBoat::UpdateCapsize(float DeltaSeconds)
 			}
 		}
 		OnSplash(GetActorLocation(), 1.f);
+		if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+		{
+			Audio->Play(ELFSound::Surface, GetActorLocation(), 1.8f, 0.7f, TEXT("boat righted"));
+		}
 	}
 	else if (Since > CapsizedTime + RightingTime * 3.f)
 	{
@@ -772,6 +786,10 @@ void ALFBoat::Capsize()
 		}
 	}
 	Driver = nullptr;
+	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+	{
+		Audio->Play(ELFSound::RamBass, GetActorLocation(), 1.f, 1.f, TEXT("capsize (Overboard per person follows on splash-in)"));
+	}
 	UE_LOG(LogLF, Display, TEXT("[capsize] %s CAPSIZED (tilt %.0f deg) - %d aboard thrown overboard, driving disabled for %.1f s"),
 		*GetName(), GetTiltDeg(), Thrown, CapsizedTime);
 }

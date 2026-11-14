@@ -37,6 +37,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Audio/LFAudio.h"
 
 namespace
 {
@@ -565,6 +566,11 @@ bool ALFBrawler::TryDrive()
 	{
 		UE_LOG(LogLF, Display, TEXT("[steal] %s steals %s"), *GetName(), *B->GetName());
 		OnSteal(B);
+		if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+		{
+			Audio->Play(ELFSound::VO_Taunt, GetActorLocation(), 1.f, 1.f, TEXT("steal"));
+			Audio->Play(ELFSound::VO_Whistle, GetActorLocation(), 1.f, 1.f, TEXT("steal"));
+		}
 		HomeBoat = B; // it's ours now: re-taking the seat later isn't another steal
 
 	}
@@ -997,6 +1003,23 @@ void ALFBrawler::SweepPaddle()
 			UE_LOG(LogLF, Display, TEXT("[paddle] %s HIT %s strength=%.2f -> %s"), *GetName(), *Victim->GetName(), SwingStrength,
 				bOverboard ? TEXT("OVERBOARD") : TEXT("knockback+stun"));
 			OnPaddleHit(Victim, SwingStrength, bOverboard);
+			if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+			{
+				const FVector At = Victim->GetActorLocation();
+				if (SwingStrength >= ChargedMinStrength)
+				{
+					Audio->Play(ELFSound::PaddleCharged, At, 1.f, 1.f, TEXT("charged paddle hit"));
+					if (FMath::FRand() < 0.3f)
+					{
+						Audio->Play(ELFSound::VO_Attack, GetActorLocation(), 1.f, 1.f, TEXT("charged paddle hit (30%)"));
+					}
+				}
+				else
+				{
+					Audio->Play(ELFSound::PaddleWood, At, 1.f, 1.f, TEXT("light paddle hit"));
+					Audio->Play(ELFSound::PaddleHit, At, 1.f, 1.f, TEXT("light paddle hit"));
+				}
+			}
 			PlayHitFeedback(SwingStrength);
 			StartHitstop(SwingStrength);
 		}
@@ -1013,6 +1036,10 @@ void ALFBrawler::SweepPaddle()
 			HullComp->AddImpulseAtLocation((Dir + FVector(0.f, 0.f, -0.3f)) * (HullHitImpulse * SwingStrength * HullComp->GetMass()), At);
 			UE_LOG(LogLF, Display, TEXT("[paddle] %s hit hull of %s strength=%.2f"), *GetName(), *HitBoat->GetName(), SwingStrength);
 			OnPaddleHit(nullptr, SwingStrength, false);
+			if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+			{
+				Audio->Play(ELFSound::HitCreak, At, FMath::Lerp(0.6f, 1.f, SwingStrength), 1.f, TEXT("paddle hit a hull"));
+			}
 			PlayHitFeedback(SwingStrength * 0.5f);
 		}
 	}
@@ -1094,6 +1121,10 @@ bool ALFBrawler::ReceivePaddleHit(ALFBrawler* Attacker, const FVector& Dir, floa
 	else
 	{
 		LaunchCharacter(Dir * FMath::Lerp(KnockbackMin, KnockbackMax, Strength) + FVector(0.f, 0.f, 120.f), true, true);
+		if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+		{
+			Audio->Play(ELFSound::Stun, GetActorLocation() + FVector(0.f, 0.f, 60.f), 1.f, 1.f, TEXT("stunned"));
+		}
 	}
 	if (IsLocallyControlled())
 	{
@@ -1108,6 +1139,10 @@ void ALFBrawler::StartRagdoll(const FVector& Out, float Strength)
 	USkeletalMeshComponent* M = GetMesh();
 	State = ELFBrawlerState::Ragdoll;
 	RagdollPhase = ERagdollPhase::Flying;
+	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+	{
+		Audio->Play(ELFSound::VO_Yell, GetActorLocation(), 1.f, 1.f, TEXT("overboard"));
+	}
 	RagdollStart = LaunchTime = World->GetTimeSeconds();
 	bInWater = false;
 	bRagdollIgnoresBoats = false;
@@ -1218,6 +1253,10 @@ void ALFBrawler::UpdateRagdoll(float DeltaSeconds)
 				}
 			}
 			OnSplashIn(SplashAt);
+			if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+			{
+				Audio->Play(ELFSound::Overboard, SplashAt, 1.f, 1.f, TEXT("overboard splash-in"));
+			}
 			// Landing distance outside the victim boat's hull (local; half-beam 67 cm, half-length 158 cm).
 			float Outside = -1.f;
 			if (const ALFBoat* B = Boat.Get())
@@ -1301,6 +1340,10 @@ void ALFBrawler::EndRagdoll()
 	Paddle->AttachToComponent(PaddlePivot, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	SwayQuat = FQuat::Identity;
 	UE_LOG(LogLF, Display, TEXT("[overboard] %s upright in the water"), *GetName());
+	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+	{
+		Audio->Play(ELFSound::Surface, GetActorLocation(), 1.f, 1.f, TEXT("surfacing"));
+	}
 }
 
 // ---------------------------------------------------------------- Swim / climb / steal (step 3)
@@ -1482,6 +1525,15 @@ void ALFBrawler::UpdateSwim(float DeltaSeconds)
 		{
 			SwimStrokeAccum = 0.f;
 			OnSwimStroke();
+			const double PantNow = GetWorld()->GetTimeSeconds();
+			if (PantNow - LastPantTime >= 1.5)
+			{
+				LastPantTime = PantNow;
+				if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+				{
+					Audio->Play(ELFSound::VO_Pant, GetActorLocation(), 1.f, 1.f, TEXT("swim stroke"));
+				}
+			}
 		}
 	}
 
@@ -1511,6 +1563,19 @@ void ALFBrawler::UpdateClimb(float DeltaSeconds)
 		{
 			EnterSwimming();
 			return;
+		}
+		HangSoundTimer -= DeltaSeconds;
+		if (HangSoundTimer <= 0.f)
+		{
+			HangSoundTimer = FMath::FRandRange(1.0f, 1.5f);
+			if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+			{
+				Audio->Play(ELFSound::VO_Pant, GetActorLocation(), 1.6f, 1.f, TEXT("hanging + towed"));
+				if (FMath::FRand() < 0.3f)
+				{
+					Audio->Play(ELFSound::Surface, GetActorLocation(), 0.8f, 1.f, TEXT("hanging + towed (occasional)"));
+				}
+			}
 		}
 		if (float(B->GetVelocity().Size2D()) < HangSpeed)
 		{
@@ -1562,6 +1627,10 @@ void ALFBrawler::FinishClimb()
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	StandInBoatAt(B, ClimbTargetLocal - FVector(0.f, 0.f, HalfHeight + 3.f));
 	OnClimbAboard(B);
+	if (ULFAudioSubsystem* Audio = ULFAudioSubsystem::Get(this))
+	{
+		Audio->Play(ELFSound::BoatCreak, GetActorLocation(), 1.f, 1.f, TEXT("climb aboard"));
+	}
 	UE_LOG(LogLF, Display, TEXT("[climb] %s aboard %s%s"), *GetName(), *B->GetName(),
 		B == HomeBoat.Get() ? TEXT(" (home)") : (B->HasDriver() ? TEXT(" (someone is driving - knock them out)") : TEXT(" (seat empty: steal it!)")));
 }

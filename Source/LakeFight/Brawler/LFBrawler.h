@@ -600,6 +600,8 @@ private:
 	enum class EPaddleMount : uint8 { Hands, Back, Hand };
 	EPaddleMount PaddleMount = EPaddleMount::Hands;
 	float SwimStrokeAccum = 0.f;
+	double LastPantTime = -100.0; // A02: swim pant at most every 1.5 s
+	float HangSoundTimer = 0.f;   // A02: pant while hanging + towed
 	void EnterSwimming();
 	void UpdateSwim(float DeltaSeconds);
 	void UpdateClimb(float DeltaSeconds);

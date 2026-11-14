@@ -3,6 +3,7 @@
 ## Third-party assets (licensed)
 | Asset | Source URL | Licence | Used for |
 | --- | --- | --- | --- |
+| Sound effects, ambience and voice clips (56 WAVs, processed in A01; per-file sources in `Audio/AUDIO_REPORT.md`) | Sonniss GDC 2026 Game Audio Bundle (https://gdc.sonniss.com) | Royalty-free, licensed as confirmed by the director | All game audio (`/Game/LakeFight/Audio`) |
 Mixamo (Adobe), retargeted to UE5 Manny
 Epic UE5 Mannequin (Manny), engine content under the Unreal Engine EULA; retargeted Mixamo animations
 

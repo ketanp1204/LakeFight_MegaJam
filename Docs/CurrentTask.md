@@ -314,3 +314,52 @@ close-range hit rate with the 3-point sweep, walk-in-place feel. Next task: A02 
   sweep sternward, the boat moves where he faces), reverse throttle = PULL stroke; the torso lean follows the hands, so it reverses
   with the stroke. Verified: PIE `LFRow 1`, slomo 0.1 - submerged blades move sternward, lifted on the return (blades 5-26 cm under
   water on the push); shot `Docs/Shots/T031_rowing_push_stroke.png`.
+
+## A02 - wire audio (Claude Code, 14 Nov 07:46-09:00 IST)
+
+**Files**
+- New `Source/LakeFight/Audio/LFAudio.h/.cpp` - `ULFAudioSubsystem` (tickable world subsystem, game worlds only).
+  - Events (`ELFSound`): PaddleWood, PaddleHit, PaddleCharged, Stun, Overboard, Surface, BoatCreak, RamWood, RamBass, HitCreak, OarDip,
+    VO_Attack, VO_Yell, VO_Pant, VO_Taunt, VO_Whistle. Each loads its `<Prefix>_01.._06` waves from `/Game/LakeFight/Audio/` at begin play.
+  - Per play: random variation, never the same one twice in a row; pitch +-6 % (SFX), +-3 % (voices), OarDip +-12 % around 1.15;
+    a `USoundConcurrency` per event (MaxCount 2-4, StopOldest); SFX + Voice spatialised (full inside 2 m, linear falloff to 0 at 40 m).
+  - Categories `ELFSoundCategory` Master/SFX/Voice/UI/Ambience/Music; `SetCategoryVolume` / `GetCategoryVolume` (BlueprintCallable) for the
+    options menu; Master multiplies the rest; live ambience follows immediately.
+  - Ambience (2D loops, random start offsets): Lake always (dips 40 % at a bank), Shore crossfades in (~2 s) as the listener gets within
+    15 m of land (full at 3 m) - rings of downward WorldStatic traces every 0.5 s, land = ground > 30 cm above the water; Birds 0.3 +
+    Meadow 0.25 constant under both.
+  - Polled per boat: hull roll rate > 70 deg/s = BoatCreak (0.8 s cooldown, louder with rate); oar blade centre crossing into the water
+    while throttle != 0 = OarDip (SFX_LF_Surface_01, soft).
+  - `lf.audio.log 1` (default on) logs every sound: `[audio] <Event> <wave> vol pitch at (x,y,z) <- why`.
+- `LFBrawler.cpp/.h` hook sites: light hit = PaddleWood + PaddleHit; charged (strength >= ChargedMinStrength) = PaddleCharged + VO_Attack
+  30 %; knockback (not overboard) = Stun; ragdoll start = VO_Yell; splash-in = Overboard; upright in the water = Surface; swim stroke =
+  Pant (max every 1.5 s); climb aboard = BoatCreak; hanging + towed = Pant x1.6 every 1-1.5 s + Surface 30 %; steal = VO_Taunt + Whistle;
+  paddle on a hull = HitCreak.
+- `LFBoat.cpp`: bump = BoatCreak x0.35; ram = RamWood + RamBass (scaled by ram strength); capsize = RamBass (each thrown crew member
+  then gets their own Overboard on splash-in); righted = Surface x1.8 at pitch 0.7.
+- `Config/DefaultGame.ini`: `DirectoriesToAlwaysCook=/Game/LakeFight/Audio` (waves are loaded by path, so packaging must include them).
+
+**Deviations (no asset-creation tool in this MCP; no time for hand-made assets):** no SoundClass / SoundMix / MetaSound / SoundCue
+assets - the subsystem does the randomisation, no-repeat, pitch, concurrency, attenuation and category volumes in C++ (transient
+attenuation/concurrency objects). If you want real assets later: one SoundClass tree + mix, and the subsystem would assign them.
+UI_*, Final30, EndCheer, Win, Fish* are not referenced (T04).
+- Pile-up fix after run 1: long tails (> 1.5 s: RamBass) are capped at 2 live instances and a new one is skipped (PreventNew) instead of
+  cutting the oldest; burst ducking: beyond 3 one-shots inside 0.25 s each extra plays 25 % quieter (oar dips excluded).
+
+**Verification** (2 builds Succeeded, editor closed; PIE with the player idle, AIs playing):
+- Run 1 (~70 s, player at the centre - the AIs pile up there): every sound logged; a 4-boat pile-up requested RamBass x4 overlapping
+  (2 s tails) -> the fix above.
+- Run 2 (300 s, player spawned at (0, -33 m) near the left bank; 0 warnings/errors): `[audio] ready: 16 events, 41 wave variations`;
+  fired: OarDip 375, BoatCreak roll 57 / bump 15 / climb aboard 12, RamWood 40 + RamBass 40, VO_Pant (swim) 16, VO_Yell 14 + Overboard 14
+  + Surface (surfacing) 14, PaddleCharged 12 + VO_Attack 4 (~33 %), PaddleWood 8 + PaddleHit 8, Stun 8, capsize RamBass 1 + righted
+  Surface 1, HitCreak 1. Shore: `shore weight -> 0.42 (nearest bank ~10 m)` near the bank, 0 farther out (2 s crossfade).
+  Overlap from the log (requests, before concurrency): at most 9 sounds live at once; per event <= 2 except OarDip 6 (cap 4) and
+  RamBass 4 (cap 2, extra skipped).
+- NOT seen in PIE (rare in AI play, no console access through MCP this session): steal (VO_Taunt + Whistle), hang + tow (loud Pant +
+  Surface). Both are one-line calls next to the existing `[steal]` / HANGING code paths.
+- Not measurable through MCP: actual loudness / clipping - the log shows requested volumes, not the mixer output.
+
+**Please check by ear (PIE):** overall levels (SFX -16 LUFS, VO -18, ambience -28 sources); a pile-up for clipping/mud; oar dips
+(soft, every blade entry - maybe too frequent?); the shore loop fading in when you swim to a bank; stealing a boat (taunt + whistle).
+**Follow-ups:** real SoundClass/SoundMix assets if the options menu wants them (subsystem has `SetCategoryVolume` now); a master limiter
+submix; finer shore probe rings (now 3/6/10/15 m steps).
