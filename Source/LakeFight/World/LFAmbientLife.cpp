@@ -1,4 +1,5 @@
 #include "World/LFAmbientLife.h"
+#include "World/LFShoreCrowd.h"
 
 #include "Boat/LFBoat.h"
 #include "Brawler/LFBrawler.h" // LFBoat.h inline SetDriver needs the complete type
@@ -6,6 +7,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
+#include "Materials/MaterialInterface.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "Misc/CommandLine.h"
@@ -74,6 +76,7 @@ void ULFAmbientLifeSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	InWorld.SpawnActor<ALFAmbientLife>(FVector::ZeroVector, FRotator::ZeroRotator, Params);
+	InWorld.SpawnActor<ALFShoreCrowd>(FVector::ZeroVector, FRotator::ZeroRotator, Params); // N1 item 10
 }
 
 // ---------------------------------------------------------------- actor
@@ -208,6 +211,27 @@ void ALFAmbientLife::BeginPlay()
 		F.Phase = Rng.FRandRange(0.f, 10.f);
 		Flies.Add(F);
 	}
+	// N1 item 10: swaying foliage (MI_LF_FoliageSway) must not invalidate the virtual shadow map cache every frame (it overflowed
+	// the VSM marking queue): shadows ignore the WPO (Rigid) and the sway stops beyond 60 m.
+	int32 Swaying = 0;
+	for (TActorIterator<AStaticMeshActor> It(GetWorld()); It; ++It)
+	{
+		UStaticMeshComponent* C = It->GetStaticMeshComponent();
+		if (!C) continue;
+		for (int32 M = 0; M < C->GetNumMaterials(); ++M)
+		{
+			const UMaterialInterface* Mat = C->GetMaterial(M);
+			if (Mat && Mat->GetName() == TEXT("MI_LF_FoliageSway"))
+			{
+				C->ShadowCacheInvalidationBehavior = EShadowCacheInvalidationBehavior::Rigid;
+				C->SetWorldPositionOffsetDisableDistance(6000);
+				C->MarkRenderStateDirty();
+				++Swaying;
+				break;
+			}
+		}
+	}
+	UE_LOG(LogLF, Display, TEXT("[ambient] %d swaying foliage meshes (shadow cache: Rigid, WPO off beyond 60 m)"), Swaying);
 	UE_LOG(LogLF, Display, TEXT("[ambient] %d floaters, %d gulls, %d dragonflies (%d reed clumps)%s"), Floaters.Num(), Flock.Num(), Flies.Num(), Reeds.Num(),
 		Swan ? TEXT("") : TEXT(" - swan mesh without head/neck, swans skipped"));
 }

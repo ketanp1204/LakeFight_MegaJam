@@ -8,7 +8,30 @@
 7. [DONE d9683ce] Sky
 8. [DONE 30f6a19] Final package + report + DirectorsLog
 9. [DONE 35c7baa] Stretch: ambient life
-10. [ ] Stretch: spectators + foliage sway
+10. [IN PROGRESS] Stretch: spectators + foliage sway
+N2 (added by the director to Docs/N1.md during the run; package + smoke after 13 and at the end):
+11. [ ] AI banking check (7c)
+12. [ ] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
+13. [ ] How-to-play: controls card in pause + round-start hints; re-package + smoke
+14. [ ] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
+15. [ ] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
+16. [ ] Hero shots (Docs/Shots/Hero/)
+17. [ ] ItchPage controls + how-to-play; final package + smoke
+
+## N1 item 10 (stretch) - shore spectators + foliage sway (14 Nov 22:42-23:00 IST, unreviewed - director away)
+- New `World/LFShoreCrowd.h/.cpp` (spawned with the ambient life): 2 Manny spectators (flat character materials, 0.85 scale)
+  on the shore beside each dock, ~8-10 m behind the bank, grounded by a trace (skipped if it lands in water), facing the
+  lake. Idle (MM_Idle); Victory 3.5 s when their team's score rises (bank); Victory or Insult 3 s when two boats close at
+  > 3 m/s within 4 m of each other and 35 m of the fan (ram). Polling only (scores, boat velocities), 5 Hz tick, NoCollision.
+  The Mixamo "Cheering_While_Sitting" clip is a sitting pose, so standing fans use Victory instead. `[crowd] 8 spectators`.
+  Evidence: Saved/n1/crowd_sheet.png (dev `lf.crowd.look <i> [delay]`). No hats/vests on the fans.
+- Foliage sway: `Tools/N1_foliage_sway.py` (editor script, idempotent). M_LF_Moss is a shared palette instance (ground, shore,
+  islands, ducks...), so: M_LF_FoliageSway = copy of its parent (FBXLegacyPhongSurfaceMaterial) + wind WPO
+  sin(1.3 t + world XY phase) * 7 cm * saturate(localZ / 520)^2 along (1, 0.6, 0); MI_LF_FoliageSway copies Moss's parameters;
+  assigned ONLY to the Moss slot of SM_LF_Tree_Pine / Tree_Round / TreeCluster_01 / Bush_01 / Bush_02 (5 mesh assets saved).
+  At runtime the 268 swaying components get ShadowCacheInvalidationBehavior = Rigid and WPO off beyond 60 m (cheap VSM).
+  A "[VSM] Non-Nanite Marking Job Queue overflow" warning appeared only when my debug camera jumped to the forested shore
+  (not with -LFNoAmbient and the normal camera) - view-dependent, noted for the director.
 
 ## N1 item 9 (stretch) - ambient life (14 Nov ~22:31-22:45 IST, unreviewed - director away)
 - New `World/LFAmbientLife.h/.cpp`: `ULFAmbientLifeSubsystem` spawns one `ALFAmbientLife` in L_Lake01 game worlds (no level
