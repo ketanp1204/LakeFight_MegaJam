@@ -12,13 +12,28 @@
 N2 (added by the director to Docs/N1.md during the run; package + smoke after 13 and at the end):
 11. [DONE bf1bf6a] AI banking check (7c)
 12. [DONE 60d24c6] Pause menu (Esc / Start): Resume, Restart, Options, Quit to menu
-13. [IN PROGRESS] How-to-play: controls card in pause + round-start hints; re-package + smoke
-14. [ ] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
+13. [DONE 3f8b0b5] How-to-play: controls card in pause + round-start hints; re-package + smoke
+14. [IN PROGRESS] Graphics quality option (Low/Medium/High) + frame time in a 4-boat pile-up at High
 15. [ ] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
 16. [ ] Hero shots (Docs/Shots/Hero/)
 17. [ ] ItchPage controls + how-to-play; final package + smoke
 
-## N2 item 12 - pause menu (15 Nov 02:55-03:05 IST, unreviewed - director away; resumed session)
+## N2 item 13 - how-to-play (15 Nov 03:05-03:14 IST, unreviewed - director away)
+- Pause menu gets a 5th item, **HOW TO PLAY** (2nd in the list): a card with the goal in three lines (catch on spots, bank at
+  your dock, ram / whack to spill, steal boats, 4 min, gold at 2:00 = 5 each) and a three-column controls table (action /
+  keyboard + mouse / gamepad, same bindings as Docs/ItchPage.md, plus Pause = Esc / Start). Back / Esc / B return.
+- Round-start hints in the HUD (`ULFRoundWidget`): low-centre card, non-blocking (hit-test invisible), 5 s each from 0.5 s
+  of play, 0.4 s fades: "Stop on a fish spot to catch" -> "Bank at your dock" -> "Ram boats to spill their fish" (the
+  director's wording). Driven by round play time (`ULFRoundSubsystem::GetRoundTime`), so they freeze with the pause and
+  don't run under the main menu; every round (including Restart) shows them again.
+- Evidence (editor -game): Saved/Screenshots/N2_hint1.png, N2_hint3.png, N2_pause_main.png (5 items), N2_pause_howto.png
+  (log Saved/n1/howto.log). How-to card tightened after that shot (BACK no longer touches the HUD boat panel) - not
+  re-shot.
+- **Package (Shipping, Win64): BUILD SUCCESSFUL, 2:00.** Source = 3f8b0b5. Zip: `Builds/LakeFight_N2_howto_20261115_0313.zip`
+  (382 MB). Shipping smoke (`LakeFight.exe -LFSmoke`, %LOCALAPPDATA%/LakeFight/Saved/LFSmoke.txt): fish ready 3 zones /
+  4 banks -> menu -> Play -> hint 1 -> hint 2 -> pause at 234.0 s -> "pause page how to play" -> Resume at 234.0 s ->
+  hint 3 -> 41 catches -> results "Yellow WINS!" 0/12/5/32 -> quit, exit code 0.
+ (15 Nov 02:55-03:05 IST, unreviewed - director away; resumed session)
 - `ULFMenuWidget` gets a pause mode (same widget, `SetPauseMode(true)`): RESUME / RESTART / OPTIONS (the shared music/SFX
   page, saved as before) / QUIT TO MENU over a 55% black backdrop with a "PAUSED" title; HUD stays visible behind it.
   Same mouse / keyboard / gamepad navigation as the main menu; Esc, Backspace, B, Start or P on its main page resumes
@@ -77,7 +92,9 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 - If 7c meant something else (e.g. a specific bank-zone geometry case), it is still open.
 
 ## N1 report (Claude Code, 14 Nov 21:37-22:30 IST) - unreviewed, director away
-**Latest build (items 1-10):** `Builds/LakeFight_N1_crowd_20261114_2254.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
+**Latest build (items 1-13):** `Builds/LakeFight_N2_howto_20261115_0313.zip` (382 MB; unzipped in `Build/Windows/LakeFight.exe`).
+Shipping smoke: menu -> Play -> hints -> pause / how to play / resume (clock held) -> 41 catches -> "Yellow WINS!" -> quit.
+Items 1-10 build: `Builds/LakeFight_N1_crowd_20261114_2254.zip`.
 Shipping smoke: 3 zones / 4 banks -> menu -> Play -> 55 catches -> "Yellow WINS!" 28/9/7/5 -> quit.
 Item 9 build: `Builds/LakeFight_N1_ambient_20261114_2241.zip`.
 **Item 8 build (no ambient life):** `Builds/LakeFight_N1_final_20261114_2229.zip` (382 MB). Earlier zips:
@@ -107,6 +124,9 @@ Stretch: 9 ambient life and 10 shore spectators + foliage sway done (see their s
     body), dragonflies at the reeds. Too busy / too few? Counts are tunables on ALFAmbientLife.
 11. Spectators on the shore by each dock (Victory on banks, Victory/Insult on nearby rams) - placement, no team gear.
 12. Trees/bushes sway gently (7 cm at the top); shadows don't sway (VSM cost).
+13. Pause (N2.12): Esc / Start in a round -> RESUME / HOW TO PLAY / RESTART / OPTIONS / QUIT TO MENU. In PIE use P or Start
+    (Esc stops PIE). Check a real gamepad (Start opens/closes, B backs out, D-pad + A navigate) - untested.
+14. How to play (N2.13): the controls card wording/accuracy, and the three round-start hints (timing 5 s each - too fast?).
 
 ## N1 item 7 - sky (14 Nov 22:12-22:23 IST, unreviewed - director away)
 - `Tools/L01_layout.py` sky pass (script-owned, idempotent; run headless via -ExecutePythonScript, L_Lake01 saved):
