@@ -1,0 +1,32 @@
+{
+  "name": "SM_LF_GroundPatch_02",
+  "triangles": 288,
+  "dimensions_m": [
+    40.0,
+    40.0,
+    0.97846
+  ],
+  "origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "z_range_m": [
+    0.0,
+    0.978459
+  ],
+  "materials": [
+    "M_LF_Moss",
+    "M_LF_Reed"
+  ],
+  "boundary_edges": 48,
+  "boundary_z_max_abs_m": 0.0,
+  "flat_shaded": true,
+  "geometry_sha256": "1ff775e16ce3933a36952ddd8c757ad01699b4f4c3cfd55f50e9874484de4b65",
+  "budget_exclusive": 800
+}
