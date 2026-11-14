@@ -1,0 +1,33 @@
+{
+  "name": "SM_LF_Log",
+  "triangles": 136,
+  "dimensions_m": [
+    2.64,
+    0.5104,
+    0.72388
+  ],
+  "origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "z_range_m": [
+    0.0,
+    0.72388
+  ],
+  "materials": [
+    "M_LF_WoodDark",
+    "M_LF_Rope",
+    "M_LF_Wood"
+  ],
+  "boundary_edges": 0,
+  "boundary_z_max_abs_m": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "6229f9df254d2911f94bbe635959d7c041bb12de9e531abde0d04b102219d86e",
+  "budget_exclusive": 200
+}

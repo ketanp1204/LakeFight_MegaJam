@@ -1,0 +1,32 @@
+{
+  "name": "SM_LF_Bush_01",
+  "triangles": 140,
+  "dimensions_m": [
+    1.42613,
+    1.01046,
+    1.25
+  ],
+  "origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "z_range_m": [
+    0.0,
+    1.25
+  ],
+  "materials": [
+    "M_LF_Moss",
+    "M_LF_Reed"
+  ],
+  "boundary_edges": 0,
+  "boundary_z_max_abs_m": 0,
+  "flat_shaded": true,
+  "geometry_sha256": "538506b6bfb90fa0fb59e5f38c4c5ecda1a2c179b0bf743556859a0bfa62e879",
+  "budget_exclusive": 300
+}
