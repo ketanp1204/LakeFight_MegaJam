@@ -54,9 +54,25 @@ public:
 	float DriftSpeed = 50.f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float PickupLifetime = 10.f;
-	/** 0 = use every discovered FishZone; positive values limit active spots. */
+	/** 0 = use every discovered FishZone; positive values limit active spots. (Legacy placement only.) */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish", meta=(ClampMin="0"))
 	int32 MaxSpots = 0; // T04 hook
+
+	/** N3 19: fair placement (director: Yellow won most rounds from a zone near its dock). Two live spots: one always on a
+	 *  ring round the lake centre (the gold spot's own centre stays clear), one "lane" spot that rotates through the four
+	 *  docks in shuffled rounds of four, each time exactly LaneDistFromBank from that team's bank on its centre line. The
+	 *  FishZone_* markers are then only checked for presence. False = the old marker zones. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
+	bool bFairSpots = true;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
+	float CentreRingMin = 0.f;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
+	float CentreRingMax = 500.f;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
+	float LaneDistFromBank = 4300.f;
+	/** A fair spot nobody has fished for this long (s) moves on (the lane spot to the next dock in the rotation). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish", meta=(ClampMin="1"))
+	float IdleSpotLifetime = 25.f;
 
 private:
 	struct FSpot
@@ -68,6 +84,9 @@ private:
 		int32 Remaining = 0;
 		float Progress = 0.f;
 		float RespawnAt = 0.f;
+		int32 Slot = -1;     // N3 19: -1 marker zone, 0 centre ring, 1 rotating lane
+		int32 LaneTeam = -1; // N3 19: the dock this lane spawn serves
+		float LastActive = 0.f; // N3 19: spawn or last catch time
 	};
 	struct FPickup
 	{
@@ -88,6 +107,11 @@ private:
 		float Born = 0.f;
 	};
 	TArray<FSpot> Spots;
+	TArray<int32> LaneBag;        // N3 19: shuffled teams still due a lane spot this rotation
+	int32 LaneSpawns[4] = { 0, 0, 0, 0 };
+	int32 RingSpawns = 0;
+	int32 ZoneMarkers = 0;
+	bool PlaceFairSpot(FSpot& Spot);
 	TArray<FPickup> Pickups;
 	TArray<FBank> Banks;
 	TArray<FFlight> Flights;

@@ -18,10 +18,26 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 16. [DONE 91f67f3] Hero shots (Docs/Shots/Hero/)
 17. [DONE 80d00b2 + report commit] ItchPage controls + how-to-play; final package + smoke
 N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_submit_fallback.zip, never overwrite):
-18. [DONE pending] Swim height measured vs LF::Water in the swim state; head + shoulders above water; side shots N3_swim_*.png
-19. [ ] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
+18. [DONE 0cec1ff] Swim height measured vs LF::Water in the swim state; head + shoulders above water; side shots N3_swim_*.png
+19. [DONE pending] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
 20. [ ] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
 21. [ ] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
+
+## N3 item 19 - fair fish placement (15 Nov, unreviewed - director away)
+- `ULFFishSubsystem` (`bFairSpots`, on by default): **2 live spots**, generated at runtime (the FishZone_* markers are only
+  counted, so the smoke check still reports "3 zones"):
+  - **Centre spot**: within 0-5 m of the lake centre (+ its 3 m drift). Measured distance to the four banks per spawn
+    61-70 m. The gold spot stays at the exact centre (unchanged) and comes on top of these 2 at 2:00. I read "max 2" as the
+    ordinary spots; say if gold should replace one of them.
+  - **Lane spot**: rotates through the four docks in shuffled rounds of four. Each time it sits exactly 43 m from that team's
+    bank on the bank->centre line (41-45 m measured after drift; it swings up to 18 deg off the line only if that's land).
+    Over a round every dock gets the same number of turns (one test round: lanes R/B/G/Y 2/3/2/2).
+  - Spots now hold 4-6 fish (was 3-5). A fair spot nobody fishes for 25 s moves on (the lane goes to the next dock).
+- `-LFLegacyFish` brings back the old marker zones, used for the A/B rounds in item 21. Every spawn logs its distance to each
+  bank, and the 10 s fish report logs the spawn counts per lane.
+- Test rounds (`Saved/n3/tools/ai_rounds.ps1`, new `lf.ai.full` = an AI also captains the Red crew, default personality):
+  fair-placement rounds caught 24-34 fish against 58 in the legacy round. Two shared spots mean more fights, less fishing.
+  Item 21 has the balance numbers.
 
 ## N3 item 18 - swim height (15 Nov, unreviewed - director away)
 - **Measured first** (editor -game, `lf.debug.swim 1` + `lf.debug.knockdrivers`, heights vs `LF::Water::GetHeightAt` at each
@@ -34,7 +50,7 @@ N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_su
   up, legs hang under). N1's open-loop `SwimSpeedLift` removed.
 - **After** (Saved/n3/swimshots_s2.log): full speed head +13..+17, shoulders +5..+11 cm; treading head +16..+21, shoulders
   +3..+7 cm; about 0.5 s settling when a swimmer starts moving (one sample at head +8 / shoulder +3).
-- First try (shoulders +6 / head +20, lean +8) floated the whole body on top of the water, so I rejected it:
+- First try (shoulders +6 / head +20, lean +8) floated the whole body on top of the water, so I rejected it
   (I checked a screenshot, then deleted it).
 - **Shots (side-on at the waterline, on waves, -game):** Docs/Shots/N3_swim_01_fullspeed.png, N3_swim_02_fullspeed.png.
   New dev command `lf.debug.swimcam [delay] [dist] [height] [seconds]` (follows the fastest swimmer; script

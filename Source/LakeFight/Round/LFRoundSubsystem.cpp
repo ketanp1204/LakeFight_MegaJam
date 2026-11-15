@@ -469,7 +469,11 @@ void ULFRoundSubsystem::EndRound()
 		}
 		PC->SetPause(true); // freezes physics, AI, input and scoring; Slate stays interactive
 	}
-	UE_LOG(LogLF, Display, TEXT("[round] END %s | %s"), *GetWinner(), *GetStats());
+	{
+		const ULFFishSubsystem* F = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+		UE_LOG(LogLF, Display, TEXT("[round] END %s | scores R%d B%d G%d Y%d | %s"), *GetWinner(), F ? F->GetScore(0) : -1, F ? F->GetScore(1) : -1,
+			F ? F->GetScore(2) : -1, F ? F->GetScore(3) : -1, *GetStats().Replace(TEXT("\n"), TEXT(" | ")));
+	}
 	if (LF::SmokeEnabled())
 	{
 		const ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();

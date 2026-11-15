@@ -57,6 +57,37 @@ static FAutoConsoleCommandWithWorldAndArgs CmdLFAISpectate(TEXT("lf.ai.spectate"
 		UE_LOG(LogLF, Display, TEXT("[ai] spectate: player removed from the fight, overview camera"));
 	}));
 
+// N3: lf.ai.full [min m] [max m] - like lf.ai.spectate, but an AI captain (default personality) takes over the player's Red
+// crew instead of removing it, so AI-only test rounds have all four crews fishing and fighting.
+static FAutoConsoleCommandWithWorldAndArgs CmdLFAIFull(TEXT("lf.ai.full"),
+	TEXT("lf.ai.full [min m] [max m] - an AI captains the player's crew; overview camera on all four AI crews."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		APlayerController* PC = World ? World->GetFirstPlayerController() : nullptr;
+		if (!PC) return;
+		ALFBrawler* Player = Cast<ALFBrawler>(PC->GetPawn());
+		if (const ALFBoat* B = Cast<ALFBoat>(PC->GetPawn()))
+		{
+			Player = B->GetDriver();
+		}
+		if (!Player) return;
+		PC->UnPossess();
+		FActorSpawnParameters P;
+		P.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		if (ALFCaptainAI* AI = World->SpawnActor<ALFCaptainAI>(Player->GetActorLocation(), FRotator::ZeroRotator, P))
+		{
+			AI->Possess(Player);
+		}
+		ALFSpectatorCamera* Cam = World->SpawnActor<ALFSpectatorCamera>(FVector(0.f, -4200.f, 2600.f), FRotator(-38.f, 90.f, 0.f), P);
+		if (Cam)
+		{
+			if (Args.Num() >= 1) Cam->MinDistance = FCString::Atof(*Args[0]) * 100.f;
+			if (Args.Num() >= 2) Cam->MaxDistance = FMath::Max(Cam->MinDistance, FCString::Atof(*Args[1]) * 100.f);
+			PC->SetViewTargetWithBlend(Cam, 0.5f);
+		}
+		UE_LOG(LogLF, Display, TEXT("[ai] full AI: %s handed to an AI captain, overview camera"), *Player->GetName());
+	}));
+
 namespace
 {
 	const TCHAR* CaptainStateName(ELFCaptainState S)

@@ -101,13 +101,18 @@ TStatId ULFFishSubsystem::GetStatId() const
 void ULFFishSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
+	if (FParse::Param(FCommandLine::Get(), TEXT("LFLegacyFish"))) bFairSpots = false; // N3: pre-N3 marker zones, for A/B test rounds
 	for (TActorIterator<AActor> It(&InWorld); It; ++It)
 	{
-		if (Named(*It, TEXT("FishZone_")) && (MaxSpots <= 0 || Spots.Num() < MaxSpots))
+		if (Named(*It, TEXT("FishZone_")))
 		{
-			FSpot S;
-			S.Centre = It->GetActorLocation();
-			Spots.Add(S);
+			++ZoneMarkers;
+			if (!bFairSpots && (MaxSpots <= 0 || Spots.Num() < MaxSpots))
+			{
+				FSpot S;
+				S.Centre = It->GetActorLocation();
+				Spots.Add(S);
+			}
 		}
 		for (int32 Team = 0; Team < 4; ++Team)
 		{
@@ -120,13 +125,26 @@ void ULFFishSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 			}
 		}
 	}
+	if (bFairSpots)
+	{
+		if (Banks.Num() == UE_ARRAY_COUNT(TeamNames))
+		{
+			FSpot Ring; Ring.Slot = 0; Spots.Add(Ring);
+			FSpot Lane; Lane.Slot = 1; Spots.Add(Lane);
+		}
+		else
+		{
+			UE_LOG(LogLF, Warning, TEXT("[fish] fair spots need 4 banks (found %d): no spots"), Banks.Num());
+		}
+	}
 	for (FSpot& S : Spots)
 	{
 		Respawn(S);
 	}
-	UE_LOG(LogLF, Display, TEXT("[fish] ready: %d zones, %d banks; catch %.1f s below %.0f cm/s, radius %.0f cm"), Spots.Num(), Banks.Num(), CatchInterval, CatchMaxSpeed, CatchRadius);
-	LF::Smoke(FString::Printf(TEXT("map %s: fish ready - %d zones, %d banks"), *InWorld.GetMapName(), Spots.Num(), Banks.Num()));
-	if (Spots.IsEmpty() || Banks.Num() != UE_ARRAY_COUNT(TeamNames))
+	UE_LOG(LogLF, Display, TEXT("[fish] ready: %d zones, %d banks, %d live spots (%s); catch %.1f s below %.0f cm/s, radius %.0f cm"), ZoneMarkers, Banks.Num(),
+		Spots.Num(), bFairSpots ? TEXT("fair: centre ring + rotating lane") : TEXT("marker zones"), CatchInterval, CatchMaxSpeed, CatchRadius);
+	LF::Smoke(FString::Printf(TEXT("map %s: fish ready - %d zones, %d banks, %d live spots"), *InWorld.GetMapName(), ZoneMarkers, Banks.Num(), Spots.Num()));
+	if (ZoneMarkers == 0 || Spots.IsEmpty() || Banks.Num() != UE_ARRAY_COUNT(TeamNames))
 	{
 		UE_LOG(LogLF, Warning, TEXT("[fish] expected FishZone_* markers and BankZone_Red/Blue/Green/Yellow; add runtime Actor Tags matching these names (editor labels work only in PIE)"));
 	}
@@ -171,8 +189,59 @@ FVector ULFFishSubsystem::PickPoint(const FVector& Centre) const
 	return Centre;
 }
 
+bool ULFFishSubsystem::PlaceFairSpot(FSpot& Spot)
+{
+	// N3 19: the gold spot (and the lake) is centred on the world origin.
+	const FVector LakeCentre(0.f, 0.f, LF::Water::BaseHeight);
+	if (Spot.Slot == 0)
+	{
+		for (int32 I = 0; I < 24; ++I)
+		{
+			const float A = FMath::FRandRange(0.f, 2.f * PI);
+			const FVector C = LakeCentre + FVector(FMath::Cos(A), FMath::Sin(A), 0.f) * FMath::FRandRange(CentreRingMin, CentreRingMax);
+			if (IsOpenWater(C))
+			{
+				Spot.Centre = C;
+				Spot.LaneTeam = -1;
+				++RingSpawns;
+				return true;
+			}
+		}
+		return false;
+	}
+	if (LaneBag.IsEmpty())
+	{
+		LaneBag = { 0, 1, 2, 3 };
+		for (int32 I = LaneBag.Num() - 1; I > 0; --I) LaneBag.Swap(I, FMath::RandRange(0, I));
+	}
+	const int32 Team = LaneBag.Pop(EAllowShrinking::No);
+	FVector Bank;
+	if (!GetBankLocation(ELFTeam(Team), Bank)) return false;
+	Bank.Z = LakeCentre.Z;
+	const FVector In = (LakeCentre - Bank).GetSafeNormal2D();
+	// Same distance from this team's bank every time; swing off the centre line (both ways) only if it lands on land.
+	for (const float Deg : { 0.f, 6.f, -6.f, 12.f, -12.f, 18.f, -18.f })
+	{
+		const FVector C = Bank + In.RotateAngleAxis(Deg, FVector::UpVector) * LaneDistFromBank;
+		if (IsOpenWater(C))
+		{
+			Spot.Centre = C;
+			Spot.LaneTeam = Team;
+			++LaneSpawns[Team];
+			return true;
+		}
+	}
+	UE_LOG(LogLF, Warning, TEXT("[fish] no open water for the %s lane spot"), TeamNames[Team]);
+	return false;
+}
+
 void ULFFishSubsystem::Respawn(FSpot& Spot)
 {
+	if (Spot.Slot >= 0 && !PlaceFairSpot(Spot))
+	{
+		Spot.RespawnAt = GetWorld()->GetTimeSeconds() + 2.f;
+		return;
+	}
 	const FVector At = PickPoint(Spot.Centre);
 	Spot.Mesh = MakeMesh(SpotMesh, At, 2.f);
 	// T04 hook: failed spawns retry on the same cooldown, never every frame.
@@ -180,10 +249,17 @@ void ULFFishSubsystem::Respawn(FSpot& Spot)
 	if (!Spot.Mesh.IsValid()) return;
 	ULFFishSpotVisualComponent::Add(Spot.Mesh.Get(), false);
 	Spot.Goal = PickPoint(Spot.Centre);
-	Spot.Remaining = FMath::RandRange(3, 5);
+	Spot.Remaining = bFairSpots ? FMath::RandRange(4, 6) : FMath::RandRange(3, 5); // N3 19: only 2 live spots now
+	Spot.LastActive = GetWorld()->GetTimeSeconds();
 	Spot.Progress = 0.f;
 	Spot.Catcher.Reset();
-	UE_LOG(LogLF, Display, TEXT("[fish] spot spawned at %s with %d fish"), *At.ToCompactString(), Spot.Remaining);
+	FString Dist;
+	for (const FBank& B : Banks)
+	{
+		if (B.Zone.IsValid()) Dist += FString::Printf(TEXT(" %s=%.0fm"), TeamNames[B.Team], FVector::Dist2D(At, B.Zone->GetActorLocation()) / 100.f);
+	}
+	UE_LOG(LogLF, Display, TEXT("[fish] spot spawned at %s with %d fish (%s; to banks:%s)"), *At.ToCompactString(), Spot.Remaining,
+		Spot.Slot == 0 ? TEXT("centre ring") : Spot.Slot == 1 ? *FString::Printf(TEXT("%s lane"), TeamNames[Spot.LaneTeam]) : TEXT("marker zone"), *Dist);
 }
 
 void ULFFishSubsystem::PlaySound(USoundWave* Sound)
@@ -240,6 +316,14 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 			}
 			continue;
 		}
+		if (S.Slot >= 0 && !S.Catcher.IsValid() && Now - S.LastActive > IdleSpotLifetime)
+		{
+			UE_LOG(LogLF, Display, TEXT("[fish] %s spot unfished for %.0f s - moving on"), S.Slot == 0 ? TEXT("centre") : TeamNames[S.LaneTeam], IdleSpotLifetime);
+			S.Mesh->Destroy();
+			S.Mesh.Reset();
+			S.RespawnAt = Now + 1.f;
+			continue;
+		}
 		FVector At = S.Mesh->GetActorLocation();
 		if (FVector::Dist2D(At, S.Goal) < 30.f)
 		{
@@ -274,6 +358,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 					++Caught;
 					--S.Remaining;
 					S.Progress = 0.f;
+					S.LastActive = Now;
 					Catcher->OnSplash(At, 0.25f);
 					if (Catcher == LF::Fish::PlayerBoat(GetWorld())) PlaySound(CatchSound); // N1 #2: AI catches are not UI sounds
 					UE_LOG(LogLF, Display, TEXT("[fish] catch %s cargo=%d spot=%d t=%.2f"), *Catcher->GetName(), Cargo->GetCount(), S.Remaining, Now);
@@ -378,8 +463,8 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 		FString::Printf(TEXT("FISH  Red %d | Blue %d | Green %d | Yellow %d"), Scores[0], Scores[1], Scores[2], Scores[3]));
 	if (Now >= NextReport)
 	{
-		UE_LOG(LogLF, Display, TEXT("[fish] t=%.1f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d pickups=%d"),
-			Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3], Pickups.Num());
+		UE_LOG(LogLF, Display, TEXT("[fish] t=%.1f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d pickups=%d spawns ring=%d lanes R/B/G/Y=%d/%d/%d/%d"),
+			Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3], Pickups.Num(), RingSpawns, LaneSpawns[0], LaneSpawns[1], LaneSpawns[2], LaneSpawns[3]);
 		LF::Smoke(FString::Printf(TEXT("t=%.0f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d"), Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3]));
 		NextReport = Now + 10.f;
 	}
