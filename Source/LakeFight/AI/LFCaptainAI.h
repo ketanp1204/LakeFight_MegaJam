@@ -125,6 +125,42 @@ public:
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
 	float ChaseCooldown = 12.f;
 
+	// --- N3 20: reasons to fight ---
+	/** Target pick: distance is divided by (1 + this * fish points aboard the target's boat) - loaded boats draw fire. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float CargoTargetWeight = 0.2f;
+	/** A boat carrying at least LootNearValue points within AggroRange * LootNearRangeScale is chased like loot. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="1"))
+	int32 LootNearValue = 2;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float LootNearRangeScale = 2.f;
+	/** Rubber band: when one team leads by at least LeaderMinLead points, every other crew targets it within LeaderFocusRange. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	int32 LeaderMinLead = 4;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float LeaderFocusRange = 3500.f;
+	/** Leader distance multiplier in the target pick (< 1 = preferred). */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0.05"))
+	float LeaderTargetWeight = 0.4f;
+	/** Defend the spot: while fishing, ram an enemy boat that comes within DefendRadius of the spot; stop when it is beyond
+	 *  DefendExitRadius or after DefendMaxTime, then don't defend again for DefendCooldown (hysteresis, no flip-flop). */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float DefendRadius = 800.f;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float DefendExitRadius = 1400.f;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float DefendMaxTime = 7.f;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float DefendCooldown = 4.f;
+	/** Thief (OwnBoatRecoverWeight > 1): hunt enemy boats carrying fish within ThiefHuntRange that are within ThiefDockRange
+	 *  of their own bank (on the way in to bank); when such a boat is crewless within ThiefDiveRange, dive in and take it. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float ThiefHuntRange = 5000.f;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float ThiefDockRange = 3500.f;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
+	float ThiefDiveRange = 600.f;
+
 	UFUNCTION(BlueprintPure, Category="LF|AI")
 	ELFCaptainState GetCaptainState() const { return State; }
 
@@ -136,6 +172,13 @@ protected:
 private:
 	ALFBrawler* Me() const;
 	ALFBrawler* PickTarget() const;
+	int32 LeadingTeam() const;                // N3 20: team ahead by >= LeaderMinLead (not ours), else -1
+	ALFBrawler* PickSpotIntruder() const;     // N3 20: enemy boat crew within DefendRadius of our fishing spot
+	ALFBrawler* PickThiefMark() const;        // N3 20: loaded enemy boat near its own dock
+	ALFBoat* PickDiveBoat() const;            // N3 20: loaded crewless enemy boat within ThiefDiveRange
+	bool IsThief() const { return OwnBoatRecoverWeight > 1.f; }
+	/** -LFLegacyAI: switch the N3 20 behaviour off (A/B test rounds against the pre-N3 AI). */
+	const bool bLegacyAI = FParse::Param(FCommandLine::Get(), TEXT("LFLegacyAI"));
 	ALFBoat* PickCrewlessBoat() const;
 	ALFBoat* PickRecoverBoat() const;
 	void ApplyPersonality(const ULFCaptainPersonality* P);
@@ -161,5 +204,8 @@ private:
 	double LastSwing = -100.0;
 	double FleeUntil = -1.0;
 	double LastInReach = -100.0;           // fight hysteresis
+	double DefendSince = -1.0;             // N3 20: defending the spot since (-1 = not)
+	double NoDefendUntil = -1.0;
+	TWeakObjectPtr<ALFBrawler> DefendTarget;
 	FString PersonalityName;
 };

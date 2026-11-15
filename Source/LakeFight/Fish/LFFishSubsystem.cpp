@@ -490,11 +490,12 @@ bool ULFFishSubsystem::FindFishSpot(const ALFBoat* Boat, FVector& OutLocation, b
 		if (!S.Mesh.IsValid() || S.Remaining <= 0) continue;
 		const ALFBoat* Holder = S.Catcher.Get();
 		if (Holder && Holder != Boat) continue;
-		const float D = FVector::DistSquared2D(From, S.Mesh->GetActorLocation());
+		const FVector SpotAt = S.Mesh->GetActorLocation();
+		const float D = FVector::DistSquared2D(From, SpotAt);
 		if (D < Best)
 		{
 			Best = D;
-			OutLocation = S.Mesh->GetActorLocation();
+			OutLocation = SpotAt;
 		}
 	}
 	return Best < TNumericLimits<float>::Max();

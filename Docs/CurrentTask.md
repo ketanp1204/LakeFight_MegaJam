@@ -19,9 +19,29 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 17. [DONE 80d00b2 + report commit] ItchPage controls + how-to-play; final package + smoke
 N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_submit_fallback.zip, never overwrite):
 18. [DONE 0cec1ff] Swim height measured vs LF::Water in the swim state; head + shoulders above water; side shots N3_swim_*.png
-19. [DONE pending] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
-20. [ ] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
+19. [DONE cf21dda] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
+20. [DONE pending] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
 21. [ ] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
+
+## N3 item 20 - reasons to fight (15 Nov, unreviewed - director away)
+`ALFCaptainAI` (new LF|AI|Fight tunables; `-LFLegacyAI` switches all of it off for A/B rounds):
+- **Loaded boats draw fire:** target pick distance / (1 + 0.2 x fish points aboard). Any boat with >= 2 points within 2x the
+  AI's aggro range counts as loot (a chase the 9 s chase timeout doesn't drop). An enemy with NO fish is now only chased
+  from half the aggro range. Crews fight for a reason, not because someone drifted by.
+- **Rubber band:** when a team leads by >= 4 points, every other crew prefers it as a target (distance x0.4) and chases it
+  from up to 35 m.
+- **Thief:** while empty-handed, hunts boats with fish that are within 35 m of their own bank (coming in to bank), up to 50 m
+  away. If such a loaded boat is crewless within 6 m, the Thief **dives in** (the existing `LFOverboard` hop), swims to it
+  (when swimming, Thieves prefer loaded boats), climbs and takes the seat. **This is an AI-only move:** players can't jump
+  off a boat. Cut it if that feels unfair. Any AI in a stolen boat with fish aboard drives straight to its own bank.
+- **Defend the spot:** only the crew that holds a spot (actually reeling in) turns and rams an enemy boat within 8 m of the
+  spot. It stops when the enemy is > 14 m from the spot or after 7 s, then waits 4 s before defending again (hysteresis). My
+  first version let two crews arriving together both "defend" and ram each other forever. Fixed.
+- A crew that is reeling in isn't pulled off its spot by the generic aggro (loot / leader / defence still apply).
+- New log lines: `[ai] X defends its spot against Y`, `[ai] X (Thief) dives for loaded <boat>`.
+- Tuning path, 6 test sets (Saved/n3/rounds/t20a..g): the first version caught 21-25 fish and banked almost nothing (one
+  round 0/0/0/0). The fixes above brought rams up and kept banking alive. A spot-crowding penalty in `FindFishSpot` made
+  it worse, so I reverted it. Idle fair spots now move on after 45 s (25 s wasted trips). Item 21 has the final numbers.
 
 ## N3 item 19 - fair fish placement (15 Nov, unreviewed - director away)
 - `ULFFishSubsystem` (`bFairSpots`, on by default): **2 live spots**, generated at runtime (the FishZone_* markers are only

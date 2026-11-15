@@ -168,6 +168,7 @@ ALFBrawler* ALFCaptainAI::PickTarget() const
 	const ALFBrawler* Self = Me();
 	ALFBrawler* Best = nullptr;
 	float BestScore = TNumericLimits<float>::Max();
+	const int32 Leader = LeadingTeam();
 	for (TActorIterator<ALFBrawler> It(GetWorld()); It; ++It)
 	{
 		ALFBrawler* B = *It;
@@ -184,6 +185,12 @@ ALFBrawler* ALFCaptainAI::PickTarget() const
 		{
 			Score *= EmptySeatTargetWeight;
 		}
+		// N3 20: loaded boats draw fire (more fish = higher priority); everyone gangs up on a runaway leader.
+		if (!bLegacyAI) Score /= 1.f + CargoTargetWeight * float(ULFFishSubsystem::GetCargoValue(B->GetBoat()));
+		if (!bLegacyAI && Leader >= 0 && int32(B->Team) == Leader && Score < LeaderFocusRange)
+		{
+			Score *= LeaderTargetWeight;
+		}
 		if (B == Target.Get())
 		{
 			Score *= 0.8f; // stickiness: don't flip targets every decision
@@ -195,6 +202,76 @@ ALFBrawler* ALFCaptainAI::PickTarget() const
 		}
 	}
 	return Best;
+}
+
+int32 ALFCaptainAI::LeadingTeam() const
+{
+	const ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+	if (!Fish) return -1;
+	int32 Best = 0;
+	for (int32 I = 1; I < 4; ++I) if (Fish->GetScore(I) > Fish->GetScore(Best)) Best = I;
+	int32 Second = -1;
+	for (int32 I = 0; I < 4; ++I) if (I != Best && (Second < 0 || Fish->GetScore(I) > Fish->GetScore(Second))) Second = I;
+	const int32 Lead = Fish->GetScore(Best) - Fish->GetScore(Second);
+	return Lead >= LeaderMinLead && int32(Me()->Team) != Best ? Best : -1;
+}
+
+ALFBrawler* ALFCaptainAI::PickSpotIntruder() const
+{
+	// The crew of the nearest enemy boat (driven or standing) inside DefendRadius of the spot we fish.
+	const ALFBrawler* Self = Me();
+	ALFBrawler* Best = nullptr;
+	float BestD = DefendRadius;
+	for (TActorIterator<ALFBrawler> It(GetWorld()); It; ++It)
+	{
+		ALFBrawler* B = *It;
+		if (B->Team == Self->Team || !InBoat(B) || !B->GetBoat() || B->GetBoat() == Self->GetBoat()) continue;
+		const float D = float(FVector::Dist2D(B->GetBoat()->GetActorLocation(), GoalPoint));
+		if (D < BestD) { BestD = D; Best = B; }
+	}
+	return Best;
+}
+
+ALFBrawler* ALFCaptainAI::PickThiefMark() const
+{
+	// A boat with fish aboard, near its OWN bank (coming in to bank) - the Thief's favourite moment.
+	const ALFBrawler* Self = Me();
+	const ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+	if (!Fish) return nullptr;
+	ALFBrawler* Best = nullptr;
+	float BestScore = TNumericLimits<float>::Max();
+	for (TActorIterator<ALFBrawler> It(GetWorld()); It; ++It)
+	{
+		ALFBrawler* B = *It;
+		ALFBoat* Boat = B->GetBoat();
+		if (B->Team == Self->Team || !InBoat(B) || !Boat || Boat == Self->GetBoat()) continue;
+		const int32 Value = ULFFishSubsystem::GetCargoValue(Boat);
+		FVector Bank;
+		if (Value <= 0 || !Fish->GetBankLocation(B->Team, Bank) || FVector::Dist2D(Boat->GetActorLocation(), Bank) > ThiefDockRange) continue;
+		const float D = float(FVector::Dist2D(Boat->GetActorLocation(), Self->GetActorLocation()));
+		if (D > ThiefHuntRange) continue;
+		const float Score = D / (1.f + 0.3f * float(Value));
+		if (Score < BestScore) { BestScore = Score; Best = B; }
+	}
+	return Best;
+}
+
+ALFBoat* ALFCaptainAI::PickDiveBoat() const
+{
+	const ALFBrawler* Self = Me();
+	for (TActorIterator<ALFBoat> It(GetWorld()); It; ++It)
+	{
+		ALFBoat* B = *It;
+		if (B == Self->GetBoat() || B == Self->GetHomeBoat() || B->HasDriver() || B->IsCapsized() || ULFFishSubsystem::GetCargoValue(B) <= 0) continue;
+		bool bCrewed = false;
+		for (TActorIterator<ALFBrawler> BI(GetWorld()); BI; ++BI)
+		{
+			bCrewed |= InBoat(*BI) && BI->GetBoat() == B;
+		}
+		FVector2D Unused;
+		if (!bCrewed && B->GunwaleDistance(Self->GetActorLocation(), Unused) < ThiefDiveRange) return B;
+	}
+	return nullptr;
 }
 
 ALFBoat* ALFCaptainAI::PickCrewlessBoat() const
@@ -241,6 +318,10 @@ ALFBoat* ALFCaptainAI::PickRecoverBoat() const
 		if (B == Self->GetHomeBoat())
 		{
 			Score *= OwnBoatRecoverWeight; // < 1 prefers our own, > 1 prefers stealing (Thief)
+		}
+		else if (IsThief() && !bLegacyAI)
+		{
+			Score /= 1.f + 0.5f * float(ULFFishSubsystem::GetCargoValue(B)); // N3 20: a loaded boat is worth the swim
 		}
 		if (Score < BestScore)
 		{
@@ -346,6 +427,14 @@ void ALFCaptainAI::Decide()
 		{
 			Want = ELFCaptainState::Steal; // in someone else's empty boat: take the seat
 		}
+		else if (ALFBoat* Dive = (IsThief() && !bLegacyAI) ? PickDiveBoat() : nullptr)
+		{
+			// N3 20 (AI-only move - players can't jump off): the Thief dives in next to a loaded, crewless enemy boat;
+			// RecoverBoat then swims to it (thieves prefer loaded boats) and the usual climb + Steal takes the seat.
+			UE_LOG(LogLF, Display, TEXT("[ai] %s (%s) dives for loaded %s"), *Self->GetName(), *PersonalityName, *Dive->GetName());
+			Self->LFOverboard(float(FVector::DotProduct(Dive->GetActorLocation() - Self->GetActorLocation(), Self->GetActorRightVector())));
+			return;
+		}
 		else
 		{
 			// T04 stage 3: fishing economy first - bank a good catch, otherwise fish - unless an enemy is close (AggroRange) or
@@ -359,7 +448,9 @@ void ALFCaptainAI::Decide()
 			const float TimeHome = bHaveBank ? float(FVector::Dist2D(From, BankAt)) / 500.f + 8.f : 0.f;
 			const bool bClock = Round && Value > 0 && Round->GetRemaining() < TimeHome + 10.f;
 			const int32 TLoot = T && T->GetBoat() ? ULFFishSubsystem::GetCargoValue(T->GetBoat()) : 0;
-			const bool bLoot = TLoot >= LootChaseValue && TDist < LootChaseRange;
+			bool bLoot = TLoot >= LootChaseValue && TDist < LootChaseRange;
+			// N3 20: any boat with a couple of fish aboard is worth a run when it's nearby (more fish = higher pick priority).
+			bLoot |= !bLegacyAI && TLoot >= LootNearValue && TDist < AggroRange * LootNearRangeScale;
 			// Give up a fruitless chase for a while (loot is always worth chasing).
 			const bool bChasing = State == ELFCaptainState::Chase || State == ELFCaptainState::Ram;
 			if (!bChasing) ChaseSince = -1.0;
@@ -369,8 +460,62 @@ void ALFCaptainAI::Decide()
 				NoChaseUntil = Now + ChaseCooldown;
 				ChaseSince = -1.0;
 			}
-			const bool bGoAfter = T && (bLoot || (TDist < AggroRange && Now >= NoChaseUntil));
-			if (MyBoat && bHaveBank && Value > 0 && (Value >= BankAtValue || bClock) && !(bGoAfter && TDist < AggroRange * 0.5f))
+			// N3 20: rubber band - the leading team is worth a chase from further out.
+			const int32 Leader = LeadingTeam();
+			bool bLeader = !bLegacyAI && T && Leader >= 0 && int32(T->Team) == Leader && TDist < LeaderFocusRange;
+			// N3 20: an empty-handed Thief hunts loaded boats coming in to bank (counts as loot: no chase timeout).
+			if (!bLegacyAI && IsThief() && Value == 0 && !bLoot)
+			{
+				if (ALFBrawler* Mark = PickThiefMark())
+				{
+					T = Mark;
+					bLoot = true;
+					bLeader = false;
+				}
+			}
+			// N3 20: a crew reeling in fish isn't lured off its spot by a passing enemy (only loot, the leader or a defence).
+			const bool bReeling = Fish && MyBoat && Fish->IsFishing(MyBoat);
+			// Reasons to fight: loot and the leader pull from far; an empty-handed enemy only from half the aggro range.
+			const float GenericAggro = (bLegacyAI || TLoot > 0) ? AggroRange : AggroRange * 0.5f;
+			const bool bGoAfter = T && (bLoot || bLeader || ((bLegacyAI || !bReeling) && TDist < GenericAggro && Now >= NoChaseUntil));
+			// N3 20: defend our fishing spot - turn and ram a boat that comes within DefendRadius (hysteresis below).
+			// Only the crew that HOLDS the spot (reeling in) defends it - two crews arriving together don't both "defend".
+			const bool bOnSpot = !bLegacyAI && State == ELFCaptainState::GoFish && bReeling;
+			ALFBrawler* Defend = DefendTarget.Get();
+			if (DefendSince >= 0.0)
+			{
+				const bool bGone = !Defend || !InBoat(Defend) || !Defend->GetBoat()
+					|| FVector::Dist2D(Defend->GetBoat()->GetActorLocation(), GoalPoint) > DefendExitRadius;
+				if (bGone || Now - DefendSince > DefendMaxTime)
+				{
+					DefendSince = -1.0;
+					DefendTarget.Reset();
+					NoDefendUntil = Now + DefendCooldown;
+					Defend = nullptr;
+				}
+			}
+			else if (bOnSpot && Now >= NoDefendUntil && S == ELFBrawlerState::Driving)
+			{
+				Defend = PickSpotIntruder();
+				if (Defend)
+				{
+					DefendSince = Now;
+					DefendTarget = Defend;
+					UE_LOG(LogLF, Display, TEXT("[ai] %s (%s) defends its spot against %s"), *Self->GetName(), *PersonalityName, *Defend->GetName());
+				}
+			}
+			if (Defend && DefendSince >= 0.0)
+			{
+				Want = ELFCaptainState::Ram; // GoalPoint (the spot) is kept for the exit check
+				T = Defend;
+			}
+			else if (!bLegacyAI && MyBoat && bHaveBank && Value > 0 && MyBoat != Self->GetHomeBoat())
+			{
+				Want = ELFCaptainState::ReturnToDock; // N3 20: a stolen boat with fish aboard goes straight to OUR bank
+				GoalPoint = BankAt;
+				T = nullptr;
+			}
+			else if (MyBoat && bHaveBank && Value > 0 && (Value >= BankAtValue || bClock) && !(bGoAfter && TDist < AggroRange * 0.5f))
 			{
 				Want = ELFCaptainState::ReturnToDock;
 				GoalPoint = BankAt;

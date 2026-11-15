@@ -72,7 +72,7 @@ public:
 	float LaneDistFromBank = 4300.f;
 	/** A fair spot nobody has fished for this long (s) moves on (the lane spot to the next dock in the rotation). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish", meta=(ClampMin="1"))
-	float IdleSpotLifetime = 25.f;
+	float IdleSpotLifetime = 45.f;
 
 private:
 	struct FSpot
