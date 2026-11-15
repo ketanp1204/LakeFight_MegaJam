@@ -20,8 +20,67 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_submit_fallback.zip, never overwrite):
 18. [DONE 0cec1ff] Swim height measured vs LF::Water in the swim state; head + shoulders above water; side shots N3_swim_*.png
 19. [DONE cf21dda] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
-20. [DONE pending] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
-21. [ ] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
+20. [DONE be29ab9] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
+21. [DONE pending] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
+
+## N3 report - items 18-21 (Claude Code, resumed session 15 Nov 08:00-08:50 IST) - unreviewed, director away
+**Build:** `Builds/LakeFight_N3_20261115_0843.zip` (401 MB; unzipped in `Build/Windows/LakeFight.exe`), source be29ab9.
+**Fallback untouched:** `Builds/LakeFight_submit_fallback.zip` did not exist, so I created it at the start of this session
+as a byte copy of `LakeFight_N2_final_20261115_0350.zip` (the current zip before N3). Never overwritten.
+**Shipping smoke** (`LakeFight.exe -LFSmoke`, copy in Saved/n3/n3_smoke.txt): fish ready 3 zones / 4 banks / 2 live spots ->
+menu -> Play -> hints 1-3 -> pause at 234.0 s -> how-to page -> resume at 234.0 s -> 20 catches, 21 spilled, 11 banked ->
+results "Blue WINS!" 0/10/0/5 -> quit, exit code 0. Note that in that smoke round the player boat sits idle (Red 0).
+
+### Item 21 - 6 AI-only rounds (headless editor -game -NullRHI, fixed 60 Hz, full 240 s; all FOUR crews AI via new `lf.ai.full`, Red = default personality)
+New build (be29ab9; logs Saved/n3/rounds/t20g_1..6.log):
+
+| round | winner | scores R/B/G/Y | rams | overboards | steals | fights | catches |
+|---|---|---|---|---|---|---|---|
+| 1 | Blue WINS! | 7/16/0/0 | 53 | 23 | 8 | 58 | 24 |
+| 2 | Green WINS! | 0/0/6/0 | 52 | 27 | 8 | 53 | 20 |
+| 3 | Yellow WINS! | 1/0/5/8 | 32 | 19 | 2 | 45 | 10 |
+| 4 | Red WINS! | 7/1/6/6 | 30 | 20 | 5 | 48 | 24 |
+| 5 | Yellow WINS! | 0/13/7/16 | 21 | 5 | 0 | 23 | 28 |
+| 6 | DRAW - Blue / Yellow | 0/7/0/7 | 44 | 21 | 3 | 62 | 20 |
+| **avg** | Yellow 2 (+1 draw), Blue 1 (+1 draw), Green 1, Red 1 | | **38.7** | **19.2** | **4.3** | 48.2 | 21.0 |
+
+Baseline = the pre-N3 behaviour in the same binary (`-LFLegacyFish -LFLegacyAI`, same 4 AI crews; logs Saved/n3/rounds/base_1..6.log):
+
+| round | winner | scores R/B/G/Y | rams | overboards | steals | fights | catches |
+|---|---|---|---|---|---|---|---|
+| 1 | Blue WINS! | 7/27/10/19 | 16 | 4 | 0 | 17 | 61 |
+| 2 | Blue WINS! | 4/22/5/11 | 28 | 14 | 4 | 42 | 50 |
+| 3 | Green WINS! | 3/10/13/4 | 25 | 8 | 0 | 32 | 41 |
+| 4 | Yellow WINS! | 13/11/2/15 | 19 | 7 | 0 | 28 | 50 |
+| 5 | Yellow WINS! | 12/5/11/38 | 12 | 3 | 0 | 10 | 70 |
+| 6 | Yellow WINS! | 7/12/8/14 | 25 | 14 | 2 | 33 | 42 |
+| **avg** | Yellow 3, Blue 2, Green 1 | | **20.8** | **8.3** | **1.0** | 27.0 | 52.3 |
+
+Against the targets:
+- **No team wins more than 3 of 6: met.** Yellow wins 2 outright and shares 1 draw, so 3 at most. The baseline had Yellow 3 of 6.
+- **~2x rams/overboards: overboards met (x2.3), rams x1.86 - just short.** Rams = boat contacts at ram speed (`[hit] ... tier=RAM`).
+  Fights = AI entries into the Fight state. Overboards = ragdoll launches.
+- **Steals > 0: met** (4.3 per round; 5 of 6 rounds had steals). Most are Thief dives plus normal swim-ins.
+- **Not a target, but you should know: the economy halved.** 21 catches a round vs 52, and winners score 6-16 (baseline 13-38).
+  Two shared spots plus loot-driven fights mean far less quiet fishing. One round ended 0/0/6/0. Ways to fix it if this
+  feels thin in play: more fish per spot (`Spot.Remaining`, now 4-6), a shorter `CatchInterval` (1.5 s), a smaller
+  `LootNearRangeScale` (2.0) / `CargoTargetWeight` (0.2), or allowing 3 live spots.
+- Caveats: headless -benchmark rounds at a fixed 60 Hz (not real-time feel); 6 rounds is a small sample (round-to-round
+  spread is large); Red's AI has no personality asset (defaults); personalities differ per team, so a win count also
+  reflects personality, not only placement. A real round with the player is NOT this: the player is Red and AIs target the
+  player by the same rules (loaded boat / leader).
+
+### N3 director check list
+1. Swim (18): swim around after being knocked out. Head + shoulders should stay out at full speed and treading, on waves
+   (Docs/Shots/N3_swim_01/02_fullspeed.png). The knocked-out ragdoll still goes under for ~1.3 s after the splash (not touched).
+2. Fair spots (19): a spot near the centre plus one spot that visits each dock in turn (~43 m out from it); gold still at
+   the centre at 2:00. Is "2 live spots + gold" what you meant by "max 2"?
+3. Fights (20): carry fish and AIs should come for you; take the lead by 4+ and everyone should; fish on a spot and an AI
+   boat coming within 8 m gets rammed. The Thief's **dive into the water** to steal a loaded boat is an AI-only move -
+   keep or cut?
+4. Economy: scores are about half of before (see above). Tell me which knob to turn.
+5. Dev aids: `lf.ai.full` (all-AI round with spectate cam), `lf.debug.swimcam`, `-LFLegacyFish`, `-LFLegacyAI`;
+   scripts in Saved/n3/tools (ai_rounds.ps1, round_stats.py, swim_shots.ps1).
 
 ## N3 item 20 - reasons to fight (15 Nov, unreviewed - director away)
 `ALFCaptainAI` (new LF|AI|Fight tunables; `-LFLegacyAI` switches all of it off for A/B rounds):
