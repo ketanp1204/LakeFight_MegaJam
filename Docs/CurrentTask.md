@@ -21,7 +21,7 @@ N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_su
 18. [DONE 0cec1ff] Swim height measured vs LF::Water in the swim state; head + shoulders above water; side shots N3_swim_*.png
 19. [DONE cf21dda] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
 20. [DONE be29ab9] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
-21. [DONE pending] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
+21. [DONE dec364d] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
 
 ## N3 report - items 18-21 (Claude Code, resumed session 15 Nov 08:00-08:50 IST) - unreviewed, director away
 **Build:** `Builds/LakeFight_N3_20261115_0843.zip` (401 MB; unzipped in `Build/Windows/LakeFight.exe`), source be29ab9.
