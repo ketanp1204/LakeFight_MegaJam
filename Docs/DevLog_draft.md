@@ -119,7 +119,7 @@ Verdict: after the real-time fix, rams feel perfect. Kept.
 ## What I left on the cutting-room floor
 
 Split-screen would be my first pick. The original Lake Fight started as a couch game, and it's still where this belongs.
-I'd also love a boat-to-boat jump, so I could knock a loaded crew out of their own boat and row off with it. Gamepad
+I'd also love a boat-to-boat jump, so I could knock a loaded brawler out of their own boat and row off with it. Gamepad
 support is mapped but I haven't tested it with a real pad yet. The uncut version, for me, is everything that was missing
 from the old prototype: paddle fights, ram steal, swimming back and stealing boats, with decent animation and a loop that's
 actually fun to play.
