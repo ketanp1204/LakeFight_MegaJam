@@ -17,6 +17,30 @@ N2 (added by the director to Docs/N1.md during the run; package + smoke after 13
 15. [DONE b478b5e] UI polish pass (HUD, round start, end screen, menu, pause) + 1080p screenshots in Docs/Shots/UI/
 16. [DONE 91f67f3] Hero shots (Docs/Shots/Hero/)
 17. [DONE 80d00b2 + report commit] ItchPage controls + how-to-play; final package + smoke
+N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_submit_fallback.zip, never overwrite):
+18. [DONE pending] Swim height measured vs LF::Water in the swim state; head + shoulders above water; side shots N3_swim_*.png
+19. [ ] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
+20. [ ] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
+21. [ ] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
+
+## N3 item 18 - swim height (15 Nov, unreviewed - director away)
+- **Measured first** (editor -game, `lf.debug.swim 1` + `lf.debug.knockdrivers`, heights vs `LF::Water::GetHeightAt` at each
+  bone's own XY): treading head +18 / shoulder +7 cm, but **at full swim speed head -65..-72 cm, shoulders -57..-64 cm**
+  (Saved/n3/swim_m1.log). Cause: the Mixamo swim clip is already prone and N1's placeholder 45 deg "lean" pitched it nose-down
+  around the feet; N1's fixed +36 cm lift couldn't cover it.
+- **Fix (closed loop, `ALFBrawler::UpdateSwim`):** every frame the posed `head` and both `upperarm` bones are measured
+  against the water at their spot and the swimmer's lift eases until shoulders >= +4 cm and head bone >= +14 cm
+  (`SwimShoulderClear`, `SwimHeadClear`, rises 2x faster than it settles; clamps -30..+140). Lean changed to -22 deg (chest
+  up, legs hang under). N1's open-loop `SwimSpeedLift` removed.
+- **After** (Saved/n3/swimshots_s2.log): full speed head +13..+17, shoulders +5..+11 cm; treading head +16..+21, shoulders
+  +3..+7 cm; about 0.5 s settling when a swimmer starts moving (one sample at head +8 / shoulder +3).
+- First try (shoulders +6 / head +20, lean +8) floated the whole body on top of the water, so I rejected it:
+  (I checked a screenshot, then deleted it).
+- **Shots (side-on at the waterline, on waves, -game):** Docs/Shots/N3_swim_01_fullspeed.png, N3_swim_02_fullspeed.png.
+  New dev command `lf.debug.swimcam [delay] [dist] [height] [seconds]` (follows the fastest swimmer; script
+  Saved/n3/tools/swim_shots.ps1).
+- Not changed: the knocked-out ragdoll float. My log shows it 85-100 cm under for ~1.3 s right after the splash before it
+  recovers. You said the float looks right, so I left it. Follow-up if it reads as "sinking" in play.
 
 ## N2 report - items 11-17 (Claude Code, resumed session 15 Nov 02:55-04:20 IST) - unreviewed, director away
 **Final build:** `Builds/LakeFight_N2_final_20261115_0350.zip` (383 MB; unzipped in `Build/Windows/LakeFight.exe`), source 80d00b2.

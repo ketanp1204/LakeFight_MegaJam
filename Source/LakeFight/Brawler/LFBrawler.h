@@ -264,14 +264,30 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0", ClampMax="1"))
 	float SwimSubmerge = 0.5f;
 
-	/** N1 3b: the swim lean dips the head under at speed (measured: head -21 cm at full swim speed, +23 cm treading). Lift
-	 *  the swimmer this much (cm) at full swim speed so head and shoulders stay out (lf.debug.swim 1 logs the heights). */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
-	float SwimSpeedLift = 36.f;
+	/** N3 18: closed-loop swim height. Every frame the posed head / upper-arm bones are measured against LF::Water at that
+	 *  spot and the swimmer is lifted (or lowered) until both shoulders are at least SwimShoulderClear and the head bone at
+	 *  least SwimHeadClear above the surface (cm). Replaces the N1 open-loop speed lift (head was -70 cm at full speed). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim")
+	float SwimShoulderClear = 4.f;
 
-	/** Forward lean of the mesh at full swim speed (deg) - placeholder swim pose. */
-	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0", ClampMax="90"))
-	float SwimLeanDeg = 45.f;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim")
+	float SwimHeadClear = 14.f;
+
+	/** How fast the lift follows the measured error (1/s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0.1"))
+	float SwimLiftRate = 6.f;
+
+	/** Lift limits (cm) relative to the SwimSubmerge rest height. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim")
+	float SwimLiftMin = -30.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim")
+	float SwimLiftMax = 140.f;
+
+	/** Pitch of the mesh at full swim speed (deg, + = nose down). The Mixamo swim clip is already prone; N1's +45 pitched it
+	 *  nose-down around the feet (head -70 cm). Negative = chest up, legs hanging under: head and shoulders out, body in. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="-60", ClampMax="90"))
+	float SwimLeanDeg = -22.f;
 
 	/** A boat moving faster than this (cm/s) through a swimmer runs him over (small ragdoll launch); slower it just pushes him aside. */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Swim", meta=(ClampMin="0"))
@@ -652,7 +668,8 @@ private:
 	EPaddleMount PaddleMount = EPaddleMount::Hands;
 	float SwimStrokeAccum = 0.f;
 	float SwimLogClock = 0.f; // N1 3b lf.debug.swim
-	float SwimLift = 0.f;     // N1 3b current lift (cm)
+	float SwimLift = 0.f;     // N3 18 closed-loop lift (cm)
+	void MeasureSwimClearance(float& OutHead, float& OutShoulder) const; // cm above LF::Water at each bone
 	double LastPantTime = -100.0; // A02: swim pant at most every 1.5 s
 	float HangSoundTimer = 0.f;   // A02: pant while hanging + towed
 	void EnterSwimming();

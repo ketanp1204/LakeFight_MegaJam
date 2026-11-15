@@ -13,6 +13,7 @@
 #include "Water/LFWater.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/CameraActor.h"
 #include "Components/CapsuleComponent.h"
 #include "PhysicsEngine/BodySetup.h"
 #include "PhysicsEngine/BodyInstance.h"
@@ -708,11 +709,10 @@ void ALFBrawler::Tick(float DeltaSeconds)
 		if (SwimLogClock >= 0.5f)
 		{
 			SwimLogClock = 0.f;
-			const FVector Head = GetMesh()->GetSocketLocation(TEXT("head"));
-			const FVector NeckL = GetMesh()->GetSocketLocation(TEXT("clavicle_l"));
-			const float W = LF::Water::GetHeightAt(Head, GetWorld()->GetTimeSeconds());
-			UE_LOG(LogLF, Display, TEXT("[swim] %s %s head %+.0f cm, shoulder %+.0f cm above water (speed %.0f)"), *GetName(),
-				State == ELFBrawlerState::Swimming ? TEXT("SWIM") : TEXT("FLOAT"), Head.Z - W, NeckL.Z - W, GetVelocity().Size2D());
+			float HeadClear, ShoulderClear;
+			MeasureSwimClearance(HeadClear, ShoulderClear);
+			UE_LOG(LogLF, Display, TEXT("[swim] %s %s head %+.0f cm, shoulder %+.0f cm above water (speed %.0f, lift %+.0f)"), *GetName(),
+				State == ELFBrawlerState::Swimming ? TEXT("SWIM") : TEXT("FLOAT"), HeadClear, ShoulderClear, GetVelocity().Size2D(), SwimLift);
 		}
 	}
 	UpdateFakeWeight(DeltaSeconds);
@@ -1543,6 +1543,18 @@ bool ALFBrawler::TryGrabHull(ALFBoat* Hull)
 	return true;
 }
 
+void ALFBrawler::MeasureSwimClearance(float& OutHead, float& OutShoulder) const
+{
+	// Lowest shoulder (upper-arm joint) and the head bone, each against LF::Water at its own XY (waves, not a fixed Z).
+	const USkeletalMeshComponent* M = GetMesh();
+	const float T = GetWorld()->GetTimeSeconds();
+	const FVector Head = M->GetSocketLocation(TEXT("head"));
+	const FVector ShL = M->GetSocketLocation(TEXT("upperarm_l"));
+	const FVector ShR = M->GetSocketLocation(TEXT("upperarm_r"));
+	OutHead = float(Head.Z) - LF::Water::GetHeightAt(Head, T);
+	OutShoulder = FMath::Min(float(ShL.Z) - LF::Water::GetHeightAt(ShL, T), float(ShR.Z) - LF::Water::GetHeightAt(ShR, T));
+}
+
 void ALFBrawler::UpdateSwim(float DeltaSeconds)
 {
 	UWorld* World = GetWorld();
@@ -1604,8 +1616,15 @@ void ALFBrawler::UpdateSwim(float DeltaSeconds)
 	// Bob on the water: capsule centre a fixed fraction of the half-height under the surface.
 	const float HalfHeight = GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const float Water = LF::Water::GetHeightAt(L, Now);
-	const float Lift01 = FMath::Clamp(float(GetVelocity().Size2D()) / FMath::Max(SwimSpeed, 1.f), 0.f, 1.f);
-	SwimLift = FMath::FInterpTo(SwimLift, SwimSpeedLift * Lift01, DeltaSeconds, 6.f); // N1 3b: eased with the lean
+	// N3 18: measure the posed head / shoulders against the water at their own XY and close the gap. The lift moves the
+	// whole body rigidly, so the error maps 1:1 onto the next lift; eased so the stroke's bob doesn't jitter.
+	{
+		float HeadClear, ShoulderClear;
+		MeasureSwimClearance(HeadClear, ShoulderClear);
+		const float Need = FMath::Max(SwimShoulderClear - ShoulderClear, SwimHeadClear - HeadClear);
+		const float Desired = FMath::Clamp(SwimLift + Need, SwimLiftMin, SwimLiftMax);
+		SwimLift = FMath::FInterpTo(SwimLift, Desired, DeltaSeconds, Desired > SwimLift ? SwimLiftRate * 2.f : SwimLiftRate); // rise fast, settle slowly
+	}
 	L.Z = Water - HalfHeight * SwimSubmerge + SwimLift;
 	SetActorLocation(L);
 	GetCharacterMovement()->Velocity.Z = 0.f;
@@ -1855,6 +1874,79 @@ void ALFBrawler::UpdateCamera(float RealDelta)
 // ---------------------------------------------------------------- Measurements (T03.2, debug)
 
 // lf.measure: seated backside / feet vs the thwart / floor boards, and the vest vs the spine, for every brawler.
+// N3 18: lf.debug.swimcam [delay] [dist cm] [height cm] [seconds] - side-on camera at the waterline that follows a swimming
+// brawler (prefers one that is moving), for checking head/shoulder height against the waves. Dev aid; spawns a CameraActor.
+static FAutoConsoleCommandWithWorldAndArgs CmdLFSwimCam(TEXT("lf.debug.swimcam"),
+	TEXT("lf.debug.swimcam [delay=0] [dist=260] [height=4] [seconds=30] - waterline side camera on a swimmer."),
+	FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
+	{
+		const float Delay = Args.Num() > 0 ? FCString::Atof(*Args[0]) : 0.f;
+		const float Dist = Args.Num() > 1 ? FCString::Atof(*Args[1]) : 260.f;
+		const float Height = Args.Num() > 2 ? FCString::Atof(*Args[2]) : 4.f;
+		const float Duration = Args.Num() > 3 ? FCString::Atof(*Args[3]) : 30.f;
+		TWeakObjectPtr<UWorld> W(World);
+		FTimerHandle H;
+		World->GetTimerManager().SetTimer(H, FTimerDelegate::CreateLambda([W, Dist, Height, Duration]()
+		{
+			UWorld* Wd = W.Get();
+			APlayerController* PC = Wd ? Wd->GetFirstPlayerController() : nullptr;
+			if (!PC) return;
+			ACameraActor* Cam = Wd->SpawnActor<ACameraActor>(FVector::ZeroVector, FRotator::ZeroRotator);
+			if (!Cam) return;
+			Cam->GetCameraComponent()->SetFieldOfView(50.f);
+			Cam->GetCameraComponent()->bConstrainAspectRatio = false;
+			TWeakObjectPtr<ACameraActor> WCam(Cam);
+			TWeakObjectPtr<APlayerController> WPC(PC);
+			TSharedRef<TWeakObjectPtr<ALFBrawler>> Target = MakeShared<TWeakObjectPtr<ALFBrawler>>();
+			TSharedRef<FVector> Side = MakeShared<FVector>(FVector::RightVector);
+			const double End = Wd->GetTimeSeconds() + Duration;
+			UE_LOG(LogLF, Display, TEXT("[swimcam] on (dist %.0f, height %.0f, %.0f s)"), Dist, Height, Duration);
+			FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([W, WCam, WPC, Target, Side, Dist, Height, End](float)
+			{
+				UWorld* Wd = W.Get();
+				ACameraActor* Cam = WCam.Get();
+				APlayerController* PC = WPC.Get();
+				if (!Wd || !Cam || !PC) return false;
+				if (Wd->GetTimeSeconds() > End)
+				{
+					PC->SetViewTargetWithBlend(PC->GetPawn());
+					Cam->Destroy();
+					return false;
+				}
+				ALFBrawler* B = Target->Get();
+				if (!B || B->GetBrawlerState() != ELFBrawlerState::Swimming)
+				{
+					B = nullptr;
+					float Best = -1.f;
+					for (TActorIterator<ALFBrawler> It(Wd); It; ++It)
+					{
+						if (It->GetBrawlerState() == ELFBrawlerState::Swimming && It->GetVelocity().Size2D() > Best)
+						{
+							Best = It->GetVelocity().Size2D();
+							B = *It;
+						}
+					}
+					*Target = B;
+					if (B) UE_LOG(LogLF, Display, TEXT("[swimcam] following %s"), *B->GetName());
+				}
+				if (!B) return true;
+				const FVector V = B->GetVelocity().GetSafeNormal2D();
+				if (!V.IsNearlyZero())
+				{
+					const FVector NewSide = FVector::CrossProduct(FVector::UpVector, V);
+					*Side = (*Side * 0.97f + NewSide * 0.03f).GetSafeNormal2D(); // slow follow: a stable side-on view
+				}
+				const FVector Focus = B->GetMesh()->GetSocketLocation(TEXT("spine_05"));
+				FVector CamPos = Focus + *Side * Dist;
+				CamPos.Z = LF::Water::GetHeightAt(CamPos, Wd->GetTimeSeconds()) + Height;
+				const FVector LookAt(Focus.X, Focus.Y, LF::Water::GetHeightAt(Focus, Wd->GetTimeSeconds()) + 10.f);
+				Cam->SetActorLocationAndRotation(CamPos, (LookAt - CamPos).Rotation());
+				if (PC->GetViewTarget() != Cam) PC->SetViewTarget(Cam);
+				return true;
+			}));
+		}), FMath::Max(Delay, 0.01f), false);
+	}));
+
 static FAutoConsoleCommandWithWorld CmdLFMeasure(TEXT("lf.measure"),
 	TEXT("Log seat (backside -> thwart), feet (soles -> floor boards) and vest (extent vs spine bones) measurements for every brawler."),
 	FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World)
