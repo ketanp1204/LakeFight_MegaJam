@@ -25,7 +25,102 @@ N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_su
 N4 (economy tuning; the N4 line in Docs/N1.md is partly garbled - read as: raise catches/scores back toward the pre-N3
 economy while rams/overboards stay >= 1.5x the pre-N3 baseline and no team wins more than 3 of 6; retry if the first try
 misses; never overwrite Builds/LakeFight_submit_fallback.zip or the N3 zip; zip Builds/LakeFight_N4_<time>.zip; report):
-22. [IN PROGRESS] Economy tuning + 6 AI-only rounds vs targets + package + smoke + zip + report
+22. [DONE f00c31d + report commit] Economy tuning + 6 AI-only rounds vs targets + package + smoke + zip + report
+
+## N4 report - item 22 economy tuning (Claude Code, resumed session 15 Nov 10:10-11:40 IST) - unreviewed, director away
+**Spec note:** the N4 line in Docs/N1.md is garbled (characters lost mid-line). What I could read: economy tuning; never overwrite
+the fallback; rams/overboards still >= 1.5x the pre-N3 baseline; no team wins more than 3 of 6; adjust if the first try misses;
+zip Builds/LakeFight_N4_<time>.zip; report. **The economy target itself is missing.** I aimed for catches/banked fish back toward
+the pre-N3 numbers (52 / 37 per round) without breaking those two constraints. Tell me the real target if it was different.
+**Build:** `Builds/LakeFight_N4_20261115_1132.zip` (401 MB; unzipped in `Build/Windows/LakeFight.exe`), source f00c31d.
+`LakeFight_submit_fallback.zip` and `LakeFight_N3_20261115_0843.zip` untouched.
+**Shipping smoke** (`LakeFight.exe -LFSmoke`, copy in Saved/n3/n4_smoke.txt): fish ready 3 zones / 4 banks / 2 live spots -> menu ->
+Play -> hints 1-3 -> pause at 234.0 s -> how-to page -> resume at 234.0 s -> 45 catches, 46 banked -> results "Yellow WINS!"
+0/16/12/26 -> quit, exit code 0. (Red = the idle player boat in smoke, so 0.)
+
+### Final 6 AI-only rounds (same setup as N3 item 21: headless -game, fixed 60 Hz, 240 s, all four crews AI; logs Saved/n3/rounds/n4final_1..6.log)
+| round | winner | scores R/B/G/Y | rams | overboards | steals | fights | catches | banked fish |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Yellow WINS! | 5/10/2/17 | 35 | 25 | 13 | 62 | 29 | 26 |
+| 2 | DRAW - Red / Blue | 12/12/8/0 | 22 | 18 | 2 | 43 | 37 | 28 |
+| 3 | Blue WINS! | 5/14/5/9 | 19 | 22 | 8 | 39 | 32 | 24 |
+| 4 | Blue WINS! | 7/8/4/3 | 41 | 20 | 10 | 39 | 29 | 14 |
+| 5 | Red WINS! | 24/8/4/0 | 27 | 28 | 4 | 49 | 32 | 20 |
+| 6 | Green WINS! | 1/8/18/10 | 30 | 16 | 2 | 42 | 29 | 26 |
+| **avg** | Blue 2 (+1 draw), Red 1 (+1 draw), Yellow 1, Green 1 | | **29.0** | **21.5** | **6.5** | 45.7 | **31.0** | **23.0** |
+
+| set | catches | banked fish | winner scores | rams | overboards | steals |
+|---|---|---|---|---|---|---|
+| pre-N3 baseline (base_1..6) | 51.5 | 36.8 | 13-38 | 20.8 | 8.3 | 1.0 |
+| N3 build (t20g_1..6) | 20.8 | 11.3 | 6-16 | 38.7 | 19.2 | 4.3 |
+| **N4 final (n4final_1..6)** | **31.0** | **23.0** | **8-24** | **29.0** | **21.5** | **6.5** |
+| N4 final config, 18 more rounds (n4n) | 30.1 | 23.7 | | 30.8 | 18.6 | 4.1 |
+
+Against the targets:
+- **Economy: about 2x N3, still below pre-N3.** Banked fish x2.0 (11.3 -> 23.0), catches x1.5 (20.8 -> 31.0). That's 60-65% of the
+  pre-N3 economy. No more "0/0/6/0" rounds: across these 24 rounds the lowest winning score is 4 (a 4-0-0-x round is still possible
+  but rare).
+- **No team wins more than 3 of 6: met** (max 2 + 1 draw). In 18 extra rounds: Blue 6, Green 4, Red 3 (+2 draws), Yellow 3 (+1).
+- **Overboards >= 1.5x baseline: met** (21.5 = x2.6).
+- **Rams >= 1.5x baseline (31.2): MISSED - 29.0 = x1.39** (18-round run: 30.8 = x1.48). This is a real trade-off: every change that
+  gave crews more fishing time cost rams (table below). Rams are still x1.4 the pre-N3 build. If rams matter more than fish,
+  the try-i setup (no ram steal, empty leaders still chased) gave rams 35.0 / banked 19.5. That has the freeze bug below, so I'd
+  rather turn `LeaderMinLead` back up or allow empty-leader chases again from 25-35 m.
+
+### What changed (all in C++, `-LFN3Economy` restores the N3 values for A/B except the Hothead asset)
+- **Fish spots** (`ULFFishSubsystem`): catch every 0.8 s (1.5), 7-9 fish per fair spot (4-6), respawn 3-5 s (5-8), spilled fish float
+  15 s (10). Still 2 live spots + gold (your N3 rule).
+- **Ram steal (new mechanic, players too - please judge it):** on a RAM, the first fish knocked loose flies on an arc into the
+  RAMMER's boat (the player hears the catch sound); a strong ram still drops a second fish in the water. Before this, a ram only
+  dropped fish next to the victim, so attacking never paid. In AI-only rounds the personality that fought least always won (first
+  Hothead/Yellow 10 of 18, then after I toned Hothead down, the Thief/Blue 8 of 18). With ram steal the wins finally spread out.
+  About 20 ram steals per round. `-LFNoRamSteal` turns it off; it's `bRamSteal` on the fish subsystem.
+- **AI scoops spilled fish** within 8 m when it isn't reeling in and has room (`PickupSeekRange`). N3 AIs never went for spilled
+  fish on purpose (`FindPickup` existed but nothing called it). At 15 m it pulled crews off the spots and catches dropped, so it's 8 m now.
+- **Loot / leader / Thief chases now time out** after 12 s (then 6 s off; N3 chased loot without a time limit). Chases over 15 s
+  ended in a ram only 30% of the time and took about a quarter of all chase time.
+- **Leader focus:** lead >= 3 (was 4), up to 50 m (35), **but an empty leader is only chased inside the AI's own aggro range.**
+  Found a freeze: Yellow banked 6 early, all three other crews chased its *empty* boat for 200 s, nobody fished, final 0/4/0/6.
+- **Bank threshold** clamped to 3-4 fish for every personality (Hothead 3, others 4; was 3/5/5/6): smaller, more frequent trips.
+  Rams pass fish from boat to boat, so a crew rarely builds up 5-6. One test set banked only 4 fish in some rounds.
+- **Hothead DataAsset** (`DA_LF_Personality_Hothead`, via Saved/n3/tools/n4_hothead.py): aggro 11 -> 14 m, robs boats with >= 4 fish
+  (5) from 35 m (25). It fought least and won most rounds.
+- **Fair centre:** centre-ring spot and gold spot now sit at the point equidistant from the four banks (computed from the bank zones;
+  turned out to be 0.9 m from the origin: banks 65-68 m). Didn't change the balance, so it's kept as a harmless tidy-up.
+- Dev flags: `-LFN3Economy`, `-LFNoRamSteal`, `-LFNoPersonality` (every crew on the default AI). Log: `[fish] ram steal ...`,
+  `ramsteals=` in the 10 s fish report, `[fish] fair centre ...`. Scripts: Saved/n3/tools/n4_summary.py, state_share.py.
+
+### Tuning path (12-18 rounds per set after the first; Saved/n3/rounds/n4a..o)
+| set | change | catches | banked | rams | overboards | most wins |
+|---|---|---|---|---|---|---|
+| a | spots 1.0 s, 6-8 fish, respawn 3-5, pickups 15 s (6 rounds) | 37.0 | 24.0 | 30.5 | 16.3 | 2 of 6 |
+| b | 0.8 s, 7-9 fish | 29.0 | 17.5 | 28.6 | 18.8 | Yellow 4+3d /12 |
+| c | + loot chase timeout | 35.9 | 23.7 | 28.4 | 18.1 | Yellow 6/12 |
+| d | + fair centre | 39.1 | 24.2 | 27.7 | 14.2 | Yellow 7/12 |
+| e | + bank 4-5 clamp | 38.1 | 24.4 | 29.2 | 17.4 | Yellow 6/12 |
+| f | + leader lead 3 / 50 m | 34.4 | 24.1 | 28.8 | 16.8 | Blue 5+1d /12 |
+| g | + cargo weight 0.3, defend 8 s / 3 s cooldown | 33.1 | 18.4 | 33.8 | 19.1 | **Yellow 10/18** |
+| h | + AI scoop 15 m | 24.0 | 15.3 | 29.2 | 21.2 | Blue 7/18 |
+| i | scoop 8 m, only with room | 30.6 | 19.5 | 35.0 | 22.3 | Blue 6/18 |
+| j | shorter chase timeouts (rejected) | 32.6 | 21.8 | 30.2 | 22.1 | Blue 8/18 |
+| k | leader focus only on loaded leader | 35.2 | 27.2 | 25.2 | 19.8 | Yellow 7+1d /18 |
+| l | empty leader within aggro + Hothead toned down | 29.1 | 17.0 | 30.4 | 19.3 | Blue 8+1d /18 |
+| m | + ram steal | 26.1 | 19.0 | 31.6 | 16.9 | Yellow 6/18 |
+| **n** | **+ bank 3-4 clamp (final)** | **30.1** | **23.7** | **30.8** | **18.6** | **Blue 6/18** |
+| o | cargo weight 0.4, loot range x2.5 (rejected) | 23.7 | 15.4 | 30.6 | 20.2 | Blue 7/18 |
+
+Caveat: round-to-round spread is big (one round 10 catches, the next 59), so I treat differences under ~3 per round as noise.
+A first 6-round check of set i looked fine on rams (32.3) but showed the empty-leader freeze (one round: 10 catches in 240 s).
+Same caveats as N3: headless fixed-60 Hz rounds, not real-time feel; Red's AI uses the default personality; a real round has the
+player as Red and AIs target the player by the same rules.
+
+### N4 director check list
+1. **Ram steal:** ram a loaded boat. One fish should arc into your boat (catch sound), and a hard ram drops a second one in the water.
+   Fun or unfair? It's the main reason the AI personalities are even now.
+2. Fishing pace: a spot pays a fish every 0.8 s, 7-9 per spot. Does it feel too generous for the player?
+3. AI crews bank smaller loads (3-4) and pick up floating fish near them. Do they still read as Bully / Thief / Hothead?
+4. Rams missed your 1.5x line (x1.39 - x1.48). Fight-heavy or fish-heavy - which way should I lean?
+5. Please re-paste the N4 line in Docs/N1.md - the economy target was lost.
 
 ## N3 report - items 18-21 (Claude Code, resumed session 15 Nov 08:00-08:50 IST) - unreviewed, director away
 **Build:** `Builds/LakeFight_N3_20261115_0843.zip` (401 MB; unzipped in `Build/Windows/LakeFight.exe`), source be29ab9.
