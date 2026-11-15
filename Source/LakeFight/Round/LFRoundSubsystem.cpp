@@ -215,8 +215,10 @@ void ULFRoundSubsystem::Advance()
 	if (!bGoldSpawned && Remaining <= GoldRemaining)
 	{
 		bGoldSpawned = true;
-		// Centre is the clear water shared by the three existing fishing zones.
-		GoldSpot = GetWorld()->SpawnActor<ALFGoldFish>(FVector(0.f, 0.f, LF::Water::BaseHeight), FRotator::ZeroRotator);
+		// N4: the fair centre (equidistant from the four banks); the world origin when it can't be computed.
+		const ULFFishSubsystem* FishSys = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+		const FVector GoldAt = FishSys ? FishSys->GetFairCentre() : FVector(0.f, 0.f, LF::Water::BaseHeight);
+		GoldSpot = GetWorld()->SpawnActor<ALFGoldFish>(GoldAt, FRotator::ZeroRotator);
 		GoldBanner = 6.f;
 		PlayUI(GoldSound);
 		UE_LOG(LogLF, Display, TEXT("[round] GOLD FISH at %.2f remaining"), Remaining);

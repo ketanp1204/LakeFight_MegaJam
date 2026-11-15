@@ -102,6 +102,15 @@ void ULFFishSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
 	if (FParse::Param(FCommandLine::Get(), TEXT("LFLegacyFish"))) bFairSpots = false; // N3: pre-N3 marker zones, for A/B test rounds
+	if (FParse::Param(FCommandLine::Get(), TEXT("LFN3Economy"))) // N4: the N3 economy, for A/B test rounds
+	{
+		CatchInterval = 1.5f;
+		PickupLifetime = 10.f;
+		FairSpotFish = FIntPoint(4, 6);
+		SpotRespawnDelay = FVector2D(5.f, 8.f);
+		bRamSteal = false;
+	}
+	if (FParse::Param(FCommandLine::Get(), TEXT("LFNoRamSteal"))) bRamSteal = false;
 	for (TActorIterator<AActor> It(&InWorld); It; ++It)
 	{
 		if (Named(*It, TEXT("FishZone_")))
@@ -125,6 +134,8 @@ void ULFFishSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 			}
 		}
 	}
+	FairCentre = FVector(0.f, 0.f, LF::Water::BaseHeight);
+	if (Banks.Num() == UE_ARRAY_COUNT(TeamNames) && !FParse::Param(FCommandLine::Get(), TEXT("LFN3Economy"))) ComputeFairCentre();
 	if (bFairSpots)
 	{
 		if (Banks.Num() == UE_ARRAY_COUNT(TeamNames))
@@ -189,10 +200,51 @@ FVector ULFFishSubsystem::PickPoint(const FVector& Centre) const
 	return Centre;
 }
 
+void ULFFishSubsystem::ComputeFairCentre()
+{
+	// |C - Bi|^2 = R^2 for every bank, linearised: 2 Bi.C + K = |Bi|^2 with K = R^2 - |C|^2. Least squares in (Cx, Cy, K).
+	double M[3][3] = {}, V[3] = {};
+	for (const FBank& B : Banks)
+	{
+		if (!B.Zone.IsValid()) return;
+		const FVector P = B.Zone->GetActorLocation();
+		const double Row[3] = { 2.0 * P.X, 2.0 * P.Y, 1.0 };
+		const double Rhs = P.X * P.X + P.Y * P.Y;
+		for (int32 I = 0; I < 3; ++I)
+		{
+			V[I] += Row[I] * Rhs;
+			for (int32 J = 0; J < 3; ++J) M[I][J] += Row[I] * Row[J];
+		}
+	}
+	const auto Det3 = [](const double A[3][3]) {
+		return A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) - A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0])
+			+ A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]);
+	};
+	const double D = Det3(M);
+	if (FMath::Abs(D) < 1e-6) return;
+	double Sol[2];
+	for (int32 Col = 0; Col < 2; ++Col) // Cramer's rule
+	{
+		double A[3][3];
+		for (int32 I = 0; I < 3; ++I) for (int32 J = 0; J < 3; ++J) A[I][J] = (J == Col) ? V[I] : M[I][J];
+		Sol[Col] = Det3(A) / D;
+	}
+	const FVector C(Sol[0], Sol[1], LF::Water::BaseHeight);
+	if (!IsOpenWater(C) || FVector::Dist2D(C, FVector::ZeroVector) > 2000.f)
+	{
+		UE_LOG(LogLF, Warning, TEXT("[fish] fair centre %s is not open water - keeping the world origin"), *C.ToString());
+		return;
+	}
+	FairCentre = C;
+	FString Dist;
+	for (const FBank& B : Banks) Dist += FString::Printf(TEXT(" %s=%.1fm"), TeamNames[B.Team], FVector::Dist2D(C, B.Zone->GetActorLocation()) / 100.f);
+	UE_LOG(LogLF, Display, TEXT("[fish] fair centre X=%.0f Y=%.0f (%.1f m from the origin); to banks:%s"), C.X, C.Y, FVector::Dist2D(C, FVector::ZeroVector) / 100.f, *Dist);
+}
+
 bool ULFFishSubsystem::PlaceFairSpot(FSpot& Spot)
 {
-	// N3 19: the gold spot (and the lake) is centred on the world origin.
-	const FVector LakeCentre(0.f, 0.f, LF::Water::BaseHeight);
+	// N3 19: centre ring + lanes. N4: centred on the fair centre (equidistant from the banks), not the world origin.
+	const FVector LakeCentre = FairCentre;
 	if (Spot.Slot == 0)
 	{
 		for (int32 I = 0; I < 24; ++I)
@@ -245,11 +297,11 @@ void ULFFishSubsystem::Respawn(FSpot& Spot)
 	const FVector At = PickPoint(Spot.Centre);
 	Spot.Mesh = MakeMesh(SpotMesh, At, 2.f);
 	// T04 hook: failed spawns retry on the same cooldown, never every frame.
-	Spot.RespawnAt = GetWorld()->GetTimeSeconds() + FMath::FRandRange(5.f, 8.f);
+	Spot.RespawnAt = GetWorld()->GetTimeSeconds() + FMath::FRandRange(SpotRespawnDelay.X, SpotRespawnDelay.Y);
 	if (!Spot.Mesh.IsValid()) return;
 	ULFFishSpotVisualComponent::Add(Spot.Mesh.Get(), false);
 	Spot.Goal = PickPoint(Spot.Centre);
-	Spot.Remaining = bFairSpots ? FMath::RandRange(4, 6) : FMath::RandRange(3, 5); // N3 19: only 2 live spots now
+	Spot.Remaining = bFairSpots ? FMath::RandRange(FairSpotFish.X, FairSpotFish.Y) : FMath::RandRange(3, 5); // N3 19: only 2 live spots now (N4: 7-9)
 	Spot.LastActive = GetWorld()->GetTimeSeconds();
 	Spot.Progress = 0.f;
 	Spot.Catcher.Reset();
@@ -270,6 +322,32 @@ void ULFFishSubsystem::PlaySound(USoundWave* Sound)
 		Gain = Music->CategoryGain(ELFSoundCategory::UI);
 	}
 	UGameplayStatics::PlaySound2D(this, Sound, Gain);
+}
+
+bool ULFFishSubsystem::RamSteal(ALFBoat* Victim, ALFBoat* Rammer)
+{
+	if (!bRamSteal || !bStarted || !Victim || !Rammer || Rammer->IsCapsized() || !Rammer->HasDriver()) return false;
+	const ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
+	if (Round && Round->HasEnded()) return false;
+	ULFFishCargoComponent* From = ULFFishCargoComponent::Get(Victim);
+	ULFFishCargoComponent* To = ULFFishCargoComponent::Get(Rammer);
+	if (!From || !To) return false;
+	// Ordinary fish only (they go first anyway); gold stays aboard for the normal spill.
+	if (From->GetCount() - ULFRoundCargoComponent::Get(Victim)->GetGold() < 1) return false;
+	From->RemoveFish(1);
+	To->AddFish(1);
+	++RamSteals;
+	const float Now = GetWorld()->GetTimeSeconds();
+	FFlight F;
+	F.Start = Victim->GetActorLocation() + FVector(0.f, 0.f, 40.f);
+	F.End = Rammer->GetActorLocation() + FVector(0.f, 0.f, 60.f);
+	F.Born = Now;
+	F.Follow = Rammer;
+	F.Mesh = MakeMesh(FishMesh, F.Start, 0.6f);
+	Flights.Add(F);
+	if (Rammer == LF::Fish::PlayerBoat(GetWorld())) PlaySound(CatchSound);
+	UE_LOG(LogLF, Display, TEXT("[fish] ram steal %s -> %s cargo=%d"), *Victim->GetName(), *Rammer->GetName(), To->GetCount());
+	return true;
 }
 
 int32 ULFFishSubsystem::Spill(ALFBoat* Boat, int32 Amount)
@@ -367,7 +445,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 					{
 						S.Mesh->Destroy();
 						S.Mesh.Reset();
-						S.RespawnAt = Now + FMath::FRandRange(5.f, 8.f);
+						S.RespawnAt = Now + FMath::FRandRange(SpotRespawnDelay.X, SpotRespawnDelay.Y);
 					}
 				}
 			}
@@ -456,6 +534,7 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 			Flights.RemoveAt(I);
 			continue;
 		}
+		if (F.Follow.IsValid()) F.End = F.Follow->GetActorLocation() + FVector(0.f, 0.f, 60.f);
 		F.Mesh->SetActorLocation(FMath::Lerp(F.Start, F.End, T) + FVector(0.f, 0.f, 240.f * FMath::Sin(T * PI)));
 	}
 	// T04 hook: the round HUD replaces temporary scores.
@@ -463,8 +542,8 @@ void ULFFishSubsystem::Tick(float DeltaTime)
 		FString::Printf(TEXT("FISH  Red %d | Blue %d | Green %d | Yellow %d"), Scores[0], Scores[1], Scores[2], Scores[3]));
 	if (Now >= NextReport)
 	{
-		UE_LOG(LogLF, Display, TEXT("[fish] t=%.1f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d pickups=%d spawns ring=%d lanes R/B/G/Y=%d/%d/%d/%d"),
-			Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3], Pickups.Num(), RingSpawns, LaneSpawns[0], LaneSpawns[1], LaneSpawns[2], LaneSpawns[3]);
+		UE_LOG(LogLF, Display, TEXT("[fish] t=%.1f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d pickups=%d ramsteals=%d spawns ring=%d lanes R/B/G/Y=%d/%d/%d/%d"),
+			Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3], Pickups.Num(), RamSteals, RingSpawns, LaneSpawns[0], LaneSpawns[1], LaneSpawns[2], LaneSpawns[3]);
 		LF::Smoke(FString::Printf(TEXT("t=%.0f caught=%d spilled=%d scooped=%d banked=%d scores=%d/%d/%d/%d"), Now, Caught, Spilled, Scooped, Banked, Scores[0], Scores[1], Scores[2], Scores[3]));
 		NextReport = Now + 10.f;
 	}

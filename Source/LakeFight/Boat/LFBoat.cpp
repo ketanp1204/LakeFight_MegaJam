@@ -1,6 +1,7 @@
 #include "Boat/LFBoat.h"
 
 #include "Fish/LFFishCargoComponent.h" // T04 hook
+#include "Fish/LFFishSubsystem.h"
 
 #include "Brawler/LFBrawler.h"
 #include "Input/LFInput.h"
@@ -724,7 +725,11 @@ void ALFBoat::ResolveContact(ALFBoat* Target, const FVector& TargetDir, float Cl
 	// T04 hook
 	if (ULFFishCargoComponent* Cargo = ULFFishCargoComponent::Get(Target))
 	{
-		Cargo->Spill(Strength >= 0.5f ? 2 : 1, TEXT("ram"));
+		// N4: the first fish knocked loose flies into the rammer's boat; the rest (strong rams) go in the water as before.
+		const int32 Loose = Strength >= 0.5f ? 2 : 1;
+		ULFFishSubsystem* FishSys = GetWorld()->GetSubsystem<ULFFishSubsystem>();
+		const int32 Stolen = FishSys && FishSys->RamSteal(Target, this) ? 1 : 0;
+		if (Loose - Stolen > 0) Cargo->Spill(Loose - Stolen, TEXT("ram"));
 	}
 	ApplyRamTo(Target, TargetDir, Contact, Strength);
 

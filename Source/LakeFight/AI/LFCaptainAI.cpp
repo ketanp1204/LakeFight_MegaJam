@@ -145,6 +145,8 @@ void ALFCaptainAI::ApplyPersonality(const ULFCaptainPersonality* P)
 	LootChaseValue = P->LootChaseValue;
 	LootChaseRange = P->LootChaseRange;
 	BankAtValue = P->BankAtValue;
+	// N4: personalities bank within BankAtRange (Hothead banked at 3 - twice as many trips as anyone - and won most rounds).
+	if (!bN3Economy) BankAtValue = FMath::Clamp(BankAtValue, BankAtRange.X, BankAtRange.Y);
 	bChaseGold = P->bChaseGold;
 }
 
@@ -153,7 +155,16 @@ void ALFCaptainAI::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	NextDecision = GetWorld()->GetTimeSeconds() + FMath::FRandRange(0.2f, 0.6f);
 	const ALFBrawler* B = Cast<ALFBrawler>(InPawn);
-	ApplyPersonality(B ? B->Personality.Get() : nullptr);
+	// N4 dev: -LFNoPersonality = every crew on the default tunables (balance tests: dock position vs personality).
+	ApplyPersonality(B && !FParse::Param(FCommandLine::Get(), TEXT("LFNoPersonality")) ? B->Personality.Get() : nullptr);
+	if (bN3Economy)
+	{
+		LeaderMinLead = 4;
+		LeaderFocusRange = 3500.f;
+		CargoTargetWeight = 0.2f;
+		DefendMaxTime = 7.f;
+		DefendCooldown = 4.f;
+	}
 	UE_LOG(LogLF, Display, TEXT("[ai] %s captains %s (%s)"), *GetName(), InPawn ? *InPawn->GetName() : TEXT("none"), *PersonalityName);
 }
 
@@ -187,7 +198,10 @@ ALFBrawler* ALFCaptainAI::PickTarget() const
 		}
 		// N3 20: loaded boats draw fire (more fish = higher priority); everyone gangs up on a runaway leader.
 		if (!bLegacyAI) Score /= 1.f + CargoTargetWeight * float(ULFFishSubsystem::GetCargoValue(B->GetBoat()));
-		if (!bLegacyAI && Leader >= 0 && int32(B->Team) == Leader && Score < LeaderFocusRange)
+		// N4: from far only while the leader carries fish (an empty leader only within AggroRange) - ramming an empty leader
+		// can't cut the lead, and in one test round it froze the economy (three crews chased an empty Yellow boat for 200 s).
+		if (!bLegacyAI && Leader >= 0 && int32(B->Team) == Leader && Score < LeaderFocusRange
+			&& (bN3Economy || ULFFishSubsystem::GetCargoValue(B->GetBoat()) > 0 || Score < AggroRange))
 		{
 			Score *= LeaderTargetWeight;
 		}
@@ -443,7 +457,7 @@ void ALFCaptainAI::Decide()
 			const ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
 			const FVector From = MyBoat ? MyBoat->GetActorLocation() : Self->GetActorLocation();
 			const int32 Value = ULFFishSubsystem::GetCargoValue(MyBoat);
-			FVector BankAt = FVector::ZeroVector, Spot = FVector::ZeroVector;
+			FVector BankAt = FVector::ZeroVector, Spot = FVector::ZeroVector, Pickup = FVector::ZeroVector;
 			const bool bHaveBank = Fish && Fish->GetBankLocation(Self->Team, BankAt);
 			const float TimeHome = bHaveBank ? float(FVector::Dist2D(From, BankAt)) / 500.f + 8.f : 0.f;
 			const bool bClock = Round && Value > 0 && Round->GetRemaining() < TimeHome + 10.f;
@@ -462,7 +476,8 @@ void ALFCaptainAI::Decide()
 			}
 			// N3 20: rubber band - the leading team is worth a chase from further out.
 			const int32 Leader = LeadingTeam();
-			bool bLeader = !bLegacyAI && T && Leader >= 0 && int32(T->Team) == Leader && TDist < LeaderFocusRange;
+			bool bLeader = !bLegacyAI && T && Leader >= 0 && int32(T->Team) == Leader && TDist < LeaderFocusRange
+				&& (bN3Economy || TLoot > 0 || TDist < AggroRange); // N4: the leader's catch from far, an empty leader only up close
 			// N3 20: an empty-handed Thief hunts loaded boats coming in to bank (counts as loot: no chase timeout).
 			if (!bLegacyAI && IsThief() && Value == 0 && !bLoot)
 			{
@@ -470,6 +485,21 @@ void ALFCaptainAI::Decide()
 				{
 					T = Mark;
 					bLoot = true;
+					bLeader = false;
+				}
+			}
+			// N4: loot / leader / Thief chases give up too after LootMaxChaseTime (long chases rarely ended in a ram and ate
+			// the fishing time), then those chases pause for LootChaseCooldown.
+			if (!bLegacyAI && !bN3Economy)
+			{
+				if (bChasing && (bLoot || bLeader) && ChaseSince >= 0.0 && Now - ChaseSince > LootMaxChaseTime)
+				{
+					NoLootChaseUntil = Now + LootChaseCooldown;
+					ChaseSince = -1.0;
+				}
+				if (Now < NoLootChaseUntil)
+				{
+					bLoot = false;
 					bLeader = false;
 				}
 			}
@@ -515,6 +545,15 @@ void ALFCaptainAI::Decide()
 				GoalPoint = BankAt;
 				T = nullptr;
 			}
+			else if (!bLegacyAI && !bN3Economy && !bReeling && (!bGoAfter || TLoot == 0) && !bClock && Value < BankAtValue && MyBoat && Fish
+				&& Fish->FindPickup(From, PickupSeekRange, Pickup))
+			{
+				// N4: scoop up spilled fish nearby (an emptied enemy isn't worth more than the fish it dropped).
+				Want = ELFCaptainState::GoFish;
+				GoalPoint = Pickup;
+				bScoopGoal = true;
+				T = nullptr;
+			}
 			else if (MyBoat && bHaveBank && Value > 0 && (Value >= BankAtValue || bClock) && !(bGoAfter && TDist < AggroRange * 0.5f))
 			{
 				Want = ELFCaptainState::ReturnToDock;
@@ -525,6 +564,7 @@ void ALFCaptainAI::Decide()
 			{
 				Want = ELFCaptainState::GoFish;
 				GoalPoint = Spot;
+				bScoopGoal = false;
 				T = nullptr;
 			}
 		}
@@ -617,7 +657,8 @@ void ALFCaptainAI::Execute(float DeltaSeconds)
 			Self->LeaveDriving(); // stand up to fight
 			break;
 		case ELFCaptainState::GoFish:
-			DriveTo(GoalPoint, SpotHoldRadius, 60.f, true);
+			if (bScoopGoal) DriveTo(GoalPoint, 0.f, 150.f, true); // N4: drive through the floating fish
+			else DriveTo(GoalPoint, SpotHoldRadius, 60.f, true);
 			break;
 		case ELFCaptainState::ReturnToDock:
 			// Drive right into the bank (the hull centre must enter it); no shore avoidance near the dock.

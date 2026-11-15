@@ -113,6 +113,9 @@ public:
 	/** Head home to bank once our cargo is worth this many points (or when the clock says so). */
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="1"))
 	int32 BankAtValue = 5;
+	/** N4: personality BankAtValue is clamped into this range (keeps the flavour, stops bank-at-3 from dominating). */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish")
+	FIntPoint BankAtRange = FIntPoint(3, 4);
 	/** Drop everything for the gold spot when it appears. */
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fish")
 	bool bChaseGold = true;
@@ -124,11 +127,21 @@ public:
 	float MaxChaseTime = 9.f;
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
 	float ChaseCooldown = 12.f;
+	/** N4 economy: a loot / leader / Thief chase that hasn't come to blows after this long (s) is dropped too, and those
+	 *  chases are skipped for LootChaseCooldown (s) - back to fishing. N3 chased loot without a time limit. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float LootMaxChaseTime = 12.f;
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float LootChaseCooldown = 6.f;
+	/** N4 economy: drive through floating fish (spilled by rams) within this range (cm) - a ram now pays the rammer.
+	 *  N3 AIs never went for spilled fish on purpose. */
+	UPROPERTY(EditAnywhere, Category="LF|AI|Fish", meta=(ClampMin="0"))
+	float PickupSeekRange = 800.f;
 
 	// --- N3 20: reasons to fight ---
 	/** Target pick: distance is divided by (1 + this * fish points aboard the target's boat) - loaded boats draw fire. */
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
-	float CargoTargetWeight = 0.2f;
+	float CargoTargetWeight = 0.3f; // N4: 0.3 (N3: 0.2)
 	/** A boat carrying at least LootNearValue points within AggroRange * LootNearRangeScale is chased like loot. */
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="1"))
 	int32 LootNearValue = 2;
@@ -136,9 +149,9 @@ public:
 	float LootNearRangeScale = 2.f;
 	/** Rubber band: when one team leads by at least LeaderMinLead points, every other crew targets it within LeaderFocusRange. */
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
-	int32 LeaderMinLead = 4;
+	int32 LeaderMinLead = 3; // N4: 3 (N3: 4)
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
-	float LeaderFocusRange = 3500.f;
+	float LeaderFocusRange = 5000.f; // N4: 50 m (N3: 35 m)
 	/** Leader distance multiplier in the target pick (< 1 = preferred). */
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0.05"))
 	float LeaderTargetWeight = 0.4f;
@@ -149,9 +162,9 @@ public:
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
 	float DefendExitRadius = 1400.f;
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
-	float DefendMaxTime = 7.f;
+	float DefendMaxTime = 8.f; // N4: 8 (N3: 7)
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
-	float DefendCooldown = 4.f;
+	float DefendCooldown = 3.f; // N4: 3 (N3: 4)
 	/** Thief (OwnBoatRecoverWeight > 1): hunt enemy boats carrying fish within ThiefHuntRange that are within ThiefDockRange
 	 *  of their own bank (on the way in to bank); when such a boat is crewless within ThiefDiveRange, dive in and take it. */
 	UPROPERTY(EditAnywhere, Category="LF|AI|Fight", meta=(ClampMin="0"))
@@ -179,6 +192,8 @@ private:
 	bool IsThief() const { return OwnBoatRecoverWeight > 1.f; }
 	/** -LFLegacyAI: switch the N3 20 behaviour off (A/B test rounds against the pre-N3 AI). */
 	const bool bLegacyAI = FParse::Param(FCommandLine::Get(), TEXT("LFLegacyAI"));
+	/** -LFN3Economy: N3 chase rules (no loot chase time limit), for A/B test rounds. */
+	const bool bN3Economy = FParse::Param(FCommandLine::Get(), TEXT("LFN3Economy"));
 	ALFBoat* PickCrewlessBoat() const;
 	ALFBoat* PickRecoverBoat() const;
 	void ApplyPersonality(const ULFCaptainPersonality* P);
@@ -199,6 +214,8 @@ private:
 	FVector GoalPoint = FVector::ZeroVector; // GoFish spot / ReturnToDock bank
 	double ChaseSince = -1.0;              // stage 3: start of the current Chase/Ram run
 	double NoChaseUntil = -1.0;
+	bool bScoopGoal = false;               // N4: GoFish is driving through a floating fish, not holding a spot
+	double NoLootChaseUntil = -1.0;        // N4: loot / leader / Thief chases paused until then
 	double NextDecision = 0.0;
 	double ApplyAt = -1.0;
 	double LastSwing = -100.0;

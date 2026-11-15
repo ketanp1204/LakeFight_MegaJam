@@ -24,6 +24,9 @@ public:
 	virtual TStatId GetStatId() const override;
 
 	int32 Spill(ALFBoat* Boat, int32 Amount); // T04 hook: return pickups actually spawned
+	/** N4 economy: a RAM knocks one ordinary fish out of Victim's boat straight into Rammer's (flies across on an arc).
+	 *  Makes attacking pay - before, a ram only dropped fish in the water next to the victim. False when nothing to take. */
+	bool RamSteal(ALFBoat* Victim, ALFBoat* Rammer);
 	int32 GetScore(int32 Team) const { return Scores[FMath::Clamp(Team, 0, 3)]; } // T04 hook
 
 	// ---- AI query API (N1 #14, for T04 stage 3 goals). Read-only; AIs still fish/bank by driving like the player.
@@ -40,9 +43,13 @@ public:
 	/** Live floating pickups (spilled fish anyone can scoop) within Radius of From; nearest first in OutLocation. */
 	bool FindPickup(const FVector& From, float Radius, FVector& OutLocation) const;
 	int32 GetActiveSpotCount() const;
+	/** N4: the open-water point as far from every team's bank as possible (least-squares equidistant from the four bank
+	 *  zones). Centre spot ring and gold spot sit here. The world origin was 3-7 m closer to Yellow's bank. */
+	FVector GetFairCentre() const { return FairCentre; }
 
+	/** N4: 0.8 s (N3: 1.5 s). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
-	float CatchInterval = 1.5f;
+	float CatchInterval = 0.8f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float CatchMaxSpeed = 220.f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
@@ -53,7 +60,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
 	float DriftSpeed = 50.f;
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
-	float PickupLifetime = 10.f;
+	float PickupLifetime = 15.f; // N4: 15 s (N3: 10 s) - spilled fish stay in play longer, so fights recycle the catch
 	/** 0 = use every discovered FishZone; positive values limit active spots. (Legacy placement only.) */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish", meta=(ClampMin="0"))
 	int32 MaxSpots = 0; // T04 hook
@@ -73,6 +80,14 @@ public:
 	/** A fair spot nobody has fished for this long (s) moves on (the lane spot to the next dock in the rotation). */
 	UPROPERTY(EditDefaultsOnly, Category="LF|Fish", meta=(ClampMin="1"))
 	float IdleSpotLifetime = 45.f;
+	/** N4 economy: fish per fair spot (N3: 4-6) and the respawn delay after a spot is fished out (N3: 5-8 s). */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
+	FIntPoint FairSpotFish = FIntPoint(7, 9);
+	/** N4: rams move one fish into the rammer's boat (see RamSteal). -LFNoRamSteal / -LFN3Economy switch it off. */
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
+	bool bRamSteal = true;
+	UPROPERTY(EditDefaultsOnly, Category="LF|Fish")
+	FVector2D SpotRespawnDelay = FVector2D(3.f, 5.f);
 
 private:
 	struct FSpot
@@ -105,12 +120,15 @@ private:
 		FVector Start = FVector::ZeroVector;
 		FVector End = FVector::ZeroVector;
 		float Born = 0.f;
+		TWeakObjectPtr<AActor> Follow; // N4: ram steal - the arc ends on the (moving) rammer
 	};
 	TArray<FSpot> Spots;
 	TArray<int32> LaneBag;        // N3 19: shuffled teams still due a lane spot this rotation
 	int32 LaneSpawns[4] = { 0, 0, 0, 0 };
 	int32 RingSpawns = 0;
 	int32 ZoneMarkers = 0;
+	FVector FairCentre = FVector::ZeroVector;
+	void ComputeFairCentre();
 	bool PlaceFairSpot(FSpot& Spot);
 	TArray<FPickup> Pickups;
 	TArray<FBank> Banks;
@@ -120,6 +138,7 @@ private:
 	int32 Spilled = 0;
 	int32 Scooped = 0;
 	int32 Banked = 0;
+	int32 RamSteals = 0;
 	float NextReport = 10.f;
 	bool bStarted = false;
 

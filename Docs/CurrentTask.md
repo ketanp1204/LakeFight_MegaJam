@@ -22,6 +22,10 @@ N3 (balance + swim fix, director playtest 15 Nov; fallback = Builds/LakeFight_su
 19. [DONE cf21dda] Fair fish placement (equidistant zones, gold at centre, max 2 live spots)
 20. [DONE be29ab9] Reasons to fight (loot targeting, leader focus, Thief steals near dock, defend spot within ~8 m)
 21. [DONE dec364d] 6 AI-only rounds table + package + smoke + zip Builds/LakeFight_N3_<time>.zip
+N4 (economy tuning; the N4 line in Docs/N1.md is partly garbled - read as: raise catches/scores back toward the pre-N3
+economy while rams/overboards stay >= 1.5x the pre-N3 baseline and no team wins more than 3 of 6; retry if the first try
+misses; never overwrite Builds/LakeFight_submit_fallback.zip or the N3 zip; zip Builds/LakeFight_N4_<time>.zip; report):
+22. [IN PROGRESS] Economy tuning + 6 AI-only rounds vs targets + package + smoke + zip + report
 
 ## N3 report - items 18-21 (Claude Code, resumed session 15 Nov 08:00-08:50 IST) - unreviewed, director away
 **Build:** `Builds/LakeFight_N3_20261115_0843.zip` (401 MB; unzipped in `Build/Windows/LakeFight.exe`), source be29ab9.
