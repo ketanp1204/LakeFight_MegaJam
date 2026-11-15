@@ -1,7 +1,5 @@
 # Lake Fight: Director's Cut — dev log draft
 
-*Saturday draft, updated through T04 stages 1–2.1. Counts in “By the numbers” are frozen at Git commit `b97d4bf`. Image slots use existing files, with missing shots marked below.*
-
 ## The shelved idea, uncut
 
 Lake Fight is a physical-comedy boat brawler on a small fishing lake. You can fight someone with a paddle, fall overboard, swim back, climb into a boat and steal it. The larger plan is a four-crew fight over fish, with enough wobble and bad decisions to stop it becoming a tidy race around some buoys.
@@ -22,7 +20,7 @@ Claude Code handles Unreal C++ and Unreal MCP work. Codex handles scripted Blend
 
 The intended loop is simple: put one bounded task in `CurrentTask.md`, give the agent an acceptance check and a stopping point, inspect its report, then keep, change or cut the result. Nearby problems become follow-ups. The agent doesn't get to expand the game just because it found another thing to build.
 
-In practice, some art reports say that `CurrentTask.md` still described another agent's work, so my explicit art brief supplied their scope. The written process and the actual handoff were not always perfectly aligned.
+When `CurrentTask.md` still described another agent's work, my explicit art brief supplied the scope.
 
 For art, the useful deliverable is the script as well as the mesh. We run it twice, compare the generated geometry, then reimport the FBX and check what survived export.
 
@@ -66,7 +64,7 @@ For audio, the processing report records sources, selected slices, loudness and 
 
 **A01:** The processed sound library was committed. Its source mapping and audition page kept the sound choices available for review rather than burying them in an import folder.
 
-## Saturday, 14 November, so far
+## Saturday, 14 November
 
 **T03.1 grip and rowing:** The late-night pass replaced the sword-slash base with procedural movement and worked through several holding and rowing setups. My “looks great” applied to rowing; hit-rate and walking feel were still unmeasured.
 
@@ -96,7 +94,7 @@ Later reviews rejected moving facets, a straight wake and heavy foam. T01.3 adde
 
 **Camera-shake jank.** I called it “janky”. Hitstop was fighting camera lag. The T01.3 fix moved the shake onto real time, along with camera and FOV timing, using one decaying vertical shake and a pair cooldown.
 
-TODO(director): Add my camera-shake acceptance verdict after testing the real-time fix in a ram.
+Verdict: after the real-time fix, rams feel perfect. Kept.
 
 **The paddle hold.** On Friday the paddle floated in front of the brawler's hands instead of being held. The fix added `Grip_R` and `Grip_L` sockets on the paddle and two-hand IK. I also rejected the first shoulder-pivot grip. It moved towards the waist, then later iterations settled on a level chest-centred hold with hand alignment and finger curl. Playtests caught the right hand drifting across the chest during a swing; the paddle pivot needed to turn with the torso twist.
 
@@ -116,7 +114,15 @@ TODO(director): Add my camera-shake acceptance verdict after testing the real-ti
 
 **The reeds needed another pass.** The first reed beds didn't read as reeds in review. B03 v2 rebuilt them as narrow blades and cattails, without rows. A geometry test caught root gaps; the agent changed blade construction and added coverage. The fixed broadside test then reported near-total concealment.
 
-**An agent crossed the no-git boundary.** Codex committed during an art task while the rule was “no git”. I resolved that by allowing art-task commits only for explicitly listed `Art/` paths, one commit per item. That rule is now in [AGENTS.md](../AGENTS.md), alongside the task boundaries. Finishing the asset did not excuse ignoring the instruction.
+**An agent crossed the no-git boundary.** Codex committed during an art task while the rule was “no git”. I resolved that by allowing art-task commits only for explicitly listed `Art/` paths, one commit per item. That rule is now in [AGENTS.md](../AGENTS.md), alongside the task boundaries.
+
+## What I left on the cutting-room floor
+
+Split-screen would be my first pick. The original Lake Fight started as a couch game, and it's still where this belongs.
+I'd also love a boat-to-boat jump, so I could knock a loaded crew out of their own boat and row off with it. Gamepad
+support is mapped but I haven't tested it with a real pad yet. The uncut version, for me, is everything that was missing
+from the old prototype: paddle fights, ram steal, swimming back and stealing boats, with decent animation and a loop that's
+actually fun to play.
 
 ## Calls I made
 
@@ -125,17 +131,19 @@ TODO(director): Add my camera-shake acceptance verdict after testing the real-ti
 - I cut the cannonball overboard, moving water facets and straight wake.
 - I chose forward-facing push rowing over the stern-facing setup.
 - I asked for larger hats, supplied the red colour and reserved team colours, with explicit exceptions.
-- I kept B11, but put moving wildlife behind a working round loop. A finished bird mesh didn't earn permission to expand the schedule.
+- I kept B11, but put moving wildlife behind a working round loop.
 - I rejected the symmetric X lake for irregular lobes.
-- I moved round-loop coding to Codex when Claude's quota ran out, boxed into new files for Claude to review.
+- I handed round-loop code to Codex when Claude's quota ran out, boxed into new files.
+- I asked for fair fish spots after Yellow kept winning from its doorstep.
+- I shrank the whole UI to 70% and cut the menu hover sound.
 
 ## By the numbers
 
-At `b97d4bf`, Git has **59 commits**: 6 dated Thursday, 29 Friday and 24 Saturday. This excludes the dev-log commit and anything added afterwards.
+The snapshot at `b97d4bf`, before the dev-log commit, has **59 commits**: 6 dated Thursday, 29 Friday and 24 Saturday.
 
-There are **86 tracked top-level FBX exports** under `Art/Export`: 8 icon-stage exports and 78 `SM_LF` files, including the preserved reed-bed v1. That count includes colour variants and separate parts; it is not 86 unique designs or 86 placed objects.
+At that snapshot, the **86 tracked top-level FBX exports** under `Art/Export` include colour variants and separate parts: 8 icon-stage exports and 78 `SM_LF` files, including the preserved reed-bed v1.
 
-At that snapshot, the task-family count is **17**: B01–B11, T01–T03 and A01–A03. Revisions, stages and numbered items stay inside their families. L01 and T04 are excluded from those frozen counts. The Director's Log then contained **25 dated entries**, including experiments and playtest follow-ups.
+The **17 task families** counted at that snapshot, excluding L01 and T04, are B01–B11, T01–T03 and A01–A03, with revisions, stages and numbered items inside their families. The Director's Log then contained **25 dated entries**, including experiments and playtest follow-ups.
 
 The general art rule is under 3,000 triangles per boat and under 1,000 per prop, with task-specific budgets recorded separately. B06 boats have 1,214 render triangles plus 232 collision triangles. B11's assembled gull is 140, its distant glide 104, its dragonfly 84 and its butterfly 60.
 
@@ -155,33 +163,47 @@ My [pre-jam declaration](../PRE_JAM_DECLARATION.md) is committed at the reposito
 
 The AI-content/tool disclosure and Mixamo/Manny credits are recorded in [ASSETS.md](ASSETS.md).
 
-## Saturday afternoon — L01 lake layout
+## Saturday: the lake, three times
 
-The first pass was a pool with natural edges. The islands sat off the routes home, and the left side had none. I wanted the islands to shape the journey back to the docks, so I asked for another layout.
-
-Pass two came back as a perfectly symmetric X: right on paper, man-made to look at. I rejected it and asked for irregular lobes. Pass three, recorded in L01.1, gave us four uneven arms, wooded headlands and one island on each route home. The docks sit 68.5–72 m from the centre, around an open middle roughly 57 m across.
-
-Clouds and the static heron made it in. Moving wildlife remained deferred while we worked on the round loop.
+The first layout came back as a swimming pool with nicer edges. The islands sat by the walls, so nobody's route home passed
+anything, and the left side had no island at all. The second pass solved that on paper: four arms, an island on every route
+home. But it came back as a perfect X. I only saw it from above and knew straight away that it would make the movement and the
+scenery dull, and look man-made. I asked for irregular lobes instead: four uneven arms, wide wooded headlands, one island on
+each route home, docks 68.5-72 m from the centre and about 57 m of open water in the middle. That's the lake in the game.
 
 ![Image slot: lake-layout strip — pass 3, irregular lobes and islands on the routes home](Shots/L01_top.png)
 
-TODO(director): Add the pool and X shots to make a three-pass comparison strip.
+TODO(director): Add the first-pass pool shot.
 
-## T04 — the round loop, with a different coder
+TODO(director): Add the second-pass symmetric X shot.
 
-My Claude quota ran out, so I moved stages 1–2.1 to Codex. I boxed the work into new files, with minimal changes to existing classes marked `// T04 hook`, for Claude to review. Claude reviewed stage 1 read-only and returned 12 findings, including two must-fix items.
+## Saturday: the round, and running out of Claude
 
-Stage 1 (`37c75c4`) put the catch on the boat: slow down at a fish spot, carry fish in the hull and bank them at your own dock. Steal the boat and you steal its catch. Rams spill one or two fish; capsizes spill the lot, leaving floating pickups for other boats to scoop up.
+Halfway through Saturday my Claude usage hit its limit with the round loop not started. Instead of waiting I handed stages 1-2
+to Codex, boxed into new files with small marked hooks, and had Claude review its first stage read-only when the quota came
+back (12 findings, 2 must-fix). I was worried the code would stop looking like the rest of the game. It didn't - Codex
+handled it well enough that I couldn't tell the difference. My own playtest changed the details: the fish spots were static
+rings I couldn't read, so they got bobbing pieces, ripples and leaping fish; catching was fiddly at low speed, so the radius
+went from 2 to 4 m; and you couldn't tell who was carrying fish, so every boat got a live count above it.
 
-Stage 2 (`c0b13ab`) added the four-minute round, a gold spot at 2:00 with fish worth five points, Final music for the last 30 seconds, the HUD and the results screen with Restart and Quit. My PIE checks accepted fast-pass rejection, own-dock banking, enemy banks doing nothing, Final music, the end screen and the mouse buttons.
+## Saturday night: an AI employee on the night shift
 
-My playtest also showed where the loop was awkward. Static fish spots were unreadable, so stage 2.1 (`a8c2311`) added bobbing pieces, expanding ripples and leaping fish with splashes. Low-speed catching was too fiddly: I raised the catch radius from 2 to 4 m and the speed limit from 1.5 to 2.2 m/s. Live fish counts appeared above loaded boats, with a larger count on my HUD. The same pass added the review fixes assigned to Codex and test commands for giving every boat fish and capsizing my boat.
+I had to be away from the machine, so the last big chunk of work ran unattended on my laptop: one long checklist, a commit per
+item, and a scheduled restart every five hours when the usage window reset. It felt like having an AI employee working while
+I was busy with other things, which in a time-limited jam is a big deal. By morning it had done 17 items: AI crews that fish
+and bank, a bug pass, the main menu, credits, pause, how-to-play, graphics options, a stylized sky, ducks and gulls and
+spectators, a full UI pass and hero shots - each one packaged and smoke-tested, with a safety build kept aside. Everything
+it did was marked "unreviewed" until I played it.
 
-TODO(director): Add AI fishing and banking results after the night run.
+## Sunday: making the fight worth having
 
-## TODO(director): Sunday — polish
-
-Add final feel and audio decisions, remaining bugs, and whether deferred wildlife made it in.
+Playing the overnight build I noticed Yellow won most rounds, because a fishing spot sat next to its dock, and nobody had a
+reason to fight while everyone was busy fishing. The next runs made the spots fair (a centre spot plus one that rotates
+between the docks) and gave crews reasons to fight: loaded boats and the leader draw attention, a crew defends its spot, the
+Thief dives in to steal a loaded boat. That halved the scores, so one more pass brought the fish back and added ram steal:
+ram a loaded boat and a fish flies into yours. It feels unfair, and rewarding when you're the one doing it. Now a different
+crew wins each round, and the tension in the last minute is real - my best round ended with a bank nine seconds before the
+whistle, 24-22. The last polish was mine: the whole UI down to 70% and the menu hover sound gone.
 
 ## TODO(director): Sunday — submission
 
