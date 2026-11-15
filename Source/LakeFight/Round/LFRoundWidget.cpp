@@ -35,7 +35,7 @@ namespace
 	{
 		UCanvasPanel* Panel = Tree->ConstructWidget<UCanvasPanel>();
 		Parent->AddChild(Panel);
-		LF::UI::Place(Panel, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
+		LF::UI::Fill(Panel);
 		Panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		return Panel;
 	}
@@ -57,7 +57,7 @@ UImage* ULFRoundWidget::Icon(UCanvasPanel* Parent, const FString& Name, FVector2
 
 FVector2D ULFRoundWidget::ChipScoreCentre(int32 Team) const
 {
-	return FVector2D(ChipX + Team * ChipStep + 120.f, ChipY + 50.f);
+	return LF::UI::Anchored(FVector2D(ChipX + Team * ChipStep + 120.f, ChipY + 50.f), FVector2D(Team / 3.f, 0.f));
 }
 
 int32 ULFRoundWidget::PlayerTeam() const
@@ -77,8 +77,8 @@ TSharedRef<SWidget> ULFRoundWidget::RebuildWidget()
 	Scale->SetStretch(EStretch::ScaleToFit);
 	WidgetTree->RootWidget = Scale;
 	USizeBox* Design = WidgetTree->ConstructWidget<USizeBox>();
-	Design->SetWidthOverride(1280.f);
-	Design->SetHeightOverride(720.f);
+	Design->SetWidthOverride(LF::UI::CanvasSize().X);
+	Design->SetHeightOverride(LF::UI::CanvasSize().Y);
 	Scale->AddChild(Design);
 	Canvas = WidgetTree->ConstructWidget<UCanvasPanel>();
 	Design->AddChild(Canvas);
@@ -87,11 +87,13 @@ TSharedRef<SWidget> ULFRoundWidget::RebuildWidget()
 	// T04 hook: projected per-boat cargo counts, behind the fixed HUD.
 	ULFBoatFishLabels* BoatLabels = CreateWidget<ULFBoatFishLabels>(GetOwningPlayer(), ULFBoatFishLabels::StaticClass());
 	HudGroup->AddChild(BoatLabels);
-	LF::UI::Place(BoatLabels, FVector2D::ZeroVector, FVector2D(1280.f, 720.f));
+	LF::UI::Fill(BoatLabels);
 
 	// Team score chips: wood chip, team-colour badge with the crew icon, team name in its colour, big bold score.
+	// N5: chips anchor along the top edge (red top-left ... yellow top-right).
 	for (int32 I = 0; I < 4; ++I)
 	{
+		LF::UI::FAnchor Anchor(FVector2D(I / 3.f, 0.f));
 		const float X = ChipX + I * ChipStep;
 		LF::UI::Panel(WidgetTree, HudGroup, FVector2D(X, ChipY), FVector2D(ChipW, ChipH));
 		LF::UI::Panel(WidgetTree, HudGroup, FVector2D(X + 8.f, ChipY + 8.f), FVector2D(62.f, 62.f), LF::UI::TeamColours[I], 10.f, LF::UI::WoodDark, 2.f);
@@ -102,7 +104,9 @@ TSharedRef<SWidget> ULFRoundWidget::RebuildWidget()
 		Scores.Add(Score);
 	}
 
-	// Timer pill.
+	// Timer pill + gold banner (top centre).
+	{
+	LF::UI::FAnchor TopCentre(FVector2D(0.5f, 0.f));
 	TimerPill = LF::UI::Panel(WidgetTree, HudGroup, FVector2D(550.f, 108.f), FVector2D(180.f, 56.f), LF::UI::Wood, 28.f);
 	Icon(HudGroup, TEXT("Clock"), FVector2D(560.f, 112.f), 48.f);
 	Timer = LF::UI::Label(WidgetTree, HudGroup, TEXT("4:00"), FVector2D(608.f, 113.f), FVector2D(112.f, 46.f), 32, LF::UI::Cream, true, 1);
@@ -113,24 +117,37 @@ TSharedRef<SWidget> ULFRoundWidget::RebuildWidget()
 	Icon(GoldBannerGroup, TEXT("FishGold"), FVector2D(382.f, 180.f), 48.f);
 	LF::UI::Label(WidgetTree, GoldBannerGroup, TEXT("GOLD FISH!  Each fish banks for 5"), FVector2D(436.f, 188.f), FVector2D(464.f, 34.f), 21, LF::UI::Gold, true, 1);
 
-	// Your boat panel.
+	}
+
+	// Your boat panel (bottom left).
+	{
+	LF::UI::FAnchor BottomLeft(FVector2D(0.f, 1.f));
 	LF::UI::Panel(WidgetTree, HudGroup, BoatPanelAt, BoatPanelSize);
 	Icon(HudGroup, TEXT("Fish"), BoatPanelAt + FVector2D(10.f, 9.f), 66.f);
 	LF::UI::Label(WidgetTree, HudGroup, TEXT("YOUR BOAT"), BoatPanelAt + FVector2D(88.f, 6.f), FVector2D(300.f, 24.f), 15, LF::UI::Cream, true);
 	Cargo = LF::UI::Label(WidgetTree, HudGroup, TEXT("0 fish"), BoatPanelAt + FVector2D(88.f, 28.f), FVector2D(316.f, 46.f), 28, LF::UI::Cream, true);
 
+	}
+
 	// Gold arrow pill (bottom right) while a gold spot exists.
+	{
+	LF::UI::FAnchor BottomRight(FVector2D(1.f, 1.f));
 	GoldArrowGroup = HudGroupPanel(WidgetTree, HudGroup);
 	LF::UI::Panel(WidgetTree, GoldArrowGroup, FVector2D(904.f, 628.f), FVector2D(340.f, 64.f), LF::UI::Wood, 32.f, LF::UI::Gold, 3.f);
 	Icon(GoldArrowGroup, TEXT("FishGold"), FVector2D(916.f, 630.f), 60.f);
 	Direction = LF::UI::Label(WidgetTree, GoldArrowGroup, TEXT(""), FVector2D(980.f, 638.f), FVector2D(250.f, 44.f), 26, LF::UI::Gold, true);
 
-	// N2 item 13: round-start hints, low centre, non-blocking.
+	}
+
+	// N2 item 13: round-start hints, low centre (bottom-centre anchor), non-blocking.
+	{
+	LF::UI::FAnchor BottomCentre(FVector2D(0.5f, 1.f));
 	HintGroup = HudGroupPanel(WidgetTree, HudGroup);
 	LF::UI::Panel(WidgetTree, HintGroup, FVector2D(390.f, 532.f), FVector2D(500.f, 56.f));
 	HintText = LF::UI::Label(WidgetTree, HintGroup, TEXT(""), FVector2D(390.f, 542.f), FVector2D(500.f, 38.f), 22, LF::UI::Cream, true, 1);
 	HintGroup->SetRenderOpacity(0.f);
 	HintGroup->SetVisibility(ESlateVisibility::Collapsed);
+	}
 	return Super::RebuildWidget();
 }
 
@@ -141,7 +158,7 @@ void ULFRoundWidget::AddPop(int32 Team, int32 Amount, bool bFromBoat)
 	Pop->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 	PopTexts.Add(Pop);
 	const FVector2D To = ChipScoreCentre(Team);
-	PopFrom.Add(bFromBoat ? BoatPanelAt + FVector2D(200.f, 20.f) : To + FVector2D(0.f, 70.f));
+	PopFrom.Add(bFromBoat ? LF::UI::Anchored(BoatPanelAt + FVector2D(200.f, 20.f), FVector2D(0.f, 1.f)) : To + FVector2D(0.f, 70.f));
 	PopTo.Add(To);
 	PopAge.Add(0.f);
 	PopDuration.Add(bFromBoat ? 0.9f : 0.7f);
@@ -262,6 +279,7 @@ void ULFRoundWidget::ShowResults()
 	ULFRoundSubsystem* Round = GetWorld()->GetSubsystem<ULFRoundSubsystem>();
 	ULFFishSubsystem* Fish = GetWorld()->GetSubsystem<ULFFishSubsystem>();
 	ResultsGroup = HudGroupPanel(WidgetTree, Canvas);
+	LF::UI::FAnchor Centre(FVector2D(0.5f, 0.5f)); // N5: the results card stays centred
 	ResultsGroup->SetRenderOpacity(0.f);
 	UCanvasPanel* R = ResultsGroup;
 
@@ -320,7 +338,7 @@ void ULFRoundWidget::ShowResults()
 
 void ULFRoundWidget::SelectButton(int32 Index)
 {
-	if (Index != Selection) LF::UI::Sound(this, TEXT("MenuMove"));
+	// N5: no MenuMove on hover / navigation (confirm + back sounds only).
 	Selection = Index;
 	LF::UI::SetSelected(RestartButton, Index == 0);
 	LF::UI::SetSelected(QuitButton, Index == 1);

@@ -26,6 +26,36 @@ N4 (economy tuning; the N4 line in Docs/N1.md is partly garbled - read as: raise
 economy while rams/overboards stay >= 1.5x the pre-N3 baseline and no team wins more than 3 of 6; retry if the first try
 misses; never overwrite Builds/LakeFight_submit_fallback.zip or the N3 zip; zip Builds/LakeFight_N4_<time>.zip; report):
 22. [DONE f00c31d + report commit] Economy tuning + 6 AI-only rounds vs targets + package + smoke + zip + report
+N5 (UI size + menu sound, director 15 Nov evening; UI only - no gameplay/AI/fish/balance changes):
+23. [DONE - see N5 report] All UI at ~70% (one place: LF::UI), MenuMove removed on hover/navigation, Shipping package + smoke +
+    zip Builds/LakeFight_N5_<time>.zip, 1080p shots Docs/Shots/UI/N5_*.png
+
+## N5 report - item 23 UI size + menu sound (Claude Code, 15 Nov 18:15-18:40 IST)
+**Build:** `Builds/LakeFight_N5_20261115_1834.zip` (383 MB). `LakeFight_N4_20261115_1132.zip` and `LakeFight_submit_fallback.zip`
+untouched (timestamps 11:33 / 08:03).
+**Shipping smoke** (`LakeFight.exe -LFSmoke`, copy in Saved/n5/n5_smoke.txt): fish ready 3 zones / 4 banks / 2 live spots -> menu ->
+Play -> hints 1-3 -> pause at 234.0 s -> how-to page -> resume at 234.0 s -> results "Blue WINS!" 0/32/5/5 -> quit, exit code 0.
+- **Scale, in one place** (`Round/LFUIStyle.h/.cpp`): `LF::UI::DefaultScale = 0.7`. Layouts are still written on the 1280x720 grid,
+  but the real design canvas is now `CanvasSize()` = grid / scale (1829x1029) in the same ScaleToFit box, so everything (panels, text,
+  icons, outlines, shadows, boat fish labels) shows at 70%. `LF::UI::Place()` shifts each element by its anchor (`FAnchor` scope),
+  so it stays on the same edge/corner with 70% margins: team chips along the top edge (red top-left ... yellow top-right), timer +
+  gold banner top centre, YOUR BOAT bottom-left, gold arrow bottom-right, hint card bottom centre; menus, pause, how-to, options,
+  credits and results stay centred; the banking pop still flies to the right chip. Text is rasterised at the real size (layout
+  scale, not a render transform), so it stays sharp.
+- **To try another size without a rebuild:** launch with `-LFUIScale=0.8` (clamped 0.4-1.2; works in the Shipping exe). To change the
+  default: edit `DefaultScale` in `LFUIStyle.h` and rebuild.
+- **Readability:** a minimum font size of 15 (in `LF::UI::StyleText`) keeps the smallest text at ~10.5 pt on screen at 720p
+  (it lifted only the 12-14 pt hint/how-to lines). Because of that, the how-to card is 36 units taller and the pause hint line
+  wider. Checked at 1280x720 (Saved/Screenshots/N5x720_*.png): all text readable, no overlaps.
+- **Sound:** no MenuMove on selection change in the main/pause/options menus (mouse hover + keys/pad) or on the results buttons.
+  MenuSelect (confirm) and Deny (back) unchanged. **Still there:** MenuMove when you change the GRAPHICS value (left/right or
+  click). That's a value change, not navigation, so I left it. Say if it should go too.
+- **Screenshots (1920x1080, editor -game):** Docs/Shots/UI/N5_01_menu_main.png, N5_06_hud_gold.png (HUD mid-round with gold banner +
+  arrow + hint), N5_11_results.png, plus N5_09_pause_howto.png (the one layout I touched). The full set of 13 is in Saved/Screenshots/N5_*.png.
+- Files: Source/LakeFight/Round/LFUIStyle.h/.cpp, LFRoundWidget.cpp, LFMenuWidget.h/.cpp. Commands: Tools/ue.ps1 build (editor closed,
+  x3), Saved/n1/tools/ui_shots.ps1 -Tag N5 (1080p and 720p), Tools/ue.ps1 package (Shipping), smoke, Compress-Archive.
+- **For you to check by hand:** whether 70% feels right on your screen (try `-LFUIScale=` values), mouse hover + pad focus are now
+  silent, and the main-menu logo (it shrinks with the rest, 70% of the old full-screen lockup).
 
 ## N4 report - item 22 economy tuning (Claude Code, resumed session 15 Nov 10:10-11:40 IST) - unreviewed, director away
 **Spec note:** the N4 line in Docs/N1.md is garbled (characters lost mid-line). What I could read: economy tuning; never overwrite

@@ -67,7 +67,6 @@ private:
 	bool bPauseMode = false;
 	float Age = 0.f;     // N2 item 15: whole-widget fade in
 	float PageAge = 0.f; // page cross-fade
-	bool bSounds = false; // no MenuMove on the initial selection
 	EPage Page = EPage::Main;
 	int32 Selection = 0;
 

@@ -12,6 +12,7 @@
 #include "HAL/PlatformProcess.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetRenderingLibrary.h"
+#include "Misc/CommandLine.h"
 #include "Misc/Paths.h"
 #include "Sound/SoundWave.h"
 
@@ -38,10 +39,36 @@ namespace LF::UI
 		return Brush;
 	}
 
+	static FVector2D CurrentPivot = FVector2D::ZeroVector;
+
+	float Scale()
+	{
+		static const float Value = []
+		{
+			float Override = DefaultScale;
+			return FParse::Value(FCommandLine::Get(), TEXT("LFUIScale="), Override) ? FMath::Clamp(Override, 0.4f, 1.2f) : DefaultScale;
+		}();
+		return Value;
+	}
+
+	FVector2D CanvasSize() { return FVector2D(1280.f, 720.f) / Scale(); }
+
+	FVector2D Anchored(FVector2D At, FVector2D Pivot) { return At + Pivot * (CanvasSize() - FVector2D(1280.f, 720.f)); }
+
+	FAnchor::FAnchor(FVector2D Pivot) : Previous(CurrentPivot) { CurrentPivot = Pivot; }
+	FAnchor::~FAnchor() { CurrentPivot = Previous; }
+
+	void Fill(UWidget* Widget)
+	{
+		UCanvasPanelSlot* Slot = CastChecked<UCanvasPanelSlot>(Widget->Slot);
+		Slot->SetPosition(FVector2D::ZeroVector);
+		Slot->SetSize(CanvasSize());
+	}
+
 	void Place(UWidget* Widget, FVector2D At, FVector2D Size)
 	{
 		UCanvasPanelSlot* Slot = CastChecked<UCanvasPanelSlot>(Widget->Slot);
-		Slot->SetPosition(At);
+		Slot->SetPosition(Anchored(At, CurrentPivot));
 		Slot->SetSize(Size);
 	}
 
@@ -69,6 +96,7 @@ namespace LF::UI
 	void StyleText(UTextBlock* Text, int32 FontSize, const FLinearColor& Colour, bool bBold)
 	{
 		FSlateFontInfo Font = Text->GetFont();
+		FontSize = FMath::Max(FontSize, MinFontSize);
 		Font.Size = FontSize;
 		Font.TypefaceFontName = bBold ? FName(TEXT("Bold")) : FName(TEXT("Regular"));
 		Font.OutlineSettings.OutlineSize = FMath::Max(1, FMath::RoundToInt(FontSize / 11.f));
